@@ -24,6 +24,13 @@ export const productType = defineType({
       validation: (Rule) => Rule.required().min(2).max(100),
     }),
     defineField({
+      name: 'cname',
+      title: 'CNAME (Backend Record Name)',
+      type: 'string',
+      group: 'basic',
+      description: '中文名称或内部备用名，仅在后台记录使用，前端不会展示。',
+    }),
+    defineField({
       name: 'slug',
       title: 'URL Slug',
       type: 'slug',
@@ -62,7 +69,78 @@ export const productType = defineType({
       type: 'array',
       group: 'basic',
       of: [
-        defineArrayMember({ type: 'block' }),
+        defineArrayMember({
+          type: 'block',
+          of: [
+            {
+              type: 'object',
+              name: 'inlineFormula',
+              title: 'Inline Formula (Math)',
+              fields: [
+                {
+                  name: 'expression',
+                  title: 'LaTeX Expression',
+                  type: 'string',
+                  description: 'e.g. \\alpha + \\beta = \\gamma'
+                }
+              ]
+            }
+          ]
+        }),
+        // Supports table using @sanity/table plugin
+        defineArrayMember({ type: 'table', title: 'Table' }),
+        // Supports images with caption and alt text
+        defineArrayMember({
+          type: 'image',
+          title: 'Image',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              description: 'Important for SEO and accessibility'
+            },
+            {
+              name: 'caption',
+              type: 'string',
+              title: 'Caption'
+            }
+          ]
+        }),
+        // Supports video embed
+        defineArrayMember({
+          type: 'object',
+          name: 'video',
+          title: 'Video',
+          fields: [
+            {
+              name: 'url',
+              title: 'Video URL',
+              type: 'url',
+              description: 'Link to YouTube, Vimeo, or direct MP4/WebM video file'
+            },
+            {
+              name: 'caption',
+              type: 'string',
+              title: 'Caption'
+            }
+          ]
+        }),
+        // Supports standalone math block
+        defineArrayMember({
+          type: 'object',
+          name: 'mathBlock',
+          title: 'Math Block (Formula)',
+          fields: [
+            {
+              name: 'expression',
+              title: 'LaTeX Expression',
+              type: 'string',
+              description: 'e.g. E = mc^2'
+            }
+          ]
+        })
       ],
     }),
 

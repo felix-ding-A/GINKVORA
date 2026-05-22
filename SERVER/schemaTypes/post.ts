@@ -76,15 +76,78 @@ export const postType = defineType({
       title: 'Body',
       type: 'array',
       of: [
-        defineArrayMember({ type: 'block' }),
+        defineArrayMember({
+          type: 'block',
+          of: [
+            {
+              type: 'object',
+              name: 'inlineFormula',
+              title: 'Inline Formula (Math)',
+              fields: [
+                {
+                  name: 'expression',
+                  title: 'LaTeX Expression',
+                  type: 'string',
+                  description: 'e.g. \\alpha + \\beta = \\gamma'
+                }
+              ]
+            }
+          ]
+        }),
+        // Supports table using @sanity/table plugin
+        defineArrayMember({ type: 'table', title: 'Table' }),
+        // Supports images with caption and alt text
         defineArrayMember({
           type: 'image',
+          title: 'Image',
           options: { hotspot: true },
           fields: [
-            defineField({ name: 'alt', type: 'string', title: 'Alt Text' }),
-            defineField({ name: 'caption', type: 'string', title: 'Caption' }),
-          ],
+            defineField({
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              description: 'Important for SEO and accessibility'
+            }),
+            defineField({
+              name: 'caption',
+              type: 'string',
+              title: 'Caption'
+            })
+          ]
         }),
+        // Supports video embed
+        defineArrayMember({
+          type: 'object',
+          name: 'video',
+          title: 'Video',
+          fields: [
+            defineField({
+              name: 'url',
+              title: 'Video URL',
+              type: 'url',
+              description: 'Link to YouTube, Vimeo, or direct MP4/WebM video file'
+            }),
+            defineField({
+              name: 'caption',
+              type: 'string',
+              title: 'Caption'
+            })
+          ]
+        }),
+        // Supports standalone math block
+        defineArrayMember({
+          type: 'object',
+          name: 'mathBlock',
+          title: 'Math Block (Formula)',
+          fields: [
+            defineField({
+              name: 'expression',
+              title: 'LaTeX Expression',
+              type: 'string',
+              description: 'e.g. E = mc^2'
+            })
+          ]
+        })
       ],
     }),
     defineField({

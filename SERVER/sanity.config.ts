@@ -1,6 +1,7 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
+import { table } from '@sanity/table'
 import { schemaTypes } from './schemaTypes'
 import { GenerateWithAIAction } from './actions/generateWithAI'
 
@@ -51,6 +52,7 @@ export default defineConfig({
           ]),
     }),
     visionTool(),
+    table(),
   ],
 
   document: {
