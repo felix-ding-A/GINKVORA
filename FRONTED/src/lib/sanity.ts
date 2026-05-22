@@ -32,7 +32,7 @@ export function urlFor(source: any) {
     };
   }
   try {
-    return builder.image(source);
+    return builder.image(source).auto('format');
   } catch (err) {
     return {
       url: () => 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&auto=format&fit=crop&q=80',
