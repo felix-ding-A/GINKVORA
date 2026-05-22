@@ -188,7 +188,7 @@ export function GenerateWithAIAction(props: any) {
       setIsDialogOpen(true)
     },
     dialog: isDialogOpen && {
-      type: 'dialog',
+      type: 'dialog' as const,
       header: '✨ GPT AI 一键智能内容生成',
       onClose: () => setIsDialogOpen(false),
       content: (
