@@ -250,16 +250,9 @@ const faqSchema = {
 
             <div class="tab-content" id="tab-app" style="display: none;">
               {product.applications && product.applications.length > 0 ? (
-                <ul class="app-list">
-                  {product.applications.map((app) => (
-                    <li>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="3">
-                        <polyline points="20 6 9 17 4 12"/>
-                      </svg>
-                      {app}
-                    </li>
-                  ))}
-                </ul>
+                <div class="rich-text-wrapper">
+                  <PortableText value={product.applications} />
+                </div>
               ) : (
                 <p>Nutraceutical supplements, cosmetics formulations, pet foods, and health products.</p>
               )}
