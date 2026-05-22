@@ -1,0 +1,378 @@
+---
+// ContactCTASection.astro — Bottom CTA with contact form teaser
+---
+
+<section class="cta-section" id="contact-cta" aria-label="Request a sample">
+  <!-- Background decoration -->
+  <div class="cta-bg" aria-hidden="true">
+    <div class="cta-orb cta-orb--1"></div>
+    <div class="cta-orb cta-orb--2"></div>
+  </div>
+
+  <div class="container">
+    <div class="cta-inner glass reveal">
+      <div class="cta-left">
+        <span class="section-label">Start Today</span>
+        <h2 class="cta-title">
+          Ready to Source<br/>
+          <span class="gradient-text">Premium Botanicals?</span>
+        </h2>
+        <p class="cta-desc">
+          Request free samples, get pricing, or discuss custom formulation needs. 
+          Our team responds within 24 hours, 7 days a week.
+        </p>
+
+        <div class="cta-features">
+          <div class="cta-feature">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            <span>Free samples shipped globally</span>
+          </div>
+          <div class="cta-feature">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            <span>Response within 24 hours</span>
+          </div>
+          <div class="cta-feature">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            <span>No minimum order for samples</span>
+          </div>
+          <div class="cta-feature">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            <span>Full documentation provided</span>
+          </div>
+        </div>
+
+        <div class="cta-actions">
+          <a href="/contact" class="btn btn--primary btn--lg" id="cta-request-btn">
+            Request a Sample
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="mailto:inquiry@ginkvora.com" class="btn btn--secondary btn--lg" id="cta-email-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect width="20" height="16" x="2" y="4" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+            Email Us
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Quick inquiry form -->
+      <div class="cta-right">
+        <div class="quick-form-card glass">
+          <h3 class="quick-form-title">Quick Inquiry</h3>
+          <p class="quick-form-sub">Tell us what you need — we'll get back within 24h.</p>
+
+          <form class="quick-form" id="quick-inquiry-form" novalidate>
+            <div class="form-field">
+              <label for="qi-name" class="form-label">Your Name *</label>
+              <input
+                type="text"
+                id="qi-name"
+                name="name"
+                class="form-input"
+                placeholder="John Smith"
+                required
+                autocomplete="name"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="qi-company" class="form-label">Company *</label>
+              <input
+                type="text"
+                id="qi-company"
+                name="company"
+                class="form-input"
+                placeholder="Acme Nutraceuticals"
+                required
+                autocomplete="organization"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="qi-email" class="form-label">Email *</label>
+              <input
+                type="email"
+                id="qi-email"
+                name="email"
+                class="form-input"
+                placeholder="john@company.com"
+                required
+                autocomplete="email"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="qi-interest" class="form-label">Interested In</label>
+              <select id="qi-interest" name="interest" class="form-input form-select">
+                <option value="">Select a category...</option>
+                <option value="health">Health Supplement Ingredients</option>
+                <option value="cosmetics">Cosmetic Actives</option>
+                <option value="pet">Pet Health Ingredients</option>
+                <option value="custom">Custom Formulation</option>
+                <option value="other">Other / Not Sure Yet</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn--primary" style="width: 100%; justify-content: center;" id="quick-form-submit">
+              Send Inquiry
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+              </svg>
+            </button>
+
+            <p class="form-disclaimer">
+              By submitting, you agree to our <a href="/privacy">Privacy Policy</a>. No spam, ever.
+            </p>
+
+            <!-- Success message (hidden by default) -->
+            <div class="form-success" id="form-success" hidden aria-live="polite">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5">
+                <path d="M9 12l2 2 4-4"/>
+                <circle cx="12" cy="12" r="10"/>
+              </svg>
+              <span>Thank you! We'll be in touch within 24 hours.</span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-section {
+    padding: var(--space-5xl) 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .cta-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+  }
+
+  .cta-orb--1 {
+    width: 500px; height: 500px;
+    background: rgba(124, 184, 122, 0.07);
+    top: -20%; left: -10%;
+  }
+
+  .cta-orb--2 {
+    width: 400px; height: 400px;
+    background: rgba(200, 169, 110, 0.05);
+    bottom: -20%; right: -10%;
+  }
+
+  .cta-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+    padding: 3rem;
+  }
+
+  .cta-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.375rem;
+  }
+
+  .cta-title {
+    font-size: clamp(2rem, 3.5vw, 2.875rem);
+    line-height: 1.1;
+  }
+
+  .cta-desc {
+    font-size: 1.0625rem;
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+  }
+
+  .cta-features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .cta-feature {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* Quick form card */
+  .quick-form-card {
+    padding: 2rem;
+    background: rgba(8, 13, 8, 0.5) !important;
+  }
+
+  .quick-form-title {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.375rem;
+  }
+
+  .quick-form-sub {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .quick-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .form-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.01em;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 0.6875rem 0.875rem;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .form-input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(124, 184, 122, 0.15);
+  }
+
+  .form-input:invalid:not(:placeholder-shown) {
+    border-color: var(--color-error);
+  }
+
+  .form-select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b826b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.875rem center;
+    padding-right: 2.5rem;
+  }
+
+  .form-select option {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .form-disclaimer {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .form-disclaimer a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .form-success {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(124, 184, 122, 0.1);
+    border: 1px solid rgba(124, 184, 122, 0.25);
+    border-radius: var(--radius-sm);
+    color: var(--color-primary-light);
+    font-size: 0.9375rem;
+  }
+
+  @media (max-width: 900px) {
+    .cta-inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      padding: 2rem 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  // Quick inquiry form handler
+  const form = document.getElementById('quick-inquiry-form') as HTMLFormElement;
+  const successEl = document.getElementById('form-success') as HTMLElement;
+  const submitBtn = document.getElementById('quick-form-submit') as HTMLButtonElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        form.reset();
+        // Show success message
+        Array.from(form.children).forEach((el) => {
+          (el as HTMLElement).style.display = 'none';
+        });
+        successEl.removeAttribute('hidden');
+      } else {
+        throw new Error('Failed');
+      }
+    } catch {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Inquiry';
+      alert('Something went wrong. Please email us directly at inquiry@ginkvora.com');
+    }
+  });
+</script>

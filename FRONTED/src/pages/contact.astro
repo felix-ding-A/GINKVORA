@@ -1,0 +1,407 @@
+---
+// src/pages/contact.astro — Premium B2B Inquiry and RFQ page
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Pre-fill query param support
+const title = "Contact GINKVORA | B2B Plant Extract Sourcing & RFQ";
+const description = "Request samples, ask for bulk pricing, or inquire about custom active ingredient formulations. Our experts respond within 12 hours.";
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="contact-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="Page Header">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">Get in Touch</span>
+        <h1 class="banner-title">Global Commercial Support</h1>
+        <p class="banner-desc">
+          Ready to source high-purity active ingredients? Contact our commercial team for instant quotations, sample shipping, and compliance documentation.
+        </p>
+      </div>
+    </header>
+
+    <div class="container contact-container">
+      <div class="contact-grid">
+        <!-- Left: Form -->
+        <section class="form-card glass" aria-label="RFQ Inquiry Form">
+          <h2>Request for Quotation / Sample</h2>
+          <p class="form-subtitle">Fields marked with an asterisk (*) are required.</p>
+
+          <form id="contact-full-form" class="full-form">
+            <div class="form-row-2">
+              <div class="form-field">
+                <label for="name" class="form-label">Full Name *</label>
+                <input type="text" id="name" name="name" required class="form-input" placeholder="John Doe" />
+              </div>
+              <div class="form-field">
+                <label for="email" class="form-label">Work Email *</label>
+                <input type="email" id="email" name="email" required class="form-input" placeholder="john@company.com" />
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-field">
+                <label for="company" class="form-label">Company Name *</label>
+                <input type="text" id="company" name="company" required class="form-input" placeholder="BioTech Ltd" />
+              </div>
+              <div class="form-field">
+                <label for="website" class="form-label">Company Website</label>
+                <input type="url" id="website" name="website" class="form-input" placeholder="https://company.com" />
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-field">
+                <label for="phone" class="form-label">Phone / WhatsApp</label>
+                <input type="tel" id="phone" name="phone" class="form-input" placeholder="+1 (555) 123-4567" />
+              </div>
+              <div class="form-field">
+                <label for="industry" class="form-label">Industry Sector *</label>
+                <select id="industry" name="industry" required class="form-input form-select">
+                  <option value="" disabled selected>Select sector...</option>
+                  <option value="dietary-supplements">Dietary Supplements</option>
+                  <option value="cosmetics">Cosmetics & Skincare</option>
+                  <option value="pet-health">Pet Health & Feeds</option>
+                  <option value="food-beverage">Functional Food/Beverage</option>
+                  <option value="pharmaceuticals">Pharmaceuticals</option>
+                  <option value="other">Other / Research</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-field">
+                <label for="productSelect" class="form-label">Target Ingredient *</label>
+                <input type="text" id="productSelect" name="productName" required class="form-input" placeholder="e.g. PQQ, NMN, Glabridin..." />
+              </div>
+              <div class="form-field">
+                <label for="quantity" class="form-label">Required Quantity *</label>
+                <input type="text" id="quantity" name="quantity" required class="form-input" placeholder="e.g. 25kg, 100kg" />
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="message" class="form-label">Message & Specification Requirements *</label>
+              <textarea id="message" name="message" required class="form-input" rows="5" placeholder="Specify purity levels, target shipping port, certification requirements, or custom formulation requests..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn--gold btn--lg" id="submit-btn">
+              Send RFQ Inquiry
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+
+            <div id="success-msg" class="success-message" style="display: none;" role="alert">
+              ✓ Quotation request sent. An executive will email you within 12 hours.
+            </div>
+          </form>
+        </section>
+
+        <!-- Right: Info -->
+        <aside class="info-sidebar">
+          <div class="info-card glass">
+            <h3>Direct Contact Coordinates</h3>
+            <p>Skip the form and communicate directly with our commercial desk.</p>
+
+            <div class="contact-list">
+              <div class="contact-item">
+                <div class="contact-icon">📧</div>
+                <div class="contact-body">
+                  <span class="label">General Inquiry & RFQ</span>
+                  <a href="mailto:inquiry@ginkvora.com" class="val">inquiry@ginkvora.com</a>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon">📞</div>
+                <div class="contact-body">
+                  <span class="label">Phone / WhatsApp Support</span>
+                  <span class="val">+86 (571) 8888-8888</span>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon">📍</div>
+                <div class="contact-body">
+                  <span class="label">HQ Address</span>
+                  <span class="val">188 Botanical Extract Boulevard, Technology District, Hangzhou, China</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card glass mt-6">
+            <h3>B2B Sourcing Policies</h3>
+            <ul class="policy-list">
+              <li>
+                <strong>Free Samples:</strong> Standard 10g-50g samples are available for qualified manufacturers (shipping charges apply).
+              </li>
+              <li>
+                <strong>MOQ Standards:</strong> Standard packaging MOQs are 1kg or 25kg (fiber drums) depending on the ingredient value.
+              </li>
+              <li>
+                <strong>Documentation:</strong> COA, MSDS, Specifications, and Allergen declarations are provided with every quotation.
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .contact-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Grid ── */
+  .contact-container {
+    margin-top: -2rem;
+    position: relative;
+    z-index: var(--z-float);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: 2.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+
+  .form-card {
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.18) !important;
+  }
+
+  .form-card h2 {
+    font-size: 1.875rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .form-subtitle {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .full-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .form-row-2 { grid-template-columns: 1fr; gap: 1.25rem; }
+  }
+
+  .full-form #submit-btn {
+    align-self: center;
+    margin-top: 1rem;
+  }
+
+  .mt-6 { margin-top: 1.5rem; }
+
+  /* ── Sidebar ── */
+  .info-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .info-card {
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.1) !important;
+  }
+
+  .info-card h3 {
+    font-size: 1.375rem;
+    color: var(--color-primary-light);
+    margin-bottom: 0.75rem;
+  }
+
+  .info-card p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .contact-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .contact-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    padding-top: 0.2rem;
+  }
+
+  .contact-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-body .label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-body .val {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .contact-body a.val:hover {
+    color: var(--color-primary-light);
+  }
+
+  .policy-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .policy-list li strong {
+    color: var(--color-primary-light);
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  .success-message {
+    padding: 1rem;
+    background: rgba(124, 184, 122, 0.15);
+    border: 1px solid var(--color-success);
+    color: var(--color-success);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    font-weight: 500;
+    margin-top: 1rem;
+  }
+</style>
+
+<script>
+  function initContactForm() {
+    // Fill query param product name if exists
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetProduct = urlParams.get('product');
+    const productInput = document.getElementById('productSelect') as HTMLInputElement;
+
+    if (targetProduct && productInput) {
+      productInput.value = targetProduct;
+    }
+
+    const form = document.getElementById('contact-full-form') as HTMLFormElement;
+    const successMsg = document.getElementById('success-msg');
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Sending Request...';
+        }
+
+        const formData = new FormData(form);
+        const data = {
+          name: formData.get('name'),
+          email: formData.get('email'),
+          company: formData.get('company'),
+          website: formData.get('website') || 'None',
+          phone: formData.get('phone') || 'None',
+          industry: formData.get('industry'),
+          productName: formData.get('productName'),
+          quantity: formData.get('quantity'),
+          message: formData.get('message'),
+        };
+
+        try {
+          const res = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+
+          if (res.ok) {
+            form.reset();
+            if (successMsg) successMsg.style.display = 'block';
+            if (submitBtn) submitBtn.textContent = 'Sent ✓';
+          } else {
+            alert('Failed to submit form. Please check details or email us directly.');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Send RFQ Inquiry';
+            }
+          }
+        } catch (err) {
+          alert('Connection error. Please try again.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send RFQ Inquiry';
+          }
+        }
+      });
+    }
+  }
+
+  // Astro page-load support
+  initContactForm();
+  document.addEventListener('astro:page-load', initContactForm);
+</script>

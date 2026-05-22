@@ -1,0 +1,295 @@
+---
+// ProductCategoriesSection.astro — Product category showcase with imagery
+const categories = [
+  {
+    id: 'health-supplements',
+    icon: '💊',
+    title: 'Health Supplement Ingredients',
+    description: 'High-purity active compounds for nutraceuticals, dietary supplements and functional foods. PQQ, NMN, Resveratrol, CoQ10 and more.',
+    href: '/products?category=health-supplements',
+    ingredients: ['PQQ', 'NMN', 'Resveratrol', 'CoQ10', 'Quercetin'],
+    color: 'var(--color-primary)',
+    colorBg: 'rgba(124, 184, 122, 0.06)',
+    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80',
+    imageAlt: 'Health supplement capsules and botanical herbs',
+  },
+  {
+    id: 'cosmetic-actives',
+    icon: '✨',
+    title: 'Cosmetic Active Ingredients',
+    description: 'Clinically-backed botanical actives for skincare and hair care formulations. Glabridin, EGCG, Luteolin, Bakuchiol and more.',
+    href: '/products?category=cosmetic-actives',
+    ingredients: ['Glabridin', 'EGCG', 'Luteolin', 'Bakuchiol', 'Astaxanthin'],
+    color: 'var(--color-accent)',
+    colorBg: 'rgba(200, 169, 110, 0.06)',
+    image: 'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=800&auto=format&fit=crop&q=80',
+    imageAlt: 'Luxury cosmetic serums and botanical extracts',
+  },
+  {
+    id: 'pet-health',
+    icon: '🐾',
+    title: 'Pet Health Ingredients',
+    description: 'Natural botanical extracts formulated for companion animal supplements. Supporting joint health, cognitive function and immunity.',
+    href: '/products?category=pet-health',
+    ingredients: ['Boswellia', 'Ashwagandha', 'Milk Thistle', 'Fish Oil', 'Glucosamine'],
+    color: '#7aade0',
+    colorBg: 'rgba(122, 173, 224, 0.06)',
+    image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&auto=format&fit=crop&q=80',
+    imageAlt: 'Healthy dog in nature representing pet wellness',
+  },
+  {
+    id: 'custom',
+    icon: '⚗️',
+    title: 'Custom Formulation',
+    description: 'Tailored OEM/ODM solutions. From ingredient blending to finished product development, we work to your specifications.',
+    href: '/contact',
+    ingredients: ['OEM', 'ODM', 'Private Label', 'R&D Support', 'Regulatory'],
+    color: 'var(--color-primary-light)',
+    colorBg: 'rgba(168, 213, 166, 0.06)',
+    image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&auto=format&fit=crop&q=80',
+    imageAlt: 'Laboratory scientist working on custom formulation',
+  },
+];
+---
+
+<section class="categories-section section" id="product-categories">
+  <div class="container">
+    <!-- Header -->
+    <div class="section-header reveal">
+      <span class="section-label">Product Portfolio</span>
+      <h2 class="section-title">
+        One Supplier,<br/>
+        <span class="gradient-text">Four Sectors</span>
+      </h2>
+      <p class="section-desc">
+        From nutraceuticals to cosmetics and pet health — comprehensive botanical ingredient solutions under one roof with consistent quality and traceability.
+      </p>
+    </div>
+
+    <!-- Category cards -->
+    <div class="categories-grid">
+      {categories.map((cat, idx) => (
+        <a
+          href={cat.href}
+          class={`category-card reveal reveal-delay-${idx + 1}`}
+          style={`--cat-color: ${cat.color}; --cat-bg: ${cat.colorBg};`}
+          id={`category-${cat.id}`}
+          aria-label={`View ${cat.title}`}
+        >
+          <!-- Image -->
+          <div class="cat-image">
+            <img src={cat.image} alt={cat.imageAlt} loading="lazy" width="400" height="240" />
+            <div class="cat-image-overlay"></div>
+            <span class="cat-icon-badge" role="img" aria-hidden="true">{cat.icon}</span>
+          </div>
+
+          <!-- Body -->
+          <div class="cat-body">
+            <h3 class="cat-title">{cat.title}</h3>
+            <p class="cat-desc">{cat.description}</p>
+            <div class="cat-tags">
+              {cat.ingredients.map((ing) => (
+                <span class="cat-tag">{ing}</span>
+              ))}
+            </div>
+            <div class="cat-cta">
+              Explore Category
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="categories-cta reveal">
+      <a href="/products" class="btn btn--secondary" id="all-products-btn">
+        View All Products
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-header {
+    text-align: center;
+    max-width: 620px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .section-title {
+    margin: 0.75rem 0 1rem;
+    line-height: 1.1;
+  }
+
+  .section-desc {
+    font-size: 1.0625rem;
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ── Card ── */
+  .category-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    background: var(--color-surface);
+    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .category-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--cat-color);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .category-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px var(--cat-color, rgba(124,184,122,0.3));
+  }
+
+  .category-card:hover::before { opacity: 1; }
+
+  /* ── Image ── */
+  .cat-image {
+    position: relative;
+    aspect-ratio: 5/3;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .cat-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
+  }
+
+  .category-card:hover .cat-image img {
+    transform: scale(1.06);
+  }
+
+  .cat-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(6,5,3,0) 30%,
+      rgba(6,5,3,0.7) 100%
+    );
+  }
+
+  .cat-icon-badge {
+    position: absolute;
+    top: 0.875rem;
+    right: 0.875rem;
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-md);
+    background: rgba(8,8,6,0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  /* ── Body ── */
+  .cat-body {
+    flex: 1;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .cat-title {
+    font-family: var(--font-display);
+    font-size: 1.1875rem;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.25;
+    margin: 0;
+  }
+
+  .cat-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .cat-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.25rem;
+  }
+
+  .cat-tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    background: var(--color-surface-2);
+    padding: 0.18rem 0.55rem;
+    border-radius: var(--radius-full);
+    font-family: var(--font-mono);
+    border: 1px solid var(--color-border);
+    letter-spacing: 0.02em;
+  }
+
+  .cat-cta {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--cat-color);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .category-card:hover .cat-cta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .categories-cta {
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .categories-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

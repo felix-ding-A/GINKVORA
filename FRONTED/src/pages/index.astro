@@ -1,0 +1,45 @@
+---
+// src/pages/index.astro — Homepage
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/sections/HeroSection.astro';
+import CertificationsMarquee from '../components/sections/CertificationsMarquee.astro';
+import ProductCategoriesSection from '../components/sections/ProductCategoriesSection.astro';
+import StatsSection from '../components/sections/StatsSection.astro';
+import FeaturedIngredientsSection from '../components/sections/FeaturedIngredientsSection.astro';
+import WhyUsSection from '../components/sections/WhyUsSection.astro';
+import ExtractionProcessSection from '../components/sections/ExtractionProcessSection.astro';
+import InsightsPreviewSection from '../components/sections/InsightsPreviewSection.astro';
+import ContactCTASection from '../components/sections/ContactCTASection.astro';
+
+// Structured data for homepage
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'GINKVORA',
+  url: 'https://ginkvora.com',
+  description: 'Premium B2B plant extract supplier for nutraceutical, cosmetic and pet health industries.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://ginkvora.com/products?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+};
+---
+
+<BaseLayout
+  title="GINKVORA — Premium B2B Plant Extract Supplier"
+  description="Pure Nature, Proven Science. Premium botanical extracts for nutraceutical, cosmetic and pet health B2B industries. PQQ, NMN, EGCG, Glabridin, Luteolin and 500+ high-purity ingredients."
+  structuredData={websiteSchema}
+>
+  <HeroSection />
+  <CertificationsMarquee />
+  <ProductCategoriesSection />
+  <StatsSection />
+  <FeaturedIngredientsSection />
+  <WhyUsSection />
+  <ExtractionProcessSection />
+  <InsightsPreviewSection />
+  <ContactCTASection />
+</BaseLayout>

@@ -1,0 +1,357 @@
+---
+// src/pages/quality.astro — Quality Control & Certification detail page
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Quality Control & GMP Certifications | GINKVORA"
+  description="Explore GINKVORA's quality control standards, laboratory validation methods, and active certifications (ISO, GMP, Halal, Kosher). Pure botanical actives."
+>
+  <main class="quality-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="Page Header">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">Compliance Desk</span>
+        <h1 class="banner-title">Uncompromising Quality Standards</h1>
+        <p class="banner-desc">
+          We maintain absolute analytical transparency. Explore our laboratory instruments, testing parameters, and global certifications.
+        </p>
+      </div>
+    </header>
+
+    <!-- Lab Testing Section -->
+    <section class="container section lab-section" aria-label="Analytical Instruments">
+      <div class="intro-grid">
+        <div class="intro-left reveal">
+          <h2>State-of-the-Art Analytical Testing</h2>
+          <p>
+            At GINKVORA, we believe chemical testing is the core foundation of trust. Our partner R&D center in Hangzhou features high-performance analytical instruments to analyze active constituent purity and identify impurities.
+          </p>
+          
+          <div class="instrument-list">
+            <div class="instrument-item">
+              <span class="inst-icon">⚗️</span>
+              <div>
+                <strong>HPLC (High-Performance Liquid Chromatography)</strong>
+                <p>Ensures precise active constituent quantification (e.g., verifying Glabridin ≥40.0% or Luteolin ≥98.0%).</p>
+              </div>
+            </div>
+
+            <div class="instrument-item">
+              <span class="inst-icon">🧬</span>
+              <div>
+                <strong>ICP-MS (Inductively Coupled Plasma Mass Spectrometry)</strong>
+                <p>Verifies compliance with strict international heavy metals limits (Lead, Arsenic, Cadmium, Mercury).</p>
+              </div>
+            </div>
+
+            <div class="instrument-item">
+              <span class="inst-icon">🧪</span>
+              <div>
+                <strong>GC-MS (Gas Chromatography-Mass Spectrometry)</strong>
+                <p>Assesses volatile compounds and pesticide residues to guarantee zero agricultural contamination.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="intro-right reveal reveal-delay-2">
+          <div class="image-showcase glass">
+            <img
+              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&auto=format&fit=crop&q=80"
+              alt="Quality Testing Lab Technicians"
+              class="showcase-img"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certifications Grid -->
+    <section class="section certs-grid-section bg-deep" aria-label="Certifications Catalog">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Regulatory Compliance</span>
+          <h2 class="section-title">International Certifications</h2>
+          <p class="section-desc">GINKVORA's manufacturing partner facilities comply with global food and cosmetic ingredient regulations.</p>
+        </div>
+
+        <div class="grid-4">
+          <div class="cert-box glass reveal">
+            <div class="cert-badge-icon">🛡️</div>
+            <h3>GMP Compliance</h3>
+            <p>Our ingredients are processed in Good Manufacturing Practice (GMP) compliant facilities, ensuring cross-contamination controls.</p>
+          </div>
+
+          <div class="cert-box glass reveal reveal-delay-1">
+            <div class="cert-badge-icon">📜</div>
+            <h3>ISO 9001:2015</h3>
+            <p>Certified Quality Management Systems cover everything from raw material collection to packaging and shipping.</p>
+          </div>
+
+          <div class="cert-box glass reveal reveal-delay-2">
+            <div class="cert-badge-icon">🕌</div>
+            <h3>Halal Certification</h3>
+            <p>Qualified under recognized Islamic councils, satisfying religious dietary requirements for global markets.</p>
+          </div>
+
+          <div class="cert-box glass reveal reveal-delay-3">
+            <div class="cert-badge-icon">✡️</div>
+            <h3>Kosher Certification</h3>
+            <p>Processed under Kosher supervision, verifying manufacturing hygiene and compliance with traditional dietary laws.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testing Specs Parameters Table -->
+    <section class="container section specs-limits-section" aria-label="Standardized Limits">
+      <div class="section-header">
+        <span class="section-label">Verification Standards</span>
+        <h2>Standardized Testing Parameters</h2>
+        <p class="section-desc">Unless specified, every batch is verified against the following limits.</p>
+      </div>
+
+      <div class="specs-limit-box glass reveal">
+        <table class="limits-table">
+          <thead>
+            <tr>
+              <th>Test Category</th>
+              <th>Standard Testing Parameter</th>
+              <th>Target Specification Limit</th>
+              <th>Method Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Heavy Metals</strong></td>
+              <td>Lead (Pb)</td>
+              <td>≤ 0.5 ppm</td>
+              <td>USP &lt;233&gt; ICP-MS</td>
+            </tr>
+            <tr>
+              <td><strong>Heavy Metals</strong></td>
+              <td>Arsenic (As)</td>
+              <td>≤ 1.0 ppm</td>
+              <td>USP &lt;233&gt; ICP-MS</td>
+            </tr>
+            <tr>
+              <td><strong>Heavy Metals</strong></td>
+              <td>Mercury (Hg)</td>
+              <td>≤ 0.1 ppm</td>
+              <td>USP &lt;233&gt; ICP-MS</td>
+            </tr>
+            <tr>
+              <td><strong>Microbiology</strong></td>
+              <td>Total Plate Count</td>
+              <td>≤ 1,000 cfu/g</td>
+              <td>USP &lt;2021&gt;</td>
+            </tr>
+            <tr>
+              <td><strong>Microbiology</strong></td>
+              <td>Yeast &amp; Mold</td>
+              <td>≤ 100 cfu/g</td>
+              <td>USP &lt;2021&gt;</td>
+            </tr>
+            <tr>
+              <td><strong>Microbiology</strong></td>
+              <td>E. Coli / Salmonella</td>
+              <td>Negative</td>
+              <td>USP &lt;2022&gt;</td>
+            </tr>
+            <tr>
+              <td><strong>Chemical</strong></td>
+              <td>Pesticide Residues</td>
+              <td>Complies with EP/USP limits</td>
+              <td>GC-MS / LC-MS</td>
+            </tr>
+            <tr>
+              <td><strong>Chemical</strong></td>
+              <td>Solvent Residues</td>
+              <td>≤ 500 ppm (Ethanol)</td>
+              <td>GC-Headspace</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .quality-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Lab Section ── */
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .intro-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+
+  .intro-left h2 {
+    font-size: 2.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .intro-left p {
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .instrument-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .instrument-item {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .inst-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+    background: rgba(212,166,84,0.1);
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-primary);
+  }
+
+  .instrument-item strong {
+    color: var(--color-primary-light);
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  .instrument-item p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .image-showcase {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-color: rgba(212,166,84,0.18) !important;
+  }
+
+  .showcase-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ── Certifications Section ── */
+  .bg-deep {
+    background-color: var(--color-bg-deep);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cert-box {
+    padding: 2rem 1.5rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212,166,84,0.1) !important;
+    text-align: center;
+  }
+
+  .cert-box:hover {
+    border-color: var(--color-border-strong) !important;
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .cert-badge-icon {
+    font-size: 2.25rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .cert-box h3 {
+    font-size: 1.25rem;
+    color: var(--color-primary-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .cert-box p {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  /* ── Limits Table ── */
+  .specs-limit-box {
+    padding: 1.5rem;
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212,166,84,0.15) !important;
+  }
+
+  .limits-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+
+  .limits-table th, .limits-table td {
+    padding: 0.875rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .limits-table th {
+    background: var(--color-surface);
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .limits-table td {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .limits-table tbody tr:hover td {
+    color: var(--color-text);
+  }
+</style>

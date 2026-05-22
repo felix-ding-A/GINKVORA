@@ -1,0 +1,178 @@
+---
+// BaseLayout.astro — Master layout with SEO, i18n, and performance optimizations
+import '../styles/global.css';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  lang?: string;
+  dir?: 'ltr' | 'rtl';
+  type?: 'website' | 'article' | 'product';
+  canonicalUrl?: string;
+  noindex?: boolean;
+  structuredData?: object;
+}
+
+const {
+  title,
+  description = 'GINKVORA — Premium B2B plant extract supplier. PQQ, NMN, EGCG, Glabridin, Luteolin and 500+ high-purity botanical ingredients for nutraceutical, cosmetic and pet health industries.',
+  image,
+  lang = 'en',
+  dir = 'ltr',
+  type = 'website',
+  canonicalUrl,
+  noindex = false,
+  structuredData,
+} = Astro.props;
+
+const siteUrl = 'https://ginkvora.com';
+const fullTitle = title === 'GINKVORA' ? title : `${title} | GINKVORA`;
+const canonical = canonicalUrl || new URL(Astro.url.pathname, siteUrl).toString();
+
+// Use dynamic OG image generator if no explicit image is provided
+const ogImageParams = new URLSearchParams({
+  title: fullTitle,
+  subtitle: description.slice(0, 80),
+});
+const ogImage = image
+  ? (image.startsWith('http') ? image : `${siteUrl}${image}`)
+  : `${siteUrl}/og-image.png?${ogImageParams.toString()}`;
+
+// Organization structured data (always present)
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'GINKVORA',
+  url: siteUrl,
+  logo: `${siteUrl}/images/logo.svg`,
+  description: 'Premium B2B plant extract supplier specializing in high-purity botanical ingredients.',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'business',
+    email: 'inquiry@ginkvora.com',
+    availableLanguage: ['English', 'Russian', 'Spanish', 'Arabic'],
+  },
+};
+---
+
+<!doctype html>
+<html lang={lang} dir={dir}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Primary Meta -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {!noindex && <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />}
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="GINKVORA" />
+    <meta property="og:locale" content={lang === 'ar' ? 'ar_SA' : lang === 'ru' ? 'ru_RU' : lang === 'es' ? 'es_ES' : 'en_US'} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#080d08" />
+    <meta name="msapplication-TileColor" content="#080d08" />
+
+    <!-- hreflang for i18n -->
+    <link rel="alternate" hreflang="en" href={`${siteUrl}${Astro.url.pathname}`} />
+    <link rel="alternate" hreflang="ru" href={`${siteUrl}/ru${Astro.url.pathname}`} />
+    <link rel="alternate" hreflang="es" href={`${siteUrl}/es${Astro.url.pathname}`} />
+    <link rel="alternate" hreflang="ar" href={`${siteUrl}/ar${Astro.url.pathname}`} />
+    <link rel="alternate" hreflang="x-default" href={`${siteUrl}${Astro.url.pathname}`} />
+
+    <!-- Keywords (B2B SEO) -->
+    <meta name="keywords" content="plant extract supplier, botanical ingredients, PQQ supplier, NMN bulk, EGCG extract, Glabridin, Luteolin, Flavone, nutraceutical ingredients, cosmetic actives, pet supplement ingredients, B2B botanical extracts" />
+
+    <!-- Business meta -->
+    <meta name="author" content="GINKVORA" />
+    <meta name="copyright" content="GINKVORA" />
+
+    <!-- Performance: DNS prefetch -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//cdn.sanity.io" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+    {structuredData && (
+      <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    )}
+  </head>
+
+  <body class="bg-noise">
+    <!-- Skip to main content (accessibility) -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <Navbar lang={lang} />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer lang={lang} />
+
+    <!-- Reveal animation script -->
+    <script>
+      // Intersection Observer for scroll reveal animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+      );
+
+      document.querySelectorAll('.reveal').forEach((el) => {
+        observer.observe(el);
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+    padding: 0.5rem 1rem;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    font-weight: 600;
+    z-index: 9999;
+    transition: top var(--transition-fast);
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+</style>

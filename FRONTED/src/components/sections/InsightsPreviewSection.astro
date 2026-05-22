@@ -1,0 +1,256 @@
+---
+// InsightsPreviewSection.astro — Homepage blog preview with 3 mock/live posts
+import { getAllPosts, urlFor } from '../../lib/sanity';
+
+const allPosts = await getAllPosts();
+const previewPosts = allPosts.slice(0, 3); // Show latest 3
+---
+
+<section class="insights-section bg-noise" id="insights" aria-label="Industry Insights">
+  <div class="container">
+    <div class="section-header-row">
+      <div class="header-left">
+        <span class="section-label">Knowledge Hub</span>
+        <h2 class="section-title">Industry <em>Insights</em></h2>
+        <p class="section-desc">
+          Scientific research, market intelligence, and regulatory updates for ingredient procurement professionals.
+        </p>
+      </div>
+      <a href="/insights" class="btn btn--outline btn--sm header-cta" aria-label="View all articles">
+        All Articles
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="posts-grid">
+      {previewPosts.map((post, i) => (
+        <article class={`post-card glass reveal ${i === 0 ? 'post-card--featured' : ''} reveal-delay-${i}`}>
+          <a href={`/insights/${post.slug}`} class="card-image-link" tabindex="-1" aria-hidden="true">
+            <div class="card-image">
+              <img
+                src={urlFor(post.coverImage).url()}
+                alt={post.title}
+                loading="lazy"
+                width="600"
+                height="340"
+              />
+              {post.tags && post.tags.length > 0 && (
+                <span class="card-badge">{post.tags[0]}</span>
+              )}
+            </div>
+          </a>
+
+          <div class="card-body">
+            <div class="card-meta">
+              <time datetime={post.publishedAt}>
+                {post.publishedAt
+                  ? new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+                  : 'May 2026'}
+              </time>
+              {post.readTime && (
+                <>
+                  <span class="dot">·</span>
+                  <span>{post.readTime} min read</span>
+                </>
+              )}
+            </div>
+
+            <h3 class="card-title">
+              <a href={`/insights/${post.slug}`}>{post.title}</a>
+            </h3>
+
+            {i === 0 && (
+              <p class="card-excerpt">{post.excerpt}</p>
+            )}
+
+            <a href={`/insights/${post.slug}`} class="card-link" aria-label={`Read ${post.title}`}>
+              Read Article
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .insights-section {
+    padding-block: var(--space-4xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* ── Header row ── */
+  .section-header-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .header-left .section-title {
+    margin-bottom: 0.5rem;
+  }
+
+  .header-cta {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  /* ── Grid ── */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .posts-grid { grid-template-columns: 1fr 1fr; }
+    .post-card--featured { grid-column: span 2; }
+  }
+
+  @media (max-width: 600px) {
+    .posts-grid { grid-template-columns: 1fr; }
+    .post-card--featured { grid-column: span 1; }
+  }
+
+  /* ── Post Card ── */
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.08) !important;
+    transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .post-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212, 166, 84, 0.22) !important;
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  /* ── Image ── */
+  .card-image-link {
+    display: block;
+  }
+
+  .card-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    background: var(--color-surface-2);
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+  }
+
+  .post-card:hover .card-image img {
+    transform: scale(1.04);
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.18rem 0.55rem;
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Body ── */
+  .card-body {
+    padding: 1.25rem 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.5rem;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .dot {
+    margin-inline: 0.4rem;
+  }
+
+  .card-title {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .post-card--featured .card-title {
+    font-size: 1.25rem;
+  }
+
+  .card-title a {
+    color: var(--color-text);
+    transition: color var(--transition-fast);
+  }
+
+  .card-title a:hover {
+    color: var(--color-primary-light);
+  }
+
+  .card-excerpt {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-link {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-primary-light);
+    transition: color var(--transition-fast);
+    padding-top: 0.5rem;
+  }
+
+  .card-link:hover {
+    color: var(--color-accent-light);
+  }
+
+  .card-link svg {
+    transition: transform var(--transition-fast);
+  }
+
+  .card-link:hover svg {
+    transform: translateX(3px);
+  }
+</style>

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow admin or CMS paths if any
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://ginkvora.com/sitemap-index.xml

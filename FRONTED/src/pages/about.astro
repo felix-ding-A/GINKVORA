@@ -1,0 +1,346 @@
+---
+// src/pages/about.astro — Premium B2B About page
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="B2B Botanical Extract Supplier | About GINKVORA"
+  description="Learn about GINKVORA's history, high-purity extraction technologies, and raw material sourcing standards. Supporting global dietary supplement brands."
+>
+  <main class="about-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="Page Header">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">Our Company</span>
+        <h1 class="banner-title">Pioneering Pure Plant Bioactives</h1>
+        <p class="banner-desc">
+          Connecting pristine botanical sources with advanced laboratory isolation to supply pharmaceutical-grade active ingredients to global industries.
+        </p>
+      </div>
+    </header>
+
+    <!-- Company Intro -->
+    <section class="container section intro-section" aria-label="Company Overview">
+      <div class="intro-grid">
+        <div class="intro-left reveal">
+          <h2>Pure Nature, Proven Science</h2>
+          <p>
+            Founded with a commitment to chemical purity and botanical integrity, GINKVORA has evolved into a premier B2B manufacturer and custom formulator of high-value natural plant extracts and isolated compounds.
+          </p>
+          <p>
+            We manage a comprehensive supply chain that spans certified local botanical sourcing regions, state-of-the-art supercritical CO2 and solvent extraction facilities, and an advanced R&D validation laboratory in Hangzhou.
+          </p>
+          <div class="mission-box">
+            <span class="mission-title">Our Core Mission</span>
+            <blockquote class="mission-text">
+              "To empower human health brands by delivering absolute active constituent purity, verifiable quality control records, and reliable bulk supply solutions."
+            </blockquote>
+          </div>
+        </div>
+        <div class="intro-right reveal reveal-delay-2">
+          <div class="image-showcase glass">
+            <img
+              src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=600&auto=format&fit=crop&q=80"
+              alt="GINKVORA Lab R&D Facility"
+              class="showcase-img"
+            />
+            <div class="floating-caption">
+              <strong>Zhejiang R&D Center</strong>
+              <span>HPLC & Mass Spectrometry Testing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Extraction Values -->
+    <section class="section values-section bg-deep" aria-label="Our Technological Advantages">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Scientific Competence</span>
+          <h2 class="section-title">Our Industrial Extraction Process</h2>
+          <p class="section-desc">
+            Combining traditional herbal wisdom with cutting-edge analytical isolation technologies.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="value-card glass reveal">
+            <div class="value-icon">🔬</div>
+            <h3>Purity-Driven Isolation</h3>
+            <p>
+              We focus on isolating active monomer constituents (such as NMN, PQQ, and Glabridin) to standardized purities of ≥98% and ≥99% using advanced chromatography systems.
+            </p>
+          </article>
+
+          <article class="value-card glass reveal reveal-delay-1">
+            <div class="value-icon">⚙️</div>
+            <h3>Green Extraction Methods</h3>
+            <p>
+              Utilizing supercritical carbon dioxide (sCO2) extraction and low-temperature water-based solvent processes to eliminate toxic residual chemical solvents and protect active compounds.
+            </p>
+          </article>
+
+          <article class="value-card glass reveal reveal-delay-2">
+            <div class="value-icon">🛡️</div>
+            <h3>Traceable Quality Records</h3>
+            <p>
+              Every manufactured batch undergoes rigorous identity, purity, heavy metal, microbial, and pesticide residue testing. Third-party lab validation reports (SGS/Eurofins) are available on demand.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline/History Section -->
+    <section class="container section history-section" aria-label="Our History">
+      <div class="section-header">
+        <span class="section-label">Our Journey</span>
+        <h2>Growth & Milestones</h2>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <div class="timeline-badge">2023</div>
+          <div class="timeline-content glass">
+            <h3>Establishment & Initial R&D</h3>
+            <p>GINKVORA founded in Hangzhou, specializing in mitochondrial cofactor research and launching high-purity PQQ and NMN sourcing channels.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-1">
+          <div class="timeline-badge">2024</div>
+          <div class="timeline-content glass">
+            <h3>GMP & ISO Certification</h3>
+            <p>Completed construction of our partner extraction plant. Attained GMP, ISO 9001:2015, Halal, and Kosher certifications for global food compliance.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-2">
+          <div class="timeline-badge">2025</div>
+          <div class="timeline-content glass">
+            <h3>Cosmetic & Pet Line Launch</h3>
+            <p>Expanded our chemical catalog to include Glabridin whitening actives, natural flavonoids, and specialized nutritional ingredients for the pet wellness sector.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-3">
+          <div class="timeline-badge">2026</div>
+          <div class="timeline-content glass">
+            <h3>Global Logistics & Vercel Digital Hub</h3>
+            <p>Launched high-performance international supply network serving supplement, skincare, and sports brands in 50+ countries with optimized logistics hubs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .about-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Intro Section ── */
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .intro-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+
+  .intro-left h2 {
+    font-size: 2.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .intro-left p {
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+  }
+
+  .mission-box {
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
+    border-left: 3px solid var(--color-primary);
+    background: var(--color-surface);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .mission-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .mission-text {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-style: italic;
+    color: var(--color-text);
+    line-height: 1.6;
+  }
+
+  .image-showcase {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-color: rgba(212,166,84,0.18) !important;
+  }
+
+  .showcase-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .floating-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: rgba(6, 5, 3, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--color-border);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .floating-caption strong {
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+  }
+
+  .floating-caption span {
+    color: var(--color-text-secondary);
+    font-size: 0.75rem;
+  }
+
+  /* ── Values Section ── */
+  .bg-deep {
+    background-color: var(--color-bg-deep);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .value-card {
+    padding: 2.25rem 1.75rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212,166,84,0.1) !important;
+    text-align: center;
+  }
+
+  .value-card:hover {
+    border-color: var(--color-border-strong) !important;
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .value-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .value-card h3 {
+    font-size: 1.375rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .value-card p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  /* ── Timeline ── */
+  .timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 3rem auto 0;
+    padding-left: 2rem;
+    border-left: 2px solid var(--color-border);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+  }
+
+  .timeline-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .timeline-badge {
+    position: absolute;
+    left: calc(-2rem - 13px);
+    top: 0.5rem;
+    width: 26px;
+    height: 26px;
+    background: var(--color-bg);
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--color-primary-light);
+    box-shadow: 0 0 10px rgba(212,166,84,0.3);
+  }
+
+  .timeline-content {
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border-color: rgba(212,166,84,0.12) !important;
+  }
+
+  .timeline-content h3 {
+    font-size: 1.125rem;
+    color: var(--color-primary-light);
+    margin-bottom: 0.25rem;
+  }
+
+  .timeline-content p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+</style>

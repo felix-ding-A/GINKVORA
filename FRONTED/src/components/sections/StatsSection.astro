@@ -1,0 +1,178 @@
+---
+// StatsSection.astro — Animated stats counter section with wave dividers
+const stats = [
+  { value: '500', suffix: '+', label: 'Active Ingredients', icon: '🌿' },
+  { value: '3',   suffix: '+', label: 'Years of Expertise', icon: '📅' },
+  { value: '50',  suffix: '+', label: 'Countries Served',   icon: '🌍' },
+  { value: '99',  suffix: '%', label: 'Purity Standard',    icon: '⚗️' },
+];
+---
+
+<!-- Wave top -->
+<div class="wave-into-stats" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 20 C360 80 720 0 1080 40 C1260 60 1380 10 1440 30 L1440 80 L0 80 Z" fill="var(--color-surface)"/>
+  </svg>
+</div>
+
+<section class="stats-section" id="stats" aria-label="Company statistics">
+  <div class="container">
+    <div class="stats-grid">
+      {stats.map((stat, idx) => (
+        <div class={`stat-item reveal reveal-delay-${idx + 1}`}>
+          <div class="stat-icon" role="img" aria-label={stat.label}>{stat.icon}</div>
+          <div class="stat-number">
+            <span class="stat-value" data-target={stat.value}>{stat.value}</span>
+            <span class="stat-suffix">{stat.suffix}</span>
+          </div>
+          <p class="stat-label">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Wave out -->
+<div class="wave-out-stats" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 40 C360 0 720 80 1080 40 C1260 20 1380 70 1440 50 L1440 0 L0 0 Z" fill="var(--color-surface)"/>
+  </svg>
+</div>
+
+<style>
+  .wave-into-stats,
+  .wave-out-stats {
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    background: var(--color-bg);
+  }
+
+  .wave-into-stats svg,
+  .wave-out-stats svg {
+    display: block;
+    width: 100%;
+    height: 80px;
+  }
+
+  .wave-out-stats {
+    background: var(--color-surface);
+    transform: scaleY(-1);
+  }
+
+  .stats-section {
+    background: var(--color-surface);
+    padding: 3rem 0;
+    position: relative;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    transition: all 0.3s ease;
+  }
+
+  .stat-item:hover {
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-glow-gold);
+    transform: translateY(-4px);
+  }
+
+  .stat-icon {
+    font-size: 2rem;
+    margin-bottom: 0.875rem;
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-number {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 3.25rem;
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stat-suffix {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--color-accent-light), var(--color-accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 768px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .stat-value { font-size: 2.5rem; }
+  }
+</style>
+
+<script>
+  // Animated counter
+  const counters = document.querySelectorAll('.stat-value');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const el = entry.target as HTMLElement;
+        const target = parseInt(el.dataset.target || '0', 10);
+        const duration = 1800;
+        const start = performance.now();
+
+        function update(now: number) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          // Easing
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(eased * target).toString();
+
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            el.textContent = target.toString();
+          }
+        }
+
+        requestAnimationFrame(update);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach((counter) => observer.observe(counter));
+</script>

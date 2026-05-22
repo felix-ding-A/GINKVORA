@@ -1,0 +1,267 @@
+---
+// WhyUsSection.astro — Why Choose GINKVORA feature highlights
+const features = [
+  {
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>`,
+    title: 'Strict Quality Control',
+    description: 'Every batch undergoes multi-stage testing — HPLC, GC-MS, microbiological screening — with full COA and third-party verification.',
+    color: 'var(--color-primary)',
+  },
+  {
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>`,
+    title: 'Natural Source Traceability',
+    description: 'Complete supply chain transparency from cultivation origin to final extraction. Know exactly where your ingredients come from.',
+    color: 'var(--color-primary-light)',
+  },
+  {
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+    title: 'Global Logistics Network',
+    description: 'Reliable shipping to 50+ countries with temperature-controlled transport options. Customs documentation fully supported.',
+    color: 'var(--color-accent)',
+  },
+  {
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>`,
+    title: 'Custom Formulation Support',
+    description: 'Expert R&D team available for co-development, private label, and OEM/ODM projects. From concept to finished product.',
+    color: '#7aade0',
+  },
+  {
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+    title: 'Rapid Response & Sampling',
+    description: 'Free samples dispatched within 24-48 hours. Dedicated account manager for every B2B partner with direct line support.',
+    color: 'var(--color-primary)',
+  },
+  {
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+    title: 'Regulatory Documentation',
+    description: 'Full regulatory package available: GRAS notices, EFSA dossiers, allergen declarations, country-specific compliance support.',
+    color: 'var(--color-accent-light)',
+  },
+];
+---
+
+<section class="whyus-section section" id="why-choose-us">
+  <div class="container">
+    <div class="whyus-inner">
+      <!-- Left: Heading + images -->
+      <div class="whyus-left reveal">
+        <span class="section-label">Why GINKVORA</span>
+        <h2 class="whyus-title">
+          The Standard<br/>
+          <span class="gradient-text--green">Others Follow</span>
+        </h2>
+        <p class="whyus-desc">
+          We combine 20+ years of botanical expertise with state-of-the-art extraction technology and rigorous quality systems to deliver ingredients that meet — and exceed — international standards.
+        </p>
+        <a href="/about" class="btn btn--secondary" id="learn-more-btn">
+          Learn More About Us
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+
+        <!-- Image collage -->
+        <div class="whyus-images" aria-hidden="true">
+          <div class="whyus-img-main">
+            <img
+              src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=600&auto=format&fit=crop&q=80"
+              alt="Laboratory quality testing of botanical extracts"
+              loading="lazy" width="600" height="400"
+            />
+          </div>
+          <div class="whyus-img-secondary">
+            <img
+              src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&auto=format&fit=crop&q=80"
+              alt="Close-up of plant cell research"
+              loading="lazy" width="400" height="200"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&auto=format&fit=crop&q=80"
+              alt="High-purity white botanical powder"
+              loading="lazy" width="400" height="200"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Feature grid -->
+      <div class="whyus-right">
+        <div class="features-grid">
+          {features.map((feat, idx) => (
+            <div class={`feature-item reveal reveal-delay-${(idx % 3) + 1}`} style={`--feat-color: ${feat.color};`}>
+              <div class="feat-icon" set:html={feat.icon} aria-hidden="true" />
+              <div class="feat-body">
+                <h3 class="feat-title">{feat.title}</h3>
+                <p class="feat-desc">{feat.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .whyus-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .whyus-left {
+    position: sticky;
+    top: 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .whyus-title {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.1;
+  }
+
+  .whyus-desc {
+    font-size: 1.0625rem;
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .feature-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1.375rem;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--feat-color);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease;
+  }
+
+  .feature-item:hover {
+    border-color: rgba(255,255,255,0.1);
+    background: var(--color-surface-2);
+    transform: translateX(4px);
+  }
+
+  .feature-item:hover::before {
+    transform: scaleY(1);
+  }
+
+  .feat-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--color-border);
+    color: var(--feat-color);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+
+  .feature-item:hover .feat-icon {
+    background: color-mix(in srgb, var(--feat-color) 12%, transparent);
+    border-color: color-mix(in srgb, var(--feat-color) 30%, transparent);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--feat-color) 20%, transparent);
+  }
+
+  .feat-body { flex: 1; }
+
+  .feat-title {
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.375rem;
+    line-height: 1.3;
+  }
+
+  .feat-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 1100px) {
+    .whyus-inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .whyus-left {
+      position: static;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .whyus-img-secondary { grid-template-columns: 1fr; }
+  }
+
+  /* Image collage */
+  .whyus-images {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    margin-top: 0.5rem;
+  }
+
+  .whyus-img-main img,
+  .whyus-img-secondary img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .whyus-img-main {
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    aspect-ratio: 3/2;
+    border: 1px solid var(--color-border);
+  }
+
+  .whyus-img-secondary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.625rem;
+  }
+
+  .whyus-img-secondary > * {
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    aspect-ratio: 4/3;
+    border: 1px solid var(--color-border);
+  }
+
+  .whyus-images:hover img {
+    transform: scale(1.03);
+  }
+</style>

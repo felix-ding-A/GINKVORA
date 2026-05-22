@@ -1,0 +1,49 @@
+---
+// src/components/PortableText.astro — Simple Portable Text renderer for blocks from Sanity
+interface Props {
+  value: any;
+}
+
+const { value } = Astro.props;
+
+function renderBlock(block: any) {
+  if (!block) return '';
+  
+  if (block._type === 'block') {
+    const text = block.children?.map((c: any) => c.text).join('') || '';
+    
+    if (block.style === 'h1') return `<h1>${text}</h1>`;
+    if (block.style === 'h2') return `<h2>${text}</h2>`;
+    if (block.style === 'h3') return `<h3>${text}</h3>`;
+    if (block.style === 'h4') return `<h4>${text}</h4>`;
+    if (block.style === 'blockquote') return `<blockquote>${text}</blockquote>`;
+    
+    return `<p>${text}</p>`;
+  }
+  
+  return '';
+}
+---
+
+<div class="portable-text">
+  {Array.isArray(value) ? (
+    value.map((block) => <Fragment set:html={renderBlock(block)} />)
+  ) : (
+    <p>{value}</p>
+  )}
+</div>
+
+<style>
+  .portable-text {
+    line-height: 1.8;
+  }
+  .portable-text :global(p) {
+    margin-bottom: 1.25rem;
+  }
+  .portable-text :global(h3) {
+    font-size: 1.5rem;
+    color: var(--color-primary-light);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+</style>

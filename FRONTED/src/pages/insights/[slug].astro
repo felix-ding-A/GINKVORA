@@ -1,0 +1,258 @@
+---
+// src/pages/insights/[slug].astro — Detailed Blog Post View
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllPosts, getPostBySlug, urlFor } from '../../lib/sanity';
+import PortableText from '../../components/PortableText.astro';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getPostBySlug(slug);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+// Blog Schema Markup
+const blogSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.title,
+  "description": post.excerpt,
+  "image": urlFor(post.coverImage).url(),
+  "datePublished": post.publishedAt || new Date().toISOString(),
+  "author": {
+    "@type": "Organization",
+    "name": "GINKVORA"
+  }
+};
+---
+
+<BaseLayout
+  title={`${post.title} | GINKVORA Insights`}
+  description={post.excerpt}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} slot="head" />
+
+  <main class="insight-detail bg-noise">
+    <div class="container article-container">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="crumb-separator">/</span>
+        <a href="/insights">Insights</a>
+        <span class="crumb-separator">/</span>
+        <span class="crumb-active">Article</span>
+      </nav>
+
+      <!-- Article Header -->
+      <header class="article-header">
+        <div class="article-meta">
+          <time datetime={post.publishedAt}>
+            {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            }) : 'May 21, 2026'}
+          </time>
+          {post.readTime && (
+            <>
+              <span class="meta-dot">·</span>
+              <span>{post.readTime} min read</span>
+            </>
+          )}
+        </div>
+
+        <h1 class="article-title">{post.title}</h1>
+
+        {post.tags && post.tags.length > 0 && (
+          <div class="article-tags">
+            {post.tags.map((tag) => (
+              <span class="badge badge--gold">{tag}</span>
+            ))}
+          </div>
+        )}
+      </header>
+
+      <!-- Cover Image -->
+      <div class="article-cover glass">
+        <img
+          src={urlFor(post.coverImage).url()}
+          alt={post.title}
+          class="cover-img"
+        />
+      </div>
+
+      <!-- Article Body -->
+      <article class="article-body">
+        {post.body ? (
+          <PortableText value={post.body} />
+        ) : (
+          <p>{post.excerpt}</p>
+        )}
+      </article>
+
+      <!-- Bottom CTAs -->
+      <section class="post-cta glass" aria-label="RFQ Action">
+        <div class="cta-content">
+          <h3>Need Premium Grade Ingredients?</h3>
+          <p>Request documentation, COAs, or sample shipments for any active plant constituent directly from our commercial desk.</p>
+        </div>
+        <a href="/contact" class="btn btn--gold">
+          Request Quotation / Sample
+        </a>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .insight-detail {
+    padding-block: 7rem var(--space-4xl);
+  }
+
+  .article-container {
+    max-width: 800px;
+  }
+
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-bottom: 2.5rem;
+  }
+
+  .crumb-separator {
+    color: var(--color-text-muted);
+  }
+
+  .crumb-active {
+    color: var(--color-primary-light);
+    font-weight: 500;
+  }
+
+  /* ── Header ── */
+  .article-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .article-meta {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .meta-dot {
+    margin-inline: 0.5rem;
+  }
+
+  .article-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+    color: var(--color-text);
+  }
+
+  .article-tags {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Cover Image ── */
+  .article-cover {
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    margin-bottom: 3.5rem;
+    border-color: rgba(212, 166, 84, 0.15) !important;
+  }
+
+  .cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ── Body Content ── */
+  .article-body {
+    font-size: 1.0625rem;
+    line-height: 1.85;
+    color: var(--color-text-secondary);
+  }
+
+  .article-body :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .article-body :global(h2), .article-body :global(h3) {
+    color: var(--color-text);
+    margin-block: 2.5rem 1rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  .article-body :global(h2) { font-size: 1.75rem; }
+  .article-body :global(h3) { font-size: 1.375rem; }
+
+  .article-body :global(ul) {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    list-style: disc;
+  }
+
+  .article-body :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── Bottom CTA ── */
+  .post-cta {
+    margin-top: 4.5rem;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.2) !important;
+  }
+
+  @media (max-width: 640px) {
+    .post-cta {
+      flex-direction: column;
+      text-align: center;
+      gap: 1.25rem;
+    }
+  }
+
+  .cta-content h3 {
+    font-size: 1.375rem;
+    color: var(--color-primary-light);
+    margin-bottom: 0.25rem;
+  }
+
+  .cta-content p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .post-cta .btn {
+    flex-shrink: 0;
+  }
+</style>
