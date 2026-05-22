@@ -20,7 +20,9 @@ if (!product) {
   return Astro.redirect('/404');
 }
 
-// Structured data for product details
+const siteUrl = 'https://ginkvora.com';
+
+// Product structured data (Product + AggregateOffer)
 const productSchema = {
   "@context": "https://schema.org",
   "@type": "Product",
@@ -28,17 +30,83 @@ const productSchema = {
   "description": product.shortDescription,
   "category": product.category.name,
   "image": urlFor(product.heroImage).url(),
+  "brand": {
+    "@type": "Brand",
+    "name": "GINKVORA"
+  },
   "offers": {
-    "@type": "AggregateOffer",
+    "@type": "Offer",
     "priceCurrency": "USD",
-    "lowPrice": "Contact for pricing",
-    "offerCount": "1",
-    "price": "Contact for pricing"
+    "price": "0",
+    "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+    "availability": "https://schema.org/InStock",
+    "seller": {
+      "@type": "Organization",
+      "name": "GINKVORA"
+    },
+    "description": "Contact for B2B pricing and bulk order quotation."
   },
   "additionalProperty": [
     { "@type": "PropertyValue", "name": "CAS Number", "value": product.casNumber || 'N/A' },
     { "@type": "PropertyValue", "name": "Purity", "value": product.purity || 'N/A' },
     { "@type": "PropertyValue", "name": "Botanical Name", "value": product.botanicalName || 'N/A' }
+  ]
+};
+
+// BreadcrumbList structured data
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": siteUrl },
+    { "@type": "ListItem", "position": 2, "name": "Products", "item": `${siteUrl}/products` },
+    { "@type": "ListItem", "position": 3, "name": product.name, "item": `${siteUrl}/products/${product.slug?.current ?? slug}` }
+  ]
+};
+
+// FAQPage structured data — improves SERP snippet space
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": `What is the minimum order quantity for ${product.name}?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": product.minimumOrderQuantity
+          ? `The minimum order quantity for ${product.name} is ${product.minimumOrderQuantity}. Contact our commercial team for bulk pricing and custom packaging options.`
+          : `Please contact GINKVORA directly to discuss minimum order quantities and bulk pricing for ${product.name}.`
+      }
+    },
+    {
+      "@type": "Question",
+      "name": `What certifications does GINKVORA's ${product.name} hold?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": product.certifications && product.certifications.length > 0
+          ? `GINKVORA's ${product.name} is produced under the following certifications: ${product.certifications.join(', ')}.`
+          : `GINKVORA operates under GMP and ISO 9001:2015 quality management systems. Please contact us to obtain the full certificate documentation for ${product.name}.`
+      }
+    },
+    {
+      "@type": "Question",
+      "name": `Can I request a COA or sample for ${product.name}?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": `Yes. GINKVORA provides Certificates of Analysis (COA), MSDS/SDS documentation, and physical samples for ${product.name} upon request. Please use the inquiry form on this page or contact inquiry@ginkvora.com.`
+      }
+    },
+    {
+      "@type": "Question",
+      "name": `What is the purity specification of ${product.name}?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": product.purity
+          ? `${product.name} is supplied at a purity of ${product.purity}, verified by HPLC analysis. Full COA documentation is available upon request.`
+          : `Please contact GINKVORA for the full technical specification sheet and purity documentation for ${product.name}.`
+      }
+    }
   ]
 };
 ---
@@ -48,6 +116,8 @@ const productSchema = {
   description={product.shortDescription || `Purchase high purity ${product.name}. Quality guaranteed under GMP certifications. Request COA, MSDS, or sample.`}
 >
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 
   <main class="product-detail-page bg-noise">
     <div class="container page-content">

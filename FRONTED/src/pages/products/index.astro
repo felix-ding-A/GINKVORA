@@ -6,6 +6,8 @@ import { getAllProducts, getAllCategories, urlFor } from '../../lib/sanity';
 const products = await getAllProducts();
 const categories = await getAllCategories();
 
+const siteUrl = 'https://ginkvora.com';
+
 // Breadcrumb structured data
 const breadcrumbsSchema = {
   "@context": "https://schema.org",
@@ -15,15 +17,31 @@ const breadcrumbsSchema = {
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://ginkvora.com"
+      "item": siteUrl
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Products",
-      "item": "https://ginkvora.com/products"
+      "item": `${siteUrl}/products`
     }
   ]
+};
+
+// ItemList structured data — enables rich product list results in Google
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "GINKVORA Plant Extract Product Catalog",
+  "description": "Premium B2B botanical extracts and active ingredients — PQQ, NMN, EGCG, Glabridin, and 500+ more.",
+  "url": `${siteUrl}/products`,
+  "numberOfItems": products.length,
+  "itemListElement": products.map((prod, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "url": `${siteUrl}/products/${prod.slug}`,
+    "name": prod.name,
+  }))
 };
 ---
 
@@ -32,6 +50,8 @@ const breadcrumbsSchema = {
   description="Explore our catalog of 500+ premium botanical extracts, active ingredients, cosmetic actives, and custom formulations. ISO & GMP certified."
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />
+
 
   <main class="products-page bg-noise">
     <!-- Header banner -->
