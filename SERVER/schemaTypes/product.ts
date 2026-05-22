@@ -197,21 +197,81 @@ export const productType = defineType({
       title: 'Applications / Use Cases',
       type: 'array',
       group: 'technical',
-      of: [defineArrayMember({ type: 'string' })],
-      description: 'e.g. ["Dietary supplements", "Functional foods", "Cosmetics"]',
-      options: {
-        list: [
-          { title: 'Dietary Supplements', value: 'Dietary Supplements' },
-          { title: 'Functional Foods & Beverages', value: 'Functional Foods & Beverages' },
-          { title: 'Pharmaceuticals', value: 'Pharmaceuticals' },
-          { title: 'Cosmetics & Skincare', value: 'Cosmetics & Skincare' },
-          { title: 'Hair Care', value: 'Hair Care' },
-          { title: 'Pet Supplements', value: 'Pet Supplements' },
-          { title: 'Sports Nutrition', value: 'Sports Nutrition' },
-          { title: 'Animal Feed', value: 'Animal Feed' },
-        ],
-        layout: 'tags',
-      },
+      description: 'Describe the applications and use cases for the product using the rich text editor.',
+      of: [
+        defineArrayMember({
+          type: 'block',
+          of: [
+            {
+              type: 'object',
+              name: 'inlineFormula',
+              title: 'Inline Formula (Math)',
+              fields: [
+                {
+                  name: 'expression',
+                  title: 'LaTeX Expression',
+                  type: 'string',
+                  description: 'e.g. \\alpha + \\beta = \\gamma'
+                }
+              ]
+            }
+          ]
+        }),
+        // Supports table using @sanity/table plugin
+        defineArrayMember({ type: 'table', title: 'Table' }),
+        // Supports images with caption and alt text
+        defineArrayMember({
+          type: 'image',
+          title: 'Image',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              description: 'Important for SEO and accessibility'
+            },
+            {
+              name: 'caption',
+              type: 'string',
+              title: 'Caption'
+            }
+          ]
+        }),
+        // Supports video embed
+        defineArrayMember({
+          type: 'object',
+          name: 'video',
+          title: 'Video',
+          fields: [
+            {
+              name: 'url',
+              title: 'Video URL',
+              type: 'url',
+              description: 'Link to YouTube, Vimeo, or direct MP4/WebM video file'
+            },
+            {
+              name: 'caption',
+              type: 'string',
+              title: 'Caption'
+            }
+          ]
+        }),
+        // Supports standalone math block
+        defineArrayMember({
+          type: 'object',
+          name: 'mathBlock',
+          title: 'Math Block (Formula)',
+          fields: [
+            {
+              name: 'expression',
+              title: 'LaTeX Expression',
+              type: 'string',
+              description: 'e.g. E = mc^2'
+            }
+          ]
+        })
+      ],
     }),
     defineField({
       name: 'certifications',
