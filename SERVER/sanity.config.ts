@@ -2,6 +2,7 @@ import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemaTypes'
+import { GenerateWithAIAction } from './actions/generateWithAI'
 
 export default defineConfig({
   name: 'default',
@@ -51,6 +52,14 @@ export default defineConfig({
     }),
     visionTool(),
   ],
+
+  document: {
+    actions: (prev, context) => {
+      return context.schemaType === 'post' || context.schemaType === 'product'
+        ? [...prev, GenerateWithAIAction]
+        : prev
+    }
+  },
 
   schema: {
     types: schemaTypes,
