@@ -6,13 +6,13 @@
     <path id="svg-droplet-contour" d="M50 15 C66 36 82 46 82 68 C82 83 68 83 50 83 C32 83 18 83 18 68 C18 46 34 36 50 15 Z" stroke="url(#grad-contour-stroke)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"></path>
     
     <!-- Ginkgo Leaf - Left Petal -->
-    <path id="svg-leaf-left" d="M50 78 C50 78 51 55 35 44 C26 38 29 48 38 56 C45 62 47 70 50 78 Z" fill="none" opacity="1" stroke="url(#grad-contour-stroke)" stroke-width="1.8"></path>
+    <path id="svg-leaf-left" d="M50 78 C50 78 51 55 35 44 C26 38 29 48 38 56 C45 62 47 70 50 78 Z" fill="url(#grad-leaf-main)" opacity="0.95" stroke="none" stroke-width="1.8"></path>
     
     <!-- Ginkgo Leaf - Right Petal -->
-    <path id="svg-leaf-right" d="M50 78 C50 78 49 55 65 44 C74 38 71 48 62 56 C55 62 53 70 50 78 Z" fill="none" opacity="1" stroke="url(#grad-contour-stroke)" stroke-width="1.8"></path>
+    <path id="svg-leaf-right" d="M50 78 C50 78 49 55 65 44 C74 38 71 48 62 56 C55 62 53 70 50 78 Z" fill="url(#grad-leaf-main)" opacity="0.95" stroke="none" stroke-width="1.8"></path>
     
     <!-- Central Stem and Branching veins -->
-    <path id="svg-leaf-stem" d="M50 78 V38" stroke="url(#grad-contour-stroke)" stroke-width="1.8" stroke-linecap="round"></path>
+    <path id="svg-leaf-stem" d="M50 78 V38" stroke="url(#grad-contour-stroke)" stroke-width="2.2" stroke-linecap="round"></path>
     
     <!-- Pure Dewdrop / Morning Sun Accent -->
     <circle id="svg-dewdrop" cx="50" cy="30" r="4" fill="url(#grad-dewdrop-color)"></circle>
@@ -20,7 +20,7 @@
     <!-- Custom Branding Typography Block integrated in SVG (Responsive lockup) -->
     <g id="svg-brand-text-group" style="display: none;">
         <text id="svg-brand-name" x="50" y="103" text-anchor="middle" fill="#FFFFFF" font-family="'Montserrat', sans-serif" font-weight="500" font-size="7.5" letter-spacing="0.18em">ginkvora</text>
-        <text id="svg-brand-tagline" x="50" y="112" text-anchor="middle" fill="#0D9488" font-family="'Inter', sans-serif" font-weight="600" font-size="3.5" letter-spacing="0.32em">PURE &amp; NATURAL</text>
+        <text id="svg-brand-tagline" x="50" y="112" text-anchor="middle" fill="#D97706" font-family="'Inter', sans-serif" font-weight="600" font-size="3.5" letter-spacing="0.32em">PURE &amp; NATURAL</text>
     </g>
 
     <!-- Gradient definitions containing our highly polished aesthetics -->
@@ -33,20 +33,20 @@
         
         <!-- Contour Stroke Gradient -->
         <linearGradient id="grad-contour-stroke" x1="50" y1="15" x2="50" y2="83" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#ccfbf1"></stop>
-            <stop offset="100%" stop-color="#0d9488"></stop>
+            <stop offset="0%" stop-color="#fde68a"></stop>
+            <stop offset="100%" stop-color="#9a3412"></stop>
         </linearGradient>
         
         <!-- Leaf Main Color Gradient -->
         <linearGradient id="grad-leaf-main" x1="50" y1="38" x2="50" y2="78" gradientUnits="userSpaceOnUse">
-            <stop id="grad-leaf-stop-1" offset="0%" stop-color="#5eead4"></stop>
-            <stop id="grad-leaf-stop-2" offset="100%" stop-color="#0f766e"></stop>
+            <stop id="grad-leaf-stop-1" offset="0%" stop-color="#fbbf24"></stop>
+            <stop id="grad-leaf-stop-2" offset="100%" stop-color="#b45309"></stop>
         </linearGradient>
 
         <!-- Dewdrop Highlight Gradient -->
         <linearGradient id="grad-dewdrop-color" x1="50" y1="26" x2="50" y2="34" gradientUnits="userSpaceOnUse">
-            <stop id="grad-dew-stop-1" offset="0%" stop-color="#2dd4bf"></stop>
-            <stop id="grad-dew-stop-2" offset="100%" stop-color="#f0fdfa"></stop>
+            <stop id="grad-dew-stop-1" offset="0%" stop-color="#f59e0b"></stop>
+            <stop id="grad-dew-stop-2" offset="100%" stop-color="#fef3c7"></stop>
         </linearGradient>
     </defs>
 </svg>
