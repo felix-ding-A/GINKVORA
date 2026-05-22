@@ -4,15 +4,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllProducts, getProductBySlug, urlFor } from '../../lib/sanity';
 import PortableText from '../../components/PortableText.astro';
 
-export const prerender = true;
-
-export async function getStaticPaths() {
-  const products = await getAllProducts();
-  return products.map((prod) => ({
-    params: { slug: prod.slug },
-  }));
-}
-
 const { slug } = Astro.params;
 const product = await getProductBySlug(slug);
 
