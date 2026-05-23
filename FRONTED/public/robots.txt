@@ -5,4 +5,4 @@ Allow: /
 Disallow: /api/
 
 # Sitemap
-Sitemap: https://ginkvora.com/sitemap-index.xml
+Sitemap: https://ginkvora.com/sitemap.xml
