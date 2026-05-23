@@ -3,7 +3,6 @@
 import '../styles/global.css';
 import Navbar from '../components/layout/Navbar.astro';
 import Footer from '../components/layout/Footer.astro';
-import SpeedInsights from '@vercel/speed-insights/astro';
 
 interface Props {
   title: string;
@@ -173,9 +172,6 @@ const websiteSchema = {
         observer.observe(el);
       });
     </script>
-
-    <!-- Vercel Speed Insights -->
-    <SpeedInsights />
   </body>
 </html>
 
