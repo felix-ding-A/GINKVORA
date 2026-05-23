@@ -57,21 +57,7 @@ const organizationSchema = {
   },
 };
 
-// WebSite structured data (enables Sitelinks Search Box in Google)
-const websiteSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'GINKVORA',
-  url: siteUrl,
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: `${siteUrl}/products?q={search_term_string}`,
-    },
-    'query-input': 'required name=search_term_string',
-  },
-};
+
 ---
 
 <!doctype html>
@@ -135,10 +121,10 @@ const websiteSchema = {
 
     <!-- Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
-    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
     {structuredData && (
       <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
     )}
+    <slot name="head" />
   </head>
 
   <body class="bg-noise">

@@ -1,12 +1,21 @@
 ---
 // src/pages/about.astro — Premium B2B About page
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About GINKVORA",
+  "description": "Learn about GINKVORA's history, high-purity extraction technologies, and raw material sourcing standards.",
+  "url": "https://ginkvora.com/about"
+};
 ---
 
 <BaseLayout
   title="B2B Botanical Extract Supplier | About GINKVORA"
   description="Learn about GINKVORA's history, high-purity extraction technologies, and raw material sourcing standards. Supporting global dietary supplement brands."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(aboutSchema)} slot="head" />
   <main class="about-page bg-noise">
     <!-- Header banner -->
     <header class="page-banner" aria-label="Page Header">

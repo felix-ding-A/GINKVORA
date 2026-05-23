@@ -5,9 +5,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 // Pre-fill query param support
 const title = "Contact GINKVORA | B2B Plant Extract Sourcing & RFQ";
 const description = "Request samples, ask for bulk pricing, or inquire about custom active ingredient formulations. Our experts respond within 12 hours.";
+
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact GINKVORA",
+  "description": description,
+  "url": "https://ginkvora.com/contact"
+};
 ---
 
 <BaseLayout title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(contactSchema)} slot="head" />
   <main class="contact-page bg-noise">
     <!-- Header banner -->
     <header class="page-banner" aria-label="Page Header">

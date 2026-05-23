@@ -25,18 +25,6 @@ const productSchema = {
     "@type": "Brand",
     "name": "GINKVORA"
   },
-  "offers": {
-    "@type": "Offer",
-    "priceCurrency": "USD",
-    "price": "0",
-    "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-    "availability": "https://schema.org/InStock",
-    "seller": {
-      "@type": "Organization",
-      "name": "GINKVORA"
-    },
-    "description": "Contact for B2B pricing and bulk order quotation."
-  },
   "additionalProperty": [
     { "@type": "PropertyValue", "name": "CAS Number", "value": product.casNumber || 'N/A' },
     { "@type": "PropertyValue", "name": "Purity", "value": product.purity || 'N/A' },

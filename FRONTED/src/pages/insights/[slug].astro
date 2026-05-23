@@ -25,8 +25,8 @@ const blogSchema = {
   "url": `${siteUrl}/insights/${slug}`,
   "inLanguage": "en-US",
   "author": {
-    "@type": "Organization",
-    "name": "GINKVORA",
+    "@type": post.author ? "Person" : "Organization",
+    "name": post.author?.name || "GINKVORA",
     "url": siteUrl
   },
   "publisher": {
