@@ -1,0 +1,248 @@
+---
+// src/pages/terms.astro — Premium B2B Terms of Service Page
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Terms of Service | GINKVORA Wholesale Commercial Terms"
+  description="Review the business terms, ingredient specification warranties, payment requirements, and delivery liability limits governing GINKVORA's global B2B supplier operations."
+>
+  <main class="terms-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="Page Header">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">Commercial Standards</span>
+        <h1 class="banner-title">Terms of Service</h1>
+        <p class="banner-desc">
+          Commercial terms, quality compliance warranties, shipping policies, and liability standards governing global wholesale raw material sourcing with GINKVORA.
+        </p>
+      </div>
+    </header>
+
+    <!-- Policy Content Section -->
+    <section class="container section policy-section" aria-label="Terms Content">
+      <div class="policy-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="policy-sidebar" aria-label="Table of Contents">
+          <div class="sidebar-box glass">
+            <h3>Sections</h3>
+            <ul class="sidebar-links">
+              <li><a href="#b2b-scope" class="sidebar-link">1. Scope of B2B Relations</a></li>
+              <li><a href="#product-quality" class="sidebar-link">2. Purity & Specifications</a></li>
+              <li><a href="#samples-custom" class="sidebar-link">3. Samples & Formulations</a></li>
+              <li><a href="#pricing-payments" class="sidebar-link">4. Payments & Financials</a></li>
+              <li><a href="#shipping-risk" class="sidebar-link">5. Logistics & Risk Transfer</a></li>
+              <li><a href="#liability-limits" class="sidebar-link">6. Liability & Arbitration</a></li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- Main Content Text -->
+        <article class="policy-text reveal">
+          <section id="b2b-scope" class="policy-block">
+            <h2>1. Scope of B2B Relations</h2>
+            <p>
+              GINKVORA operates exclusively as a wholesale supplier of bulk botanical extracts, active monomers, and customized formulations. By using this website, requesting quotes, or requesting samples, you represent and warrant that:
+            </p>
+            <ul>
+              <li>You are representing a legally registered corporate entity or research institution.</li>
+              <li>The materials ordered will be processed, formulated, or distributed under professional laboratory or commercial manufacturing controls.</li>
+              <li>You are not ordering as a retail consumer for personal, household, or individual dietary consumption. We reserve the right to cancel any orders or sample requests that do not satisfy these business qualification checks.</li>
+            </ul>
+          </section>
+
+          <section id="product-quality" class="policy-block">
+            <h2>2. Purity & Specifications</h2>
+            <p>
+              Every bulk shipment of GINKVORA ingredients (including PQQ, NMN, EGCG, Glabridin, and others) is accompanied by a batch-specific Certificate of Analysis (COA) detailing HPLC/GC-MS/ICP-MS tested purity parameters, heavy metal limits, and microbiological counts.
+            </p>
+            <p>
+              <strong>Quality Verification Period:</strong> Clients must inspect and verify the incoming raw materials within fifteen (15) calendar days of arrival at the designated port or warehouse. Any quality claims or specification disputes must be submitted in writing within this period, accompanied by analytical testing reports from an ISO-17025 accredited third-party laboratory.
+            </p>
+          </section>
+
+          <section id="samples-custom" class="policy-block">
+            <h2>3. Samples & Formulations</h2>
+            <p>
+              We provide raw material samples (typically 10g to 50g) to qualified prospective corporate buyers for analytical pre-qualification and laboratory trials.
+            </p>
+            <p>
+              For custom formulations, particle size controls (such as micro-encapsulation or specialized granulations), and tailored active constituent purities: specifications must be locked and mutually approved in a signed Product Specification Agreement prior to production scheduling.
+            </p>
+          </section>
+
+          <section id="pricing-payments" class="policy-block">
+            <h2>4. Payments & Financials</h2>
+            <p>
+              Unless explicitly agreed otherwise in a signed supply contract:
+            </p>
+            <ul>
+              <li>All pricing is quoted in USD (United States Dollars) and is valid for the period specified on the formal Proforma Invoice (PI).</li>
+              <li>Payment terms are Telegraphic Transfer (T/T) bank wire. Manufacturing schedules and logistics bookings commence upon receipt and validation of the agreed deposit or full invoice value.</li>
+              <li>The client is responsible for all local import tariffs, duties, custom broker charges, and domestic taxation within the destination territory.</li>
+            </ul>
+          </section>
+
+          <section id="shipping-risk" class="policy-block">
+            <h2>5. Logistics & Risk Transfer</h2>
+            <p>
+              Cargo shipping and transfer of risk are governed by the specific Incoterms 2020 agreed during order checkout and specified on the invoice (e.g., FOB Shanghai, CIF Hamburg, or FCA Hangzhou).
+            </p>
+            <p>
+              GINKVORA compiles and provides all standard shipping documents, including Bill of Lading (B/L) or Air Waybill, Commercial Invoice, Packing List, Certificate of Origin, and Phytosanitary Certificate where applicable. The client is responsible for ensuring their import licenses are active and compliant with local food, drug, or cosmetic ingredient authorities.
+            </p>
+          </section>
+
+          <section id="liability-limits" class="policy-block">
+            <h2>6. Liability & Arbitration</h2>
+            <p>
+              To the maximum extent permitted by applicable laws:
+            </p>
+            <ul>
+              <li>GINKVORA's total aggregate liability for any shipment, whether arising from breach of warranty, contract, or negligence, shall not exceed the invoice price paid for the specific batch of goods giving rise to the claim.</li>
+              <li>In no event shall GINKVORA be liable for any indirect, incidental, special, or consequential damages, including loss of profits, business interruption, or product recall expenses incurred by the client.</li>
+              <li>Any unresolved dispute arising from our transactions shall be settled through friendly consultation. If consultation fails, the dispute shall be submitted to arbitration in Hangzhou under local commercial arbitration rules.</li>
+            </ul>
+          </section>
+        </article>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .terms-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Layout ── */
+  .policy-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .policy-layout {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    
+    .policy-sidebar {
+      position: sticky;
+      top: 80px;
+      z-index: 10;
+    }
+  }
+
+  /* ── Sidebar Navigation ── */
+  .sidebar-box {
+    padding: 1.5rem;
+    border-color: rgba(212, 166, 84, 0.15) !important;
+  }
+
+  .sidebar-box h3 {
+    font-size: 1rem;
+    color: var(--color-primary-light);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .sidebar-link {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    display: block;
+  }
+
+  .sidebar-link:hover {
+    color: var(--color-primary-light);
+  }
+
+  /* ── Content Text ── */
+  .policy-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  .policy-block h2 {
+    font-size: 1.75rem;
+    color: var(--color-primary-light);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.5rem;
+  }
+
+  .policy-block p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.25rem;
+  }
+
+  .policy-block ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .policy-block li {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .policy-block li::before {
+    content: "•";
+    position: absolute;
+    left: 0.25rem;
+    color: var(--color-accent);
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1;
+    top: 0.1rem;
+  }
+</style>

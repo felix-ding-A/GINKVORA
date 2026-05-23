@@ -1,0 +1,277 @@
+---
+// src/pages/privacy.astro — Premium B2B Privacy Policy Page
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Privacy Policy | GINKVORA Sourcing Compliance"
+  description="Learn how GINKVORA handles and protects corporate data, sample requests, and communication logs in accordance with international B2B security standards."
+>
+  <main class="privacy-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="Page Header">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">Regulatory & Compliance</span>
+        <h1 class="banner-title">Privacy Policy</h1>
+        <p class="banner-desc">
+          How GINKVORA collects, processes, and safeguards corporate information, transaction data, and sample request logs in our international B2B botanical extract operations.
+        </p>
+      </div>
+    </header>
+
+    <!-- Policy Content Section -->
+    <section class="container section policy-section" aria-label="Policy Content">
+      <div class="policy-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="policy-sidebar" aria-label="Table of Contents">
+          <div class="sidebar-box glass">
+            <h3>Sections</h3>
+            <ul class="sidebar-links">
+              <li><a href="#info-collection" class="sidebar-link">1. Information Collection</a></li>
+              <li><a href="#data-usage" class="sidebar-link">2. Sourcing & Data Usage</a></li>
+              <li><a href="#data-security" class="sidebar-link">3. Security & Storage</a></li>
+              <li><a href="#cookies-analytics" class="sidebar-link">4. Cookies & Analytics</a></li>
+              <li><a href="#client-rights" class="sidebar-link">5. Your Legal Rights</a></li>
+              <li><a href="#contact-compliance" class="sidebar-link">6. Contact Compliance</a></li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- Main Content Text -->
+        <article class="policy-text reveal">
+          <section id="info-collection" class="policy-block">
+            <h2>1. Information Collection</h2>
+            <p>
+              As a dedicated business-to-business (B2B) botanical extract supplier, GINKVORA only collects information relevant to commercial inquiries, wholesale orders, and business relationships. We do not target or collect data from individual retail consumers.
+            </p>
+            <p>
+              The categories of information we collect include:
+            </p>
+            <ul>
+              <li><strong>Corporate Details:</strong> Legal business name, company registration number, tax ID, and business type.</li>
+              <li><strong>Contact Information:</strong> Professional name, corporate email address, business phone number, and physical mailing address.</li>
+              <li><strong>Transaction & Sample Sourcing:</strong> Delivery instructions, custom formulation requirements, active ingredient specifications, and historical sample requests.</li>
+            </ul>
+          </section>
+
+          <section id="data-usage" class="policy-block">
+            <h2>2. Sourcing & Data Usage</h2>
+            <p>
+              The data collected is utilized solely to facilitate professional commerce and client satisfaction. Specifically, we use your information to:
+            </p>
+            <ul>
+              <li>Process bulk ingredient orders, arrange logistics/freight forwarders, and complete customs clearance.</li>
+              <li>Verify the commercial legitimacy of sample requests (e.g., verifying that a PQQ or NMN sample is sent to a registered research lab or supplement brand).</li>
+              <li>Coordinate with our Hangzhou R&D center to customize botanical extract specifications or active monomer concentrations.</li>
+              <li>Send periodic regulatory updates, Certificate of Analysis (COA) records, and product availability notifications.</li>
+            </ul>
+          </section>
+
+          <section id="data-security" class="policy-block">
+            <h2>3. Security & Storage</h2>
+            <p>
+              We deploy industrial-grade digital and administrative measures to secure corporate communication logs and contract data. All data transfers between client browsers and our digital server occur via encrypted HTTPS channels.
+            </p>
+            <p>
+              Operational records and customer CRM profiles are stored on secure cloud services with restricted authorization protocols. No retail financial details (such as credit card numbers) are processed or stored on our servers; bulk transaction payments are processed via secure corporate telegraphic transfer (T/T) or official bank wire operations.
+            </p>
+          </section>
+
+          <section id="cookies-analytics" class="policy-block">
+            <h2>4. Cookies & Analytics</h2>
+            <p>
+              To optimize website performance and user experience, we utilize standard tracking scripts:
+            </p>
+            <ul>
+              <li><strong>Google Tag Manager & Analytics:</strong> For collecting anonymous user flow analytics, such as which ingredient pages (e.g., Glabridin or EGCG) receive the highest B2B interest.</li>
+              <li><strong>Technical Cookies:</strong> Temporary session cookies that remember user preferences and state during navigation.</li>
+            </ul>
+            <p>
+              Users can configure their local browsers to disable cookies. However, this may cause minor performance degradations in customized interface features.
+            </p>
+          </section>
+
+          <section id="client-rights" class="policy-block">
+            <h2>5. Your Legal Rights</h2>
+            <p>
+              Depending on your country of registration (such as regulations under GDPR in the European Union), your company's representative has the right to:
+            </p>
+            <ul>
+              <li>Request an audit copy of all personal and corporate contact data saved on our CRM systems.</li>
+              <li>Instruct the correction of outdated commercial contact details or specifications.</li>
+              <li>Request the complete deletion of company accounts or sample logs from our active databases.</li>
+            </ul>
+          </section>
+
+          <section id="contact-compliance" class="policy-block">
+            <h2>6. Contact Compliance</h2>
+            <p>
+              For privacy audits, compliance queries, or data removal requests, please submit an official inquiry to our corporate data administration office:
+            </p>
+            <div class="contact-box glass">
+              <strong>GINKVORA Compliance Desk</strong><br/>
+              Email: <a href="mailto:inquiry@ginkvora.com">inquiry@ginkvora.com</a><br/>
+              Subject Line: [Privacy Compliance Audit Request]
+            </div>
+          </section>
+        </article>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .privacy-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Layout ── */
+  .policy-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .policy-layout {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    
+    .policy-sidebar {
+      position: sticky;
+      top: 80px;
+      z-index: 10;
+    }
+  }
+
+  /* ── Sidebar Navigation ── */
+  .sidebar-box {
+    padding: 1.5rem;
+    border-color: rgba(212, 166, 84, 0.15) !important;
+  }
+
+  .sidebar-box h3 {
+    font-size: 1rem;
+    color: var(--color-primary-light);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .sidebar-link {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    display: block;
+  }
+
+  .sidebar-link:hover {
+    color: var(--color-primary-light);
+  }
+
+  /* ── Content Text ── */
+  .policy-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  .policy-block h2 {
+    font-size: 1.75rem;
+    color: var(--color-primary-light);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.5rem;
+  }
+
+  .policy-block p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.25rem;
+  }
+
+  .policy-block ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .policy-block li {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .policy-block li::before {
+    content: "•";
+    position: absolute;
+    left: 0.25rem;
+    color: var(--color-accent);
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1;
+    top: 0.1rem;
+  }
+
+  .contact-box {
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    border-color: rgba(224, 120, 48, 0.15) !important;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    margin-top: 1rem;
+    line-height: 1.8;
+  }
+
+  .contact-box a {
+    color: var(--color-accent-light);
+  }
+
+  .contact-box a:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+</style>
