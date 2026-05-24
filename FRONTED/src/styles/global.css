@@ -432,6 +432,17 @@ button { cursor: pointer; font-family: var(--font-body); }
 .animate-float      { animation: float 4s ease-in-out infinite; }
 .animate-pulse-gold { animation: pulse-glow-gold 3s ease-in-out infinite; }
 
+/* ── Initial Load Animations (Fixes FCP/LCP delay) ── */
+.fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 0.7s ease forwards;
+  will-change: transform, opacity;
+}
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+
 /* ── Scroll reveal ── */
 .reveal {
   opacity: 0;
