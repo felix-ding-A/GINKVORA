@@ -69,7 +69,7 @@ const itemListSchema = {
           <article class="blog-card glass reveal">
             <div class="card-image-box">
               <img
-                src={urlFor(post.coverImage).url()}
+                src={urlFor(post.coverImage).width(800).url()}
                 alt={post.title}
                 loading="lazy"
                 class="card-img"

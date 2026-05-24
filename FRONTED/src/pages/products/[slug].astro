@@ -115,10 +115,12 @@ const faqSchema = {
         <section class="gallery-section" aria-label="Product Images">
           <div class="main-image-box glass">
             <img
-              src={urlFor(product.heroImage).url()}
+              src={urlFor(product.heroImage).width(1200).url()}
               alt={product.name}
               id="main-product-image"
               class="main-image"
+              fetchpriority="high"
+              loading="eager"
             />
           </div>
         </section>

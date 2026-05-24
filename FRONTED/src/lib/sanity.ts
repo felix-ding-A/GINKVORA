@@ -22,21 +22,40 @@ const builder = imageUrlBuilder(sanityClient);
 export function urlFor(source: any) {
   // If source is already a direct URL string (used in mock data), return it directly
   if (typeof source === 'string' && source.startsWith('http')) {
-    return { url: () => source, width: (_w: number) => ({ url: () => source }) };
+    const mockBuilder = {
+      url: () => source,
+      width: () => mockBuilder,
+      height: () => mockBuilder,
+      format: () => mockBuilder,
+      fit: () => mockBuilder,
+      auto: () => mockBuilder,
+    };
+    return mockBuilder;
   }
   // If the image source is a dummy/mock value or not defined, return a placeholder
   if (!source || typeof source !== 'object' || source.asset === undefined) {
-    return {
+    const fallbackBuilder = {
       url: () => 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&auto=format&fit=crop&q=80',
-      width: (_w: number) => ({ url: () => 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&auto=format&fit=crop&q=80' }),
+      width: () => fallbackBuilder,
+      height: () => fallbackBuilder,
+      format: () => fallbackBuilder,
+      fit: () => fallbackBuilder,
+      auto: () => fallbackBuilder,
     };
+    return fallbackBuilder;
   }
   try {
     return builder.image(source).auto('format');
   } catch (err) {
-    return {
+    const fallbackBuilder = {
       url: () => 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&auto=format&fit=crop&q=80',
+      width: () => fallbackBuilder,
+      height: () => fallbackBuilder,
+      format: () => fallbackBuilder,
+      fit: () => fallbackBuilder,
+      auto: () => fallbackBuilder,
     };
+    return fallbackBuilder;
   }
 }
 

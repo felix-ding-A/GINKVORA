@@ -112,7 +112,7 @@ const itemListSchema = {
             >
               <div class="card-image-wrapper">
                 <img
-                  src={urlFor(prod.heroImage).url()}
+                  src={urlFor(prod.heroImage).width(800).url()}
                   alt={prod.name}
                   loading="lazy"
                   class="card-image"

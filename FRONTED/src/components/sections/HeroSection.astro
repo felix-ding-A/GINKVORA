@@ -477,10 +477,14 @@
 <script>
   // Particle canvas — gold/orange colors
   const canvas = document.getElementById('particle-canvas') as HTMLCanvasElement;
-  if (canvas) {
+  const heroSection = document.getElementById('hero');
+
+  if (canvas && heroSection) {
     const ctx = canvas.getContext('2d')!;
     let particles: Array<{x:number;y:number;vx:number;vy:number;size:number;opacity:number;color:string}> = [];
     let animFrame: number;
+    let isVisible = true;
+    let isMobile = false;
 
     const colors = [
       'rgba(212, 166, 84, ',
@@ -492,11 +496,15 @@
     function resize() {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
+      isMobile = window.innerWidth < 768;
     }
 
     function createParticles() {
       particles = [];
-      const count = Math.floor((canvas.width * canvas.height) / 12000);
+      // Reduce particle count significantly on mobile
+      const density = isMobile ? 30000 : 12000;
+      const count = Math.floor((canvas.width * canvas.height) / density);
+      
       for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * canvas.width,
@@ -511,6 +519,8 @@
     }
 
     function draw() {
+      if (!isVisible) return; // Pause drawing when off-screen
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach((p) => {
         p.x += p.vx; p.y += p.vy;
@@ -524,26 +534,55 @@
         ctx.fill();
       });
 
-      // Connect nearby particles
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx*dx + dy*dy);
-          if (dist < 90) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(212,166,84,${(1 - dist/90) * 0.07})`;
-            ctx.stroke();
+      // Connect nearby particles - ONLY on desktop (O(N^2) complexity is bad for mobile CPU)
+      if (!isMobile) {
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if (dist < 90) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(212,166,84,${(1 - dist/90) * 0.07})`;
+              ctx.stroke();
+            }
           }
         }
       }
       animFrame = requestAnimationFrame(draw);
     }
 
-    resize(); createParticles(); draw();
-    window.addEventListener('resize', () => { resize(); createParticles(); }, { passive: true });
-    document.addEventListener('astro:before-swap', () => cancelAnimationFrame(animFrame));
+    // Use IntersectionObserver to pause animation when hero is not visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          isVisible = true;
+          animFrame = requestAnimationFrame(draw);
+        } else {
+          isVisible = false;
+          cancelAnimationFrame(animFrame);
+        }
+      });
+    }, { rootMargin: "0px", threshold: 0 });
+
+    resize(); 
+    createParticles(); 
+    observer.observe(heroSection);
+
+    let resizeTimer: NodeJS.Timeout;
+    window.addEventListener('resize', () => { 
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        resize(); 
+        createParticles();
+      }, 200);
+    }, { passive: true });
+    
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animFrame);
+      observer.disconnect();
+    });
   }
 </script>

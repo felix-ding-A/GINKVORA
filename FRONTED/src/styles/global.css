@@ -4,7 +4,7 @@
    "Pure Nature, Proven Science"
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
 
 @import "tailwindcss";
 
@@ -328,9 +328,21 @@ button { cursor: pointer; font-family: var(--font-body); }
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 0;
+  opacity: 0.03;
+  /* Use a pre-rendered base64 webp/png or a very lightweight SVG pattern for mobile */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='none'/%3E%3Cpath d='M0 0h1v1H0zM2 2h1v1H2z' fill='%23fff' fill-opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+@media (min-width: 768px) {
+  .bg-noise::before {
+    /* Use the high-quality turbulence filter only on desktop to save mobile battery/CPU */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 }
 
 /* ── Scrollbar ── */
@@ -425,6 +437,7 @@ button { cursor: pointer; font-family: var(--font-body); }
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.7s ease, transform 0.7s ease;
+  will-change: transform, opacity;
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 .reveal-delay-1 { transition-delay: 0.1s; }

@@ -104,11 +104,13 @@ const breadcrumbSchema = {
 
       <!-- Cover Image -->
       <div class="article-cover glass">
-        <img
-          src={urlFor(post.coverImage).url()}
-          alt={post.title}
-          class="cover-img"
-        />
+          <img
+            src={urlFor(post.coverImage).width(1200).url()}
+            alt={post.title}
+            class="cover-img"
+            fetchpriority="high"
+            loading="eager"
+          />
       </div>
 
       <!-- Article Body -->
