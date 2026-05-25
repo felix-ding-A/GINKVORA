@@ -111,12 +111,16 @@ const itemListSchema = {
               data-desc={prod.shortDescription ? prod.shortDescription.toLowerCase() : ''}
             >
               <div class="card-image-wrapper">
-                <img
-                  src={urlFor(prod.heroImage).width(800).url()}
-                  alt={prod.name}
-                  loading="lazy"
-                  class="card-image"
-                />
+                <picture style="width: 100%; height: 100%; display: block;">
+                  <source srcset={urlFor(prod.heroImage).width(800).format('avif').url()} type="image/avif" />
+                  <source srcset={urlFor(prod.heroImage).width(800).format('webp').url()} type="image/webp" />
+                  <img
+                    src={urlFor(prod.heroImage).width(800).url()}
+                    alt={prod.name}
+                    loading="lazy"
+                    class="card-image"
+                  />
+                </picture>
                 <span class="card-category-badge">{prod.category.name}</span>
               </div>
 

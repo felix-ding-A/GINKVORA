@@ -42,6 +42,7 @@ export default defineConfig({
   image: {
     domains: ['cdn.sanity.io'],
     remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io' }],
+    formats: ['image/avif', 'image/webp'],
   },
 
   // Vite config — Tailwind 4 uses Vite plugin
