@@ -115,7 +115,6 @@ const faqSchema = {
         <section class="gallery-section" aria-label="Product Images">
           <div class="main-image-box glass">
             <picture style="display: contents;">
-              <source srcset={urlFor(product.heroImage).width(1200).format('avif').url()} type="image/avif" />
               <source srcset={urlFor(product.heroImage).width(1200).format('webp').url()} type="image/webp" />
               <img
                 src={urlFor(product.heroImage).width(1200).url()}

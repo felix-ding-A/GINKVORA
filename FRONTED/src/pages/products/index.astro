@@ -112,7 +112,6 @@ const itemListSchema = {
             >
               <div class="card-image-wrapper">
                 <picture style="display: contents;">
-                  <source srcset={urlFor(prod.heroImage).width(800).format('avif').url()} type="image/avif" />
                   <source srcset={urlFor(prod.heroImage).width(800).format('webp').url()} type="image/webp" />
                   <img
                     src={urlFor(prod.heroImage).width(800).url()}

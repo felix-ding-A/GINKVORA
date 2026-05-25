@@ -30,7 +30,6 @@ const previewPosts = allPosts.slice(0, 3); // Show latest 3
           <a href={`/insights/${post.slug}`} class="card-image-link" tabindex="-1" aria-hidden="true">
             <div class="card-image">
               <picture style="display: contents;">
-                <source srcset={urlFor(post.coverImage).width(600).format('avif').url()} type="image/avif" />
                 <source srcset={urlFor(post.coverImage).width(600).format('webp').url()} type="image/webp" />
                 <img
                   src={urlFor(post.coverImage).width(600).url()}
