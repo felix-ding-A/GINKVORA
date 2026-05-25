@@ -12,6 +12,12 @@ export const authorType = defineType({
     defineField({ name: 'avatar', type: 'image', title: 'Avatar', options: { hotspot: true } }),
     defineField({ name: 'bio', type: 'text', title: 'Bio', rows: 3 }),
     defineField({ name: 'title', type: 'string', title: 'Job Title' }),
+    defineField({
+      name: 'credentials',
+      type: 'string',
+      title: 'Credentials',
+      description: 'Professional credentials (e.g. "MD, PhD", "CNC", "RD, LDN")',
+    }),
   ],
   preview: {
     select: { title: 'name', media: 'avatar' },

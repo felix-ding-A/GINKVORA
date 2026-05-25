@@ -78,7 +78,7 @@ export const GET: APIRoute = async () => {
             urlsXml += `
   <url>
     <loc>${generateUrl(path, locale)}</loc>
-    <lastmod>${post.publishedAt ? new Date(post.publishedAt).toISOString() : now}</lastmod>
+    <lastmod>${post.updatedAt ? new Date(post.updatedAt).toISOString() : (post.publishedAt ? new Date(post.publishedAt).toISOString() : now)}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     ${getAlternateLinks(path)}

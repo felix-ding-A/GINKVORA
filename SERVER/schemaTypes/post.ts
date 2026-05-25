@@ -42,6 +42,12 @@ export const postType = defineType({
       initialValue: () => new Date().toISOString(),
     }),
     defineField({
+      name: 'updatedAt',
+      title: 'Updated At (dateModified)',
+      type: 'datetime',
+      description: 'Last update time of this post for schema.org dateModified.',
+    }),
+    defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
@@ -158,6 +164,56 @@ export const postType = defineType({
         defineField({ name: 'title', type: 'string', title: 'Meta Title' }),
         defineField({ name: 'description', type: 'text', title: 'Meta Description', rows: 3 }),
       ],
+    }),
+    defineField({
+      name: 'seoTitle',
+      title: 'SEO Title (Title Tag)',
+      type: 'string',
+      description: 'Used for the browser title tag. Keep it under 60 characters.',
+      validation: (Rule) => Rule.max(70),
+    }),
+    defineField({
+      name: 'seoDescription',
+      title: 'SEO Description (Meta Description)',
+      type: 'text',
+      rows: 3,
+      description: 'Used for the search engine results snippet. Keep it under 160 characters.',
+      validation: (Rule) => Rule.max(160),
+    }),
+    defineField({
+      name: 'faqItems',
+      title: 'FAQ Items',
+      type: 'array',
+      description: 'Add Frequently Asked Questions for this post (SEO-optimized)',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'faqItem',
+          title: 'FAQ Item',
+          fields: [
+            defineField({
+              name: 'question',
+              title: 'Question',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'answer',
+              title: 'Answer',
+              type: 'text',
+              rows: 3,
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'relatedProduct',
+      title: 'Related Product',
+      type: 'reference',
+      to: [{ type: 'product' }],
+      description: 'Link this post to a related product (e.g. Quercetin product page)',
     }),
   ],
   orderings: [

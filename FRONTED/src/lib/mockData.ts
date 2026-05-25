@@ -151,8 +151,31 @@ export const MOCK_POSTS: SanityPost[] = [
     excerpt: 'Explore how Pyrroloquinoline Quinone (PQQ) triggers mitochondrial biogenesis and its potential as a cornerstone ingredient for longevity formulas.',
     coverImage: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?w=600&auto=format&fit=crop&q=80' as any,
     publishedAt: '2026-05-15T12:00:00Z',
+    updatedAt: '2026-05-18T14:30:00Z',
     tags: ['Ingredient Spotlight', 'Research', 'Market Trends'],
-    readTime: 5
+    readTime: 5,
+    author: {
+      name: 'Dr. Evelyn Carter',
+      credentials: 'PhD (Biochemistry)'
+    },
+    seoTitle: 'Mitochondrial Health & PQQ Science | GINKVORA',
+    seoDescription: 'Discover how PQQ promotes mitochondrial biogenesis, enhances cellular energy, and supports healthy longevity pathways.',
+    faqItems: [
+      {
+        question: 'What is PQQ Disodium Salt?',
+        answer: 'PQQ (Pyrroloquinoline Quinone) disodium salt is a water-soluble salt form of PQQ, a vitamin-like compound that serves as a powerful antioxidant and cofactor in cellular growth.'
+      },
+      {
+        question: 'How does PQQ promote mitochondrial biogenesis?',
+        answer: 'PQQ stimulates the activation of CREB and PGC-1α, which are critical master regulators that signal the replication and growth of new mitochondria inside cells.'
+      }
+    ],
+    relatedProduct: {
+      name: 'PQQ Disodium Salt',
+      slug: 'pqq-disodium-salt',
+      shortDescription: 'Premium mitochondrial biogenesis promoter that enhances cognitive function, cardiovascular health, and cellular longevity.',
+      purity: '≥ 99%'
+    }
   },
   {
     _id: 'post-2',

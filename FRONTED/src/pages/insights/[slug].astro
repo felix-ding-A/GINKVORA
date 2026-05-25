@@ -13,15 +13,18 @@ if (!post) {
 
 const siteUrl = 'https://ginkvora.com';
 
+const pageTitle = post.seoTitle || `${post.title} | GINKVORA Insights`;
+const pageDescription = post.seoDescription || post.excerpt;
+
 // Article (BlogPosting) Schema
 const blogSchema = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": post.title,
-  "description": post.excerpt,
+  "description": pageDescription,
   "image": urlFor(post.coverImage).url(),
   "datePublished": post.publishedAt || new Date().toISOString(),
-  "dateModified": post.publishedAt || new Date().toISOString(),
+  "dateModified": post.updatedAt || post.publishedAt || new Date().toISOString(),
   "url": `${siteUrl}/insights/${slug}`,
   "inLanguage": "en-US",
   "author": {
@@ -43,6 +46,20 @@ const blogSchema = {
   }
 };
 
+// FAQ Schema if faqItems exist
+const faqSchema = post.faqItems && post.faqItems.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": post.faqItems.map((item: any) => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+} : null;
+
 // BreadcrumbList Schema
 const breadcrumbSchema = {
   "@context": "https://schema.org",
@@ -56,10 +73,11 @@ const breadcrumbSchema = {
 ---
 
 <BaseLayout
-  title={`${post.title} | GINKVORA Insights`}
-  description={post.excerpt}
+  title={pageTitle}
+  description={pageDescription}
 >
   <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} slot="head" />
+  {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />}
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
 
   <main class="insight-detail bg-noise">
@@ -87,6 +105,12 @@ const breadcrumbSchema = {
             <>
               <span class="meta-dot">·</span>
               <span>{post.readTime} min read</span>
+            </>
+          )}
+          {post.author && (
+            <>
+              <span class="meta-dot">·</span>
+              <span>By {post.author.name}{post.author.credentials ? `, ${post.author.credentials}` : ''}</span>
             </>
           )}
         </div>
@@ -121,6 +145,40 @@ const breadcrumbSchema = {
           <p>{post.excerpt}</p>
         )}
       </article>
+
+      <!-- Related Product Callout -->
+      {post.relatedProduct && (
+        <section class="related-product-callout glass" aria-label="Related Product">
+          <div class="related-product-header">
+            <span class="purity-badge">Related Ingredient</span>
+          </div>
+          <div class="related-product-body">
+            <div class="related-product-info">
+              <h3 class="related-product-name">{post.relatedProduct.name}</h3>
+              {post.relatedProduct.purity && <span class="purity-badge" style="margin-left: 0.5rem;">{post.relatedProduct.purity}</span>}
+              <p class="related-product-desc">{post.relatedProduct.shortDescription}</p>
+            </div>
+            <a href={`/products/${post.relatedProduct.slug}`} class="btn btn--gold btn--sm">
+              View Specification & Request COA
+            </a>
+          </div>
+        </section>
+      )}
+
+      <!-- FAQ Accordion/List -->
+      {post.faqItems && post.faqItems.length > 0 && (
+        <section class="article-faqs glass" aria-labelledby="faqs-title">
+          <h2 id="faqs-title" class="faqs-heading">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            {post.faqItems.map((item) => (
+              <div class="faq-item">
+                <h3 class="faq-question">{item.question}</h3>
+                <p class="faq-answer">{item.answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <!-- Bottom CTAs -->
       <section class="post-cta glass" aria-label="RFQ Action">
@@ -277,5 +335,114 @@ const breadcrumbSchema = {
 
   .post-cta .btn {
     flex-shrink: 0;
+  }
+
+  /* ── Related Product Callout ── */
+  .related-product-callout {
+    margin-top: 4rem;
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.15) !important;
+    background: rgba(212, 166, 84, 0.02);
+  }
+  
+  .related-product-header {
+    margin-bottom: 1rem;
+  }
+  
+  .related-product-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  
+  @media (max-width: 640px) {
+    .related-product-body {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+  }
+  
+  .related-product-info {
+    flex: 1;
+  }
+  
+  .related-product-name {
+    font-size: 1.5rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .purity-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.3);
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .related-product-desc {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+  
+  /* ── FAQs ── */
+  .article-faqs {
+    margin-top: 4rem;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  }
+  
+  .faqs-heading {
+    font-size: 1.75rem !important;
+    font-family: var(--font-display);
+    color: var(--color-text);
+    margin-top: 0 !important;
+    margin-bottom: 1.75rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 0.75rem;
+  }
+  
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .faq-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    padding-bottom: 1.25rem;
+  }
+  
+  .faq-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  .faq-question {
+    font-size: 1.125rem !important;
+    font-weight: 600;
+    color: var(--color-primary-light);
+    margin: 0 0 0.5rem 0 !important;
+  }
+  
+  .faq-answer {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin: 0 !important;
   }
 </style>

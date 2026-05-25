@@ -176,8 +176,9 @@ export const POST_FIELDS = `
   excerpt,
   coverImage,
   publishedAt,
+  updatedAt,
   tags[],
-  author->{name, avatar},
+  author->{name, avatar, credentials},
   readTime
 `;
 
@@ -202,7 +203,16 @@ export async function getPostBySlug(slug: string) {
       `*[_type == "post" && slug.current == $slug][0] {
         ${POST_FIELDS},
         body,
-        seo{title, description}
+        seoTitle,
+        seoDescription,
+        faqItems,
+        relatedProduct->{
+          name,
+          "slug": slug.current,
+          shortDescription,
+          purity,
+          heroImage
+        }
       }`,
       { slug }
     );
@@ -259,6 +269,22 @@ export type SanityPost = {
   excerpt?: string;
   coverImage?: any;
   publishedAt?: string;
+  updatedAt?: string;
   tags?: string[];
   readTime?: number;
+  author?: {
+    name: string;
+    avatar?: any;
+    credentials?: string;
+  };
+  seoTitle?: string;
+  seoDescription?: string;
+  faqItems?: { question: string; answer: string }[];
+  relatedProduct?: {
+    name: string;
+    slug: string;
+    shortDescription?: string;
+    purity?: string;
+    heroImage?: any;
+  };
 };
