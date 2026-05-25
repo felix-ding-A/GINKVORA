@@ -128,7 +128,7 @@ const breadcrumbSchema = {
 
       <!-- Cover Image -->
       <div class="article-cover glass">
-        <picture style="width: 100%; height: 100%; display: block;">
+        <picture style="display: contents;">
           <source srcset={urlFor(post.coverImage).width(1200).format('avif').url()} type="image/avif" />
           <source srcset={urlFor(post.coverImage).width(1200).format('webp').url()} type="image/webp" />
           <img

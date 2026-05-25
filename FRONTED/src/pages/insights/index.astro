@@ -68,7 +68,7 @@ const itemListSchema = {
         {posts.map((post) => (
           <article class="blog-card glass reveal">
             <div class="card-image-box">
-              <picture style="width: 100%; height: 100%; display: block;">
+              <picture style="display: contents;">
                 <source srcset={urlFor(post.coverImage).width(800).format('avif').url()} type="image/avif" />
                 <source srcset={urlFor(post.coverImage).width(800).format('webp').url()} type="image/webp" />
                 <img

@@ -19,41 +19,113 @@ export const sanityClient = createClient({
 // ---------------------------------------------------------------------------
 const builder = imageUrlBuilder(sanityClient);
 
+function setUrlParam(urlStr: string, param: string, value: string): string {
+  try {
+    const url = new URL(urlStr);
+    url.searchParams.set(param, value);
+    return url.toString();
+  } catch {
+    return urlStr;
+  }
+}
+
+function removeUrlParam(urlStr: string, param: string): string {
+  try {
+    const url = new URL(urlStr);
+    url.searchParams.delete(param);
+    return url.toString();
+  } catch {
+    return urlStr;
+  }
+}
+
 export function urlFor(source: any) {
   // If source is already a direct URL string (used in mock data), return it directly
   if (typeof source === 'string' && source.startsWith('http')) {
+    let currentUrl = source;
     const mockBuilder = {
-      url: () => source,
-      width: () => mockBuilder,
-      height: () => mockBuilder,
-      format: () => mockBuilder,
-      fit: () => mockBuilder,
-      auto: () => mockBuilder,
+      url: () => currentUrl,
+      width: (w: number) => {
+        currentUrl = setUrlParam(currentUrl, 'w', w.toString());
+        return mockBuilder;
+      },
+      height: (h: number) => {
+        currentUrl = setUrlParam(currentUrl, 'h', h.toString());
+        return mockBuilder;
+      },
+      format: (fmt: string) => {
+        currentUrl = setUrlParam(currentUrl, 'fm', fmt);
+        // Remove auto=format to let Imgix/Unsplash prioritize explicit fm format
+        currentUrl = removeUrlParam(currentUrl, 'auto');
+        return mockBuilder;
+      },
+      fit: (f: string) => {
+        currentUrl = setUrlParam(currentUrl, 'fit', f);
+        return mockBuilder;
+      },
+      auto: (a: string) => {
+        currentUrl = setUrlParam(currentUrl, 'auto', a);
+        return mockBuilder;
+      },
     };
     return mockBuilder;
   }
   // If the image source is a dummy/mock value or not defined, return a placeholder
   if (!source || typeof source !== 'object' || source.asset === undefined) {
+    let currentUrl = 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&auto=format&fit=crop&q=80';
     const fallbackBuilder = {
-      url: () => 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&auto=format&fit=crop&q=80',
-      width: () => fallbackBuilder,
-      height: () => fallbackBuilder,
-      format: () => fallbackBuilder,
-      fit: () => fallbackBuilder,
-      auto: () => fallbackBuilder,
+      url: () => currentUrl,
+      width: (w: number) => {
+        currentUrl = setUrlParam(currentUrl, 'w', w.toString());
+        return fallbackBuilder;
+      },
+      height: (h: number) => {
+        currentUrl = setUrlParam(currentUrl, 'h', h.toString());
+        return fallbackBuilder;
+      },
+      format: (fmt: string) => {
+        currentUrl = setUrlParam(currentUrl, 'fm', fmt);
+        currentUrl = removeUrlParam(currentUrl, 'auto');
+        return fallbackBuilder;
+      },
+      fit: (f: string) => {
+        currentUrl = setUrlParam(currentUrl, 'fit', f);
+        return fallbackBuilder;
+      },
+      auto: (a: string) => {
+        currentUrl = setUrlParam(currentUrl, 'auto', a);
+        return fallbackBuilder;
+      },
     };
     return fallbackBuilder;
   }
   try {
     return builder.image(source).auto('format');
   } catch (err) {
+    let currentUrl = 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&auto=format&fit=crop&q=80';
     const fallbackBuilder = {
-      url: () => 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&auto=format&fit=crop&q=80',
-      width: () => fallbackBuilder,
-      height: () => fallbackBuilder,
-      format: () => fallbackBuilder,
-      fit: () => fallbackBuilder,
-      auto: () => fallbackBuilder,
+      url: () => currentUrl,
+      width: (w: number) => {
+        currentUrl = setUrlParam(currentUrl, 'w', w.toString());
+        return fallbackBuilder;
+      },
+      height: (h: number) => {
+        currentUrl = setUrlParam(currentUrl, 'h', h.toString());
+        return fallbackBuilder;
+      },
+      format: (fmt: string) => {
+        currentUrl = setUrlParam(currentUrl, 'fm', fmt);
+        currentUrl = removeUrlParam(currentUrl, 'auto');
+        return fallbackBuilder;
+      },
+      fit: (f: string) => {
+        currentUrl = setUrlParam(currentUrl, 'fit', f);
+        return fallbackBuilder;
+      },
+      auto: (a: string) => {
+        currentUrl = setUrlParam(currentUrl, 'auto', a);
+        return fallbackBuilder;
+      },
     };
     return fallbackBuilder;
   }
