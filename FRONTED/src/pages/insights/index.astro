@@ -6,6 +6,19 @@ import { getAllPosts, urlFor } from '../../lib/sanity';
 const posts = await getAllPosts();
 const siteUrl = 'https://ginkvora.com';
 
+const selectedCategory = Astro.url.searchParams.get('category');
+
+// Filter posts by tag (case-insensitive and format-tolerant normalization)
+let filteredPosts = posts;
+if (selectedCategory) {
+  const catSlug = selectedCategory.toLowerCase().replace(/[^a-z0-9]/g, '');
+  filteredPosts = posts.filter(post => 
+    post.tags && post.tags.some(tag => 
+      tag.toLowerCase().replace(/[^a-z0-9]/g, '') === catSlug
+    )
+  );
+}
+
 // Breadcrumb structured data
 const breadcrumbsSchema = {
   "@context": "https://schema.org",
@@ -33,8 +46,8 @@ const itemListSchema = {
   "name": "GINKVORA Industry Insights",
   "description": "Scientific research updates, market trends, and regulatory updates on plant active ingredients.",
   "url": `${siteUrl}/insights`,
-  "numberOfItems": posts.length,
-  "itemListElement": posts.map((post, i) => ({
+  "numberOfItems": filteredPosts.length,
+  "itemListElement": filteredPosts.map((post, i) => ({
     "@type": "ListItem",
     "position": i + 1,
     "url": `${siteUrl}/insights/${post.slug}`,
@@ -44,8 +57,8 @@ const itemListSchema = {
 ---
 
 <BaseLayout
-  title="B2B Plant Extract Insights & Scientific Research | GINKVORA"
-  description="Stay informed with scientific research updates, market trends, and regulatory updates on plant active ingredients (PQQ, NMN, Glabridin)."
+  title={selectedCategory ? `${selectedCategory} Insights & Research | GINKVORA` : "B2B Plant Extract Insights & Scientific Research | GINKVORA"}
+  description={selectedCategory ? `Browse our expert research, market trends, and quality reports on ${selectedCategory}.` : "Stay informed with scientific research updates, market trends, and regulatory updates on plant active ingredients (PQQ, NMN, Glabridin)."}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />
@@ -62,62 +75,101 @@ const itemListSchema = {
       </div>
     </header>
 
+    <!-- Filter bar -->
+    <div class="container filter-container">
+      <nav class="category-tabs" aria-label="Category filter">
+        <a 
+          href="/insights" 
+          class:list={['category-tab', { 'category-tab--active': !selectedCategory }]}
+        >
+          All
+        </a>
+        {['Ingredient Spotlight', 'Formulation Tips', 'Research', 'Quality & Testing', 'Regulatory', 'Market Trends', 'Industry News'].map(cat => {
+          const catSlug = cat.toLowerCase().replace(/[^a-z0-9]/g, '');
+          const isActive = selectedCategory && selectedCategory.toLowerCase().replace(/[^a-z0-9]/g, '') === catSlug;
+          return (
+            <a 
+              href={`/insights?category=${encodeURIComponent(cat)}`} 
+              class:list={['category-tab', { 'category-tab--active': isActive }]}
+            >
+              {cat}
+            </a>
+          );
+        })}
+      </nav>
+    </div>
+
     <!-- Blog Grid -->
     <div class="container insights-container">
-      <section class="insights-grid" aria-label="Blog posts list">
-        {posts.map((post) => (
-          <article class="blog-card glass reveal">
-            <div class="card-image-box">
-              <picture style="display: contents;">
-                <source srcset={urlFor(post.coverImage).width(800).format('webp').url()} type="image/webp" />
-                <img
-                  src={urlFor(post.coverImage).width(800).url()}
-                  alt={post.title}
-                  loading="lazy"
-                  class="card-img"
-                />
-              </picture>
-              {post.tags && post.tags.length > 0 && (
-                <span class="card-tag">{post.tags[0]}</span>
-              )}
-            </div>
-
-            <div class="card-body">
-              <div class="card-meta">
-                <time datetime={post.publishedAt}>
-                  {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                  }) : 'May 2026'}
-                </time>
-                {post.readTime && (
-                  <>
-                    <span class="meta-dot">·</span>
-                    <span>{post.readTime} min read</span>
-                  </>
+      {filteredPosts.length > 0 ? (
+        <section class="insights-grid" aria-label="Blog posts list">
+          {filteredPosts.map((post) => (
+            <article class="blog-card glass reveal">
+              <div class="card-image-box">
+                <picture style="display: contents;">
+                  <source srcset={urlFor(post.coverImage).width(800).format('webp').url()} type="image/webp" />
+                  <img
+                    src={urlFor(post.coverImage).width(800).url()}
+                    alt={post.title}
+                    loading="lazy"
+                    class="card-img"
+                  />
+                </picture>
+                {post.tags && post.tags.length > 0 && (
+                  <span class="card-tag">{post.tags[0]}</span>
                 )}
               </div>
 
-              <h2 class="card-title">
-                <a href={`/insights/${post.slug}`}>{post.title}</a>
-              </h2>
+              <div class="card-body">
+                <div class="card-meta">
+                  <time datetime={post.publishedAt}>
+                    {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    }) : 'May 2026'}
+                  </time>
+                  {post.readTime && (
+                    <>
+                      <span class="meta-dot">·</span>
+                      <span>{post.readTime} min read</span>
+                    </>
+                  )}
+                </div>
 
-              <p class="card-excerpt">{post.excerpt}</p>
+                <h2 class="card-title">
+                  <a href={`/insights/${post.slug}`}>{post.title}</a>
+                </h2>
 
-              <div class="card-footer">
-                <a href={`/insights/${post.slug}`} class="read-more">
-                  Read Article
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                    <polyline points="12 5 19 12 12 19"/>
-                  </svg>
-                </a>
+                <p class="card-excerpt">{post.excerpt}</p>
+
+                <div class="card-footer">
+                  <a href={`/insights/${post.slug}`} class="read-more">
+                    Read Article
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                      <polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                  </a>
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
-      </section>
+            </article>
+          ))}
+        </section>
+      ) : (
+        <div class="no-posts glass">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+          <h3>No articles found</h3>
+          <p>We haven't published any insights in this category yet. Please check back soon or browse our other research articles.</p>
+          <a href="/insights" class="btn btn--secondary">View All Insights</a>
+        </div>
+      )}
     </div>
   </main>
 </BaseLayout>
@@ -156,11 +208,87 @@ const itemListSchema = {
     font-size: 1.0625rem;
   }
 
-  /* ── Grid ── */
-  .insights-container {
-    margin-top: -2rem;
+  /* ── Filter Tabs ── */
+  .filter-container {
+    margin-top: -1.75rem;
     position: relative;
     z-index: var(--z-float);
+    display: flex;
+    justify-content: center;
+  }
+
+  .category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    background: rgba(8, 13, 8, 0.6);
+    border: 1px solid var(--color-border);
+    padding: 0.375rem;
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    max-width: 90%;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .category-tab {
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    font-weight: 500;
+  }
+
+  .category-tab:hover {
+    color: var(--color-text);
+    background: var(--color-surface);
+  }
+
+  .category-tab--active {
+    background: var(--color-primary) !important;
+    color: var(--color-surface-bg) !important;
+  }
+
+  /* ── Empty State ── */
+  .no-posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 2rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212,166,84,0.15) !important;
+    max-width: 600px;
+    margin: 2rem auto 0;
+    width: 100%;
+  }
+
+  .no-posts svg {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .no-posts h3 {
+    font-size: 1.625rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+  }
+
+  .no-posts p {
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  /* ── Grid ── */
+  .insights-container {
+    margin-top: 3rem;
+    position: relative;
   }
 
   .insights-grid {

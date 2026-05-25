@@ -10,7 +10,19 @@ const navLinks = [
   { href: '/products', label: 'Products' },
   { href: '/quality', label: 'Quality' },
   { href: '/about', label: 'About' },
-  { href: '/insights', label: 'Insights' },
+  { 
+    href: '/insights', 
+    label: 'Insights',
+    dropdown: [
+      { href: '/insights?category=Ingredient Spotlight', label: 'Ingredient Spotlight' },
+      { href: '/insights?category=Formulation Tips', label: 'Formulation Tips' },
+      { href: '/insights?category=Research', label: 'Research' },
+      { href: '/insights?category=Quality %26 Testing', label: 'Quality & Testing' },
+      { href: '/insights?category=Regulatory', label: 'Regulatory' },
+      { href: '/insights?category=Market Trends', label: 'Market Trends' },
+      { href: '/insights?category=Industry News', label: 'Industry News' },
+    ]
+  },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -73,13 +85,27 @@ const currentPath = Astro.url.pathname;
       <!-- Desktop nav links -->
       <ul class="nav-links" role="list">
         {navLinks.map((link) => (
-          <li>
+          <li class={link.dropdown ? "nav-item-has-dropdown" : ""}>
             <a
               href={link.href}
               class:list={['nav-link', { 'nav-link--active': currentPath.startsWith(link.href) }]}
+              aria-expanded={link.dropdown ? "false" : undefined}
+              aria-haspopup={link.dropdown ? "true" : undefined}
             >
               {link.label}
+              {link.dropdown && (
+                <svg class="dropdown-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              )}
             </a>
+            {link.dropdown && (
+              <div class="nav-dropdown-menu">
+                {link.dropdown.map(subLink => (
+                  <a href={subLink.href} class="dropdown-item">{subLink.label}</a>
+                ))}
+              </div>
+            )}
           </li>
         ))}
       </ul>
@@ -147,7 +173,23 @@ const currentPath = Astro.url.pathname;
       <ul class="mobile-links" role="list">
         {navLinks.map((link) => (
           <li>
-            <a href={link.href} class="mobile-link">{link.label}</a>
+            {link.dropdown ? (
+              <details class="mobile-details">
+                <summary class="mobile-link mobile-summary">
+                  {link.label}
+                  <svg class="mobile-caret" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 9l6 6 6-6"/>
+                  </svg>
+                </summary>
+                <div class="mobile-sublinks">
+                  {link.dropdown.map(subLink => (
+                    <a href={subLink.href} class="mobile-sublink">{subLink.label}</a>
+                  ))}
+                </div>
+              </details>
+            ) : (
+              <a href={link.href} class="mobile-link">{link.label}</a>
+            )}
           </li>
         ))}
       </ul>
@@ -247,6 +289,69 @@ const currentPath = Astro.url.pathname;
     height: 4px;
     background: var(--color-primary);
     border-radius: 50%;
+  }
+
+  /* Dropdown Styles */
+  .nav-item-has-dropdown {
+    position: relative;
+  }
+
+  .nav-item-has-dropdown .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .dropdown-caret {
+    transition: transform var(--transition-fast);
+  }
+
+  .nav-item-has-dropdown:hover .dropdown-caret {
+    transform: rotate(180deg);
+  }
+
+  .nav-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(8, 13, 8, 0.95);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    padding: 0.5rem;
+    min-width: 210px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-base);
+    z-index: var(--z-float);
+    box-shadow: var(--shadow-xl);
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .nav-item-has-dropdown:hover .nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .dropdown-item {
+    padding: 0.625rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    text-align: left;
+  }
+
+  .dropdown-item:hover {
+    background: var(--color-surface);
+    color: var(--color-primary-light);
   }
 
   /* Actions */
@@ -393,6 +498,59 @@ const currentPath = Astro.url.pathname;
   }
 
   .mobile-link:hover { color: var(--color-text); }
+
+  /* Mobile Dropdown Accordion */
+  .mobile-details {
+    width: 100%;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .mobile-details .mobile-link {
+    border-bottom: none;
+  }
+
+  .mobile-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .mobile-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-caret {
+    transition: transform var(--transition-fast);
+    color: var(--color-text-muted);
+  }
+
+  .mobile-details[open] .mobile-caret {
+    transform: rotate(180deg);
+  }
+
+  .mobile-sublinks {
+    display: flex;
+    flex-direction: column;
+    padding-left: 1.25rem;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+    border-left: 1px dashed var(--color-border);
+  }
+
+  .mobile-sublink {
+    display: block;
+    padding: 0.5rem 0.5rem;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .mobile-sublink:hover {
+    color: var(--color-primary-light);
+  }
 
   /* Responsive */
   @media (max-width: 900px) {
