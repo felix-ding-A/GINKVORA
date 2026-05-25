@@ -1,0 +1,16 @@
+{
+  "name": "GINKVORA",
+  "short_name": "GINKVORA",
+  "description": "Premium B2B plant extract supplier specializing in high-purity botanical ingredients.",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#080d08",
+  "background_color": "#080d08",
+  "display": "standalone",
+  "start_url": "/"
+}
