@@ -75,7 +75,7 @@ export const PRODUCT_FIELDS = `
   shortDescription,
   featured,
   heroImage,
-  applications[],
+  applications,
   certifications[],
   "updatedAt": _updatedAt
 `;
@@ -255,9 +255,10 @@ export type SanityProduct = {
   activeIngredient?: string;
   casNumber?: string;
   shortDescription?: string;
+  description?: string;
   featured?: boolean;
   heroImage?: any;
-  applications?: string[];
+  applications?: any;
   certifications?: string[];
   updatedAt?: string;
 };
