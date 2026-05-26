@@ -6,6 +6,8 @@ export function CustomMarkdownInput(props: any) {
     return {
       options: {
         uploadImage: true,
+        imageAccept: 'image/png, image/jpeg, image/gif, image/webp, image/svg+xml',
+        imageMaxSize: 10 * 1024 * 1024, // 10MB max upload size
         toolbar: [
           'bold',
           'italic',

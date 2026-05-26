@@ -128,6 +128,9 @@ export const productType = defineType({
       type: 'markdown',
       group: 'technical',
       description: 'Describe the applications and use cases for the product in markdown format.',
+      components: {
+        input: CustomMarkdownInput,
+      },
     }),
     defineField({
       name: 'certifications',
