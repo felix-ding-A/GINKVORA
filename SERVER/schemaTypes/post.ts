@@ -148,6 +148,10 @@ export const postType = defineType({
   ],
   orderings: [
     { title: 'Published Date (newest)', name: 'publishedAtDesc', by: [{ field: 'publishedAt', direction: 'desc' }] },
+    { title: 'Published Date (oldest)', name: 'publishedAtAsc', by: [{ field: 'publishedAt', direction: 'asc' }] },
+    { title: 'Author Name (A-Z)', name: 'authorNameAsc', by: [{ field: 'author.name', direction: 'asc' }] },
+    { title: 'Author Name (Z-A)', name: 'authorNameDesc', by: [{ field: 'author.name', direction: 'desc' }] },
+    { title: 'Title (A-Z)', name: 'titleAsc', by: [{ field: 'title', direction: 'asc' }] },
   ],
   preview: {
     select: { title: 'title', media: 'coverImage', date: 'publishedAt' },

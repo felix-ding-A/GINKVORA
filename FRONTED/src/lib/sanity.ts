@@ -269,6 +269,53 @@ export async function getAllPosts(limit = 10) {
   }
 }
 
+export async function getPostsPaginated({
+  category = null,
+  page = 1,
+  pageSize = 6,
+}: {
+  category?: string | null;
+  page?: number;
+  pageSize?: number;
+} = {}) {
+  const start = (page - 1) * pageSize;
+  const end = page * pageSize;
+
+  let filter = '*[_type == "post"]';
+  const params: any = { start, end };
+
+  if (category) {
+    filter = '*[_type == "post" && $category in tags]';
+    params.category = category;
+  }
+
+  const query = `${filter} | order(publishedAt desc) [$start...$end] {
+    ${POST_FIELDS}
+  }`;
+
+  const countQuery = `count(${filter})`;
+
+  try {
+    const posts = await sanityClient.fetch(query, params);
+    const total = await sanityClient.fetch(countQuery, params);
+    return { posts, total };
+  } catch (err) {
+    console.warn('Sanity API connection failed, using fallback blog posts.');
+    let allMock = MOCK_POSTS;
+    if (category) {
+      const catSlug = category.toLowerCase().replace(/[^a-z0-9]/g, '');
+      allMock = MOCK_POSTS.filter(post =>
+        post.tags && post.tags.some(tag =>
+          tag.toLowerCase().replace(/[^a-z0-9]/g, '') === catSlug
+        )
+      );
+    }
+    const posts = allMock.slice(start, end);
+    const total = allMock.length;
+    return { posts, total };
+  }
+}
+
 export async function getPostBySlug(slug: string) {
   try {
     const data = await sanityClient.fetch(

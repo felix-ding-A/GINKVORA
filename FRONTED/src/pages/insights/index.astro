@@ -1,22 +1,27 @@
 ---
 // src/pages/insights/index.astro — B2B Industry Insights & Ingredient Research Blog
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getAllPosts, urlFor } from '../../lib/sanity';
+import { getPostsPaginated, urlFor } from '../../lib/sanity';
 
-const posts = await getAllPosts();
 const siteUrl = 'https://ginkvora.com';
-
 const selectedCategory = Astro.url.searchParams.get('category');
+const pageParam = Astro.url.searchParams.get('page');
+const currentPage = Math.max(1, pageParam ? parseInt(pageParam, 10) : 1);
+const pageSize = 6;
 
-// Filter posts by tag (case-insensitive and format-tolerant normalization)
-let filteredPosts = posts;
-if (selectedCategory) {
-  const catSlug = selectedCategory.toLowerCase().replace(/[^a-z0-9]/g, '');
-  filteredPosts = posts.filter(post => 
-    post.tags && post.tags.some(tag => 
-      tag.toLowerCase().replace(/[^a-z0-9]/g, '') === catSlug
-    )
-  );
+const { posts, total } = await getPostsPaginated({
+  category: selectedCategory,
+  page: currentPage,
+  pageSize,
+});
+
+const totalPages = Math.ceil(total / pageSize);
+
+// Helper function to build page URLs while preserving category query params
+function getPageHref(pageNum: number) {
+  const url = new URL(Astro.url.href);
+  url.searchParams.set('page', pageNum.toString());
+  return url.pathname + url.search;
 }
 
 // Breadcrumb structured data
@@ -46,8 +51,8 @@ const itemListSchema = {
   "name": "GINKVORA Industry Insights",
   "description": "Scientific research updates, market trends, and regulatory updates on plant active ingredients.",
   "url": `${siteUrl}/insights`,
-  "numberOfItems": filteredPosts.length,
-  "itemListElement": filteredPosts.map((post, i) => ({
+  "numberOfItems": posts.length,
+  "itemListElement": posts.map((post, i) => ({
     "@type": "ListItem",
     "position": i + 1,
     "url": `${siteUrl}/insights/${post.slug}`,
@@ -101,9 +106,9 @@ const itemListSchema = {
 
     <!-- Blog Grid -->
     <div class="container insights-container">
-      {filteredPosts.length > 0 ? (
+      {posts.length > 0 ? (
         <section class="insights-grid" aria-label="Blog posts list">
-          {filteredPosts.map((post) => (
+          {posts.map((post) => (
             <article class="blog-card glass reveal">
               <div class="card-image-box">
                 <picture style="display: contents;">
@@ -156,6 +161,59 @@ const itemListSchema = {
             </article>
           ))}
         </section>
+
+        <!-- Pagination Component -->
+        {totalPages > 1 && (
+          <nav class="pagination" aria-label="Pagination Navigation">
+            {currentPage > 1 ? (
+              <a href={getPageHref(currentPage - 1)} class="page-btn page-arrow" aria-label="Go to previous page">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                Prev
+              </a>
+            ) : (
+              <span class="page-btn page-btn--disabled page-arrow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                Prev
+              </span>
+            )}
+
+            <div class="page-numbers">
+              {Array.from({ length: totalPages }).map((_, idx) => {
+                const pageNum = idx + 1;
+                const isCurrent = pageNum === currentPage;
+                return isCurrent ? (
+                  <span class="page-btn page-btn--active" aria-current="page">
+                    {pageNum}
+                  </span>
+                ) : (
+                  <a href={getPageHref(pageNum)} class="page-btn" aria-label={`Go to page ${pageNum}`}>
+                    {pageNum}
+                  </a>
+                );
+              })}
+            </div>
+
+            {currentPage < totalPages ? (
+              <a href={getPageHref(currentPage + 1)} class="page-btn page-arrow" aria-label="Go to next page">
+                Next
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </a>
+            ) : (
+              <span class="page-btn page-btn--disabled page-arrow">
+                Next
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </span>
+            )}
+          </nav>
+        )}
       ) : (
         <div class="no-posts glass">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -421,5 +479,63 @@ const itemListSchema = {
 
   .read-more:hover svg {
     transform: translateX(3px);
+  }
+
+  /* ── Pagination ── */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 4rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 2.5rem;
+  }
+
+  .page-numbers {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.5rem;
+    min-width: 2.5rem;
+    padding-inline: 0.75rem;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all var(--transition-base);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .page-btn:hover:not(.page-btn--disabled):not(.page-btn--active) {
+    color: var(--color-primary-light);
+    border-color: var(--color-primary-light);
+    background: rgba(212, 166, 84, 0.05);
+  }
+
+  .page-btn--active {
+    background: var(--color-primary);
+    color: var(--color-bg);
+    border-color: var(--color-primary);
+    cursor: default;
+  }
+
+  .page-btn--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .page-arrow {
+    gap: 0.25rem;
+    padding-inline: 1rem;
   }
 </style>

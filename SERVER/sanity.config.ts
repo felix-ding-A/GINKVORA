@@ -23,24 +23,21 @@ export default defineConfig({
             S.listItem()
               .title('🌿 Products')
               .child(
-                S.documentList()
+                S.documentTypeList('product')
                   .title('Products')
-                  .filter('_type == "product"')
               ),
             S.listItem()
               .title('📂 Categories')
               .child(
-                S.documentList()
+                S.documentTypeList('category')
                   .title('Categories')
-                  .filter('_type == "category"')
               ),
             S.divider(),
             S.listItem()
               .title('📝 Blog Posts')
               .child(
-                S.documentList()
+                S.documentTypeList('post')
                   .title('Posts')
-                  .filter('_type == "post"')
               ),
             S.divider(),
             S.listItem()
