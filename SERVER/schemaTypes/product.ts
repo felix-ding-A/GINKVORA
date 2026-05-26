@@ -1,5 +1,6 @@
 // schemaTypes/product.ts — Product schema for B2B plant extracts
 import { defineType, defineField, defineArrayMember } from 'sanity'
+import { CustomMarkdownInput } from './components/CustomMarkdownInput'
 
 export const productType = defineType({
   name: 'product',
@@ -68,6 +69,9 @@ export const productType = defineType({
       title: 'Full Description (Markdown)',
       type: 'markdown',
       group: 'basic',
+      components: {
+        input: CustomMarkdownInput,
+      },
     }),
 
     // ── Technical Specs ────────────────────────────

@@ -1,5 +1,6 @@
 // schemaTypes/post.ts — Blog post schema
 import { defineType, defineField, defineArrayMember } from 'sanity'
+import { CustomMarkdownInput } from './components/CustomMarkdownInput'
 
 export const postType = defineType({
   name: 'post',
@@ -81,6 +82,9 @@ export const postType = defineType({
       name: 'body',
       title: 'Body (Markdown)',
       type: 'markdown',
+      components: {
+        input: CustomMarkdownInput,
+      },
     }),
     defineField({
       name: 'seo',
