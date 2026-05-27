@@ -39,6 +39,12 @@ export default defineConfig({
                 S.documentTypeList('post')
                   .title('Posts')
               ),
+            S.listItem()
+              .title('👤 Authors')
+              .child(
+                S.documentTypeList('author')
+                  .title('Authors')
+              ),
             S.divider(),
             S.listItem()
               .title('⚙️ Site Settings')
