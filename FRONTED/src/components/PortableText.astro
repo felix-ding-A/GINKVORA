@@ -10,26 +10,56 @@ const { value } = Astro.props;
 
 let htmlContent = '';
 
+// Normalize text: replace escaped double backslash \\n with actual \n
+const normalizeText = (text: string): string => {
+  if (!text) return '';
+  return text.replace(/\\n/g, '\n');
+};
+
 if (typeof value === 'string') {
-  htmlContent = await marked.parse(value);
+  htmlContent = await marked.parse(normalizeText(value));
 } else if (Array.isArray(value)) {
-  htmlContent = value.map((block) => {
-    if (!block) return '';
-    
-    if (block._type === 'block') {
-      const text = block.children?.map((c: any) => c.text).join('') || '';
+  const parsedBlocks = await Promise.all(
+    value.map(async (block) => {
+      if (!block) return '';
       
-      if (block.style === 'h1') return `<h1>${text}</h1>`;
-      if (block.style === 'h2') return `<h2>${text}</h2>`;
-      if (block.style === 'h3') return `<h3>${text}</h3>`;
-      if (block.style === 'h4') return `<h4>${text}</h4>`;
-      if (block.style === 'blockquote') return `<blockquote>${text}</blockquote>`;
+      if (block._type === 'block') {
+        let text = block.children?.map((c: any) => c.text).join('') || '';
+        text = normalizeText(text);
+
+        // Check if block has native list properties
+        const isNativeList = !!block.listItem;
+
+        // If the text contains block-level markdown markers
+        const hasBlockMarkdown = text.includes('\n') || text.trim().startsWith('- ') || text.trim().startsWith('* ') || text.trim().startsWith('1. ');
+
+        if (hasBlockMarkdown && !isNativeList) {
+          // Parse the whole block as full markdown (includes lists, paragraphs, etc.)
+          return await marked.parse(text);
+        }
+
+        // Otherwise parse inline markdown rules (bold, italic, links, etc.)
+        const inlineHtml = await marked.parseInline(text);
+
+        if (block.style === 'h1') return `<h1>${inlineHtml}</h1>`;
+        if (block.style === 'h2') return `<h2>${inlineHtml}</h2>`;
+        if (block.style === 'h3') return `<h3>${inlineHtml}</h3>`;
+        if (block.style === 'h4') return `<h4>${inlineHtml}</h4>`;
+        if (block.style === 'blockquote') return `<blockquote>${inlineHtml}</blockquote>`;
+        if (block.listItem === 'bullet') return `<li>${inlineHtml}</li>`;
+        if (block.listItem === 'number') return `<li>${inlineHtml}</li>`;
+
+        return `<p>${inlineHtml}</p>`;
+      }
       
-      return `<p>${text}</p>`;
-    }
-    
-    return '';
-  }).join('');
+      return '';
+    })
+  );
+
+  htmlContent = parsedBlocks.join('');
+  
+  // Wrap contiguous <li> tags in <ul> or <ol>
+  htmlContent = htmlContent.replace(/(<li>.*?<\/li>)+/g, (match) => `<ul>${match}</ul>`);
 } else if (value) {
   htmlContent = `<p>${JSON.stringify(value)}</p>`;
 }
