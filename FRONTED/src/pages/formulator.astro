@@ -1,0 +1,342 @@
+---
+// src/pages/formulator.astro — Scientific Formulation Solver Page
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FormulatorConsole from '../components/calculators/FormulatorConsole.vue';
+
+const siteUrl = 'https://ginkvora.com';
+
+// WebPage schema
+const formulatorSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Scientific Formulation Solver | GINKVORA",
+  "description": "Free B2B interactive calculators for chemical molarity, serial dilutions, molecular weight parsing, and cosmetic/supplement recipe builders.",
+  "url": `${siteUrl}/formulator`,
+  "isPartOf": { "@type": "WebSite", "url": siteUrl, "name": "GINKVORA" },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": siteUrl },
+      { "@type": "ListItem", "position": 2, "name": "Formulation Solver", "item": `${siteUrl}/formulator` }
+    ]
+  }
+};
+
+// SoftwareApplication schema (calculator tool)
+const appSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "GINKVORA Formulation Console",
+  "description": "Professional web-based calculator suite for lab scientists — covering molarity, serial dilutions, molecular weight parsing, HLB emulsion balancing, capsule sizing, and supplement formulation.",
+  "applicationCategory": "ScienceApplication",
+  "operatingSystem": "Web Browser",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": `${siteUrl}/formulator`,
+  "provider": { "@type": "Organization", "name": "GINKVORA", "url": siteUrl }
+};
+
+// FAQPage schema (for rich results in Google)
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a stock solution in laboratory dilution?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A stock solution is a concentrated solution that will be diluted to a lower concentration for actual laboratory use. Using stock solutions saves prep time, reduces material waste, and improves accuracy for trace components."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does a hydrate affect molecular weight calculations?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hydrated compounds contain chemically bound water molecules within their crystalline structure (e.g., CuSO₄·5H₂O). When weighing the dry chemical, the weight of the water molecules must be included in the molecular weight calculation to ensure accurate molar dosing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is HLB in cosmetic formulations?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "HLB stands for Hydrophilic-Lipophilic Balance. It is a value between 0 and 20 indicating the affinity of an emulsifier for water (hydrophilic) or oil (lipophilic). Emulsifiers with low HLB (3-6) produce water-in-oil (W/O) emulsions, while high HLB (8-16) produce oil-in-water (O/W) emulsions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate the mass needed for a molar solution?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "To prepare a molar solution: Mass (g) = Concentration (M) × Volume (L) × Molecular Weight (g/mol). For example, to make 10 mL of a 50 mM Vitamin C (MW=176.12) solution: 0.05 mol/L × 0.01 L × 176.12 g/mol = 0.08806 g = 88.06 mg."
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="Scientific Formulation Solver"
+  description="Free interactive laboratory calculators: molarity solver, serial dilution planner, molecular weight parser, HLB emulsion calculator, and supplement/cosmetic recipe builder."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(formulatorSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(appSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
+  <main class="formulator-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="Page Header">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">Digital Lab Tools</span>
+        <h1 class="banner-title">Pure Formulation Console</h1>
+        <p class="banner-desc">
+          Professional laboratory suite for computing solvent mixtures, serial dilutions, powder capsule capacities, and cosmetic emulsion HLB ratios.
+        </p>
+      </div>
+    </header>
+
+    <!-- Main interactive formulator wrapper -->
+    <section class="container section">
+      <FormulatorConsole client:load />
+    </section>
+
+    <!-- Static Reference Guide & FAQ Section for SEO and user documentation -->
+    <section class="container section reference-section" aria-labelledby="reference-title">
+      <div class="divider"></div>
+      
+      <div class="reference-header">
+        <span class="section-label">Documentation & Reference</span>
+        <h2 id="reference-title" class="section-title">Formulation Reference Guide</h2>
+        <p class="section-desc">
+          Technical specifications, mathematical equations, and standard operating procedures (SOP) used in our calculators.
+        </p>
+      </div>
+
+      <div class="grid grid-2">
+        <!-- Card 1: Molarity & Percentages -->
+        <div class="reference-card glass">
+          <div class="card-icon">🧪</div>
+          <h3 class="card-title">Molarity & Percentage w/w Calculations</h3>
+          <p class="card-text">
+            Molarity (M) defines the concentration of a solute in a solution as moles of solute per liter of solution (mol/L).
+          </p>
+          <div class="equation-block font-mono text-sm">
+            Mass (g) = Concentration (M) × Volume (L) × Molecular Weight (g/mol)
+          </div>
+          <p class="card-text mt-3">
+            Weight-in-Weight (% w/w) represents the mass of a solute divided by the total mass of the formulation, multiplied by 100.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            % w/w = (Solute Mass / Total Formula Mass) × 100%
+          </div>
+        </div>
+
+        <!-- Card 2: Dilution & Scaling -->
+        <div class="reference-card glass">
+          <div class="card-icon">💧</div>
+          <h3 class="card-title">Dilution & Scaling (C₁V₁ = C₂V₂)</h3>
+          <p class="card-text">
+            The dilution equation relates the concentration and volume of a stock solution to the desired final concentration and volume.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            C₁ × V₁ = C₂ × V₂
+          </div>
+          <p class="card-text mt-3">
+            To prepare a dilution, calculate the required stock volume (V₁ = (C₂ × V₂) / C₁), transfer this volume to your container, and add diluent until the final volume (V₂) is reached.
+          </p>
+        </div>
+
+        <!-- Card 3: Molecular Weight Parser -->
+        <div class="reference-card glass">
+          <div class="card-icon">🧬</div>
+          <h3 class="card-title">Molecular Weight & Chemical Formulas</h3>
+          <p class="card-text">
+            Molecular weight (MW) is calculated by summing the atomic weights of all constituent atoms in a chemical formula. Our system parses standard chemical symbols, nested parentheses, and hydrates.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            Example: CuSO₄·5H₂O (Copper Sulfate Pentahydrate)
+          </div>
+          <p class="card-text mt-3">
+            The parser matches element symbols against standard IUPAC values (e.g., Ca = 40.078, O = 15.999, H = 1.008) and resolves stoichiometry dynamically.
+          </p>
+        </div>
+
+        <!-- Card 4: HLB Emulsion & SOP Systems -->
+        <div class="reference-card glass">
+          <div class="card-icon">⚖️</div>
+          <h3 class="card-title">HLB & Disintegration Kinetics</h3>
+          <p class="card-text">
+            The Hydrophilic-Lipophilic Balance (HLB) is a measure of the degree to which a surfactant is hydrophilic or lipophilic. Ideal emulsions require balancing surfactant HLB with the required HLB (rHLB) of the oil phase.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            Required Emulsifier A% = (rHLB - HLB_B) / (HLB_A - HLB_B) × 100%
+          </div>
+          <p class="card-text mt-3">
+            Tablet formulation models evaluate disintegration times based on the ratio of superdisintegrants (e.g. Croscarmellose Sodium) and compression binder profiles.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <div class="faq-container mt-5">
+        <h3 class="faq-section-title">Frequently Asked Questions</h3>
+        
+        <div class="faq-item">
+          <h4 class="faq-question">What is a stock solution in laboratory dilution?</h4>
+          <p class="faq-answer">
+            A stock solution is a concentrated solution that will be diluted to a lower concentration for actual laboratory use. Using stock solutions saves prep time, reduces material waste, and improves accuracy for trace components.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4 class="faq-question">How does a hydrate affect molecular weight calculations?</h4>
+          <p class="faq-answer">
+            Hydrated compounds contain chemically bound water molecules within their crystalline structure (e.g., CuSO₄·5H₂O). When weighing the dry chemical, the weight of the water molecules must be included in the molecular weight calculation to ensure accurate molar dosing.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4 class="faq-question">What is HLB in cosmetic formulations?</h4>
+          <p class="faq-answer">
+            HLB stands for Hydrophilic-Lipophilic Balance. It is a value between 0 and 20 indicating the affinity of an emulsifier for water (hydrophilic) or oil (lipophilic). Emulsifiers with low HLB (3-6) produce water-in-oil (W/O) emulsions, while high HLB (8-16) produce oil-in-water (O/W) emulsions.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .formulator-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Reference Section ── */
+  .reference-section {
+    margin-top: var(--space-4xl);
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border-strong), transparent);
+    margin-bottom: var(--space-4xl);
+  }
+
+  .reference-header {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .reference-card {
+    padding: var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    transition: transform var(--transition-base), border-color var(--transition-base);
+  }
+
+  .reference-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-border-strong);
+  }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+  }
+
+  .card-text {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .equation-block {
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 2px solid var(--color-primary);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+    overflow-x: auto;
+  }
+
+  /* ── FAQ Section ── */
+  .faq-container {
+    margin-top: var(--space-3xl);
+    max-width: 800px;
+    margin-inline: auto;
+  }
+
+  .faq-section-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: var(--space-xl);
+    color: var(--color-text);
+  }
+
+  .faq-item {
+    padding-block: var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-item:last-child {
+    border-bottom: none;
+  }
+
+  .faq-question {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+    margin-bottom: var(--space-sm);
+  }
+
+  .faq-answer {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+</style>
