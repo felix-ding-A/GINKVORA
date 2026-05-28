@@ -632,11 +632,11 @@ onMounted(() => {
     <div v-if="activeTab === 'animal'" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Inputs Pane -->
       <div class="glass p-6 border border-[var(--color-border)] flex flex-col gap-6">
-        <div class="flex justify-between items-center">
-          <h3 class="text-lg font-semibold text-[var(--color-primary-light)]">Animal Dosage Parameters</h3>
-          <div class="flex gap-2">
-            <button class="btn btn--secondary py-1 px-2.5 text-[11px]" @click="setFormulationMode('water')">Aqueous Template</button>
-            <button class="btn btn--secondary py-1 px-2.5 text-[11px]" @click="setFormulationMode('oil')">Oil Template</button>
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start md:sm:items-center gap-3">
+          <h3 class="text-base font-bold text-[var(--color-primary-light)]">Animal Dosage Parameters</h3>
+          <div class="flex gap-1.5 flex-wrap">
+            <button class="btn btn--secondary py-1 px-2 text-[10px]" @click="setFormulationMode('water')">Aqueous Template</button>
+            <button class="btn btn--secondary py-1 px-2 text-[10px]" @click="setFormulationMode('oil')">Oil Template</button>
           </div>
         </div>
 
@@ -700,7 +700,7 @@ onMounted(() => {
 
       <!-- SOP Output Pane -->
       <div class="glass p-6 border border-[var(--color-border)] flex flex-col justify-between gap-6">
-        <h3 class="text-lg font-semibold text-[var(--color-primary-light)]">📋 Animal Formulation SOP & Report</h3>
+        <h3 class="text-base font-bold text-[var(--color-primary-light)]">📋 Animal Formulation SOP & Report</h3>
 
         <div v-if="animalResult" class="flex flex-col gap-4 flex-1 overflow-y-auto max-h-[460px] custom-scrollbar pr-1">
           <!-- Summary card -->
