@@ -19,8 +19,8 @@ const tabs = [
 
 <template>
   <div class="console-wrapper">
-    <!-- ── Mobile Tab Bar (< lg) ── -->
-    <nav class="mobile-tab-bar lg:hidden" aria-label="Calculator Tabs">
+    <!-- ── Mobile Tab Bar (< lg): horizontal scroll bar at top ── -->
+    <nav class="mobile-tab-bar" aria-label="Calculator Tabs">
       <button
         v-for="tab in tabs"
         :key="tab.key"
@@ -31,31 +31,27 @@ const tabs = [
           activeCalc === tab.key ? 'mobile-tab-btn--active' : ''
         ]"
       >
-        <span class="text-base leading-none">{{ tab.icon }}</span>
+        <span class="tab-icon">{{ tab.icon }}</span>
         <span class="mobile-tab-label">{{ tab.shortLabel }}</span>
       </button>
     </nav>
 
     <!-- ── Desktop Layout (≥ lg): Sidebar + Main Pane ── -->
-    <div class="flex flex-col lg:flex-row gap-6 w-full">
+    <div class="console-body">
       <!-- Sidebar Navigation (desktop only) -->
-      <aside class="hidden lg:flex w-72 flex-col gap-5 shrink-0" aria-label="Calculator Navigation">
+      <aside class="console-sidebar" aria-label="Calculator Navigation">
         <!-- Info Header Card -->
-        <div class="glass p-5 border border-[var(--color-border)] flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-[var(--color-primary-glow)] border border-[var(--color-primary)]/20 flex items-center justify-center text-lg shadow-[0_0_15px_rgba(212,166,84,0.15)]">
-            🧪
-          </div>
-          <div class="flex flex-col">
-            <h2 class="text-base font-bold font-display text-[var(--color-text)]">Pure Formulator</h2>
-            <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider font-semibold">Formulation Suite</span>
+        <div class="glass sidebar-header border border-[var(--color-border)]">
+          <div class="sidebar-logo-icon">🧪</div>
+          <div>
+            <h2 class="sidebar-title">Pure Formulator</h2>
+            <span class="sidebar-subtitle">Formulation Suite</span>
           </div>
         </div>
 
         <!-- Navigation Links -->
-        <div class="glass p-4 border border-[var(--color-border)] flex flex-col gap-2">
-          <span class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider font-bold mb-1 px-1">
-            Calculators Suite
-          </span>
+        <div class="glass border border-[var(--color-border)] p-4 flex flex-col gap-2">
+          <span class="nav-section-label">Calculators Suite</span>
 
           <button
             v-for="tab in tabs"
@@ -63,36 +59,34 @@ const tabs = [
             @click="activeCalc = tab.key"
             :aria-current="activeCalc === tab.key ? 'page' : undefined"
             :class="[
-              'w-full text-left p-3 rounded-xl border transition-all flex items-center gap-3.5',
-              activeCalc === tab.key
-                ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]'
-                : 'border-[var(--color-border)] bg-black/10 hover:bg-white/[0.03]'
+              'sidebar-nav-btn',
+              activeCalc === tab.key ? 'sidebar-nav-btn--active' : ''
             ]"
           >
-            <span class="text-lg">{{ tab.icon }}</span>
-            <div class="flex flex-col text-left">
-              <span :class="['text-xs font-bold', activeCalc === tab.key ? 'text-[var(--color-primary-light)]' : 'text-[var(--color-text)]']">
+            <span class="text-lg leading-none flex-shrink-0">{{ tab.icon }}</span>
+            <div class="nav-btn-text">
+              <span :class="['nav-btn-title', activeCalc === tab.key ? 'nav-btn-title--active' : '']">
                 {{ tab.label }}
               </span>
-              <span class="text-[9px] text-[var(--color-text-muted)] mt-0.5">{{ tab.desc }}</span>
+              <span class="nav-btn-desc">{{ tab.desc }}</span>
             </div>
           </button>
         </div>
 
         <!-- Sidebar footer docs link -->
-        <div class="glass p-4 border border-[var(--color-border)] text-xs text-[var(--color-text-muted)] flex flex-col gap-2">
-          <div class="flex items-center gap-2 text-[var(--color-text-secondary)] hover:text-white transition-all cursor-pointer">
+        <div class="glass border border-[var(--color-border)] p-4 sidebar-footer">
+          <div class="sidebar-docs-link">
             <span>📖</span>
             <span>Documentation & Helper</span>
           </div>
-          <p class="text-[10px] mt-1 italic leading-relaxed">
+          <p class="sidebar-footer-note">
             * Designed for laboratory accuracy and regulatory compliance validation.
           </p>
         </div>
       </aside>
 
       <!-- Main Working Pane -->
-      <main class="flex-1 glass p-4 md:p-6 lg:p-8 border border-[var(--color-border)] custom-scrollbar min-w-0">
+      <main class="glass console-main border border-[var(--color-border)] custom-scrollbar">
         <MolarityCalculator v-if="activeCalc === 'molarity'" />
         <DilutionCalculator v-else-if="activeCalc === 'dilution'" />
         <MolecularWeightCalculator v-else-if="activeCalc === 'mw'" />
@@ -108,19 +102,25 @@ const tabs = [
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  min-height: 600px;
+  width: 100%;
 }
 
-/* ── Mobile Tab Bar ── */
+/* ── Mobile Tab Bar: visible only below lg (1024px) ── */
 .mobile-tab-bar {
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 0.25rem;
-  scrollbar-width: none; /* Hide scrollbar on Firefox */
+  scrollbar-width: none;
 }
 .mobile-tab-bar::-webkit-scrollbar { display: none; }
+
+@media (min-width: 1024px) {
+  .mobile-tab-bar {
+    display: none; /* hidden on desktop — sidebar handles navigation */
+  }
+}
 
 .mobile-tab-btn {
   display: flex;
@@ -152,9 +152,198 @@ const tabs = [
   color: var(--color-primary-light) !important;
 }
 
+.tab-icon {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
 .mobile-tab-label {
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.02em;
+}
+
+/* ── Console Body: stacked on mobile, sidebar+main on desktop ── */
+.console-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .console-body {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+}
+
+/* ── Sidebar: hidden on mobile, shown on desktop ── */
+.console-sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .console-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 260px;
+    flex-shrink: 0;
+  }
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.sidebar-logo-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.625rem;
+  background: var(--color-primary-glow);
+  border: 1px solid rgba(212, 166, 84, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(212, 166, 84, 0.12);
+}
+
+.sidebar-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  line-height: 1.2;
+  /* Override h2 global style */
+  letter-spacing: normal;
+}
+
+.sidebar-subtitle {
+  font-size: 0.625rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  display: block;
+  margin-top: 0.125rem;
+}
+
+.nav-section-label {
+  font-size: 0.625rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  padding-left: 0.25rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.sidebar-nav-btn {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-border);
+  background: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+.sidebar-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(212, 166, 84, 0.2);
+}
+
+.sidebar-nav-btn--active {
+  border-color: var(--color-primary) !important;
+  background: var(--color-primary-glow) !important;
+}
+
+.nav-btn-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.nav-btn-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-btn-title--active {
+  color: var(--color-primary-light);
+}
+
+.nav-btn-desc {
+  font-size: 0.625rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-docs-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.sidebar-docs-link:hover {
+  color: var(--color-text);
+}
+
+.sidebar-footer-note {
+  font-size: 0.625rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ── Main Pane ── */
+.console-main {
+  flex: 1;
+  padding: 1.25rem;
+  min-width: 0;
+  /* No fixed height - grows to content naturally */
+}
+
+@media (min-width: 768px) {
+  .console-main {
+    padding: 1.75rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .console-main {
+    padding: 2rem 2.25rem;
+  }
 }
 </style>
