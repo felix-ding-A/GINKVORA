@@ -1,0 +1,130 @@
+---
+// src/pages/ru/contact.astro — Russian Contact page
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+const lang = 'ru';
+const t = useTranslations(lang);
+---
+<BaseLayout lang={lang} title="Связаться с нами | GINKVORA" description="Запросите коммерческое предложение, образец или техническую документацию для растительных экстрактов и биоактивных ингредиентов от GINKVORA.">
+  <main class="contact-page bg-noise">
+    <header class="page-banner">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">Контакты</span>
+        <h1 class="banner-title">{t('contact.title')}</h1>
+        <p class="banner-desc">{t('contact.subtitle')}</p>
+      </div>
+    </header>
+    <div class="container contact-layout">
+      <div class="contact-info glass">
+        <h2>Свяжитесь с нами</h2>
+        <div class="info-items">
+          <div class="info-item">
+            <span class="info-icon">📧</span>
+            <div>
+              <span class="info-label">Email</span>
+              <a href="mailto:inquiry@ginkvora.com" class="info-val">inquiry@ginkvora.com</a>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">⏱</span>
+            <div>
+              <span class="info-label">Время ответа</span>
+              <span class="info-val">В течение 24 часов</span>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">🌍</span>
+            <div>
+              <span class="info-label">Обслуживаемые регионы</span>
+              <span class="info-val">50+ стран мира</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-wrap glass">
+        <h2>Форма запроса</h2>
+        <form id="ru-contact-form" class="contact-form" novalidate>
+          <div class="form-group">
+            <label for="name">{t('contact.form_name')} *</label>
+            <input type="text" id="name" name="name" required placeholder="Иван Иванов" />
+          </div>
+          <div class="form-group">
+            <label for="company">{t('contact.form_company')}</label>
+            <input type="text" id="company" name="company" placeholder="ООО «Компания»" />
+          </div>
+          <div class="form-group">
+            <label for="email">{t('contact.form_email')} *</label>
+            <input type="email" id="email" name="email" required placeholder="ivan@company.ru" />
+          </div>
+          <div class="form-group">
+            <label for="message">{t('contact.form_message')} *</label>
+            <textarea id="message" name="message" rows="5" required placeholder="Укажите название продукта, требуемое количество, спецификации..."></textarea>
+          </div>
+          <button type="submit" class="btn btn--gold btn--lg" id="ru-submit-btn" style="width: 100%; justify-content: center;">
+            {t('contact.form_submit')}
+          </button>
+          <div id="ru-form-success" class="form-success" style="display:none;">{t('contact.form_success')}</div>
+          <div id="ru-form-error" class="form-error" style="display:none;">Произошла ошибка. Пожалуйста, попробуйте ещё раз.</div>
+        </form>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+<style>
+  .contact-page { padding-block: 0 var(--space-4xl); }
+  .page-banner { position: relative; padding-block: 8rem 5rem; background: linear-gradient(135deg, #030201 0%, #0e1007 60%, #0a0703 100%); overflow: hidden; margin-bottom: var(--space-2xl); }
+  .banner-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,166,84,0.07) 0%, transparent 70%); }
+  .banner-content { position: relative; z-index: 1; text-align: center; max-width: 700px; margin-inline: auto; }
+  .banner-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
+  .banner-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.75; }
+  .contact-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; }
+  @media (max-width: 900px) { .contact-layout { grid-template-columns: 1fr; } }
+  .contact-info, .contact-form-wrap { padding: 2.5rem; border-radius: var(--radius-xl); border: 1px solid var(--color-border) !important; }
+  .contact-info h2, .contact-form-wrap h2 { font-size: 1.5rem; font-family: var(--font-display); margin-bottom: 1.5rem; color: var(--color-text); }
+  .info-items { display: flex; flex-direction: column; gap: 1.5rem; }
+  .info-item { display: flex; gap: 1rem; align-items: flex-start; }
+  .info-icon { font-size: 1.5rem; }
+  .info-label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); margin-bottom: 0.25rem; }
+  .info-val { color: var(--color-text-secondary); font-size: 0.9375rem; text-decoration: none; transition: color var(--transition-fast); }
+  a.info-val:hover { color: var(--color-primary-light); }
+  .contact-form { display: flex; flex-direction: column; gap: 1.25rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.375rem; }
+  .form-group label { font-size: 0.875rem; font-weight: 500; color: var(--color-text-muted); }
+  .form-group input, .form-group textarea { padding: 0.75rem 1rem; background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text); font-size: 0.9375rem; transition: border-color var(--transition-fast); font-family: inherit; resize: vertical; }
+  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--color-primary); }
+  .form-success { padding: 1rem; background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); border-radius: var(--radius-md); color: #34d399; text-align: center; font-size: 0.9375rem; }
+  .form-error { padding: 1rem; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: var(--radius-md); color: #ef4444; text-align: center; font-size: 0.9375rem; }
+</style>
+<script>
+  const form = document.getElementById('ru-contact-form') as HTMLFormElement;
+  const success = document.getElementById('ru-form-success');
+  const error = document.getElementById('ru-form-error');
+  const btn = document.getElementById('ru-submit-btn') as HTMLButtonElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    btn.disabled = true;
+    btn.textContent = 'Отправка...';
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+      if (res.ok) {
+        if (success) success.style.display = 'block';
+        form.reset();
+      } else {
+        if (error) error.style.display = 'block';
+      }
+    } catch {
+      if (error) error.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Отправить запрос';
+    }
+  });
+</script>

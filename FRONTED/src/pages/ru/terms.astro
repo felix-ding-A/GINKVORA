@@ -1,0 +1,28 @@
+---
+// src/pages/ru/terms.astro — Russian Terms of Service (simplified)
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout lang="ru" title="Условия обслуживания | GINKVORA" description="Условия обслуживания GINKVORA — правила использования сайта и условия B2B поставок.">
+  <main class="legal-page bg-noise">
+    <div class="container legal-content">
+      <h1>Условия обслуживания</h1>
+      <p class="last-updated">Последнее обновление: Январь 2025</p>
+      <section><h2>1. Принятие условий</h2><p>Используя сайт GINKVORA, вы соглашаетесь соблюдать настоящие условия обслуживания. Если вы не согласны с какими-либо условиями, пожалуйста, не используйте наш сайт.</p></section>
+      <section><h2>2. B2B поставки</h2><p>GINKVORA осуществляет поставки исключительно для бизнес-клиентов (B2B). Минимальный объём заказа, ценообразование и условия поставки согласовываются индивидуально с каждым клиентом.</p></section>
+      <section><h2>3. Качество и гарантии</h2><p>Вся продукция поставляется с сертификатом анализа (COA) и проходит проверку по стандартам ISO/GMP. Рекламации рассматриваются в соответствии с нашей политикой контроля качества.</p></section>
+      <section><h2>4. Ограничение ответственности</h2><p>GINKVORA несёт ответственность только за характеристики продукции, указанные в официальной спецификации и COA. Конечный пользователь несёт ответственность за соответствие применению.</p></section>
+      <section><h2>5. Контакты</h2><p>По юридическим вопросам обращайтесь: <a href="mailto:inquiry@ginkvora.com">inquiry@ginkvora.com</a></p></section>
+    </div>
+  </main>
+</BaseLayout>
+<style>
+  .legal-page { padding-block: 9rem var(--space-4xl); }
+  .legal-content { max-width: 800px; }
+  .legal-content h1 { font-size: clamp(2rem, 4vw, 3rem); font-family: var(--font-display); margin-bottom: 0.5rem; }
+  .last-updated { color: var(--color-text-muted); font-size: 0.875rem; margin-bottom: 3rem; }
+  .legal-content section { margin-bottom: 2.5rem; }
+  .legal-content h2 { font-size: 1.375rem; font-family: var(--font-display); color: var(--color-primary-light); margin-bottom: 0.75rem; }
+  .legal-content p { color: var(--color-text-secondary); line-height: 1.8; }
+  .legal-content a { color: var(--color-primary-light); }
+</style>

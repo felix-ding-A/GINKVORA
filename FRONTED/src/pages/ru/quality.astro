@@ -1,0 +1,78 @@
+---
+// src/pages/ru/quality.astro — Russian Quality page
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+const lang = 'ru';
+const t = useTranslations(lang);
+---
+<BaseLayout lang={lang} title="Качество и сертификаты | GINKVORA" description="Стандарты качества GINKVORA: ISO 9001:2015, GMP, FSSC 22000, Kosher, Halal. Строгий контроль качества каждой партии.">
+  <main class="quality-page bg-noise">
+    <header class="page-banner">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">{t('quality.label')}</span>
+        <h1 class="banner-title">{t('quality.title')}</h1>
+        <p class="banner-desc">Обеспечение стабильной чистоты, надёжной документации и полного соответствия требованиям — для каждой партии.</p>
+      </div>
+    </header>
+    <div class="container quality-layout">
+      <section class="certs-section">
+        <h2 class="section-title">Наши сертификаты</h2>
+        <div class="certs-grid">
+          {[
+            { name: 'ISO 9001:2015', desc: 'Международный стандарт системы менеджмента качества' },
+            { name: 'GMP',           desc: 'Надлежащая производственная практика — обязательный стандарт качества' },
+            { name: 'FSSC 22000',    desc: 'Глобальный стандарт безопасности пищевой продукции' },
+            { name: 'Kosher',        desc: 'Сертификация кошерности для ингредиентов' },
+            { name: 'Halal',         desc: 'Сертификация халяль для ингредиентов' },
+            { name: 'Non-GMO',       desc: 'Проверено — без использования ГМО' },
+          ].map(cert => (
+            <div class="cert-card glass reveal">
+              <div class="cert-badge-large">{cert.name}</div>
+              <p class="cert-desc">{cert.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section class="qc-section reveal">
+        <h2 class="section-title">Контроль качества</h2>
+        <div class="qc-steps">
+          {[
+            { step: '01', title: 'Входной контроль сырья', desc: 'Каждое поступающее сырьё проходит идентификацию и тестирование чистоты перед запуском производства.' },
+            { step: '02', title: 'Производственный мониторинг', desc: 'Непрерывный мониторинг параметров процесса — температуры, давления и времени выдержки экстракции.' },
+            { step: '03', title: 'Анализ готовой продукции', desc: 'HPLC/GC анализ, микробиологическое тестирование и испытания тяжёлых металлов для каждой партии.' },
+            { step: '04', title: 'Документация и прослеживаемость', desc: 'Полный пакет документов COA, MSDS и отчётов о тестировании для каждой поставки.' },
+          ].map(item => (
+            <div class="qc-step glass">
+              <span class="step-num">{item.step}</span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+<style>
+  .quality-page { padding-block: 0 var(--space-4xl); }
+  .page-banner { position: relative; padding-block: 8rem 5rem; background: linear-gradient(135deg, #030201 0%, #0e1007 60%, #0a0703 100%); overflow: hidden; margin-bottom: var(--space-2xl); }
+  .banner-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,166,84,0.07) 0%, transparent 70%); }
+  .banner-content { position: relative; z-index: 1; text-align: center; max-width: 700px; margin-inline: auto; }
+  .banner-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
+  .banner-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.75; }
+  .quality-layout { display: flex; flex-direction: column; gap: var(--space-2xl); }
+  .section-title { font-size: clamp(1.75rem, 3vw, 2.5rem); font-family: var(--font-display); font-weight: 600; margin-bottom: var(--space-xl); }
+  .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
+  .cert-card { padding: 2rem; border-radius: var(--radius-lg); text-align: center; display: flex; flex-direction: column; gap: 0.75rem; border: 1px solid rgba(212,166,84,0.15) !important; }
+  .cert-badge-large { font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; color: var(--color-primary-light); }
+  .cert-desc { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.6; }
+  .qc-steps { display: flex; flex-direction: column; gap: 1.25rem; }
+  .qc-step { display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.75rem; border-radius: var(--radius-lg); border: 1px solid var(--color-border) !important; }
+  .step-num { font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--color-primary); opacity: 0.6; flex-shrink: 0; line-height: 1; }
+  .qc-step h3 { font-size: 1.125rem; font-weight: 600; color: var(--color-text); margin-bottom: 0.375rem; }
+  .qc-step p { font-size: 0.9375rem; color: var(--color-text-secondary); line-height: 1.65; }
+</style>

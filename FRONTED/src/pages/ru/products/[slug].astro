@@ -1,0 +1,300 @@
+---
+// src/pages/ru/products/[slug].astro — Russian product detail page
+export const prerender = true;
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getAllProducts, getProductBySlug, urlFor, getLocalizedField } from '../../../lib/sanity';
+import PortableText from '../../../components/PortableText.astro';
+import { useTranslations, getLocalePath } from '../../../i18n/utils';
+
+const lang = 'ru';
+const t = useTranslations(lang);
+const lp = (path: string) => getLocalePath(lang, path);
+
+export async function getStaticPaths() {
+  const products = await getAllProducts();
+  return products.map((p: any) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const product = await getProductBySlug(slug);
+
+if (!product) {
+  return Astro.redirect('/404');
+}
+
+const siteUrl = 'https://ginkvora.com';
+
+// Localized fields (fall back to English if no Russian translation)
+const localName          = product.name; // product name stays English (scientific)
+const localShortDesc     = (getLocalizedField(product, 'shortDescription', lang) ?? product.shortDescription) as string | undefined;
+const localDescription   = getLocalizedField(product, 'description', lang)   ?? product.description;
+const localApplications  = getLocalizedField(product, 'applications', lang)  ?? product.applications;
+
+const productSchema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": localName,
+  "description": localShortDesc,
+  "category": product.category.name,
+  "image": urlFor(product.heroImage).url(),
+  "brand": { "@type": "Brand", "name": "GINKVORA" },
+  "inLanguage": "ru-RU",
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": t('product.breadcrumb_home'),    "item": `${siteUrl}/ru` },
+    { "@type": "ListItem", "position": 2, "name": t('product.breadcrumb_list'),    "item": `${siteUrl}/ru/products` },
+    { "@type": "ListItem", "position": 3, "name": localName,                        "item": `${siteUrl}/ru/products/${slug}` },
+  ],
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={`${localName} ${product.purity || ''} ${t('product.breadcrumb_list')} | GINKVORA`}
+  description={localShortDesc || `Купить высокочистый ${localName}. Качество гарантировано в соответствии с GMP. Запросить COA, MSDS или образец.`}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(productSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+
+  <main class="product-detail-page bg-noise">
+    <div class="container page-content">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="/ru">Главная</a>
+        <span class="crumb-separator">/</span>
+        <a href="/ru/products">Продукты</a>
+        <span class="crumb-separator">/</span>
+        <span class="crumb-active">{localName}</span>
+      </nav>
+
+      <!-- Main Showcase Grid -->
+      <div class="detail-grid">
+        <!-- Left: Images -->
+        <section class="gallery-section" aria-label="Изображения продукта">
+          <div class="main-image-box glass">
+            <picture style="display: contents;">
+              <source srcset={urlFor(product.heroImage).width(1200).format('webp').url()} type="image/webp" />
+              <img
+                src={urlFor(product.heroImage).width(1200).url()}
+                alt={localName}
+                id="main-product-image"
+                class="main-image"
+                fetchpriority="high"
+                loading="eager"
+              />
+            </picture>
+          </div>
+        </section>
+
+        <!-- Right: Specs and Quick Order -->
+        <section class="info-section" aria-label="Информация о продукте">
+          <span class="badge badge--gold">{product.category.name}</span>
+          <h1 class="product-title">{localName}</h1>
+
+          {product.botanicalName && (
+            <p class="product-botanical">{product.botanicalName}</p>
+          )}
+
+          <div class="technical-table">
+            {product.purity && (
+              <div class="tech-row">
+                <span class="tech-label">{t('product.purity')}</span>
+                <span class="tech-val font-mono">{product.purity}</span>
+              </div>
+            )}
+            {product.casNumber && (
+              <div class="tech-row">
+                <span class="tech-label">{t('product.cas_number')}</span>
+                <span class="tech-val font-mono">{product.casNumber}</span>
+              </div>
+            )}
+            {product.activeIngredient && (
+              <div class="tech-row">
+                <span class="tech-label">{t('product.active')}</span>
+                <span class="tech-val">{product.activeIngredient}</span>
+              </div>
+            )}
+          </div>
+
+          <p class="product-short-desc">{localShortDesc}</p>
+
+          <!-- CTAs -->
+          <div class="action-buttons">
+            <a href="#inquiry-form-section" class="btn btn--gold btn--lg">
+              {t('product.cta_rfq')}
+            </a>
+            {product.coaFile?.asset?.url && (
+              <a href={product.coaFile.asset.url} download class="btn btn--secondary" target="_blank">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+                {t('product.download_coa')}
+              </a>
+            )}
+            {product.msdsFile?.asset?.url && (
+              <a href={product.msdsFile.asset.url} download class="btn btn--secondary" target="_blank">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+                {t('product.download_msds')}
+              </a>
+            )}
+          </div>
+
+          <!-- Certifications -->
+          {product.certifications && product.certifications.length > 0 && (
+            <div class="certifications-badges">
+              <span class="certs-title">{t('product.certifications')}:</span>
+              <div class="certs-list">
+                {product.certifications.map((cert: string) => (
+                  <span class="badge badge--orange">{cert}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+      </div>
+
+      <!-- Detail specifications tabs -->
+      <section class="description-section" aria-label="Подробные характеристики">
+        <div class="tabs-container">
+          <div class="tab-headers">
+            <button class="detail-tab active" data-tab="desc">{t('product.tab_description')}</button>
+            <button class="detail-tab" data-tab="specs">{t('product.tab_specs')}</button>
+            <button class="detail-tab" data-tab="app">{t('product.tab_applications')}</button>
+          </div>
+
+          <div class="tab-contents">
+            <div class="tab-content active" id="tab-desc">
+              {localDescription ? (
+                <div class="rich-text-wrapper">
+                  <PortableText value={localDescription} />
+                </div>
+              ) : (
+                <p>{t('product.no_description')}</p>
+              )}
+            </div>
+
+            <div class="tab-content" id="tab-specs" style="display: none;">
+              {product.specifications && product.specifications.length > 0 ? (
+                <table class="specs-table">
+                  <thead>
+                    <tr>
+                      <th>{t('product.specs_param')}</th>
+                      <th>{t('product.specs_value')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {product.specifications.map((spec: any) => (
+                      <tr>
+                        <td>{spec.label}</td>
+                        <td>{spec.value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p>{t('product.no_specs')}</p>
+              )}
+            </div>
+
+            <div class="tab-content" id="tab-app" style="display: none;">
+              {localApplications ? (
+                <div class="rich-text-wrapper">
+                  <PortableText value={localApplications} />
+                </div>
+              ) : (
+                <p>{t('product.no_applications')}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Inquiry form section -->
+      <section id="inquiry-form-section" class="inquiry-section glass" aria-label="Форма запроса">
+        <h2 class="inquiry-title">Запросить коммерческое предложение или образец</h2>
+        <p class="inquiry-sub">
+          Отправьте запрос, и наш торговый представитель свяжется с вами в течение 24 часов.
+        </p>
+        <a href="/ru/contact" class="btn btn--gold btn--lg">
+          Перейти к форме запроса →
+        </a>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  /* Reuse styles from the English product page — same classes apply */
+  .product-detail-page { padding-block: 7rem var(--space-4xl); }
+  .page-content { max-width: 1200px; }
+
+  .breadcrumbs {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: 2.5rem;
+  }
+  .crumb-separator { color: var(--color-text-muted); }
+  .crumb-active { color: var(--color-primary-light); font-weight: 500; }
+
+  .detail-grid {
+    display: grid; grid-template-columns: 1fr 1.25fr; gap: 3.5rem; margin-bottom: var(--space-2xl);
+  }
+  @media (max-width: 900px) { .detail-grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+  .main-image-box { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 1 / 1; }
+  .main-image { width: 100%; height: 100%; object-fit: cover; }
+
+  .info-section { display: flex; flex-direction: column; gap: 1.25rem; }
+  .product-title { font-size: clamp(1.75rem, 3.5vw, 2.75rem); font-weight: 700; line-height: 1.15; color: var(--color-text); }
+  .product-botanical { font-style: italic; color: var(--color-text-muted); font-size: 0.9375rem; }
+  .product-short-desc { font-size: 1rem; line-height: 1.75; color: var(--color-text-secondary); }
+
+  .technical-table { display: flex; flex-direction: column; gap: 0.5rem; }
+  .tech-row { display: flex; justify-content: space-between; align-items: center; padding: 0.625rem 0; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
+  .tech-label { color: var(--color-text-muted); font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .tech-val { color: var(--color-text); font-weight: 500; }
+
+  .action-buttons { display: flex; flex-wrap: wrap; gap: 0.875rem; }
+
+  .certifications-badges { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+  .certs-title { font-size: 0.8125rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .certs-list { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+
+  /* Tabs */
+  .description-section { margin-top: var(--space-2xl); }
+  .tabs-container { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; }
+  .tab-headers { display: flex; border-bottom: 1px solid var(--color-border); }
+  .detail-tab { flex: 1; padding: 1rem 1.5rem; background: none; border: none; cursor: pointer; font-size: 0.9375rem; font-weight: 500; color: var(--color-text-muted); transition: all var(--transition-fast); border-bottom: 2px solid transparent; }
+  .detail-tab:hover { color: var(--color-text); background: var(--color-surface-2); }
+  .detail-tab.active { color: var(--color-primary-light); border-bottom-color: var(--color-primary); background: rgba(212,166,84,0.05); }
+  .tab-contents { padding: 2rem; }
+  .tab-content { min-height: 100px; }
+
+  .specs-table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+  .specs-table th, .specs-table td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+  .specs-table th { font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); font-weight: 600; }
+  .specs-table td { color: var(--color-text-secondary); }
+
+  .inquiry-section { margin-top: var(--space-2xl); padding: 3rem; text-align: center; border-radius: var(--radius-xl); border: 1px solid rgba(212,166,84,0.2) !important; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
+  .inquiry-title { font-size: 1.75rem; font-family: var(--font-display); color: var(--color-text); }
+  .inquiry-sub { color: var(--color-text-secondary); font-size: 1rem; max-width: 520px; line-height: 1.7; }
+</style>
+
+<script>
+  // Tab switching
+  document.querySelectorAll('.detail-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = (tab as HTMLElement).dataset.tab;
+      document.querySelectorAll('.detail-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => (c as HTMLElement).style.display = 'none');
+      tab.classList.add('active');
+      const panel = document.getElementById(`tab-${target}`);
+      if (panel) panel.style.display = 'block';
+    });
+  });
+</script>

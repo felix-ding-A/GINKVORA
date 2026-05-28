@@ -145,9 +145,11 @@ export const PRODUCT_FIELDS = `
   activeIngredient,
   casNumber,
   shortDescription,
+  shortDescription_ru,
   featured,
   heroImage,
   applications,
+  applications_ru,
   certifications[],
   "updatedAt": _updatedAt
 `;
@@ -155,6 +157,7 @@ export const PRODUCT_FIELDS = `
 export const PRODUCT_DETAIL_FIELDS = `
   ${PRODUCT_FIELDS},
   description,
+  description_ru,
   specifications[]{label, value},
   gallery[],
   coaFile{asset->{url}},
@@ -244,8 +247,10 @@ export async function getAllCategories() {
 export const POST_FIELDS = `
   _id,
   title,
+  title_ru,
   "slug": slug.current,
   excerpt,
+  excerpt_ru,
   coverImage,
   publishedAt,
   updatedAt,
@@ -322,13 +327,17 @@ export async function getPostBySlug(slug: string) {
       `*[_type == "post" && slug.current == $slug][0] {
         ${POST_FIELDS},
         body,
+        body_ru,
         seoTitle,
+        seoTitle_ru,
         seoDescription,
+        seoDescription_ru,
         faqItems,
         relatedProduct->{
           name,
           "slug": slug.current,
           shortDescription,
+          shortDescription_ru,
           purity,
           heroImage
         }
@@ -360,6 +369,11 @@ export async function getSiteSettings() {
     return MOCK_SITE_SETTINGS;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Re-export i18n helpers for convenience in page files
+// ---------------------------------------------------------------------------
+export { getLocalizedField } from '../i18n/utils';
 
 // ---------------------------------------------------------------------------
 // Utility Types (for TypeScript)

@@ -1,33 +1,39 @@
 ---
 // Footer.astro — Professional B2B footer
+import { useTranslations, getLocalePath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+
 interface Props {
   lang?: string;
 }
 const { lang = 'en' } = Astro.props;
+const typedLang = lang as Lang;
+const t = useTranslations(typedLang);
+const lp = (path: string) => getLocalePath(typedLang, path);
 
 const currentYear = new Date().getFullYear();
 
 const productLinks = [
-  { href: '/products?category=health-supplements', label: 'Health Supplements' },
-  { href: '/products?category=cosmetic-actives', label: 'Cosmetic Actives' },
-  { href: '/products?category=pet-health', label: 'Pet Health' },
-  { href: '/contact', label: 'Custom Formulation' },
+  { href: `${lp('/products')}?category=health-supplements`, label: t('footer.link_supplements') },
+  { href: `${lp('/products')}?category=cosmetic-actives`,   label: t('footer.link_cosmetics') },
+  { href: `${lp('/products')}?category=pet-health`,         label: t('footer.link_pet') },
+  { href: lp('/contact'),                                   label: t('footer.link_custom') },
 ];
 
 const popularIngredients = [
-  { href: '/products/pqq-disodium-salt', label: 'PQQ' },
-  { href: '/products/nmn-beta-nicotinamide-mononucleotide', label: 'NMN' },
-  { href: '/products/egcg-98', label: 'EGCG' },
-  { href: '/products/glabridin-40', label: 'Glabridin' },
-  { href: '/products/luteolin-98', label: 'Luteolin' },
-  { href: '/products/flavone-99', label: 'Flavone' },
+  { href: lp('/products/pqq-disodium-salt'),              label: 'PQQ' },
+  { href: lp('/products/nmn-beta-nicotinamide-mononucleotide'), label: 'NMN' },
+  { href: lp('/products/egcg-98'),                        label: 'EGCG' },
+  { href: lp('/products/glabridin-40'),                   label: 'Glabridin' },
+  { href: lp('/products/luteolin-98'),                    label: 'Luteolin' },
+  { href: lp('/products/flavone-99'),                     label: 'Flavone' },
 ];
 
 const companyLinks = [
-  { href: '/about', label: 'About Us' },
-  { href: '/quality', label: 'Quality & Certifications' },
-  { href: '/insights', label: 'Industry Insights' },
-  { href: '/contact', label: 'Contact Us' },
+  { href: lp('/about'),     label: t('footer.link_about') },
+  { href: lp('/quality'),   label: t('footer.link_quality') },
+  { href: lp('/insights'),  label: t('footer.link_insights') },
+  { href: lp('/contact'),   label: t('footer.link_contact') },
 ];
 ---
 
@@ -92,8 +98,8 @@ const companyLinks = [
             <span class="footer-logo-text">GINKVORA</span>
           </a>
           <p class="footer-tagline">
-            Pure Nature, Proven Science.<br/>
-            Premium B2B botanical extract supplier serving global nutraceutical, cosmetic and pet health industries.
+            {t('footer.tagline')}<br/>
+            {t('footer.tagline_sub')}
           </p>
           <!-- Certifications mini badges -->
           <div class="footer-certs" aria-label="Certifications">
@@ -107,7 +113,7 @@ const companyLinks = [
 
         <!-- Products -->
         <div class="footer-col">
-          <h3 class="footer-col-title">Products</h3>
+          <h3 class="footer-col-title">{t('footer.col_products')}</h3>
           <ul class="footer-links" role="list">
             {productLinks.map((link) => (
               <li><a href={link.href} class="footer-link">{link.label}</a></li>
@@ -117,7 +123,7 @@ const companyLinks = [
 
         <!-- Popular Ingredients -->
         <div class="footer-col">
-          <h3 class="footer-col-title">Key Ingredients</h3>
+          <h3 class="footer-col-title">{t('footer.col_ingredients')}</h3>
           <ul class="footer-links" role="list">
             {popularIngredients.map((link) => (
               <li><a href={link.href} class="footer-link">{link.label}</a></li>
@@ -127,7 +133,7 @@ const companyLinks = [
 
         <!-- Company -->
         <div class="footer-col">
-          <h3 class="footer-col-title">Company</h3>
+          <h3 class="footer-col-title">{t('footer.col_company')}</h3>
           <ul class="footer-links" role="list">
             {companyLinks.map((link) => (
               <li><a href={link.href} class="footer-link">{link.label}</a></li>
@@ -143,11 +149,11 @@ const companyLinks = [
               </svg>
               inquiry@ginkvora.com
             </a>
-            <a href="/contact" class="footer-contact-item">
+            <a href={lp('/contact')} class="footer-contact-item">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.71a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16c.112.27.18.558.19.85v.07z"/>
               </svg>
-              Request a Quote
+              {t('footer.link_rfq')}
             </a>
           </div>
         </div>
@@ -156,12 +162,12 @@ const companyLinks = [
       <!-- Bottom bar -->
       <div class="footer-bottom">
         <p class="footer-copy">
-          &copy; {currentYear} GINKVORA. All rights reserved.
+          &copy; {currentYear} GINKVORA. {t('footer.copyright')}
         </p>
         <div class="footer-legal">
-          <a href="/privacy" class="footer-legal-link">Privacy Policy</a>
-          <a href="/terms" class="footer-legal-link">Terms of Service</a>
-          <a href="/sitemap.xml" class="footer-legal-link">Sitemap</a>
+          <a href={lp('/privacy')} class="footer-legal-link">{t('footer.privacy')}</a>
+          <a href={lp('/terms')}   class="footer-legal-link">{t('footer.terms')}</a>
+          <a href="/sitemap.xml"   class="footer-legal-link">{t('footer.sitemap')}</a>
         </div>
       </div>
     </div>

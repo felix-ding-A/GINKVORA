@@ -86,6 +86,46 @@ export const postType = defineType({
         input: CustomMarkdownInput,
       },
     }),
+
+    // ── 🌍 Translations (Russian) ─────────────────
+    defineField({
+      name: 'title_ru',
+      title: '🇷🇺 Заголовок (RU)',
+      type: 'string',
+      description: 'Заголовок статьи на русском языке',
+      validation: (Rule) => Rule.max(100),
+    }),
+    defineField({
+      name: 'excerpt_ru',
+      title: '🇷🇺 Краткое содержание (RU)',
+      type: 'text',
+      rows: 3,
+      description: 'Краткое содержание статьи на русском языке (для карточек)',
+      validation: (Rule) => Rule.max(250),
+    }),
+    defineField({
+      name: 'body_ru',
+      title: '🇷🇺 Текст статьи (RU, Markdown)',
+      type: 'markdown',
+      description: 'Полный текст статьи на русском языке.',
+      components: { input: CustomMarkdownInput },
+    }),
+    defineField({
+      name: 'seoTitle_ru',
+      title: '🇷🇺 SEO Title (RU)',
+      type: 'string',
+      description: 'Заголовок страницы для поисковых систем на русском языке (до 60 символов).',
+      validation: (Rule) => Rule.max(70),
+    }),
+    defineField({
+      name: 'seoDescription_ru',
+      title: '🇷🇺 SEO Description (RU)',
+      type: 'text',
+      rows: 3,
+      description: 'Мета-описание для поисковых систем на русском языке (до 160 символов).',
+      validation: (Rule) => Rule.max(160),
+    }),
+
     defineField({
       name: 'seo',
       title: 'SEO',

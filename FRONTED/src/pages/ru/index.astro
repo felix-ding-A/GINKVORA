@@ -1,0 +1,43 @@
+---
+// src/pages/ru/index.astro — Russian Homepage
+export const prerender = true;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroSection from '../../components/sections/HeroSection.astro';
+import CertificationsMarquee from '../../components/sections/CertificationsMarquee.astro';
+import ProductCategoriesSection from '../../components/sections/ProductCategoriesSection.astro';
+import StatsSection from '../../components/sections/StatsSection.astro';
+import FeaturedIngredientsSection from '../../components/sections/FeaturedIngredientsSection.astro';
+import WhyUsSection from '../../components/sections/WhyUsSection.astro';
+import ExtractionProcessSection from '../../components/sections/ExtractionProcessSection.astro';
+import InsightsPreviewSection from '../../components/sections/InsightsPreviewSection.astro';
+import ContactCTASection from '../../components/sections/ContactCTASection.astro';
+
+const lang = 'ru';
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'GINKVORA',
+  url: 'https://ginkvora.com/ru',
+  description: 'Премиальный B2B поставщик растительных экстрактов для производителей нутрицевтиков, косметики и продуктов для здоровья животных.',
+  inLanguage: 'ru-RU',
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title="GINKVORA — Премиальный поставщик растительных экстрактов B2B"
+  description="Чистая природа, доказанная наука. Премиальные ботанические экстракты для производителей нутрицевтиков, косметики и продуктов для здоровья животных. PQQ, NMN, EGCG, глабридин, лютеолин и 500+ высокочистых ингредиентов."
+  structuredData={websiteSchema}
+>
+  <HeroSection lang={lang} />
+  <CertificationsMarquee />
+  <ProductCategoriesSection lang={lang} />
+  <StatsSection />
+  <FeaturedIngredientsSection lang={lang} />
+  <WhyUsSection lang={lang} />
+  <ExtractionProcessSection lang={lang} />
+  <InsightsPreviewSection lang={lang} />
+  <ContactCTASection lang={lang} />
+</BaseLayout>

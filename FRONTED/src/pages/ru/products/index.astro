@@ -1,0 +1,245 @@
+---
+// src/pages/ru/products/index.astro — Russian products listing page
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getAllProducts, getAllCategories, urlFor, getLocalizedField } from '../../../lib/sanity';
+import { useTranslations } from '../../../i18n/utils';
+
+const lang = 'ru';
+const t = useTranslations(lang);
+
+const products = await getAllProducts();
+const categories = await getAllCategories();
+
+const siteUrl = 'https://ginkvora.com';
+
+const breadcrumbsSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Главная",   "item": `${siteUrl}/ru` },
+    { "@type": "ListItem", "position": 2, "name": "Продукты", "item": `${siteUrl}/ru/products` },
+  ],
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title="Высокочистые растительные экстракты и активные ингредиенты | GINKVORA"
+  description="Изучите наш каталог из 500+ премиальных растительных экстрактов, активных ингредиентов, косметических активов и индивидуальных рецептур. Сертификаты ISO и GMP."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
+
+  <main class="products-page bg-noise">
+    <!-- Page Banner -->
+    <header class="page-banner" aria-label="Заголовок страницы">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">{t('products.title')}</span>
+        <h1 class="banner-title">{t('products.title')}</h1>
+        <p class="banner-desc">{t('products.subtitle')}</p>
+      </div>
+    </header>
+
+    <div class="container products-layout">
+      <!-- Search & Filter bar -->
+      <div class="filter-bar glass">
+        <div class="search-wrap">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input
+            type="search"
+            id="product-search"
+            class="search-input"
+            placeholder={t('products.search')}
+            aria-label={t('products.search')}
+            autocomplete="off"
+          />
+        </div>
+        <div class="category-pills" id="category-pills" role="list">
+          <button class="cat-pill active" data-cat="" role="listitem">{t('products.all_categories')}</button>
+          {categories.map((cat: any) => (
+            <button class="cat-pill" data-cat={cat.slug} role="listitem">{cat.name}</button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="product-grid" class="product-grid" role="list" aria-label="Каталог продуктов">
+        {products.map((product: any) => {
+          const localShortDesc = (getLocalizedField(product, 'shortDescription', lang) ?? product.shortDescription) as string | undefined;
+          return (
+            <article
+              class="product-card glass"
+              data-name={product.name.toLowerCase()}
+              data-category={product.category?.slug ?? ''}
+              role="listitem"
+            >
+              {product.featured && (
+                <div class="card-featured-badge">{t('products.featured_badge')}</div>
+              )}
+              <div class="card-image">
+                <a href={`/ru/products/${product.slug}`} aria-label={`Подробнее о ${product.name}`}>
+                  <picture>
+                    <source srcset={urlFor(product.heroImage).width(400).format('webp').url()} type="image/webp" />
+                    <img
+                      src={urlFor(product.heroImage).width(400).url()}
+                      alt={product.name}
+                      loading="lazy"
+                      class="card-img"
+                    />
+                  </picture>
+                </a>
+              </div>
+              <div class="card-body">
+                <div class="card-top">
+                  <span class="card-category">{product.category?.name}</span>
+                  {product.purity && (
+                    <span class="card-purity font-mono">{product.purity}</span>
+                  )}
+                </div>
+                <h2 class="card-title">
+                  <a href={`/ru/products/${product.slug}`}>{product.name}</a>
+                </h2>
+                {product.botanicalName && (
+                  <p class="card-botanical">{product.botanicalName}</p>
+                )}
+                {localShortDesc && (
+                  <p class="card-desc">{localShortDesc}</p>
+                )}
+                <div class="card-actions">
+                  <a href={`/ru/products/${product.slug}`} class="btn btn--secondary btn--sm">
+                    {t('products.view_details')}
+                  </a>
+                  <a href="/ru/contact" class="btn btn--gold btn--sm">
+                    {t('products.request_sample')}
+                  </a>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      <!-- No results message -->
+      <div id="no-results" class="no-results" style="display: none;" aria-live="polite">
+        <p>{t('products.no_results')}</p>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  /* Same styles as English product listing — classes match */
+  .products-page { padding-block: 0 var(--space-4xl); }
+
+  .page-banner {
+    position: relative; padding-block: 8rem 5rem;
+    background: linear-gradient(135deg, #030201 0%, #0e1007 60%, #0a0703 100%);
+    overflow: hidden; margin-bottom: var(--space-2xl);
+  }
+  .banner-gradient {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,166,84,0.07) 0%, transparent 70%);
+  }
+  .banner-content { position: relative; z-index: 1; text-align: center; max-width: 700px; margin-inline: auto; }
+  .banner-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
+  .banner-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.75; }
+
+  .products-layout { display: flex; flex-direction: column; gap: var(--space-xl); }
+
+  .filter-bar {
+    display: flex; flex-direction: column; gap: 1rem;
+    padding: 1.5rem; border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border) !important;
+  }
+  .search-wrap { position: relative; }
+  .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--color-text-muted); }
+  .search-input {
+    width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem;
+    background: var(--color-surface-2); border: 1px solid var(--color-border);
+    border-radius: var(--radius-md); color: var(--color-text); font-size: 0.9375rem;
+    transition: border-color var(--transition-fast);
+  }
+  .search-input:focus { outline: none; border-color: var(--color-primary); }
+  .category-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .cat-pill {
+    padding: 0.375rem 0.875rem; border-radius: var(--radius-full);
+    border: 1px solid var(--color-border); background: transparent;
+    color: var(--color-text-secondary); font-size: 0.8125rem; cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  .cat-pill:hover { border-color: var(--color-primary); color: var(--color-primary-light); }
+  .cat-pill.active { background: rgba(212,166,84,0.12); border-color: var(--color-primary); color: var(--color-primary-light); }
+
+  .product-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;
+  }
+
+  .product-card {
+    position: relative; display: flex; flex-direction: column;
+    border-radius: var(--radius-lg); overflow: hidden;
+    border: 1px solid var(--color-border) !important;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+  .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-xl); border-color: rgba(212,166,84,0.3) !important; }
+  .card-featured-badge {
+    position: absolute; top: 0.75rem; right: 0.75rem; z-index: 2;
+    background: var(--color-primary); color: #000;
+    font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.06em;
+    padding: 0.2rem 0.5rem; border-radius: var(--radius-full); text-transform: uppercase;
+  }
+  .card-image { aspect-ratio: 4/3; overflow: hidden; }
+  .card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+  .product-card:hover .card-img { transform: scale(1.04); }
+  .card-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.625rem; flex: 1; }
+  .card-top { display: flex; justify-content: space-between; align-items: center; }
+  .card-category { font-size: 0.75rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .card-purity { font-size: 0.75rem; color: var(--color-primary-light); background: rgba(212,166,84,0.12); padding: 0.15rem 0.5rem; border-radius: var(--radius-full); border: 1px solid rgba(212,166,84,0.25); }
+  .card-title { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
+  .card-title a { color: var(--color-text); text-decoration: none; transition: color var(--transition-fast); }
+  .card-title a:hover { color: var(--color-primary-light); }
+  .card-botanical { font-style: italic; font-size: 0.8125rem; color: var(--color-text-muted); }
+  .card-desc { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-actions { display: flex; gap: 0.5rem; margin-top: auto; padding-top: 0.5rem; flex-wrap: wrap; }
+
+  .no-results { text-align: center; padding: 4rem 2rem; color: var(--color-text-muted); }
+</style>
+
+<script>
+  const searchInput  = document.getElementById('product-search') as HTMLInputElement;
+  const pills        = document.querySelectorAll('.cat-pill');
+  const cards        = document.querySelectorAll('.product-card') as NodeListOf<HTMLElement>;
+  const noResults    = document.getElementById('no-results');
+
+  let activeCategory = '';
+  let searchTerm     = '';
+
+  function filterProducts() {
+    let visible = 0;
+    cards.forEach(card => {
+      const name = card.dataset.name ?? '';
+      const cat  = card.dataset.category ?? '';
+      const matchSearch = !searchTerm || name.includes(searchTerm.toLowerCase());
+      const matchCat    = !activeCategory || cat === activeCategory;
+      const show = matchSearch && matchCat;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      activeCategory = (pill as HTMLElement).dataset.cat ?? '';
+      filterProducts();
+    });
+  });
+
+  searchInput?.addEventListener('input', () => {
+    searchTerm = searchInput.value;
+    filterProducts();
+  });
+</script>

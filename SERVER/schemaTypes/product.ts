@@ -8,11 +8,12 @@ export const productType = defineType({
   type: 'document',
   icon: () => '🌿',
   groups: [
-    { name: 'basic', title: 'Basic Info', default: true },
+    { name: 'basic',     title: 'Basic Info',           default: true },
     { name: 'technical', title: 'Technical Specs' },
-    { name: 'media', title: 'Media' },
+    { name: 'i18n',      title: '🌍 Translations (RU)' },
+    { name: 'media',     title: 'Media' },
     { name: 'documents', title: 'Documents' },
-    { name: 'seo', title: 'SEO' },
+    { name: 'seo',       title: 'SEO' },
   ],
   fields: [
     // ── Basic Info ────────────────────────────────
@@ -132,6 +133,33 @@ export const productType = defineType({
         input: CustomMarkdownInput,
       },
     }),
+
+    // ── 🌍 Translations (Russian) ─────────────────
+    defineField({
+      name: 'shortDescription_ru',
+      title: '🇷🇺 Краткое описание (RU)',
+      type: 'text',
+      group: 'i18n',
+      rows: 3,
+      description: 'Краткое описание продукта на русском языке (для карточек товара)',
+    }),
+    defineField({
+      name: 'description_ru',
+      title: '🇷🇺 Полное описание (RU, Markdown)',
+      type: 'markdown',
+      group: 'i18n',
+      description: 'Полное описание продукта на русском языке в формате Markdown.',
+      components: { input: CustomMarkdownInput },
+    }),
+    defineField({
+      name: 'applications_ru',
+      title: '🇷🇺 Применение (RU, Markdown)',
+      type: 'markdown',
+      group: 'i18n',
+      description: 'Применение продукта на русском языке.',
+      components: { input: CustomMarkdownInput },
+    }),
+
     defineField({
       name: 'certifications',
       title: 'Certifications',

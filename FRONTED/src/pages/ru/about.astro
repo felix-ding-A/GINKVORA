@@ -1,0 +1,136 @@
+---
+// src/pages/ru/about.astro — Russian About page
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const lang = 'ru';
+const t = useTranslations(lang);
+---
+
+<BaseLayout
+  lang={lang}
+  title="Поставщик ботанических экстрактов B2B | О компании GINKVORA"
+  description="Узнайте об истории GINKVORA, технологиях высокочистой экстракции и стандартах качества сырья. Поддержка мировых брендов диетических добавок."
+>
+  <main class="about-page bg-noise">
+    <header class="page-banner" aria-label="Заголовок страницы">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">{t('about.label')}</span>
+        <h1 class="banner-title">{t('about.title')}</h1>
+        <p class="banner-desc">
+          Соединяем источники чистого растительного сырья с передовыми методами лабораторной экстракции для поставки фармацевтически чистых активных ингредиентов мировым производителям.
+        </p>
+      </div>
+    </header>
+
+    <!-- Company Intro -->
+    <section class="container section intro-section" aria-label="О компании">
+      <div class="intro-grid">
+        <div class="intro-left reveal">
+          <h2>Чистая природа, доказанная наука</h2>
+          <p>
+            Основанная с приверженностью химической чистоте и ботанической целостности, GINKVORA превратилась в ведущего B2B производителя и разработчика рецептур высокоценных натуральных растительных экстрактов и изолированных соединений.
+          </p>
+          <p>
+            Мы управляем комплексной цепочкой поставок, охватывающей сертифицированные регионы заготовки ботанического сырья, современные установки экстракции сверхкритическим CO2 и растворителями, а также передовую R&D лабораторию в Ханчжоу.
+          </p>
+          <div class="mission-box">
+            <span class="mission-title">Наша основная миссия</span>
+            <blockquote class="mission-text">
+              «Создавать возможности для брендов здоровья человека, обеспечивая абсолютную чистоту активных компонентов, подтверждённые записи контроля качества и надёжные решения оптовой поставки.»
+            </blockquote>
+          </div>
+        </div>
+        <div class="intro-right reveal">
+          <div class="stats-grid">
+            <div class="stat-box glass">
+              <span class="stat-num gradient-text--gold">500+</span>
+              <span class="stat-label">Ингредиентов в каталоге</span>
+            </div>
+            <div class="stat-box glass">
+              <span class="stat-num gradient-text--gold">50+</span>
+              <span class="stat-label">Обслуживаемых стран</span>
+            </div>
+            <div class="stat-box glass">
+              <span class="stat-num gradient-text--gold">99%</span>
+              <span class="stat-label">Гарантированная чистота</span>
+            </div>
+            <div class="stat-box glass">
+              <span class="stat-num gradient-text--gold">15+</span>
+              <span class="stat-label">Лет опыта</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certifications -->
+    <section class="container section certs-section" aria-label="Сертификаты">
+      <div class="section-header">
+        <span class="section-label">Качество и соответствие</span>
+        <h2 class="section-title">Международно признанные сертификаты</h2>
+      </div>
+      <div class="certs-grid">
+        {['ISO 9001:2015', 'GMP', 'FSSC 22000', 'Kosher', 'Halal', 'Non-GMO'].map(cert => (
+          <div class="cert-card glass reveal">
+            <span class="cert-icon">✓</span>
+            <span class="cert-name">{cert}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="container section cta-section">
+      <div class="cta-box glass">
+        <h2>Готовы к партнёрству?</h2>
+        <p>Свяжитесь с нашим коммерческим отделом для получения прайс-листа, технических листов и образцов.</p>
+        <div class="cta-btns">
+          <a href="/ru/contact"  class="btn btn--gold btn--lg">Связаться с нами</a>
+          <a href="/ru/products" class="btn btn--primary btn--lg">Каталог продуктов</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .about-page { padding-block: 0 var(--space-4xl); }
+  .page-banner { position: relative; padding-block: 8rem 5rem; background: linear-gradient(135deg, #030201 0%, #0e1007 60%, #0a0703 100%); overflow: hidden; margin-bottom: var(--space-2xl); }
+  .banner-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,166,84,0.07) 0%, transparent 70%); }
+  .banner-content { position: relative; z-index: 1; text-align: center; max-width: 700px; margin-inline: auto; }
+  .banner-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
+  .banner-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.75; }
+
+  .section { padding-block: var(--space-2xl); }
+  .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  @media (max-width: 900px) { .intro-grid { grid-template-columns: 1fr; } }
+
+  .intro-left { display: flex; flex-direction: column; gap: 1.25rem; }
+  .intro-left h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); font-family: var(--font-display); font-weight: 600; color: var(--color-text); }
+  .intro-left p { color: var(--color-text-secondary); line-height: 1.8; font-size: 1rem; }
+
+  .mission-box { border-left: 3px solid var(--color-primary); padding-left: 1.25rem; }
+  .mission-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-primary-light); font-weight: 600; display: block; margin-bottom: 0.5rem; }
+  .mission-text { font-style: italic; color: var(--color-text-secondary); line-height: 1.75; margin: 0; }
+
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat-box { padding: 1.75rem; border-radius: var(--radius-lg); text-align: center; display: flex; flex-direction: column; gap: 0.5rem; border: 1px solid rgba(212,166,84,0.15) !important; }
+  .stat-num { font-size: 2.5rem; font-weight: 700; font-family: var(--font-display); }
+  .stat-label { font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.4; }
+
+  .section-header { text-align: center; margin-bottom: var(--space-xl); }
+  .section-title { font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-family: var(--font-display); font-weight: 600; }
+
+  .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+  .cert-card { padding: 1.5rem; border-radius: var(--radius-lg); text-align: center; display: flex; flex-direction: column; gap: 0.625rem; border: 1px solid rgba(212,166,84,0.15) !important; }
+  .cert-icon { font-size: 1.5rem; color: var(--color-primary); }
+  .cert-name { font-family: var(--font-mono); font-size: 0.875rem; font-weight: 600; color: var(--color-text); }
+
+  .cta-box { padding: 3.5rem; border-radius: var(--radius-xl); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; border: 1px solid rgba(212,166,84,0.2) !important; }
+  .cta-box h2 { font-size: clamp(1.75rem, 3vw, 2.25rem); font-family: var(--font-display); }
+  .cta-box p { color: var(--color-text-secondary); max-width: 520px; line-height: 1.75; }
+  .cta-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+</style>

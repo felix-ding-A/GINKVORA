@@ -1,0 +1,27 @@
+---
+// src/pages/ru/privacy.astro — Russian Privacy Policy (simplified)
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout lang="ru" title="Политика конфиденциальности | GINKVORA" description="Политика конфиденциальности GINKVORA — как мы собираем, используем и защищаем ваши данные.">
+  <main class="legal-page bg-noise">
+    <div class="container legal-content">
+      <h1>Политика конфиденциальности</h1>
+      <p class="last-updated">Последнее обновление: Январь 2025</p>
+      <section><h2>1. Сбор информации</h2><p>Мы собираем информацию, которую вы нам предоставляете напрямую — при заполнении форм запроса, переписке по электронной почте или при обращении за образцами и документацией.</p></section>
+      <section><h2>2. Использование информации</h2><p>Собранная информация используется для обработки ваших запросов на коммерческие предложения и образцы, ответа на технические вопросы и поддержания деловых отношений.</p></section>
+      <section><h2>3. Защита данных</h2><p>Мы применяем отраслевые стандарты безопасности для защиты вашей персональной информации и деловых данных от несанкционированного доступа.</p></section>
+      <section><h2>4. Контакты</h2><p>По вопросам конфиденциальности обращайтесь: <a href="mailto:inquiry@ginkvora.com">inquiry@ginkvora.com</a></p></section>
+    </div>
+  </main>
+</BaseLayout>
+<style>
+  .legal-page { padding-block: 9rem var(--space-4xl); }
+  .legal-content { max-width: 800px; }
+  .legal-content h1 { font-size: clamp(2rem, 4vw, 3rem); font-family: var(--font-display); margin-bottom: 0.5rem; }
+  .last-updated { color: var(--color-text-muted); font-size: 0.875rem; margin-bottom: 3rem; }
+  .legal-content section { margin-bottom: 2.5rem; }
+  .legal-content h2 { font-size: 1.375rem; font-family: var(--font-display); color: var(--color-primary-light); margin-bottom: 0.75rem; }
+  .legal-content p { color: var(--color-text-secondary); line-height: 1.8; }
+  .legal-content a { color: var(--color-primary-light); }
+</style>

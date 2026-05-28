@@ -1,32 +1,43 @@
 ---
 // Navbar.astro — Responsive navigation with language switcher
+import { useTranslations, getLocalePath, getAlternatePaths, languages } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+
 interface Props {
   lang?: string;
 }
 
 const { lang = 'en' } = Astro.props;
+const typedLang = lang as Lang;
+const t = useTranslations(typedLang);
+
+// Build localized nav link hrefs
+const lp = (path: string) => getLocalePath(typedLang, path);
 
 const navLinks = [
-  { href: '/products', label: 'Products' },
-  { href: '/formulator', label: 'Formulator' },
-  { href: '/quality', label: 'Quality' },
-  { href: '/about', label: 'About' },
-  { 
-    href: '/insights', 
-    label: 'Insights',
+  { href: lp('/products'),   label: t('nav.products') },
+  { href: lp('/formulator'), label: t('nav.formulator') },
+  { href: lp('/quality'),    label: t('nav.quality') },
+  { href: lp('/about'),      label: t('nav.about') },
+  {
+    href: lp('/insights'),
+    label: t('nav.insights'),
     dropdown: [
-      { href: '/insights?category=Ingredient Spotlight', label: 'Ingredient Spotlight' },
-      { href: '/insights?category=Formulation Tips', label: 'Formulation Tips' },
-      { href: '/insights?category=Research', label: 'Research' },
-      { href: '/insights?category=Quality %26 Testing', label: 'Quality & Testing' },
-      { href: '/insights?category=Regulatory', label: 'Regulatory' },
-      { href: '/insights?category=Market Trends', label: 'Market Trends' },
-      { href: '/insights?category=Industry News', label: 'Industry News' },
-    ]
+      { href: `${lp('/insights')}?category=Ingredient Spotlight`, label: t('nav.ingredient_spotlight') },
+      { href: `${lp('/insights')}?category=Formulation Tips`,     label: t('nav.formulation_tips') },
+      { href: `${lp('/insights')}?category=Research`,             label: t('nav.research') },
+      { href: `${lp('/insights')}?category=Quality %26 Testing`,  label: t('nav.quality_testing') },
+      { href: `${lp('/insights')}?category=Regulatory`,           label: t('nav.regulatory') },
+      { href: `${lp('/insights')}?category=Market Trends`,        label: t('nav.market_trends') },
+      { href: `${lp('/insights')}?category=Industry News`,        label: t('nav.industry_news') },
+    ],
   },
 ];
 
 const currentPath = Astro.url.pathname;
+
+// Generate alternate paths for the language switcher
+const alternatePaths = getAlternatePaths(Astro.url, typedLang);
 ---
 
 <header class="navbar" id="navbar">
@@ -126,18 +137,17 @@ const currentPath = Astro.url.pathname;
             </svg>
           </button>
           <div class="lang-dropdown" id="lang-dropdown" role="menu">
-            <a href="/" class="lang-option" role="menuitem" lang="en">
+            <a href={alternatePaths.en} class:list={['lang-option', { 'lang-option--active': typedLang === 'en' }]} role="menuitem" lang="en">
               <span class="lang-flag">🇬🇧</span> English
             </a>
-            <a href="/ru" class="lang-option lang-option--soon" role="menuitem" lang="ru">
+            <a href={alternatePaths.ru} class:list={['lang-option', { 'lang-option--active': typedLang === 'ru' }]} role="menuitem" lang="ru">
               <span class="lang-flag">🇷🇺</span> Русский
-              <span class="lang-badge">Soon</span>
             </a>
-            <a href="/es" class="lang-option lang-option--soon" role="menuitem" lang="es">
+            <a href={alternatePaths.es} class:list={['lang-option', 'lang-option--soon']} role="menuitem" lang="es">
               <span class="lang-flag">🇪🇸</span> Español
               <span class="lang-badge">Soon</span>
             </a>
-            <a href="/ar" class="lang-option lang-option--soon" role="menuitem" lang="ar">
+            <a href={alternatePaths.ar} class:list={['lang-option', 'lang-option--soon']} role="menuitem" lang="ar">
               <span class="lang-flag">🇸🇦</span> العربية
               <span class="lang-badge">Soon</span>
             </a>
@@ -145,8 +155,8 @@ const currentPath = Astro.url.pathname;
         </div>
 
         <!-- CTA Button -->
-        <a href="/contact" class="btn btn--primary btn--sm nav-cta" id="nav-cta-btn">
-          Request a Sample
+        <a href={lp('/contact')} class="btn btn--primary btn--sm nav-cta" id="nav-cta-btn">
+          {t('nav.cta')}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
@@ -194,8 +204,8 @@ const currentPath = Astro.url.pathname;
           </li>
         ))}
       </ul>
-      <a href="/contact" class="btn btn--primary" id="mobile-cta-btn" style="width: 100%; justify-content: center; margin-top: 1rem;">
-        Request a Sample
+      <a href={lp('/contact')} class="btn btn--primary" id="mobile-cta-btn" style="width: 100%; justify-content: center; margin-top: 1rem;">
+        {t('nav.cta')}
       </a>
     </div>
   </div>
@@ -424,6 +434,8 @@ const currentPath = Astro.url.pathname;
   }
 
   .lang-option:hover { background: var(--color-surface-2); color: var(--color-text); }
+  .lang-option--active { color: var(--color-primary-light) !important; background: rgba(212,166,84,0.08); }
+  .lang-option--soon { opacity: 0.55; pointer-events: none; }
   .lang-flag { font-size: 1rem; }
 
   .lang-badge {
