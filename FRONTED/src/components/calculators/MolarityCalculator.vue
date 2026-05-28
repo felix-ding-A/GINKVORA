@@ -311,16 +311,16 @@ onMounted(() => {
         </p>
       </div>
       <!-- Mode Toggle Switch -->
-      <div class="inline-flex p-1 bg-black/40 rounded-xl border border-[var(--color-border)] self-start">
+      <div class="mode-toggle-switch">
         <button
           @click="calcMode = 'molarity'"
-          :class="['px-4 py-1.5 text-xs font-semibold rounded-lg transition-all', calcMode === 'molarity' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'text-[var(--color-text-secondary)] hover:text-white']"
+          :class="['mode-toggle-btn', calcMode === 'molarity' ? 'mode-toggle-btn--active' : '']"
         >
           Molarity Mode
         </button>
         <button
           @click="calcMode = 'percentage'"
-          :class="['px-4 py-1.5 text-xs font-semibold rounded-lg transition-all', calcMode === 'percentage' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'text-[var(--color-text-secondary)] hover:text-white']"
+          :class="['mode-toggle-btn', calcMode === 'percentage' ? 'mode-toggle-btn--active' : '']"
         >
           Percentage Mode
         </button>

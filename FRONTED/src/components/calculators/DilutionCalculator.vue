@@ -395,22 +395,22 @@ onMounted(() => {
       </div>
 
       <!-- Tab Buttons -->
-      <div class="inline-flex p-1 bg-black/40 rounded-xl border border-[var(--color-border)] self-start">
+      <div class="mode-toggle-switch">
         <button
           @click="activeTab = 'standard'"
-          :class="['px-4 py-1.5 text-xs font-semibold rounded-lg transition-all', activeTab === 'standard' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'text-[var(--color-text-secondary)] hover:text-white']"
+          :class="['mode-toggle-btn', activeTab === 'standard' ? 'mode-toggle-btn--active' : '']"
         >
           Standard (C1V1)
         </button>
         <button
           @click="activeTab = 'serial'"
-          :class="['px-4 py-1.5 text-xs font-semibold rounded-lg transition-all', activeTab === 'serial' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'text-[var(--color-text-secondary)] hover:text-white']"
+          :class="['mode-toggle-btn', activeTab === 'serial' ? 'mode-toggle-btn--active' : '']"
         >
           Serial Dilution
         </button>
         <button
           @click="activeTab = 'scaling'"
-          :class="['px-4 py-1.5 text-xs font-semibold rounded-lg transition-all', activeTab === 'scaling' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'text-[var(--color-text-secondary)] hover:text-white']"
+          :class="['mode-toggle-btn', activeTab === 'scaling' ? 'mode-toggle-btn--active' : '']"
         >
           Formula Scaling
         </button>

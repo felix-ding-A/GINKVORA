@@ -318,6 +318,42 @@ button { cursor: pointer; font-family: var(--font-body); }
 .btn--sm  { padding: 0.5rem 1.25rem;  font-size: 0.875rem; }
 .btn--lg  { padding: 1rem 2.25rem;    font-size: 1.0625rem; }
 
+/* ── Mode/Tab Toggle Switch ── */
+.mode-toggle-switch {
+  display: inline-flex;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  background: rgba(6, 5, 3, 0.6);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  align-self: flex-start;
+}
+
+.mode-toggle-btn {
+  padding: 0.4375rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-family: var(--font-body);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.mode-toggle-btn:hover {
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mode-toggle-btn--active {
+  background: var(--color-primary) !important;
+  color: var(--color-bg) !important;
+  box-shadow: 0 2px 8px rgba(212, 166, 84, 0.25);
+}
+
 /* ── Badge ── */
 .badge {
   display: inline-flex;

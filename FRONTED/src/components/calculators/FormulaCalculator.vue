@@ -606,22 +606,22 @@ onMounted(() => {
       </div>
 
       <!-- Tab Buttons -->
-      <div class="inline-flex p-1 bg-black/40 rounded-xl border border-[var(--color-border)] self-start">
+      <div class="mode-toggle-switch">
         <button
           @click="activeTab = 'animal'"
-          :class="['px-4 py-1.5 text-xs font-semibold rounded-lg transition-all', activeTab === 'animal' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'text-[var(--color-text-secondary)] hover:text-white']"
+          :class="['mode-toggle-btn', activeTab === 'animal' ? 'mode-toggle-btn--active' : '']"
         >
           In Vivo Animal Recipe
         </button>
         <button
           @click="activeTab = 'supplement'"
-          :class="['px-4 py-1.5 text-xs font-semibold rounded-lg transition-all', activeTab === 'supplement' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'text-[var(--color-text-secondary)] hover:text-white']"
+          :class="['mode-toggle-btn', activeTab === 'supplement' ? 'mode-toggle-btn--active' : '']"
         >
           Supplement Formulator
         </button>
         <button
           @click="activeTab = 'cosmetic'"
-          :class="['px-4 py-1.5 text-xs font-semibold rounded-lg transition-all', activeTab === 'cosmetic' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'text-[var(--color-text-secondary)] hover:text-white']"
+          :class="['mode-toggle-btn', activeTab === 'cosmetic' ? 'mode-toggle-btn--active' : '']"
         >
           Cosmetic Formulator
         </button>
