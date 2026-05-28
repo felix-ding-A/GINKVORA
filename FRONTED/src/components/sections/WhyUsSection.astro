@@ -1,42 +1,19 @@
 ---
 // WhyUsSection.astro — Why Choose GINKVORA feature highlights
+import { useTranslations, getLocalePath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+interface Props { lang?: string; }
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang as Lang);
+const lp = (path: string) => getLocalePath(lang as Lang, path);
+
 const features = [
-  {
-    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>`,
-    title: 'Strict Quality Control',
-    description: 'Every batch undergoes multi-stage testing — HPLC, GC-MS, microbiological screening — with full COA and third-party verification.',
-    color: 'var(--color-primary)',
-  },
-  {
-    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>`,
-    title: 'Natural Source Traceability',
-    description: 'Complete supply chain transparency from cultivation origin to final extraction. Know exactly where your ingredients come from.',
-    color: 'var(--color-primary-light)',
-  },
-  {
-    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
-    title: 'Global Logistics Network',
-    description: 'Reliable shipping to 50+ countries with temperature-controlled transport options. Customs documentation fully supported.',
-    color: 'var(--color-accent)',
-  },
-  {
-    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>`,
-    title: 'Custom Formulation Support',
-    description: 'Expert R&D team available for co-development, private label, and OEM/ODM projects. From concept to finished product.',
-    color: '#7aade0',
-  },
-  {
-    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
-    title: 'Rapid Response & Sampling',
-    description: 'Free samples dispatched within 24-48 hours. Dedicated account manager for every B2B partner with direct line support.',
-    color: 'var(--color-primary)',
-  },
-  {
-    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
-    title: 'Regulatory Documentation',
-    description: 'Full regulatory package available: GRAS notices, EFSA dossiers, allergen declarations, country-specific compliance support.',
-    color: 'var(--color-accent-light)',
-  },
+  { title: t('whyus.feat1_title'), description: t('whyus.feat1_desc'), icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>`, color: 'var(--color-primary)' },
+  { title: t('whyus.feat2_title'), description: t('whyus.feat2_desc'), icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>`, color: 'var(--color-primary-light)' },
+  { title: t('whyus.feat3_title'), description: t('whyus.feat3_desc'), icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`, color: 'var(--color-accent)' },
+  { title: t('whyus.feat4_title'), description: t('whyus.feat4_desc'), icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>`, color: '#7aade0' },
+  { title: t('whyus.feat5_title'), description: t('whyus.feat5_desc'), icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`, color: 'var(--color-primary)' },
+  { title: t('whyus.feat6_title'), description: t('whyus.feat6_desc'), icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`, color: 'var(--color-accent-light)' },
 ];
 ---
 
@@ -45,16 +22,16 @@ const features = [
     <div class="whyus-inner">
       <!-- Left: Heading + images -->
       <div class="whyus-left reveal">
-        <span class="section-label">Why GINKVORA</span>
+        <span class="section-label">{t('whyus.label')}</span>
         <h2 class="whyus-title">
-          The Standard<br/>
-          <span class="gradient-text--green">Others Follow</span>
+          {t('whyus.title_1')}<br/>
+          <span class="gradient-text--green">{t('whyus.title_2')}</span>
         </h2>
         <p class="whyus-desc">
-          We combine 20+ years of botanical expertise with state-of-the-art extraction technology and rigorous quality systems to deliver ingredients that meet — and exceed — international standards.
+          {t('whyus.desc')}
         </p>
-        <a href="/about" class="btn btn--secondary" id="learn-more-btn">
-          Learn More About Us
+        <a href={lp('/about')} class="btn btn--secondary" id="learn-more-btn">
+          {t('whyus.cta')}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>

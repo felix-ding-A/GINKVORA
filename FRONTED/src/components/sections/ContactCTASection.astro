@@ -1,5 +1,11 @@
 ---
 // ContactCTASection.astro — Bottom CTA with contact form teaser
+import { useTranslations, getLocalePath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+interface Props { lang?: string; }
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang as Lang);
+const lp = (path: string) => getLocalePath(lang as Lang, path);
 ---
 
 <section class="cta-section" id="contact-cta" aria-label="Request a sample">
@@ -12,38 +18,29 @@
   <div class="container">
     <div class="cta-inner glass reveal">
       <div class="cta-left">
-        <span class="section-label">Start Today</span>
+        <span class="section-label">{t('cta.label')}</span>
         <h2 class="cta-title">
-          Ready to Source<br/>
-          <span class="gradient-text">Premium Botanicals?</span>
+          {t('cta.title_1')}<br/>
+          <span class="gradient-text">{t('cta.title_2')}</span>
         </h2>
         <p class="cta-desc">
-          Request free samples, get pricing, or discuss custom formulation needs. 
-          Our team responds within 24 hours, 7 days a week.
+          {t('cta.desc')}
         </p>
 
         <div class="cta-features">
-          <div class="cta-feature">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
-            <span>Free samples shipped globally</span>
-          </div>
-          <div class="cta-feature">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
-            <span>Response within 24 hours</span>
-          </div>
-          <div class="cta-feature">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
-            <span>No minimum order for samples</span>
-          </div>
-          <div class="cta-feature">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
-            <span>Full documentation provided</span>
-          </div>
+          {[
+            t('cta.feat1'), t('cta.feat2'), t('cta.feat3'), t('cta.feat4')
+          ].map((feat) => (
+            <div class="cta-feature">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+              <span>{feat}</span>
+            </div>
+          ))}
         </div>
 
         <div class="cta-actions">
-          <a href="/contact" class="btn btn--primary btn--lg" id="cta-request-btn">
-            Request a Sample
+          <a href={lp('/contact')} class="btn btn--primary btn--lg" id="cta-request-btn">
+            {t('cta.btn_sample')}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
@@ -53,7 +50,7 @@
               <rect width="20" height="16" x="2" y="4" rx="2"/>
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
             </svg>
-            Email Us
+            {t('cta.btn_email')}
           </a>
         </div>
       </div>
@@ -61,70 +58,46 @@
       <!-- Right: Quick inquiry form -->
       <div class="cta-right">
         <div class="quick-form-card glass">
-          <h3 class="quick-form-title">Quick Inquiry</h3>
-          <p class="quick-form-sub">Tell us what you need — we'll get back within 24h.</p>
+          <h3 class="quick-form-title">{t('cta.form_title')}</h3>
+          <p class="quick-form-sub">{t('cta.form_sub')}</p>
 
           <form class="quick-form" id="quick-inquiry-form" novalidate>
             <div class="form-field">
-              <label for="qi-name" class="form-label">Your Name *</label>
-              <input
-                type="text"
-                id="qi-name"
-                name="name"
-                class="form-input"
-                placeholder="John Smith"
-                required
-                autocomplete="name"
-              />
+              <label for="qi-name" class="form-label">{t('cta.form_name')}</label>
+              <input type="text" id="qi-name" name="name" class="form-input" placeholder="John Smith" required autocomplete="name" />
             </div>
 
             <div class="form-field">
-              <label for="qi-company" class="form-label">Company *</label>
-              <input
-                type="text"
-                id="qi-company"
-                name="company"
-                class="form-input"
-                placeholder="Acme Nutraceuticals"
-                required
-                autocomplete="organization"
-              />
+              <label for="qi-company" class="form-label">{t('cta.form_company')}</label>
+              <input type="text" id="qi-company" name="company" class="form-input" placeholder="Acme Nutraceuticals" required autocomplete="organization" />
             </div>
 
             <div class="form-field">
-              <label for="qi-email" class="form-label">Email *</label>
-              <input
-                type="email"
-                id="qi-email"
-                name="email"
-                class="form-input"
-                placeholder="john@company.com"
-                required
-                autocomplete="email"
-              />
+              <label for="qi-email" class="form-label">{t('cta.form_email')}</label>
+              <input type="email" id="qi-email" name="email" class="form-input" placeholder="john@company.com" required autocomplete="email" />
             </div>
 
             <div class="form-field">
-              <label for="qi-interest" class="form-label">Interested In</label>
+              <label for="qi-interest" class="form-label">{t('cta.form_interest')}</label>
               <select id="qi-interest" name="interest" class="form-input form-select">
-                <option value="">Select a category...</option>
-                <option value="health">Health Supplement Ingredients</option>
-                <option value="cosmetics">Cosmetic Actives</option>
-                <option value="pet">Pet Health Ingredients</option>
-                <option value="custom">Custom Formulation</option>
-                <option value="other">Other / Not Sure Yet</option>
+                <option value="">{t('cta.form_select')}</option>
+                <option value="health">{t('cta.form_opt_health')}</option>
+                <option value="cosmetics">{t('cta.form_opt_cosmetics')}</option>
+                <option value="pet">{t('cta.form_opt_pet')}</option>
+                <option value="custom">{t('cta.form_opt_custom')}</option>
+                <option value="other">{t('cta.form_opt_other')}</option>
               </select>
             </div>
 
-            <button type="submit" class="btn btn--primary" style="width: 100%; justify-content: center;" id="quick-form-submit">
-              Send Inquiry
+            <button type="submit" class="btn btn--primary" style="width: 100%; justify-content: center;" id="quick-form-submit" data-sending={t('cta.form_sending')} data-default={t('cta.form_submit')}>
+              {t('cta.form_submit')}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                 <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
               </svg>
             </button>
 
             <p class="form-disclaimer">
-              By submitting, you agree to our <a href="/privacy">Privacy Policy</a>. No spam, ever.
+              {t('cta.form_disclaimer')} <a href={lp('/privacy')}>{t('cta.form_disclaimer_link')}</a>{t('cta.form_privacy_suffix')}
             </p>
 
             <!-- Success message (hidden by default) -->
@@ -133,7 +106,7 @@
                 <path d="M9 12l2 2 4-4"/>
                 <circle cx="12" cy="12" r="10"/>
               </svg>
-              <span>Thank you! We'll be in touch within 24 hours.</span>
+              <span data-success-msg={t('cta.form_success')}>{t('cta.form_success')}</span>
             </div>
           </form>
         </div>
@@ -141,6 +114,7 @@
     </div>
   </div>
 </section>
+
 
 <style>
   .cta-section {

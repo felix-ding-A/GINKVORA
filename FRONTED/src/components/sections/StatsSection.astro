@@ -1,10 +1,16 @@
 ---
 // StatsSection.astro — Animated stats counter section with wave dividers
+import { useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+interface Props { lang?: string; }
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang as Lang);
+
 const stats = [
-  { value: '500', suffix: '+', label: 'Active Ingredients', icon: '🌿' },
-  { value: '3',   suffix: '+', label: 'Years of Expertise', icon: '📅' },
-  { value: '50',  suffix: '+', label: 'Countries Served',   icon: '🌍' },
-  { value: '99',  suffix: '%', label: 'Purity Standard',    icon: '⚗️' },
+  { value: '500', suffix: '+', label: t('stats.ingredients'), icon: '🌿' },
+  { value: '3',   suffix: '+', label: t('stats.expertise'),   icon: '📅' },
+  { value: '50',  suffix: '+', label: t('stats.countries'),   icon: '🌍' },
+  { value: '99',  suffix: '%', label: t('stats.purity'),      icon: '⚗️' },
 ];
 ---
 

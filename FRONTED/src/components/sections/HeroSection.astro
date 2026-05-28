@@ -1,5 +1,11 @@
 ---
 // HeroSection.astro — Full-screen hero with gold/black/orange theme
+import { useTranslations, getLocalePath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+interface Props { lang?: string; }
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang as Lang);
+const lp = (path: string) => getLocalePath(lang as Lang, path);
 ---
 
 <section class="hero" id="hero" aria-label="Hero">
@@ -22,30 +28,28 @@
           <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true">
             <circle cx="4" cy="4" r="4"/>
           </svg>
-          B2B Plant Extract Supplier
+          {t('hero.badge')}
         </span>
       </div>
 
       <h1 class="hero-title fade-in-up delay-1">
-        Pure Nature,<br/>
-        <span class="gradient-text--gold">Proven Science</span>
+        {t('hero.title_1')}<br/>
+        <span class="gradient-text--gold">{t('hero.title_2')}</span>
       </h1>
 
       <p class="hero-sub fade-in-up delay-2">
-        Premium botanical extracts for global nutraceutical, cosmetic, and pet health industries.
-        500+ high-purity ingredients — from&nbsp;<strong>PQQ</strong> and&nbsp;<strong>NMN</strong>
-        to&nbsp;<strong>EGCG</strong> and&nbsp;<strong>Glabridin</strong>.
+        {t('hero.subtitle')}
       </p>
 
       <div class="hero-ctas fade-in-up delay-3">
-        <a href="/products" class="btn btn--gold btn--lg" id="hero-explore-btn">
-          Explore Products
+        <a href={lp('/products')} class="btn btn--gold btn--lg" id="hero-explore-btn">
+          {t('hero.cta_explore')}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </a>
-        <a href="/contact" class="btn btn--primary btn--lg" id="hero-quote-btn">
-          Request a Sample
+        <a href={lp('/contact')} class="btn btn--primary btn--lg" id="hero-quote-btn">
+          {t('hero.cta_sample')}
         </a>
       </div>
 
@@ -55,7 +59,7 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
           </svg>
-          GMP Certified
+          {t('hero.trust_gmp')}
         </div>
         <span class="trust-divider" aria-hidden="true"></span>
         <div class="trust-item">
@@ -63,7 +67,7 @@
             <circle cx="12" cy="12" r="10"/>
             <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
           </svg>
-          50+ Countries Served
+          {t('hero.trust_countries')}
         </div>
         <span class="trust-divider" aria-hidden="true"></span>
         <div class="trust-item">
@@ -71,7 +75,7 @@
             <path d="M9 12l2 2 4-4"/>
             <circle cx="12" cy="12" r="10"/>
           </svg>
-          ISO 9001:2015
+          {t('hero.trust_iso')}
         </div>
       </div>
     </div>

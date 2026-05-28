@@ -1,5 +1,11 @@
 ---
 // ExtractionProcessSection.astro — 5-step botanical extraction timeline
+import { useTranslations, getLocalePath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+interface Props { lang?: string; }
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang as Lang);
+const lp = (path: string) => getLocalePath(lang as Lang, path);
 ---
 
 <section class="extraction-section bg-noise" id="extraction-process" aria-label="Extraction Process">
@@ -8,10 +14,10 @@
       <!-- Left: header + timeline -->
       <div class="extraction-content">
         <div class="section-header" style="text-align:left; margin:0 0 3rem;">
-          <span class="section-label">How We Work</span>
-          <h2 class="section-title">Precision Extraction <em>Process</em></h2>
+          <span class="section-label">{t('extraction.label')}</span>
+          <h2 class="section-title">{t('extraction.title')} <em>{t('extraction.title_em')}</em></h2>
           <p class="section-desc">
-            From raw botanical material to pharmaceutical-grade active compounds — every step is validated, documented, and traceable.
+            {t('extraction.desc')}
           </p>
         </div>
 
@@ -20,16 +26,14 @@
       <!-- Step 1 -->
       <div class="process-step" role="listitem">
         <div class="step-connector">
-          <div class="step-node">
-            <span class="step-num">01</span>
-          </div>
+          <div class="step-node"><span class="step-num">01</span></div>
           <div class="step-line" aria-hidden="true"></div>
         </div>
         <div class="step-content glass reveal">
           <div class="step-icon" aria-hidden="true">🌿</div>
           <div class="step-body">
-            <h3>Raw Material Sourcing</h3>
-            <p>We partner with certified botanical farms and wild-harvest cooperatives to secure authentic, pesticide-free plant materials — roots, leaves, bark, and seeds — fully traceable to their origin regions.</p>
+            <h3>{t('extraction.step1_title')}</h3>
+            <p>{t('extraction.step1_desc')}</p>
             <ul class="step-tags">
               <li>GAP Certified Farms</li>
               <li>Species Authentication</li>
@@ -42,16 +46,14 @@
       <!-- Step 2 -->
       <div class="process-step" role="listitem">
         <div class="step-connector">
-          <div class="step-node">
-            <span class="step-num">02</span>
-          </div>
+          <div class="step-node"><span class="step-num">02</span></div>
           <div class="step-line" aria-hidden="true"></div>
         </div>
         <div class="step-content glass reveal reveal-delay-1">
           <div class="step-icon" aria-hidden="true">⚙️</div>
           <div class="step-body">
-            <h3>Advanced Extraction</h3>
-            <p>Our partner GMP plant employs supercritical CO₂ extraction, water-ethanol solvent systems, and membrane separation technologies to maximize yield of target active molecules while preserving purity.</p>
+            <h3>{t('extraction.step2_title')}</h3>
+            <p>{t('extraction.step2_desc')}</p>
             <ul class="step-tags">
               <li>sCO₂ Extraction</li>
               <li>Solvent Residue Control</li>
@@ -64,16 +66,14 @@
       <!-- Step 3 -->
       <div class="process-step" role="listitem">
         <div class="step-connector">
-          <div class="step-node">
-            <span class="step-num">03</span>
-          </div>
+          <div class="step-node"><span class="step-num">03</span></div>
           <div class="step-line" aria-hidden="true"></div>
         </div>
         <div class="step-content glass reveal reveal-delay-2">
           <div class="step-icon" aria-hidden="true">🔬</div>
           <div class="step-body">
-            <h3>Chromatographic Purification</h3>
-            <p>Crude extracts undergo column chromatography (preparative HPLC or resin column) isolation to achieve monomer purity ≥98%, removing plant matrix compounds and concentrating the active constituent.</p>
+            <h3>{t('extraction.step3_title')}</h3>
+            <p>{t('extraction.step3_desc')}</p>
             <ul class="step-tags">
               <li>Preparative HPLC</li>
               <li>Resin Column Separation</li>
@@ -86,16 +86,14 @@
       <!-- Step 4 -->
       <div class="process-step" role="listitem">
         <div class="step-connector">
-          <div class="step-node">
-            <span class="step-num">04</span>
-          </div>
+          <div class="step-node"><span class="step-num">04</span></div>
           <div class="step-line" aria-hidden="true"></div>
         </div>
         <div class="step-content glass reveal reveal-delay-3">
           <div class="step-icon" aria-hidden="true">🛡️</div>
           <div class="step-body">
-            <h3>Quality & Analytical Testing</h3>
-            <p>Every batch is tested by HPLC (purity), ICP-MS (heavy metals), GC-MS (pesticide & solvents), and microbial plate count before release. Third-party SGS or Eurofins reports available on request.</p>
+            <h3>{t('extraction.step4_title')}</h3>
+            <p>{t('extraction.step4_desc')}</p>
             <ul class="step-tags">
               <li>HPLC Purity Testing</li>
               <li>ICP-MS Heavy Metals</li>
@@ -108,15 +106,13 @@
       <!-- Step 5 -->
       <div class="process-step process-step--last" role="listitem">
         <div class="step-connector">
-          <div class="step-node step-node--final">
-            <span class="step-num">05</span>
-          </div>
+          <div class="step-node step-node--final"><span class="step-num">05</span></div>
         </div>
         <div class="step-content glass reveal reveal-delay-3">
           <div class="step-icon" aria-hidden="true">📦</div>
           <div class="step-body">
-            <h3>Packaging & Global Dispatch</h3>
-            <p>Finished ingredients are packaged under inert nitrogen atmosphere in food-grade sealed bags (1kg, 5kg, 25kg drums), with COA, MSDS, and specification sheets included for every shipment.</p>
+            <h3>{t('extraction.step5_title')}</h3>
+            <p>{t('extraction.step5_desc')}</p>
             <ul class="step-tags">
               <li>Nitrogen-flush Packaging</li>
               <li>COA Included</li>
@@ -130,8 +126,8 @@
 
     <!-- Bottom CTA -->
     <div class="process-cta">
-      <a href="/quality" class="btn btn--outline">View Full Quality Standards</a>
-      <a href="/contact" class="btn btn--gold">Request a Sample</a>
+      <a href={lp('/quality')} class="btn btn--outline">{t('extraction.cta_quality')}</a>
+      <a href={lp('/contact')} class="btn btn--gold">{t('extraction.cta_sample')}</a>
     </div>
       </div>
       <!-- Right: sticky image stack -->
@@ -143,7 +139,7 @@
             loading="lazy" width="600" height="400"
           />
           <div class="vis-overlay"></div>
-          <div class="vis-label">GMP Extraction Plant</div>
+          <div class="vis-label">{t('extraction.vis_plant')}</div>
         </div>
         <div class="vis-img vis-img--bottom">
           <img
@@ -152,16 +148,16 @@
             loading="lazy" width="600" height="300"
           />
           <div class="vis-overlay"></div>
-          <div class="vis-label">QC Laboratory</div>
+          <div class="vis-label">{t('extraction.vis_lab')}</div>
         </div>
         <div class="vis-stat-card">
           <div class="vis-stat">
             <span class="vis-stat-num">500+</span>
-            <span class="vis-stat-label">Products Tested Monthly</span>
+            <span class="vis-stat-label">{t('extraction.vis_tested')}</span>
           </div>
           <div class="vis-stat">
             <span class="vis-stat-num">≥98%</span>
-            <span class="vis-stat-label">Standard Purity Target</span>
+            <span class="vis-stat-label">{t('extraction.vis_purity')}</span>
           </div>
         </div>
       </div>
