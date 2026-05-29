@@ -1,5 +1,13 @@
 ---
 // FeaturedIngredientsSection.astro — Key ingredients spotlight
+import { useTranslations, getLocalePath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+interface Props { lang?: string; }
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang as Lang);
+const lp = (path: string) => getLocalePath(lang as Lang, path);
+
+// Slugs match actual Sanity CMS slugs confirmed from sitemap
 const ingredients = [
   {
     name: 'PQQ',
@@ -9,7 +17,7 @@ const ingredients = [
     description: 'A potent redox cofactor that supports mitochondrial biogenesis, neurological health, and cellular energy production.',
     benefits: ['Mitochondrial Health', 'Cognitive Function', 'Antioxidant', 'Longevity'],
     color: '#d4a654',
-    href: '/products/pqq-disodium-salt',
+    slug: 'pqq-disodium-salt',
   },
   {
     name: 'NMN',
@@ -19,7 +27,7 @@ const ingredients = [
     description: 'Direct precursor to NAD+, supporting cellular metabolism, DNA repair, and healthy aging pathways.',
     benefits: ['NAD+ Precursor', 'Anti-Aging', 'Metabolism', 'DNA Repair'],
     color: '#e07830',
-    href: '/products/nmn-beta-nicotinamide-mononucleotide',
+    slug: 'nmn-nicotinamide-mononucleotide',
   },
   {
     name: 'Glabridin',
@@ -29,7 +37,7 @@ const ingredients = [
     description: 'Powerful skin-brightening and anti-inflammatory active derived from licorice root, widely used in premium skincare formulations.',
     benefits: ['Skin Brightening', 'Anti-Inflammatory', 'UV Protection', 'Antioxidant'],
     color: '#f0c878',
-    href: '/products/glabridin-40',
+    slug: 'glabridin',
   },
   {
     name: 'EGCG',
@@ -39,7 +47,7 @@ const ingredients = [
     description: 'The most bioactive catechin from green tea with exceptional antioxidant capacity, used in both supplements and cosmetics.',
     benefits: ['Antioxidant', 'Anti-Aging', 'Weight Management', 'Skin Health'],
     color: '#c8965a',
-    href: '/products/egcg-98',
+    slug: 'egcg-epigallocatechin-gallate',
   },
   {
     name: 'Luteolin',
@@ -49,7 +57,7 @@ const ingredients = [
     description: 'A naturally occurring flavonoid with strong anti-inflammatory, neuroprotective, and immune-modulating properties.',
     benefits: ['Anti-Inflammatory', 'Neuroprotection', 'Immunity', 'Antioxidant'],
     color: '#e09040',
-    href: '/products/luteolin-98',
+    slug: 'luteolin',
   },
   {
     name: 'Flavone',
@@ -59,7 +67,7 @@ const ingredients = [
     description: 'A parent compound of the flavonoid class with broad biological activities including antimicrobial and anti-cancer properties.',
     benefits: ['Anticancer Research', 'Antimicrobial', 'Anti-Inflammatory', 'Antioxidant'],
     color: '#b87840',
-    href: '/products/flavone-99',
+    slug: 'flavone',
   },
 ];
 ---
@@ -68,13 +76,13 @@ const ingredients = [
   <div class="container">
     <!-- Header -->
     <div class="section-header reveal">
-      <span class="section-label">Featured Ingredients</span>
+      <span class="section-label">{t('featured.label')}</span>
       <h2 class="section-title">
-        High-Purity Botanicals<br/>
-        <span class="gradient-text">You Can Trust</span>
+        {t('featured.title_1')}<br/>
+        <span class="gradient-text">{t('featured.title_2')}</span>
       </h2>
       <p class="section-desc">
-        Every ingredient is rigorously tested and comes with comprehensive analytical documentation — COA, MSDS, and third-party test reports.
+        {t('featured.desc')}
       </p>
     </div>
 
@@ -82,7 +90,7 @@ const ingredients = [
     <div class="ingredients-grid">
       {ingredients.map((ing, idx) => (
         <a
-          href={ing.href}
+          href={lp(`/products/${ing.slug}`)}
           class={`ingredient-card glass reveal reveal-delay-${(idx % 4) + 1}`}
           style={`--ing-color: ${ing.color};`}
           id={`ingredient-${ing.name.toLowerCase()}`}
@@ -102,7 +110,7 @@ const ingredients = [
 
           <!-- Purity indicator -->
           <div class="card-purity">
-            <span class="purity-label">Purity</span>
+            <span class="purity-label">{t('products.purity_label')}</span>
             <div class="purity-bar-wrap">
               <div class="purity-bar" style={`--purity: ${parseInt(ing.purity) / 100};`}></div>
             </div>
@@ -121,7 +129,7 @@ const ingredients = [
 
           <!-- Link -->
           <div class="card-link">
-            View Details
+            {t('products.view_details')}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
@@ -131,8 +139,8 @@ const ingredients = [
     </div>
 
     <div class="ingredients-cta reveal">
-      <a href="/products" class="btn btn--primary" id="view-all-ingredients-btn">
-        View All 500+ Ingredients
+      <a href={lp('/products')} class="btn btn--primary" id="view-all-ingredients-btn">
+        {t('featured.cta')}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>

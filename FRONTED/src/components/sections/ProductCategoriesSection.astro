@@ -1,12 +1,19 @@
 ---
 // ProductCategoriesSection.astro — Product category showcase with imagery
+import { useTranslations, getLocalePath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+interface Props { lang?: string; }
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang as Lang);
+const lp = (path: string) => getLocalePath(lang as Lang, path);
+
 const categories = [
   {
     id: 'health-supplements',
     icon: '💊',
     title: 'Health Supplement Ingredients',
     description: 'High-purity active compounds for nutraceuticals, dietary supplements and functional foods. PQQ, NMN, Resveratrol, CoQ10 and more.',
-    href: '/products?category=health-supplements',
+    href: lp('/products?category=health-supplements'),
     ingredients: ['PQQ', 'NMN', 'Resveratrol', 'CoQ10', 'Quercetin'],
     color: 'var(--color-primary)',
     colorBg: 'rgba(124, 184, 122, 0.06)',
@@ -18,7 +25,7 @@ const categories = [
     icon: '✨',
     title: 'Cosmetic Active Ingredients',
     description: 'Clinically-backed botanical actives for skincare and hair care formulations. Glabridin, EGCG, Luteolin, Bakuchiol and more.',
-    href: '/products?category=cosmetic-actives',
+    href: lp('/products?category=cosmetic-actives'),
     ingredients: ['Glabridin', 'EGCG', 'Luteolin', 'Bakuchiol', 'Astaxanthin'],
     color: 'var(--color-accent)',
     colorBg: 'rgba(200, 169, 110, 0.06)',
@@ -30,7 +37,7 @@ const categories = [
     icon: '🐾',
     title: 'Pet Health Ingredients',
     description: 'Natural botanical extracts formulated for companion animal supplements. Supporting joint health, cognitive function and immunity.',
-    href: '/products?category=pet-health',
+    href: lp('/products?category=pet-health'),
     ingredients: ['Boswellia', 'Ashwagandha', 'Milk Thistle', 'Fish Oil', 'Glucosamine'],
     color: '#7aade0',
     colorBg: 'rgba(122, 173, 224, 0.06)',
@@ -42,7 +49,7 @@ const categories = [
     icon: '⚗️',
     title: 'Custom Formulation',
     description: 'Tailored OEM/ODM solutions. From ingredient blending to finished product development, we work to your specifications.',
-    href: '/contact',
+    href: lp('/contact'),
     ingredients: ['OEM', 'ODM', 'Private Label', 'R&D Support', 'Regulatory'],
     color: 'var(--color-primary-light)',
     colorBg: 'rgba(168, 213, 166, 0.06)',
@@ -56,13 +63,13 @@ const categories = [
   <div class="container">
     <!-- Header -->
     <div class="section-header reveal">
-      <span class="section-label">Product Portfolio</span>
+      <span class="section-label">{t('categories.label')}</span>
       <h2 class="section-title">
-        One Supplier,<br/>
-        <span class="gradient-text">Four Sectors</span>
+        {t('categories.title_1')}<br/>
+        <span class="gradient-text">{t('categories.title_2')}</span>
       </h2>
       <p class="section-desc">
-        From nutraceuticals to cosmetics and pet health — comprehensive botanical ingredient solutions under one roof with consistent quality and traceability.
+        {t('categories.desc')}
       </p>
     </div>
 
@@ -105,8 +112,8 @@ const categories = [
 
     <!-- Bottom CTA -->
     <div class="categories-cta reveal">
-      <a href="/products" class="btn btn--secondary" id="all-products-btn">
-        View All Products
+      <a href={lp('/products')} class="btn btn--secondary" id="all-products-btn">
+        {t('categories.cta')}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>

@@ -1,6 +1,12 @@
 ---
 // InsightsPreviewSection.astro — Homepage blog preview with 3 mock/live posts
 import { getAllPosts, urlFor } from '../../lib/sanity';
+import { useTranslations, getLocalePath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+interface Props { lang?: string; }
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang as Lang);
+const lp = (path: string) => getLocalePath(lang as Lang, path);
 
 const allPosts = await getAllPosts();
 const previewPosts = allPosts.slice(0, 3); // Show latest 3
@@ -10,14 +16,14 @@ const previewPosts = allPosts.slice(0, 3); // Show latest 3
   <div class="container">
     <div class="section-header-row">
       <div class="header-left">
-        <span class="section-label">Knowledge Hub</span>
+        <span class="section-label">{t('insights_preview.label')}</span>
         <h2 class="section-title">Industry <em>Insights</em></h2>
         <p class="section-desc">
-          Scientific research, market intelligence, and regulatory updates for ingredient procurement professionals.
+          {t('insights_preview.desc')}
         </p>
       </div>
-      <a href="/insights" class="btn btn--outline btn--sm header-cta" aria-label="View all articles">
-        All Articles
+      <a href={lp('/insights')} class="btn btn--outline btn--sm header-cta" aria-label="View all articles">
+        {t('insights_preview.all')}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
         </svg>
@@ -27,7 +33,7 @@ const previewPosts = allPosts.slice(0, 3); // Show latest 3
     <div class="posts-grid">
       {previewPosts.map((post, i) => (
         <article class={`post-card glass reveal ${i === 0 ? 'post-card--featured' : ''} reveal-delay-${i}`}>
-          <a href={`/insights/${post.slug}`} class="card-image-link" tabindex="-1" aria-hidden="true">
+          <a href={lp(`/insights/${post.slug}`)} class="card-image-link" tabindex="-1" aria-hidden="true">
             <div class="card-image">
               <picture style="display: contents;">
                 <source srcset={urlFor(post.coverImage).width(600).format('webp').url()} type="image/webp" />
@@ -49,27 +55,27 @@ const previewPosts = allPosts.slice(0, 3); // Show latest 3
             <div class="card-meta">
               <time datetime={post.publishedAt}>
                 {post.publishedAt
-                  ? new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+                  ? new Date(post.publishedAt).toLocaleDateString(lang === 'ru' ? 'ru-RU' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' })
                   : 'May 2026'}
               </time>
               {post.readTime && (
                 <>
                   <span class="dot">·</span>
-                  <span>{post.readTime} min read</span>
+                  <span>{post.readTime} {t('insights.min_read')}</span>
                 </>
               )}
             </div>
 
             <h3 class="card-title">
-              <a href={`/insights/${post.slug}`}>{post.title}</a>
+              <a href={lp(`/insights/${post.slug}`)}>{post.title}</a>
             </h3>
 
             {i === 0 && (
               <p class="card-excerpt">{post.excerpt}</p>
             )}
 
-            <a href={`/insights/${post.slug}`} class="card-link" aria-label={`Read ${post.title}`}>
-              Read Article
+            <a href={lp(`/insights/${post.slug}`)} class="card-link" aria-label={`Read ${post.title}`}>
+              {t('insights.read_more')}
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                 <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
               </svg>

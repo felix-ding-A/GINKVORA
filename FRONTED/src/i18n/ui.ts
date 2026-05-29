@@ -214,16 +214,29 @@ export const ui = {
     'cta.form_error':           'Something went wrong. Please email us directly at inquiry@ginkvora.com',
 
     // ── Product Categories Section ──
-    'categories.label':         'What We Supply',
-    'categories.title':         'Three Core Markets',
-    'categories.desc':          'From longevity nutraceuticals to cosmetic actives and veterinary supplements — our portfolio covers the most demanding B2B ingredient needs.',
+    'categories.label':         'Product Portfolio',
+    'categories.title_1':       'One Supplier,',
+    'categories.title_2':       'Four Sectors',
+    'categories.desc':          'From nutraceuticals to cosmetics and pet health — comprehensive botanical ingredient solutions under one roof with consistent quality and traceability.',
+    'categories.cta':           'View All Products',
     'categories.health_title':  'Health Supplements',
     'categories.health_desc':   'Longevity actives, antioxidants, and cognitive enhancers for dietary supplement brands and contract manufacturers.',
     'categories.cosmetic_title':'Cosmetic Actives',
     'categories.cosmetic_desc': 'Skin brighteners, anti-aging peptides, and standardized plant actives for prestige skincare formulators.',
     'categories.pet_title':     'Pet Health',
     'categories.pet_desc':      'Veterinary-grade botanicals and functional ingredients for premium pet supplement and functional treat brands.',
-    'categories.cta':           'Browse Full Catalogue',
+
+    // ── Featured Ingredients Section ──
+    'featured.label':           'Featured Ingredients',
+    'featured.title_1':         'High-Purity Botanicals',
+    'featured.title_2':         'You Can Trust',
+    'featured.desc':            'Every ingredient is rigorously tested and comes with comprehensive analytical documentation — COA, MSDS, and third-party test reports.',
+    'featured.cta':             'View All 500+ Ingredients',
+
+    // ── Insights Preview Section ──
+    'insights_preview.label':   'Knowledge Hub',
+    'insights_preview.desc':    'Scientific research, market intelligence, and regulatory updates for ingredient procurement professionals.',
+    'insights_preview.all':     'All Articles',
 
     // ── Common ──
     'common.loading':           'Loading...',
@@ -436,16 +449,29 @@ export const ui = {
     'cta.form_error':           'Произошла ошибка. Пожалуйста, напишите нам напрямую на inquiry@ginkvora.com',
 
     // ── Product Categories Section ──
-    'categories.label':         'Что мы поставляем',
-    'categories.title':         'Три ключевых рынка',
-    'categories.desc':          'От нутрицевтиков долголетия до косметических активов и ветеринарных добавок — наш портфель закрывает самые требовательные B2B потребности.',
+    'categories.label':         'Продуктовый портфель',
+    'categories.title_1':       'Один поставщик,',
+    'categories.title_2':       'четыре сектора',
+    'categories.desc':          'От нутрицевтиков до косметики и здоровья животных — комплексные решения ботанических ингредиентов под одной крышей с постоянным качеством и прослеживаемостью.',
+    'categories.cta':           'Смотреть все продукты',
     'categories.health_title':  'Биологически активные добавки',
     'categories.health_desc':   'Активные вещества долголетия, антиоксиданты и когнитивные усилители для производителей БАД и контрактных изготовителей.',
     'categories.cosmetic_title':'Косметические активы',
     'categories.cosmetic_desc': 'Осветляющие кожу компоненты, антивозрастные пептиды и стандартизированные растительные активы для премиальных косметических формуляторов.',
     'categories.pet_title':     'Здоровье животных',
     'categories.pet_desc':      'Ботанические ингредиенты ветеринарного качества и функциональные компоненты для премиальных добавок и лакомств для животных.',
-    'categories.cta':           'Смотреть весь каталог',
+
+    // ── Featured Ingredients Section ──
+    'featured.label':           'Ключевые ингредиенты',
+    'featured.title_1':         'Высокочистые ботаники,',
+    'featured.title_2':         'которым вы можете доверять',
+    'featured.desc':            'Каждый ингредиент проходит строгие испытания и поставляется с полной аналитической документацией — COA, MSDS и отчётами независимых лабораторий.',
+    'featured.cta':             'Смотреть все 500+ ингредиентов',
+
+    // ── Insights Preview Section ──
+    'insights_preview.label':   'База знаний',
+    'insights_preview.desc':    'Научные исследования, аналитика рынка и регуляторные обновления для специалистов по закупке ингредиентов.',
+    'insights_preview.all':     'Все статьи',
 
     // ── Common ──
     'common.loading':           'Загрузка...',
