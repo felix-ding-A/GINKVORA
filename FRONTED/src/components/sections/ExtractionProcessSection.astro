@@ -106,7 +106,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
       <!-- Step 5 -->
       <div class="process-step process-step--last" role="listitem">
         <div class="step-connector">
-          <div class="step-node step-node--final"><span class="step-num">05</span></div>
+          <div class="step-node"><span class="step-num">05</span></div>
         </div>
         <div class="step-content glass reveal reveal-delay-3">
           <div class="step-icon" aria-hidden="true">📦</div>
@@ -334,21 +334,12 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
     color: var(--color-bg);
   }
 
-  .step-node--final {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-    border-color: var(--color-primary-light);
-  }
-
   .step-num {
     font-family: var(--font-mono);
     font-size: 0.7rem;
     font-weight: 700;
     color: var(--color-primary-light);
     letter-spacing: 0.05em;
-  }
-
-  .step-node--final .step-num {
-    color: var(--color-bg);
   }
 
   .step-line {
