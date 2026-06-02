@@ -263,6 +263,8 @@ const faqSchema = {
 
         <form id="product-rfq-form" class="rfq-form">
           <input type="hidden" name="productName" value={product.name} />
+          <input type="text" name="website" class="honeypot-field" autocomplete="off" tabindex="-1" placeholder="Leave this field empty" />
+
 
           <div class="form-grid">
             <div class="form-field">
@@ -556,6 +558,15 @@ const faqSchema = {
     border-radius: var(--radius-lg);
     border-color: rgba(212,166,84,0.2) !important;
   }
+  /* Honeypot hidden field styling */
+  .honeypot-field {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
 
   .inquiry-header {
     text-align: center;
@@ -637,6 +648,16 @@ const faqSchema = {
         }
 
         const formData = new FormData(rfqForm);
+        // Honeypot check: if hidden field filled, likely a bot
+        if (formData.get('website')) {
+          console.warn('Bot submission detected via honeypot field.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Quotation Request';
+          }
+          return;
+        }
+
         const data = {
           name: formData.get('name'),
           email: formData.get('email'),
