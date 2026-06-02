@@ -564,3 +564,15 @@ button { cursor: pointer; font-family: var(--font-body); }
   * { background: white !important; color: black !important; }
   nav, footer, .no-print { display: none !important; }
 }
+
+/* ── Honeypot field (hidden from users/screen readers, filled by bots) ── */
+.honeypot-field {
+  display: none !important;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+  width: 0;
+  z-index: -1;
+}

@@ -64,6 +64,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
             <p class="quick-form-sub">{t('cta.form_sub')}</p>
 
             <form class="quick-form" id="quick-inquiry-form" novalidate>
+              <input type="text" name="b_website" class="honeypot-field" autocomplete="off" tabindex="-1" placeholder="Leave this field empty" />
               <div class="form-field">
                 <label for="qi-name" class="form-label">{t('cta.form_name')}</label>
                 <input type="text" id="qi-name" name="name" class="form-input" placeholder="John Smith" required autocomplete="name" />
@@ -423,6 +424,10 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
     submitBtn.textContent = 'Sending...';
 
     const formData = new FormData(form);
+    if (formData.get('b_website')) {
+      console.warn('Bot submission detected via honeypot field.');
+      return;
+    }
     const data = Object.fromEntries(formData.entries());
 
     try {

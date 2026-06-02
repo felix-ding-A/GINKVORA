@@ -46,6 +46,7 @@ const t = useTranslations(lang);
       <div class="contact-form-wrap glass">
         <h2>Форма запроса</h2>
         <form id="ru-contact-form" class="contact-form" novalidate>
+          <input type="text" name="b_website" class="honeypot-field" autocomplete="off" tabindex="-1" placeholder="Leave this field empty" />
           <div class="form-group">
             <label for="name">{t('contact.form_name')} *</label>
             <input type="text" id="name" name="name" required placeholder="Иван Иванов" />
@@ -106,6 +107,13 @@ const t = useTranslations(lang);
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!form.checkValidity()) { form.reportValidity(); return; }
+    
+    const formData = new FormData(form);
+    if (formData.get('b_website')) {
+      console.warn('Bot submission detected via honeypot field.');
+      return;
+    }
+
     btn.disabled = true;
     btn.textContent = 'Отправка...';
     try {

@@ -39,6 +39,7 @@ const contactSchema = {
           <p class="form-subtitle">Fields marked with an asterisk (*) are required.</p>
 
           <form id="contact-full-form" class="full-form">
+            <input type="text" name="b_website" class="honeypot-field" autocomplete="off" tabindex="-1" placeholder="Leave this field empty" />
             <div class="form-row-2">
               <div class="form-field">
                 <label for="name" class="form-label">Full Name *</label>
@@ -370,6 +371,15 @@ const contactSchema = {
         }
 
         const formData = new FormData(form);
+        if (formData.get('b_website')) {
+          console.warn('Bot submission detected via honeypot field.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send RFQ Inquiry';
+          }
+          return;
+        }
+
         const data = {
           name: formData.get('name'),
           email: formData.get('email'),
@@ -380,6 +390,7 @@ const contactSchema = {
           productName: formData.get('productName'),
           quantity: formData.get('quantity'),
           message: formData.get('message'),
+          b_website: formData.get('b_website'),
         };
 
         try {

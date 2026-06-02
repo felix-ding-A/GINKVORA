@@ -12,7 +12,16 @@ const TO_EMAIL   = import.meta.env.TO_EMAIL   || 'inquiry@ginkvora.com';
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const { name, email, company, interest, message, phone, website, industry, productName, quantity } = body;
+    const { name, email, company, interest, message, phone, website, industry, productName, quantity, b_website } = body;
+
+    // --- Honeypot check ---
+    if (b_website) {
+      console.warn('Spam bot detected via honeypot:', { b_website, ip: request.headers.get('x-forwarded-for') });
+      return new Response(
+        JSON.stringify({ error: 'Suspicious activity detected.' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
     // --- Basic validation ---
     if (!name || !email || !company) {
