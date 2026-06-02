@@ -160,8 +160,23 @@ export const productType = defineType({
       components: { input: CustomMarkdownInput },
     }),
     defineField({
+      name: 'seoTitle_ru',
+      title: '🇷🇺 Meta Title (RU)',
+      type: 'string',
+      group: 'i18n',
+      description: 'Русский заголовок для SEO, не более 60 символов.',
+    }),
+    defineField({
+      name: 'seoDescription_ru',
+      title: '🇷🇺 Meta Description (RU)',
+      type: 'text',
+      group: 'i18n',
+      rows: 3,
+      description: 'Русское описание для SEO, не более 160 символов.',
+    }),
+    defineField({
       name: 'seo_ru',
-      title: '🇷🇺 SEO Settings (RU)',
+      title: '🇷🇺 SEO Settings (RU) [Legacy]',
       type: 'object',
       group: 'i18n',
       fields: [
@@ -275,8 +290,23 @@ export const productType = defineType({
 
     // ── SEO ─────────────────────────────────────────
     defineField({
+      name: 'seoTitle',
+      title: 'Meta Title (EN)',
+      type: 'string',
+      group: 'seo',
+      description: 'Custom meta title for SEO optimization (max 60 chars).',
+    }),
+    defineField({
+      name: 'seoDescription',
+      title: 'Meta Description (EN)',
+      type: 'text',
+      group: 'seo',
+      rows: 3,
+      description: 'Custom meta description for SEO optimization (max 160 chars).',
+    }),
+    defineField({
       name: 'seo',
-      title: 'SEO Settings',
+      title: 'SEO Settings [Legacy]',
       type: 'object',
       group: 'seo',
       fields: [

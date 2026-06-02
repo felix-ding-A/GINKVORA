@@ -163,7 +163,11 @@ export const PRODUCT_DETAIL_FIELDS = `
   coaFile{asset->{url}},
   msdsFile{asset->{url}},
   seo{title, description},
-  seo_ru{title, description}
+  seo_ru{title, description},
+  seoTitle,
+  seoDescription,
+  seoTitle_ru,
+  seoDescription_ru
 `;
 
 export async function getAllProducts() {
