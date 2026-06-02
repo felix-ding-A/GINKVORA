@@ -159,6 +159,16 @@ export const productType = defineType({
       description: 'Применение продукта на русском языке.',
       components: { input: CustomMarkdownInput },
     }),
+    defineField({
+      name: 'seo_ru',
+      title: '🇷🇺 SEO Settings (RU)',
+      type: 'object',
+      group: 'i18n',
+      fields: [
+        defineField({ name: 'title', type: 'string', title: 'Meta Title (RU)', description: 'Макс. 60 символов' }),
+        defineField({ name: 'description', type: 'text', title: 'Meta Description (RU)', description: 'Макс. 160 символов', rows: 3 }),
+      ],
+    }),
 
     defineField({
       name: 'certifications',

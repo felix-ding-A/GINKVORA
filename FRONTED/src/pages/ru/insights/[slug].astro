@@ -11,7 +11,9 @@ const t = useTranslations(lang);
 
 export async function getStaticPaths() {
   const posts = await getAllPosts(100);
-  return posts.map((p: any) => ({ params: { slug: p.slug } }));
+  return posts
+    .filter((p: any) => p && typeof p.slug === 'string')
+    .map((p: any) => ({ params: { slug: p.slug } }));
 }
 
 const { slug } = Astro.params;

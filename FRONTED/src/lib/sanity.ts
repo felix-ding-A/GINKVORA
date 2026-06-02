@@ -162,7 +162,8 @@ export const PRODUCT_DETAIL_FIELDS = `
   gallery[],
   coaFile{asset->{url}},
   msdsFile{asset->{url}},
-  seo{title, description}
+  seo{title, description},
+  seo_ru{title, description}
 `;
 
 export async function getAllProducts() {
@@ -394,6 +395,8 @@ export type SanityProduct = {
   applications?: any;
   certifications?: string[];
   updatedAt?: string;
+  seo?: { title?: string; description?: string };
+  seo_ru?: { title?: string; description?: string };
 };
 
 export type SanityPost = {

@@ -12,7 +12,9 @@ const lp = (path: string) => getLocalePath(lang, path);
 
 export async function getStaticPaths() {
   const products = await getAllProducts();
-  return products.map((p: any) => ({ params: { slug: p.slug } }));
+  return products
+    .filter((p: any) => p && typeof p.slug === 'string')
+    .map((p: any) => ({ params: { slug: p.slug } }));
 }
 
 const { slug } = Astro.params;
@@ -29,12 +31,14 @@ const localName          = product.name; // product name stays English (scientif
 const localShortDesc     = (getLocalizedField(product, 'shortDescription', lang) ?? product.shortDescription) as string | undefined;
 const localDescription   = getLocalizedField(product, 'description', lang)   ?? product.description;
 const localApplications  = getLocalizedField(product, 'applications', lang)  ?? product.applications;
+const localSeoTitle      = product.seo_ru?.title || product.seo?.title;
+const localSeoDesc       = product.seo_ru?.description || product.seo?.description;
 
 const productSchema = {
   "@context": "https://schema.org",
   "@type": "Product",
   "name": localName,
-  "description": localShortDesc,
+  "description": localSeoDesc || localShortDesc,
   "category": product.category.name,
   "image": urlFor(product.heroImage).url(),
   "brand": { "@type": "Brand", "name": "GINKVORA" },
@@ -54,8 +58,8 @@ const breadcrumbSchema = {
 
 <BaseLayout
   lang={lang}
-  title={`${localName} ${product.purity || ''} ${t('product.breadcrumb_list')} | GINKVORA`}
-  description={localShortDesc || `Купить высокочистый ${localName}. Качество гарантировано в соответствии с GMP. Запросить COA, MSDS или образец.`}
+  title={localSeoTitle || `${localName} ${product.purity || ''} ${t('product.breadcrumb_list')} | GINKVORA`}
+  description={localSeoDesc || localShortDesc || `Купить высокочистый ${localName}. Качество гарантировано в соответствии с GMP. Запросить COA, MSDS или образец.`}
 >
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
