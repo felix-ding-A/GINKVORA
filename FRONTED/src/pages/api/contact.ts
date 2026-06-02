@@ -12,7 +12,7 @@ const TO_EMAIL   = import.meta.env.TO_EMAIL   || 'inquiry@ginkvora.com';
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const { name, email, company, interest, message, phone } = body;
+    const { name, email, company, interest, message, phone, website, industry, productName, quantity } = body;
 
     // --- Basic validation ---
     if (!name || !email || !company) {
@@ -76,6 +76,10 @@ export const POST: APIRoute = async ({ request }) => {
                 <div class="value"><a href="mailto:${email}" style="color:#4a8a48;">${email}</a></div>
               </div>
               ${phone ? `<div class="field"><div class="label">Phone</div><div class="value">${phone}</div></div>` : ''}
+              ${website ? `<div class="field"><div class="label">Company Website</div><div class="value"><a href="${website.startsWith('http') ? website : 'https://' + website}" target="_blank" style="color:#4a8a48;">${website}</a></div></div>` : ''}
+              ${industry ? `<div class="field"><div class="label">Industry Sector</div><div class="value">${industry}</div></div>` : ''}
+              ${productName ? `<div class="field"><div class="label">Target Ingredient</div><div class="value">${productName}</div></div>` : ''}
+              ${quantity ? `<div class="field"><div class="label">Required Quantity</div><div class="value">${quantity}</div></div>` : ''}
               ${interest ? `<div class="field"><div class="label">Interested In</div><div class="value"><span class="tag">${interest}</span></div></div>` : ''}
               ${message ? `<div class="field"><div class="label">Message</div><div class="value" style="white-space:pre-wrap;">${message}</div></div>` : ''}
             </div>
@@ -89,49 +93,53 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     // --- Send auto-reply to the customer ---
-    await resend.emails.send({
-      from: FROM_EMAIL,
-      to: email,
-      subject: `We received your inquiry — GINKVORA`,
-      html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <style>
-            body { font-family: 'DM Sans', Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
-            .card { background: white; border-radius: 12px; max-width: 600px; margin: 0 auto; overflow: hidden; }
-            .header { background: linear-gradient(135deg, #0a1a0a, #132013); padding: 28px 32px; }
-            .logo { color: #a8d5a6; font-size: 20px; font-weight: 700; letter-spacing: 4px; }
-            .body { padding: 32px; line-height: 1.7; color: #333; }
-            h2 { color: #1a2a1a; }
-            .highlight { color: #4a8a48; font-weight: 500; }
-            .btn { display: inline-block; background: linear-gradient(135deg, #7cb87a, #4a8a48); color: white !important; text-decoration: none; padding: 12px 28px; border-radius: 100px; font-weight: 500; margin: 20px 0; }
-            .footer { background: #f9fafb; padding: 20px 32px; font-size: 13px; color: #999; border-top: 1px solid #eee; }
-          </style>
-        </head>
-        <body>
-          <div class="card">
-            <div class="header">
-              <div class="logo">GINKVORA</div>
+    try {
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: email,
+        subject: `We received your inquiry — GINKVORA`,
+        html: `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <style>
+              body { font-family: 'DM Sans', Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
+              .card { background: white; border-radius: 12px; max-width: 600px; margin: 0 auto; overflow: hidden; }
+              .header { background: linear-gradient(135deg, #0a1a0a, #132013); padding: 28px 32px; }
+              .logo { color: #a8d5a6; font-size: 20px; font-weight: 700; letter-spacing: 4px; }
+              .body { padding: 32px; line-height: 1.7; color: #333; }
+              h2 { color: #1a2a1a; }
+              .highlight { color: #4a8a48; font-weight: 500; }
+              .btn { display: inline-block; background: linear-gradient(135deg, #7cb87a, #4a8a48); color: white !important; text-decoration: none; padding: 12px 28px; border-radius: 100px; font-weight: 500; margin: 20px 0; }
+              .footer { background: #f9fafb; padding: 20px 32px; font-size: 13px; color: #999; border-top: 1px solid #eee; }
+            </style>
+          </head>
+          <body>
+            <div class="card">
+              <div class="header">
+                <div class="logo">GINKVORA</div>
+              </div>
+              <div class="body">
+                <h2>Thank you, ${name}! 🌿</h2>
+                <p>We've received your inquiry and our team will get back to you within <span class="highlight">24 hours</span>.</p>
+                <p>In the meantime, you can explore our full product catalog or learn more about our quality standards:</p>
+                <a href="https://ginkvora.com/products" class="btn">Browse Our Products</a>
+                <p>If you have urgent questions, you can also reach us directly at:</p>
+                <p><strong>inquiry@ginkvora.com</strong></p>
+                <p>Best regards,<br/><strong>The GINKVORA Team</strong></p>
+              </div>
+              <div class="footer">
+                Pure Nature, Proven Science · <a href="https://ginkvora.com" style="color:#4a8a48;">ginkvora.com</a>
+              </div>
             </div>
-            <div class="body">
-              <h2>Thank you, ${name}! 🌿</h2>
-              <p>We've received your inquiry and our team will get back to you within <span class="highlight">24 hours</span>.</p>
-              <p>In the meantime, you can explore our full product catalog or learn more about our quality standards:</p>
-              <a href="https://ginkvora.com/products" class="btn">Browse Our Products</a>
-              <p>If you have urgent questions, you can also reach us directly at:</p>
-              <p><strong>inquiry@ginkvora.com</strong></p>
-              <p>Best regards,<br/><strong>The GINKVORA Team</strong></p>
-            </div>
-            <div class="footer">
-              Pure Nature, Proven Science · <a href="https://ginkvora.com" style="color:#4a8a48;">ginkvora.com</a>
-            </div>
-          </div>
-        </body>
-        </html>
-      `,
-    });
+          </body>
+          </html>
+        `,
+      });
+    } catch (autoReplyError) {
+      console.warn('Auto-reply email failed to send (likely due to Resend sandbox/domain verification limits):', autoReplyError);
+    }
 
     return new Response(
       JSON.stringify({ success: true, message: 'Inquiry received!' }),

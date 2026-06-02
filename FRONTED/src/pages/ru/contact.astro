@@ -51,8 +51,8 @@ const t = useTranslations(lang);
             <input type="text" id="name" name="name" required placeholder="Иван Иванов" />
           </div>
           <div class="form-group">
-            <label for="company">{t('contact.form_company')}</label>
-            <input type="text" id="company" name="company" placeholder="ООО «Компания»" />
+            <label for="company">{t('contact.form_company')} *</label>
+            <input type="text" id="company" name="company" required placeholder="ООО «Компания»" />
           </div>
           <div class="form-group">
             <label for="email">{t('contact.form_email')} *</label>
