@@ -58,57 +58,70 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
       <!-- Right: Quick inquiry form -->
       <div class="cta-right">
         <div class="quick-form-card glass">
-          <h3 class="quick-form-title">{t('cta.form_title')}</h3>
-          <p class="quick-form-sub">{t('cta.form_sub')}</p>
+          <!-- Form State -->
+          <div id="qi-form-state">
+            <h3 class="quick-form-title">{t('cta.form_title')}</h3>
+            <p class="quick-form-sub">{t('cta.form_sub')}</p>
 
-          <form class="quick-form" id="quick-inquiry-form" novalidate>
-            <div class="form-field">
-              <label for="qi-name" class="form-label">{t('cta.form_name')}</label>
-              <input type="text" id="qi-name" name="name" class="form-input" placeholder="John Smith" required autocomplete="name" />
+            <form class="quick-form" id="quick-inquiry-form" novalidate>
+              <div class="form-field">
+                <label for="qi-name" class="form-label">{t('cta.form_name')}</label>
+                <input type="text" id="qi-name" name="name" class="form-input" placeholder="John Smith" required autocomplete="name" />
+              </div>
+
+              <div class="form-field">
+                <label for="qi-company" class="form-label">{t('cta.form_company')}</label>
+                <input type="text" id="qi-company" name="company" class="form-input" placeholder="Acme Nutraceuticals" required autocomplete="organization" />
+              </div>
+
+              <div class="form-field">
+                <label for="qi-email" class="form-label">{t('cta.form_email')}</label>
+                <input type="email" id="qi-email" name="email" class="form-input" placeholder="john@company.com" required autocomplete="email" />
+              </div>
+
+              <div class="form-field">
+                <label for="qi-interest" class="form-label">{t('cta.form_interest')}</label>
+                <select id="qi-interest" name="interest" class="form-input form-select">
+                  <option value="">{t('cta.form_select')}</option>
+                  <option value="health">{t('cta.form_opt_health')}</option>
+                  <option value="cosmetics">{t('cta.form_opt_cosmetics')}</option>
+                  <option value="pet">{t('cta.form_opt_pet')}</option>
+                  <option value="custom">{t('cta.form_opt_custom')}</option>
+                  <option value="other">{t('cta.form_opt_other')}</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn--primary" style="width: 100%; justify-content: center;" id="quick-form-submit" data-sending={t('cta.form_sending')} data-default={t('cta.form_submit')}>
+                {t('cta.form_submit')}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                </svg>
+              </button>
+
+              <p class="form-disclaimer">
+                {t('cta.form_disclaimer')} <a href={lp('/privacy')}>{t('cta.form_disclaimer_link')}</a>{t('cta.form_privacy_suffix')}
+              </p>
+            </form>
+          </div>
+
+          <!-- Success State -->
+          <div id="qi-success-state" style="display: none;">
+            <div class="success-message-container">
+              <div class="success-icon-wrapper">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="success-title">{t('cta.success_title')}</h3>
+              <p class="success-subtitle">{t('cta.success_subtitle')}</p>
+              <div class="success-details">
+                <p>{t('cta.success_details_1')}</p>
+                <p class="success-email-alert">
+                  {t('cta.success_details_2')} <a href="mailto:inquiry@ginkvora.com">inquiry@ginkvora.com</a>
+                </p>
+              </div>
             </div>
-
-            <div class="form-field">
-              <label for="qi-company" class="form-label">{t('cta.form_company')}</label>
-              <input type="text" id="qi-company" name="company" class="form-input" placeholder="Acme Nutraceuticals" required autocomplete="organization" />
-            </div>
-
-            <div class="form-field">
-              <label for="qi-email" class="form-label">{t('cta.form_email')}</label>
-              <input type="email" id="qi-email" name="email" class="form-input" placeholder="john@company.com" required autocomplete="email" />
-            </div>
-
-            <div class="form-field">
-              <label for="qi-interest" class="form-label">{t('cta.form_interest')}</label>
-              <select id="qi-interest" name="interest" class="form-input form-select">
-                <option value="">{t('cta.form_select')}</option>
-                <option value="health">{t('cta.form_opt_health')}</option>
-                <option value="cosmetics">{t('cta.form_opt_cosmetics')}</option>
-                <option value="pet">{t('cta.form_opt_pet')}</option>
-                <option value="custom">{t('cta.form_opt_custom')}</option>
-                <option value="other">{t('cta.form_opt_other')}</option>
-              </select>
-            </div>
-
-            <button type="submit" class="btn btn--primary" style="width: 100%; justify-content: center;" id="quick-form-submit" data-sending={t('cta.form_sending')} data-default={t('cta.form_submit')}>
-              {t('cta.form_submit')}
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-              </svg>
-            </button>
-
-            <p class="form-disclaimer">
-              {t('cta.form_disclaimer')} <a href={lp('/privacy')}>{t('cta.form_disclaimer_link')}</a>{t('cta.form_privacy_suffix')}
-            </p>
-
-            <!-- Success message (hidden by default) -->
-            <div class="form-success" id="form-success" hidden aria-live="polite">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5">
-                <path d="M9 12l2 2 4-4"/>
-                <circle cx="12" cy="12" r="10"/>
-              </svg>
-              <span data-success-msg={t('cta.form_success')}>{t('cta.form_success')}</span>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
@@ -285,16 +298,101 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
     text-underline-offset: 2px;
   }
 
-  .form-success {
+  /* Success State Styles */
+  .success-message-container {
+    text-align: center;
+    padding: 2.5rem 1rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
-    padding: 1rem;
-    background: rgba(124, 184, 122, 0.1);
-    border: 1px solid rgba(124, 184, 122, 0.25);
-    border-radius: var(--radius-sm);
+    justify-content: center;
+    animation: fadeInScale 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .success-icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(212, 166, 84, 0.1);
+    border: 2px solid var(--color-primary-light);
     color: var(--color-primary-light);
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0 20px rgba(212, 166, 84, 0.2);
+    position: relative;
+  }
+
+  .success-icon-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid rgba(212, 166, 84, 0.2);
+    animation: pulseGlow 2s infinite;
+  }
+
+  .success-title {
+    font-size: 1.75rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .success-subtitle {
     font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-primary-light);
+    margin-bottom: 1.25rem;
+  }
+
+  .success-details {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .success-email-alert {
+    margin-top: 1.25rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.25rem;
+  }
+
+  .success-email-alert a {
+    color: var(--color-primary-light);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.96) translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes pulseGlow {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.12);
+      opacity: 0.3;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 
   @media (max-width: 900px) {
@@ -309,7 +407,8 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
 <script>
   // Quick inquiry form handler
   const form = document.getElementById('quick-inquiry-form') as HTMLFormElement;
-  const successEl = document.getElementById('form-success') as HTMLElement;
+  const formState = document.getElementById('qi-form-state') as HTMLElement;
+  const successState = document.getElementById('qi-success-state') as HTMLElement;
   const submitBtn = document.getElementById('quick-form-submit') as HTMLButtonElement;
 
   form?.addEventListener('submit', async (e) => {
@@ -335,11 +434,8 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
 
       if (res.ok) {
         form.reset();
-        // Show success message
-        Array.from(form.children).forEach((el) => {
-          (el as HTMLElement).style.display = 'none';
-        });
-        successEl.removeAttribute('hidden');
+        if (formState) formState.style.display = 'none';
+        if (successState) successState.style.display = 'block';
       } else {
         throw new Error('Failed');
       }
