@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { getAllProducts, getAllPosts } from '../lib/sanity';
 
 const SITE_URL = 'https://ginkvora.com';
-const LOCALES = ['en', 'ru', 'es', 'ar'];
+const LOCALES = ['en', 'ru'];
 
 const staticPages = [
   '',
