@@ -203,10 +203,10 @@ export const MOCK_SITE_SETTINGS = {
   siteName: 'GINKVORA',
   tagline: 'Pure Nature, Proven Science',
   contactEmail: 'inquiry@ginkvora.com',
-  phone: '+86 (0571) 8888-8888',
+  phone: '+86 (029) 8888-8888',
   address: {
-    street: '188 Botanical Extract Boulevard, Technology District',
-    city: 'Hangzhou, Zhejiang',
+    street: 'Xi\'an International Trade & Logistics Park',
+    city: 'Xi\'an',
     country: 'China'
   },
   certifications: [
