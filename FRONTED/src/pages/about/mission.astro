@@ -1,0 +1,382 @@
+---
+// src/pages/about/mission.astro — Our Mission B2B Page
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const missionSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "Our Mission | GINKVORA",
+  "description": "Learn about GINKVORA's mission, geo-authentic sourcing, curation audit systems, and our fusion of nature and science.",
+  "url": "https://ginkvora.com/about/mission"
+};
+---
+
+<BaseLayout
+  title="Our Mission & Sourcing Values | GINKVORA"
+  description="Learn about GINKVORA's mission, geo-authentic sourcing from biodiversity hotspots, and our rigorous quality curation standards."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(missionSchema)} slot="head" />
+  <main class="mission-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="Page Header">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">Our Mission</span>
+        <h1 class="banner-title">Bridging Nature's Purity with Scientific Innovation</h1>
+        <p class="banner-desc">
+          Where the ancient wisdom of authentic botanicals meets modern laboratory precision.
+        </p>
+      </div>
+    </header>
+
+    <!-- Section 1: From the Heart of Qinling -->
+    <section class="container section intro-section" aria-label="Our Sourcing Origins">
+      <div class="intro-grid">
+        <div class="intro-left reveal">
+          <span class="accent-title">Origins of Quality</span>
+          <h2>From the Heart of Biodiverse Habitats</h2>
+          <p>
+            Since 2023, GINKVORA has been dedicated to bridging the gap between premium botanical resources and the global B2B market. Our journey begins in key biodiverse ecosystems—including the Qinling Mountains, celebrated as the 'Gene Bank' of wild flora, and regional cultivation bases in Zhejiang.
+          </p>
+          <p>
+            We have established a rigorous sourcing network, ensuring every plant extract we supply benefits from the ideal climate, altitude, and soil conditions essential for maximizing active constituent potency.
+          </p>
+        </div>
+        <div class="intro-right reveal">
+          <div class="image-showcase glass">
+            <img
+              src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&auto=format&fit=crop&q=70"
+              alt="Mountain Sourcing Origin"
+              class="showcase-img"
+            />
+            <div class="floating-caption">
+              <strong>Qinling Mountain Range</strong>
+              <span>Geo-Authentic Sourcing Zone</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Curators & Scientific Fusion -->
+    <section class="section curation-section bg-deep" aria-label="Curators & Technical Fusion">
+      <div class="container">
+        <div class="grid-2">
+          <div class="glass-card reveal">
+            <span class="card-icon-em">🔍</span>
+            <h3>More Than a Supplier: We Are Curators</h3>
+            <p>
+              We define ourselves as an innovation-driven partner, not just a trader. We understand that quality starts at the source. That’s why we don’t just buy and sell; we screen, audit, and integrate. We have filtered through hundreds of manufacturers to partner exclusively with those who meet the highest cGMP and ISO standards.
+            </p>
+          </div>
+          
+          <div class="glass-card reveal reveal-delay-1">
+            <span class="card-icon-em">🧪</span>
+            <h3>The Fusion of Bio & Nature</h3>
+            <p>
+              The name GINKVORA reflects our core philosophy: Ginkgo representing natural resilience and Vora representing vibrant scientific innovation. Beyond our botanical roots, we supply high-purity bioactive monomers. By combining natural herbal medicine with modern synthetic biology, we provide comprehensive ingredient solutions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Core Values -->
+    <section class="container section values-section" aria-label="Core Values">
+      <div class="section-header">
+        <span class="section-label">Core Values</span>
+        <h2 class="section-title">The Pillars of Our Commitment</h2>
+        <p class="section-desc">We build trust through transparency, rigorous verification, and custom-tailored supply solutions.</p>
+      </div>
+
+      <div class="grid-3">
+        <article class="value-card glass reveal">
+          <div class="value-icon">🌍</div>
+          <h3>Geo-Authentic Sourcing</h3>
+          <p>Leveraging our strategic location to secure raw materials with the highest active constituent content from verified botanical habitats.</p>
+        </article>
+
+        <article class="value-card glass reveal reveal-delay-1">
+          <div class="value-icon">🛡️</div>
+          <h3>Rigorous Audit Process</h3>
+          <p>We enforce a strict 4-step audit process for our partners, verifying compliance with global standards (GMP/ISO) and ensuring raw material purity.</p>
+        </article>
+
+        <article class="value-card glass reveal reveal-delay-2">
+          <div class="value-icon">⚙️</div>
+          <h3>Custom Innovation</h3>
+          <p>From standardized extracts to custom peptide synthesis and OEM formulation, we adapt our supply chain to your R&D needs.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="container section cta-section">
+      <div class="cta-box glass">
+        <h2>Partner with GINKVORA</h2>
+        <p>Request documentation, COAs, or sample shipments for any active plant constituent directly from our commercial desk.</p>
+        <div class="cta-btns">
+          <a href="/contact" class="btn btn--gold btn--lg">Request Quotation / Sample</a>
+          <a href="/products" class="btn btn--primary btn--lg">Browse Catalogue</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .mission-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Intro Section ── */
+  .section {
+    padding-block: var(--space-2xl);
+  }
+
+  .accent-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .intro-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  .intro-left h2 {
+    font-size: 2.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .intro-left p {
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+
+  .image-showcase {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-color: rgba(212,166,84,0.18) !important;
+  }
+
+  .showcase-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .floating-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: rgba(6, 5, 3, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--color-border);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .floating-caption strong {
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+  }
+
+  .floating-caption span {
+    color: var(--color-text-secondary);
+    font-size: 0.75rem;
+  }
+
+  /* ── Curation Section ── */
+  .bg-deep {
+    background-color: var(--color-bg-deep);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .glass-card {
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(212, 166, 84, 0.1) !important;
+    transition: all var(--transition-base);
+  }
+
+  .glass-card:hover {
+    border-color: rgba(212, 166, 84, 0.25) !important;
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .card-icon-em {
+    font-size: 2.25rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .glass-card h3 {
+    font-size: 1.375rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .glass-card p {
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+
+  /* ── Values Section ── */
+  .section-header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+  }
+
+  .section-title {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  .section-desc {
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0.75rem auto 0;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .grid-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .value-card {
+    padding: 2.25rem 1.75rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.1) !important;
+    text-align: center;
+    transition: all var(--transition-base);
+  }
+
+  .value-card:hover {
+    border-color: var(--color-border-strong) !important;
+    box-shadow: var(--shadow-glow-gold);
+    transform: translateY(-4px);
+  }
+
+  .value-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .value-card h3 {
+    font-size: 1.375rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .value-card p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* ── CTA Box ── */
+  .cta-box {
+    padding: 3.5rem;
+    border-radius: var(--radius-xl);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    border: 1px solid rgba(212, 166, 84, 0.2) !important;
+  }
+
+  .cta-box h2 {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-family: var(--font-display);
+    color: var(--color-text);
+  }
+
+  .cta-box p {
+    color: var(--color-text-secondary);
+    max-width: 520px;
+    line-height: 1.75;
+  }
+
+  .cta-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+</style>

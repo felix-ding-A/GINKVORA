@@ -18,7 +18,14 @@ const navLinks = [
   { href: lp('/products'),   label: t('nav.products') },
   { href: lp('/formulator'), label: t('nav.formulator') },
   { href: lp('/quality'),    label: t('nav.quality') },
-  { href: lp('/about'),      label: t('nav.about') },
+  {
+    href: lp('/about'),
+    label: t('nav.about'),
+    dropdown: [
+      { href: lp('/about'), label: t('nav.about_us') },
+      { href: lp('/about/mission'), label: t('nav.our_mission') }
+    ]
+  },
   {
     href: lp('/insights'),
     label: t('nav.insights'),
