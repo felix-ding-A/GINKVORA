@@ -215,6 +215,20 @@ const breadcrumbsSchema = {
   let activeCategory = '';
   let searchTerm     = '';
 
+  // Read category from URL search params if present
+  const urlParams = new URLSearchParams(window.location.search);
+  const categoryParam = urlParams.get('category');
+  if (categoryParam) {
+    const targetPill = Array.from(pills).find(
+      (pill) => (pill as HTMLElement).dataset.cat === categoryParam
+    );
+    if (targetPill) {
+      pills.forEach(p => p.classList.remove('active'));
+      targetPill.classList.add('active');
+      activeCategory = categoryParam;
+    }
+  }
+
   function filterProducts() {
     let visible = 0;
     cards.forEach(card => {
@@ -242,4 +256,6 @@ const breadcrumbsSchema = {
     searchTerm = searchInput.value;
     filterProducts();
   });
+
+  filterProducts();
 </script>

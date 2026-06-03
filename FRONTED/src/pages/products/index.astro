@@ -495,6 +495,20 @@ const itemListSchema = {
     let currentSearch = '';
     let currentCategory = 'all';
 
+    // Read category from URL search params if present
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParam = urlParams.get('category');
+    if (categoryParam) {
+      const targetTab = Array.from(categoryTabs).find(
+        (tab) => tab.getAttribute('data-category') === categoryParam
+      );
+      if (targetTab) {
+        categoryTabs.forEach(t => t.classList.remove('active'));
+        targetTab.classList.add('active');
+        currentCategory = categoryParam;
+      }
+    }
+
     function filterProducts() {
       let visibleCount = 0;
 
@@ -564,6 +578,7 @@ const itemListSchema = {
         filterProducts();
       });
     }
+    filterProducts();
   }
 
   // Support Astro transitions lifecycle

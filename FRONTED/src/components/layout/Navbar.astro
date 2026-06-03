@@ -2,6 +2,7 @@
 // Navbar.astro — Responsive navigation with language switcher
 import { useTranslations, getLocalePath, getAlternatePaths, languages } from '../../i18n/utils';
 import type { Lang } from '../../i18n/utils';
+import { getAllCategories } from '../../lib/sanity';
 
 interface Props {
   lang?: string;
@@ -14,8 +15,34 @@ const t = useTranslations(typedLang);
 // Build localized nav link hrefs
 const lp = (path: string) => getLocalePath(typedLang, path);
 
+// Fetch categories dynamically
+const categories = await getAllCategories();
+
+const categoryTranslations: Record<string, string> = {
+  'health-supplements': 'footer.link_supplements',
+  'cosmetic-actives': 'footer.link_cosmetics',
+  'pet-health': 'footer.link_pet',
+  'custom-formulation': 'footer.link_custom'
+};
+
+const productsDropdown = [
+  { href: lp('/products'), label: t('products.all_categories') },
+  ...categories.map((cat: any) => {
+    const translationKey = categoryTranslations[cat.slug];
+    const label = translationKey ? t(translationKey as any) : cat.name;
+    return {
+      href: `${lp('/products')}?category=${cat.slug}`,
+      label: label
+    };
+  })
+];
+
 const navLinks = [
-  { href: lp('/products'),   label: t('nav.products') },
+  {
+    href: lp('/products'),
+    label: t('nav.products'),
+    dropdown: productsDropdown
+  },
   { href: lp('/formulator'), label: t('nav.formulator') },
   { href: lp('/quality'),    label: t('nav.quality') },
   {
