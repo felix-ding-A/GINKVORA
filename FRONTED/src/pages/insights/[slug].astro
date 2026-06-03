@@ -79,6 +79,13 @@ const breadcrumbSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} slot="head" />
   {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />}
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <link
+    rel="preload"
+    as="image"
+    href={urlFor(post.coverImage).width(1200).format('webp').url()}
+    type="image/webp"
+    slot="head"
+  />
 
   <main class="insight-detail bg-noise">
     <div class="container article-container">

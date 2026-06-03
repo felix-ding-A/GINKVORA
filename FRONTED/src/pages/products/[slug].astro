@@ -97,6 +97,13 @@ const faqSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <link
+    rel="preload"
+    as="image"
+    href={urlFor(product.heroImage).width(1200).format('webp').url()}
+    type="image/webp"
+    slot="head"
+  />
 
   <main class="product-detail-page bg-noise">
     <div class="container page-content">
