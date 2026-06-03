@@ -118,6 +118,14 @@ const organizationSchema = {
 
     <!-- Performance: DNS prefetch -->
     <link rel="dns-prefetch" href="//cdn.sanity.io" />
+    <link rel="preconnect" href="https://analytics.ginkvora.com" />
+
+    <!-- Analytics (Umami) -->
+    <script 
+      defer 
+      src="https://analytics.ginkvora.com/script.js" 
+      data-website-id="df5768a4-e9af-4c4b-8c72-620a91411e86">
+    </script>
 
     <!-- Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
