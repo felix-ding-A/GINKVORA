@@ -316,16 +316,37 @@ export const productType = defineType({
     }),
   ],
 
+  orderings: [
+    {
+      title: 'Category',
+      name: 'categoryAsc',
+      by: [
+        { field: 'category._ref', direction: 'asc' },
+        { field: 'name', direction: 'asc' }
+      ]
+    },
+    {
+      title: 'Name',
+      name: 'nameAsc',
+      by: [
+        { field: 'name', direction: 'asc' }
+      ]
+    }
+  ],
   preview: {
     select: {
       title: 'name',
+      categoryName: 'category.name',
       subtitle: 'purity',
       media: 'heroImage',
     },
-    prepare({ title, subtitle, media }) {
+    prepare({ title, categoryName, subtitle, media }) {
+      const subtitleParts = []
+      if (categoryName) subtitleParts.push(categoryName)
+      if (subtitle) subtitleParts.push(`Purity: ${subtitle}`)
       return {
         title: title || 'Untitled Product',
-        subtitle: subtitle ? `Purity: ${subtitle}` : 'No purity set',
+        subtitle: subtitleParts.join(' | ') || 'No category or purity set',
         media,
       }
     },

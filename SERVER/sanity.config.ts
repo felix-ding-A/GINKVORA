@@ -23,8 +23,31 @@ export default defineConfig({
             S.listItem()
               .title('🌿 Products')
               .child(
-                S.documentTypeList('product')
+                S.list()
                   .title('Products')
+                  .items([
+                    S.listItem()
+                      .title('All Products')
+                      .icon(() => '🌿')
+                      .child(
+                        S.documentTypeList('product')
+                          .title('All Products')
+                      ),
+                    S.listItem()
+                      .title('Products by Category')
+                      .icon(() => '📂')
+                      .child(
+                        S.documentTypeList('category')
+                          .title('Select Category')
+                          .child((categoryId) =>
+                            S.documentList()
+                              .title('Products')
+                              .schemaType('product')
+                              .filter('_type == "product" && category._ref == $categoryId')
+                              .params({ categoryId })
+                          )
+                      ),
+                  ])
               ),
             S.listItem()
               .title('📂 Categories')
