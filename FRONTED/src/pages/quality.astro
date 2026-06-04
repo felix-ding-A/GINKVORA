@@ -2,12 +2,22 @@
 // src/pages/quality.astro — Quality Control & Certification detail page
 export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://ginkvora.com' },
+    { '@type': 'ListItem', position: 2, name: 'Quality & Certifications', item: 'https://ginkvora.com/quality' },
+  ],
+};
 ---
 
 <BaseLayout
   title="Quality Control & GMP Certifications | GINKVORA"
   description="Explore GINKVORA's quality control standards, laboratory validation methods, and active certifications (ISO, GMP, Halal, Kosher). Pure botanical actives."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
   <main class="quality-page bg-noise">
     <!-- Header banner -->
     <header class="page-banner" aria-label="Page Header">

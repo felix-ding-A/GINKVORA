@@ -111,6 +111,55 @@ const missionSchema = {
       </div>
     </section>
 
+    <!-- Section 4: Sustainability & Stewardship -->
+    <section class="section sustainability-section bg-deep" aria-label="Sustainability & Stewardship">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Sustainability</span>
+          <h2 class="section-title">Preserving Nature for Future Generations</h2>
+          <p class="section-desc">Our actions today shape the landscape of tomorrow. We are committed to a footprint that respects the earth.</p>
+        </div>
+
+        <!-- Lucid Waters Quote -->
+        <div class="slogan-container glass reveal">
+          <div class="slogan-quote">“Lucid waters and lush mountains are invaluable assets.”</div>
+          <div class="slogan-source">
+            <span>Translation Authority: Central Compilation & Translation Bureau</span>
+            <span class="source-sep">|</span>
+            <span>Source: Guangming Daily</span>
+          </div>
+        </div>
+
+        <!-- Sustainability Pillars Grid -->
+        <div class="grid-3">
+          <article class="sustain-card glass reveal">
+            <div class="sustain-icon">🌿</div>
+            <h3>Ethical Sourcing</h3>
+            <p>Our commitment to ethical sourcing ensures that every ingredient is harvested with respect for the environment and the communities that cultivate them.</p>
+          </article>
+
+          <article class="sustain-card glass reveal reveal-delay-1">
+            <div class="sustain-icon">🔋</div>
+            <h3>Green Manufacturing</h3>
+            <p>We employ eco-friendly manufacturing processes to minimize waste and reduce our carbon footprint.</p>
+          </article>
+
+          <article class="sustain-card glass reveal reveal-delay-2">
+            <div class="sustain-icon">🤝</div>
+            <h3>Community Support</h3>
+            <p>Supporting local farmers and communities is at the heart of our sustainability mission.</p>
+          </article>
+        </div>
+
+        <!-- Slogans/End Quote -->
+        <div class="quote-footer reveal">
+          <p>
+            “Sustainability is not just a goal, but a responsibility we owe to the ancestors who preserved these mountains and the children who will inherit them.”
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- CTA Section -->
     <section class="container section cta-section">
       <div class="cta-box glass">
@@ -378,5 +427,91 @@ const missionSchema = {
     gap: 1rem;
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  /* ── Sustainability Section ── */
+  .sustainability-section {
+    position: relative;
+  }
+
+  .slogan-container {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    padding: 2rem 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.15) !important;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(212, 166, 84, 0.03) 0%, rgba(0, 0, 0, 0) 100%);
+  }
+
+  .slogan-quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    color: var(--color-accent);
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+
+  .slogan-source {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    opacity: 0.8;
+  }
+
+  .source-sep {
+    color: var(--color-accent);
+  }
+
+  .sustain-card {
+    padding: 2.25rem 1.75rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.1) !important;
+    text-align: center;
+    transition: all var(--transition-base);
+    background: rgba(255, 255, 255, 0.01);
+  }
+
+  .sustain-card:hover {
+    border-color: var(--color-border-strong) !important;
+    box-shadow: var(--shadow-glow-gold);
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .sustain-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .sustain-card h3 {
+    font-size: 1.25rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .sustain-card p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .quote-footer {
+    max-width: 680px;
+    margin: 3.5rem auto 0;
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+    padding-top: 2rem;
+  }
+
+  .quote-footer p {
+    font-size: 1.125rem;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
   }
 </style>

@@ -39,8 +39,8 @@ export const ui = {
 
     // ── Hero ──
     'hero.badge':          'B2B Plant Extract Supplier',
-    'hero.title_1':        'Pure Nature,',
-    'hero.title_2':        'Proven Science',
+    'hero.title_1':        'Premium Plant Extracts &',
+    'hero.title_2':        'Ginkgo Biloba Supplier',
     'hero.subtitle':       'Premium botanical extracts for global nutraceutical, cosmetic, and pet health industries. 500+ high-purity ingredients — from PQQ and NMN to EGCG and Glabridin.',
     'hero.cta_explore':    'Explore Products',
     'hero.cta_sample':     'Request a Sample',
