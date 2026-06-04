@@ -51,13 +51,13 @@ const navLinks = [
       { href: lp('/Featured Formulas'), label: t('nav.featured_formulas') }
     ]
   },
-  { href: lp('/quality'),    label: t('nav.quality') },
   {
     href: lp('/about'),
     label: t('nav.about'),
     dropdown: [
       { href: lp('/about'), label: t('nav.about_us') },
-      { href: lp('/about/mission'), label: t('nav.our_mission') }
+      { href: lp('/about/mission'), label: t('nav.our_mission') },
+      { href: lp('/quality'), label: t('nav.quality') }
     ]
   },
   {
@@ -141,7 +141,7 @@ const alternatePaths = getAlternatePaths(Astro.url, typedLang);
           <li class={link.dropdown ? "nav-item-has-dropdown" : ""}>
             <a
               href={link.href}
-              class:list={['nav-link', { 'nav-link--active': currentPath.startsWith(link.href) }]}
+              class:list={['nav-link', { 'nav-link--active': currentPath.startsWith(link.href) || (link.dropdown && link.dropdown.some(sub => currentPath.startsWith(sub.href))) }]}
               aria-expanded={link.dropdown ? "false" : undefined}
               aria-haspopup={link.dropdown ? "true" : undefined}
             >
