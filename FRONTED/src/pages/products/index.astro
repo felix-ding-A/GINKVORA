@@ -46,8 +46,8 @@ const itemListSchema = {
 ---
 
 <BaseLayout
-  title="High-Purity Plant Extracts & Active Ingredients | GINKVORA"
-  description="Explore our catalog of 500+ premium botanical extracts, active ingredients, cosmetic actives, and custom formulations. ISO & GMP certified."
+  title="ECM-Targeted Anti-Aging Ingredients: Topical & Nutricosmetic Solutions | GINKVORA"
+  description="Explore GINKVORA's B2B catalog of ECM-targeted anti-aging raw materials. Inhibit MMPs, stimulate collagen matrix rebuilding, and provide anti-glycation defense."
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />
@@ -59,7 +59,7 @@ const itemListSchema = {
       <div class="banner-gradient"></div>
       <div class="container banner-content">
         <span class="section-label">B2B Product Catalog</span>
-        <h1 class="banner-title">Pure Bioactive Ingredients</h1>
+        <h1 class="banner-title">ECM-Targeted Anti-Aging Ingredients: Topical & Nutricosmetic Solutions</h1>
         <p class="banner-desc">
           Premium raw materials tested under strict USP/EP quality standards for supplement, cosmetic, and functional food manufacturers.
         </p>
@@ -93,6 +93,16 @@ const itemListSchema = {
             </button>
           ))}
         </nav>
+
+        <div class="application-filter-group">
+          <span class="filter-label">Application Route:</span>
+          <div class="application-tabs" id="application-tabs">
+            <button class="app-tab active" data-app="all">All Routes</button>
+            <button class="app-tab" data-app="topical">Topical Use (Cosmetic Grade)</button>
+            <button class="app-tab" data-app="oral">Oral Use (Nutricosmetic / Food Grade)</button>
+            <button class="app-tab" data-app="dual">Dual Application</button>
+          </div>
+        </div>
       </section>
 
       <!-- Products Grid -->
@@ -109,6 +119,7 @@ const itemListSchema = {
               data-name={prod.name.toLowerCase()}
               data-cas={prod.casNumber ? prod.casNumber.toLowerCase() : ''}
               data-desc={prod.shortDescription ? prod.shortDescription.toLowerCase() : ''}
+              data-application={prod.application ? prod.application.join(',') : ''}
             >
               <div class="card-image-wrapper">
                 <a href={`/products/${prod.slug}`} class="card-image-link" aria-label={`View details of ${prod.name}`}>
@@ -133,6 +144,11 @@ const itemListSchema = {
                   {prod.casNumber && (
                     <span class="card-cas">CAS: {prod.casNumber}</span>
                   )}
+                  {prod.application && prod.application.map(app => (
+                    <span class={`card-app-badge app--${app}`}>
+                      {app === 'topical' ? 'Topical' : 'Oral'}
+                    </span>
+                  ))}
                 </div>
 
                 <h3 class="card-title">
@@ -479,6 +495,77 @@ const itemListSchema = {
     color: var(--color-text-secondary);
     margin-bottom: 1.5rem;
   }
+
+  /* ── Application Filter Group ── */
+  .application-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.25rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+  @media (max-width: 768px) {
+    .application-filter-group {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+  .filter-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .application-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .app-tab {
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: transparent;
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  .app-tab:hover {
+    color: var(--color-primary-light);
+    border-color: var(--color-border-strong);
+    background: rgba(212, 166, 84, 0.05);
+  }
+  .app-tab.active {
+    color: var(--color-bg);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  /* ── Card Application Badges ── */
+  .card-app-badge {
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.1rem 0.5rem;
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .app--topical {
+    background: rgba(212, 166, 84, 0.1);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.25);
+  }
+  .app--oral {
+    background: rgba(124, 184, 122, 0.1);
+    color: #a8d5a6;
+    border: 1px solid rgba(124, 184, 122, 0.25);
+  }
 </style>
 
 <script>
@@ -486,6 +573,7 @@ const itemListSchema = {
   function initFilters() {
     const searchInput = document.getElementById('product-search') as HTMLInputElement;
     const categoryTabs = document.querySelectorAll('.category-tab');
+    const appTabs = document.querySelectorAll('.app-tab');
     const productCards = document.querySelectorAll('.product-card');
     const emptyState = document.getElementById('empty-state');
     const grid = document.getElementById('products-grid');
@@ -494,8 +582,9 @@ const itemListSchema = {
 
     let currentSearch = '';
     let currentCategory = 'all';
+    let currentApp = 'all';
 
-    // Read category from URL search params if present
+    // Read parameters from URL search params if present
     const urlParams = new URLSearchParams(window.location.search);
     const categoryParam = urlParams.get('category');
     if (categoryParam) {
@@ -509,6 +598,18 @@ const itemListSchema = {
       }
     }
 
+    const appParam = urlParams.get('application');
+    if (appParam) {
+      const targetAppTab = Array.from(appTabs).find(
+        (tab) => tab.getAttribute('data-app') === appParam
+      );
+      if (targetAppTab) {
+        appTabs.forEach(t => t.classList.remove('active'));
+        targetAppTab.classList.add('active');
+        currentApp = appParam;
+      }
+    }
+
     function filterProducts() {
       let visibleCount = 0;
 
@@ -517,6 +618,7 @@ const itemListSchema = {
         const cas = card.getAttribute('data-cas') || '';
         const desc = card.getAttribute('data-desc') || '';
         const cat = card.getAttribute('data-category') || '';
+        const apps = (card.getAttribute('data-application') || '').split(',');
 
         const matchesSearch =
           name.includes(currentSearch) ||
@@ -525,7 +627,16 @@ const itemListSchema = {
 
         const matchesCategory = currentCategory === 'all' || cat === currentCategory;
 
-        if (matchesSearch && matchesCategory) {
+        let matchesApp = true;
+        if (currentApp !== 'all') {
+          if (currentApp === 'dual') {
+            matchesApp = apps.includes('topical') && apps.includes('oral');
+          } else {
+            matchesApp = apps.includes(currentApp);
+          }
+        }
+
+        if (matchesSearch && matchesCategory && matchesApp) {
           (card as HTMLElement).style.display = 'flex';
           visibleCount++;
         } else {
@@ -566,6 +677,16 @@ const itemListSchema = {
       });
     });
 
+    // Application click events
+    appTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        appTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentApp = tab.getAttribute('data-app') || 'all';
+        filterProducts();
+      });
+    });
+
     // Reset button
     if (resetButton) {
       resetButton.addEventListener('click', () => {
@@ -575,6 +696,12 @@ const itemListSchema = {
         const allTab = document.getElementById('btn-cat-all');
         if (allTab) allTab.classList.add('active');
         currentCategory = 'all';
+
+        appTabs.forEach(t => t.classList.remove('active'));
+        const allAppTab = document.querySelector('[data-app="all"]');
+        if (allAppTab) allAppTab.classList.add('active');
+        currentApp = 'all';
+
         filterProducts();
       });
     }

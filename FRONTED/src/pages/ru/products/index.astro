@@ -24,8 +24,8 @@ const breadcrumbsSchema = {
 
 <BaseLayout
   lang={lang}
-  title="Высокочистые растительные экстракты и активные ингредиенты | GINKVORA"
-  description="Изучите наш каталог из 500+ премиальных растительных экстрактов, активных ингредиентов, косметических активов и индивидуальных рецептур. Сертификаты ISO и GMP."
+  title="ECM-таргетные антивозрастные ингредиенты: решения для косметики и нутрицевтики | GINKVORA"
+  description="Каталог B2B сырья GINKVORA для косметики и БАД. Ингибирование металлопротеиназ (MMP), стимуляторы синтеза коллагена, защита от гликации."
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
 
@@ -34,9 +34,9 @@ const breadcrumbsSchema = {
     <header class="page-banner" aria-label="Заголовок страницы">
       <div class="banner-gradient"></div>
       <div class="container banner-content">
-        <span class="section-label">{t('products.title')}</span>
-        <h1 class="banner-title">{t('products.title')}</h1>
-        <p class="banner-desc">{t('products.subtitle')}</p>
+        <span class="section-label">B2B каталог сырья</span>
+        <h1 class="banner-title">ECM-таргетные омолаживающие ингредиенты: решения для косметики и нутрицевтики</h1>
+        <p class="banner-desc">Высокочистое растительное сырье, протестированное по стандартам USP/EP для производителей косметики, пищевых добавок и функционального питания.</p>
       </div>
     </header>
 
@@ -62,6 +62,16 @@ const breadcrumbsSchema = {
             <button class="cat-pill" data-cat={cat.slug} role="listitem">{cat.name}</button>
           ))}
         </div>
+
+        <div class="application-filter-group">
+          <span class="filter-label">Путь применения:</span>
+          <div class="application-tabs" id="application-tabs">
+            <button class="app-tab active" data-app="all">Все пути</button>
+            <button class="app-tab" data-app="topical">Наружно (косметический класс)</button>
+            <button class="app-tab" data-app="oral">Перорально (пищевой / нутрицевтический класс)</button>
+            <button class="app-tab" data-app="dual">Двойное применение</button>
+          </div>
+        </div>
       </div>
 
       <!-- Product Grid -->
@@ -73,6 +83,7 @@ const breadcrumbsSchema = {
               class="product-card glass"
               data-name={product.name.toLowerCase()}
               data-category={product.category?.slug ?? ''}
+              data-application={product.application ? product.application.join(',') : ''}
               role="listitem"
             >
               {product.featured && (
@@ -97,6 +108,11 @@ const breadcrumbsSchema = {
                   {product.purity && (
                     <span class="card-purity font-mono">{product.purity}</span>
                   )}
+                  {product.application && product.application.map((app: string) => (
+                    <span class={`card-app-badge app--${app}`}>
+                      {app === 'topical' ? 'Наружно' : 'Перорально'}
+                    </span>
+                  ))}
                 </div>
                 <h2 class="card-title">
                   <a href={`/ru/products/${product.slug}`}>{product.name}</a>
@@ -204,58 +220,170 @@ const breadcrumbsSchema = {
   .card-actions { display: flex; gap: 0.5rem; margin-top: auto; padding-top: 0.5rem; flex-wrap: wrap; }
 
   .no-results { text-align: center; padding: 4rem 2rem; color: var(--color-text-muted); }
+
+  /* ── Application Filter Group ── */
+  .application-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.25rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+  @media (max-width: 768px) {
+    .application-filter-group {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+  .filter-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .application-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .app-tab {
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: transparent;
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  .app-tab:hover {
+    color: var(--color-primary-light);
+    border-color: var(--color-border-strong);
+    background: rgba(212, 166, 84, 0.05);
+  }
+  .app-tab.active {
+    color: var(--color-bg);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  /* ── Card Application Badges ── */
+  .card-app-badge {
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.1rem 0.5rem;
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-left: 0.5rem;
+  }
+  .app--topical {
+    background: rgba(212, 166, 84, 0.1);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.25);
+  }
+  .app--oral {
+    background: rgba(124, 184, 122, 0.1);
+    color: #a8d5a6;
+    border: 1px solid rgba(124, 184, 122, 0.25);
+  }
 </style>
 
 <script>
-  const searchInput  = document.getElementById('product-search') as HTMLInputElement;
-  const pills        = document.querySelectorAll('.cat-pill');
-  const cards        = document.querySelectorAll('.product-card') as NodeListOf<HTMLElement>;
-  const noResults    = document.getElementById('no-results');
+  function initFilters() {
+    const searchInput  = document.getElementById('product-search') as HTMLInputElement;
+    const pills        = document.querySelectorAll('.cat-pill');
+    const appTabs      = document.querySelectorAll('.app-tab');
+    const cards        = document.querySelectorAll('.product-card') as NodeListOf<HTMLElement>;
+    const noResults    = document.getElementById('no-results');
 
-  let activeCategory = '';
-  let searchTerm     = '';
+    let activeCategory = '';
+    let searchTerm     = '';
+    let currentApp     = 'all';
 
-  // Read category from URL search params if present
-  const urlParams = new URLSearchParams(window.location.search);
-  const categoryParam = urlParams.get('category');
-  if (categoryParam) {
-    const targetPill = Array.from(pills).find(
-      (pill) => (pill as HTMLElement).dataset.cat === categoryParam
-    );
-    if (targetPill) {
-      pills.forEach(p => p.classList.remove('active'));
-      targetPill.classList.add('active');
-      activeCategory = categoryParam;
+    // Read category from URL search params if present
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParam = urlParams.get('category');
+    if (categoryParam) {
+      const targetPill = Array.from(pills).find(
+        (pill) => (pill as HTMLElement).dataset.cat === categoryParam
+      );
+      if (targetPill) {
+        pills.forEach(p => p.classList.remove('active'));
+        targetPill.classList.add('active');
+        activeCategory = categoryParam;
+      }
     }
-  }
 
-  function filterProducts() {
-    let visible = 0;
-    cards.forEach(card => {
-      const name = card.dataset.name ?? '';
-      const cat  = card.dataset.category ?? '';
-      const matchSearch = !searchTerm || name.includes(searchTerm.toLowerCase());
-      const matchCat    = !activeCategory || cat === activeCategory;
-      const show = matchSearch && matchCat;
-      card.style.display = show ? '' : 'none';
-      if (show) visible++;
+    const appParam = urlParams.get('application');
+    if (appParam) {
+      const targetAppTab = Array.from(appTabs).find(
+        (tab) => (tab as HTMLElement).dataset.app === appParam
+      );
+      if (targetAppTab) {
+        appTabs.forEach(t => t.classList.remove('active'));
+        targetAppTab.classList.add('active');
+        currentApp = appParam;
+      }
+    }
+
+    function filterProducts() {
+      let visible = 0;
+      cards.forEach(card => {
+        const name = card.dataset.name ?? '';
+        const cat  = card.dataset.category ?? '';
+        const apps = (card.dataset.application ?? '').split(',');
+
+        const matchSearch = !searchTerm || name.includes(searchTerm.toLowerCase());
+        const matchCat    = !activeCategory || cat === activeCategory;
+
+        let matchApp = true;
+        if (currentApp !== 'all') {
+          if (currentApp === 'dual') {
+            matchApp = apps.includes('topical') && apps.includes('oral');
+          } else {
+            matchApp = apps.includes(currentApp);
+          }
+        }
+
+        const show = matchSearch && matchCat && matchApp;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        activeCategory = (pill as HTMLElement).dataset.cat ?? '';
+        filterProducts();
+      });
     });
-    if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
-  }
 
-  pills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      pills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-      activeCategory = (pill as HTMLElement).dataset.cat ?? '';
+    appTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        appTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentApp = (tab as HTMLElement).dataset.app ?? 'all';
+        filterProducts();
+      });
+    });
+
+    searchInput?.addEventListener('input', () => {
+      searchTerm = searchInput.value;
       filterProducts();
     });
-  });
 
-  searchInput?.addEventListener('input', () => {
-    searchTerm = searchInput.value;
     filterProducts();
-  });
+  }
 
-  filterProducts();
+  initFilters();
+  document.addEventListener('astro:page-load', initFilters);
 </script>

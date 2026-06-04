@@ -150,6 +150,8 @@ export const PRODUCT_FIELDS = `
   heroImage,
   applications,
   applications_ru,
+  application,
+  inciName,
   certifications[],
   "updatedAt": _updatedAt
 `;
@@ -162,6 +164,8 @@ export const PRODUCT_DETAIL_FIELDS = `
   gallery[],
   coaFile{asset->{url}},
   msdsFile{asset->{url}},
+  complianceNote,
+  complianceNote_ru,
   seo{title, description},
   seo_ru{title, description},
   seoTitle,
@@ -399,6 +403,10 @@ export type SanityProduct = {
   applications?: any;
   certifications?: string[];
   updatedAt?: string;
+  application?: string[];
+  inciName?: string;
+  complianceNote?: string;
+  complianceNote_ru?: string;
   seo?: { title?: string; description?: string };
   seo_ru?: { title?: string; description?: string };
 };

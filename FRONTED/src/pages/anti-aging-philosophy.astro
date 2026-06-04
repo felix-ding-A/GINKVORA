@@ -1,0 +1,675 @@
+---
+// src/pages/anti-aging-philosophy.astro — ECM-Targeted Anti-Aging Philosophy Page
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { useTranslations, getLocalePath } from '../i18n/utils';
+import type { Lang } from '../i18n/utils';
+
+const lang = 'en';
+const t = useTranslations(lang as Lang);
+const lp = (path: string) => getLocalePath(lang as Lang, path);
+
+const philosophySchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "ECM-Targeted Anti-Aging Philosophy | GINKVORA",
+  "description": "Learn about GINKVORA's ECM-targeted anti-aging scientific framework, three cellular pathways, and topical & ingestible dual-route synergy.",
+  "url": "https://ginkvora.com/anti-aging-philosophy"
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title="ECM-Targeted Anti-Aging Scientific Philosophy | GINKVORA"
+  description="Discover the science of Extracellular Matrix (ECM) targeting. Our dual-route approach combines topical protection and ingestible cellular activation for complete dermal matrix remodeling."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(philosophySchema)} slot="head" />
+  
+  <main class="philosophy-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="Page Header">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">Scientific Philosophy</span>
+        <h1 class="banner-title">ECM-Targeted Anti-Aging Platform</h1>
+        <p class="banner-desc">
+          Reframing longevity from the outside in and the inside out. We target the Extracellular Matrix (ECM) as the single, ultimate destination for structural skin rejuvenation.
+        </p>
+      </div>
+    </header>
+
+    <!-- Section 1: What is ECM -->
+    <section class="container section intro-section" id="what-is-ecm" aria-label="Extracellular Matrix Science">
+      <div class="intro-grid">
+        <div class="intro-left reveal">
+          <span class="accent-title">The Dermal Scaffold</span>
+          <h2>What is the Extracellular Matrix (ECM)?</h2>
+          <p>
+            The Extracellular Matrix (ECM) is a complex, dynamic structural network that surrounds and supports skin cells. Composed of structural proteins (collagen and elastin) and specialized proteoglycans/glycosaminoglycans (hyaluronic acid), the ECM serves as the physical scaffold responsible for skin thickness, elasticity, and youthfulness.
+          </p>
+          <p>
+            As chronological aging and environmental stressors (such as UV radiation and glycation) progress, the dermal matrix undergoes severe degradation. Collagen synthesis slows down, matrix metalloproteinases (MMPs) destroy existing fibers, and sugar molecules cross-link proteins, leading to visible sagging, deep wrinkles, and loss of hydration.
+          </p>
+        </div>
+        <div class="intro-right reveal">
+          <div class="image-showcase glass">
+            <div class="ecm-diagram" aria-hidden="true">
+              <div class="matrix-grid-line"></div>
+              <div class="matrix-grid-line"></div>
+              <div class="matrix-grid-line"></div>
+              <div class="fibroblast-node animate-pulse-glow">
+                <span>Active Fibroblast</span>
+              </div>
+              <div class="collagen-fiber"></div>
+              <div class="collagen-fiber" style="transform: rotate(30deg); top: 60%;"></div>
+            </div>
+            <div class="floating-caption">
+              <strong>Extracellular Matrix (ECM)</strong>
+              <span>Dermal Scaffold Architecture</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Three Mechanism Pathways -->
+    <section class="section pathways-section bg-deep" id="three-pathways" aria-label="Three Mechanism Pathways">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">Pathways to Renewal</span>
+          <h2>How We Target ECM: Three Scientific Mechanisms</h2>
+          <p class="section-desc">
+            GINKVORA curates anti-aging ingredients that target the exact biological pathways regulating dermal matrix breakdown and synthesis.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <div class="glass-card reveal">
+            <span class="card-icon-em">🧬</span>
+            <h3>Collagen Matrix Support</h3>
+            <p class="card-subtitle">Actives That Rebuild ECM</p>
+            <p class="card-body-text">
+              Promoting the direct synthesis of structural proteins. By stimulating fibroblast activity, these ingredients accelerate the production of Collagen Types I, III, and IV, densifying the dermal layer.
+            </p>
+            <a href={lp('/products?mechanism=matrix-rebuilder')} class="card-anchor-link">
+              Procure <span>collagen synthesis stimulants</span> &rarr;
+            </a>
+          </div>
+
+          <div class="glass-card reveal reveal-delay-1">
+            <span class="card-icon-em">🛡️</span>
+            <h3>MMP Inhibition & Protection</h3>
+            <p class="card-subtitle">Protecting the Dermal Matrix from Degradation</p>
+            <p class="card-body-text">
+              Inhibiting Matrix Metalloproteinases (MMPs)—the enzymes triggered by UV rays and pollution that chew up collagen and elastin fibers. This pathway acts as a biological shield.
+            </p>
+            <a href={lp('/products?mechanism=matrix-shield')} class="card-anchor-link">
+              Procure <span>MMP inhibitors cosmetic grade</span> &rarr;
+            </a>
+          </div>
+
+          <div class="glass-card reveal reveal-delay-2">
+            <span class="card-icon-em">⏳</span>
+            <h3>Anti-Glycation Defense</h3>
+            <p class="card-subtitle">Preventing ECM Cross-Linking</p>
+            <p class="card-body-text">
+              Inhibiting the glycation process where excess sugars bind to collagen fibers, rendering them rigid and fragile. Preventing advanced glycation end-products (AGEs) preserves skin bounce.
+            </p>
+            <a href={lp('/products?mechanism=glyco-defense')} class="card-anchor-link">
+              Procure <span>anti-glycation active ingredients</span> &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Dual Routes -->
+    <section class="container section synergy-section" id="dual-routes-synergy" aria-label="Topical & Ingestible Synergy">
+      <div class="section-header reveal">
+        <span class="section-label">Inside-Out Integration</span>
+        <h2>Two Routes, One Target: Topical & Ingestible Synergy</h2>
+        <p class="section-desc">
+          Dermal matrix remodeling is a closed loop. True efficacy requires combining external barrier protection with internal cellular energy activation.
+        </p>
+      </div>
+
+      <div class="synergy-grid">
+        <div class="synergy-left glass reveal">
+          <div class="synergy-header">
+            <span class="synergy-number">01</span>
+            <h3>Topical Route: External Shield & Repair</h3>
+          </div>
+          <p>
+            Topical formulation delivers localized, immediate protection. Active ingredients applied to the skin surface (like Glabridin, Copper Peptides, and Luteolin) directly target localized UV-induced MMP degradation, quench epidermal free radicals, and trigger immediate localized collagen synthesis inside the dermal-epidermal junction.
+          </p>
+          <div class="badge-label">Grade Required: Cosmetic Grade (INCI Registered)</div>
+        </div>
+
+        <div class="synergy-right glass reveal reveal-delay-1">
+          <div class="synergy-header">
+            <span class="synergy-number">02</span>
+            <h3>Ingestible Route: Internal Cellular Activation</h3>
+          </div>
+          <p>
+            Ingestible formulation fuels the biosynthetic engine from within. Intracellular synthesis of ECM proteins requires massive cellular energy (ATP). Oral administration of direct precursors and cellular energizers (like NMN and PQQ) stimulates mitochondrial biogenesis inside fibroblasts. Re-energized fibroblasts possess the metabolic power to fuel continuous ECM biosynthesis.
+          </p>
+          <div class="badge-label">Grade Required: Food Grade / Nutricosmetic Bulk</div>
+        </div>
+      </div>
+
+      <div class="slogan-container glass reveal reveal-delay-2">
+        <div class="slogan-quote">“Topical formulations protect the matrix from the outside, while ingestible nutrients optimize cellular energy to fuel inner ECM biosynthesis.”</div>
+        <p class="slogan-sub">
+          GINKVORA provides dual-use anti-aging raw materials (PQQ, NMN) manufactured and certified under both cosmetic and food grades, allowing brands to launch complete, aligned anti-aging product lines.
+        </p>
+        <div class="slogan-cta">
+          <a href={lp('/products?application=dual')} class="btn btn--gold">Explore Dual-Use Raw Materials</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Quality & Compliance -->
+    <section class="section compliance-section bg-deep" id="compliance" aria-label="Quality & Compliance Standards">
+      <div class="container">
+        <div class="grid-2">
+          <div class="reveal">
+            <span class="accent-title">Trust & Validation</span>
+            <h2>Rigorous Quality & Compliance</h2>
+            <p>
+              Operating in the global B2B marketplace demands flawless compliance. GINKVORA ingredients are backed by certified quality control laboratories and strict regulatory validation.
+            </p>
+            <p>
+              Our cosmetics line is fully INCI registered and REACH compliant for European Union distribution. Our nutricosmetic ingredients are manufactured under strict GMP regulations and hold necessary FDA registrations and food-grade certificates, ensuring absolute purity, safety, and traceability for dietary supplements.
+            </p>
+          </div>
+          <div class="compliance-features reveal reveal-delay-1">
+            <div class="comp-item glass">
+              <span class="comp-icon">✓</span>
+              <div>
+                <h4>REACH Compliant</h4>
+                <p>Fully compliant with EU regulations for cosmetic distribution.</p>
+              </div>
+            </div>
+            <div class="comp-item glass">
+              <span class="comp-icon">✓</span>
+              <div>
+                <h4>FDA Registered Facilities</h4>
+                <p>Ensuring compliance with US import and food safety standards.</p>
+              </div>
+            </div>
+            <div class="comp-item glass">
+              <span class="comp-icon">✓</span>
+              <div>
+                <h4>Cruelty-Free Actives</h4>
+                <p>Ethical manufacturing with zero animal testing on cosmetic raw materials.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="container section cta-section">
+      <div class="cta-box glass">
+        <h2>Advance Your Product Development</h2>
+        <p>Procure premium ingredients categorized by exact ECM mechanism pathways. Free samples are available for formula validation.</p>
+        <div class="cta-btns">
+          <a href={lp('/contact')} class="btn btn--gold btn--lg">Request Quotation & Samples</a>
+          <a href={lp('/products')} class="btn btn--primary btn--lg">Browse Ingredients Catalog</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .philosophy-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 700px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  /* Intro Section */
+  .section {
+    padding-block: var(--space-2xl);
+  }
+
+  .accent-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .intro-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  .intro-left h2 {
+    font-size: 2.25rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.25;
+  }
+
+  .intro-left p {
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+
+  .image-showcase {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-color: rgba(212,166,84,0.18) !important;
+  }
+
+  /* Custom ECM Diagram */
+  .ecm-diagram {
+    width: 100%;
+    height: 100%;
+    background: #080705;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .matrix-grid-line {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: rgba(212, 166, 84, 0.05);
+    top: 30%;
+  }
+  .matrix-grid-line:nth-child(2) { top: 60%; }
+  .matrix-grid-line:nth-child(3) {
+    width: 1px;
+    height: 100%;
+    left: 50%;
+    top: 0;
+  }
+
+  .fibroblast-node {
+    position: absolute;
+    top: 40%;
+    left: 35%;
+    background: rgba(212, 166, 84, 0.15);
+    border: 1px solid var(--color-primary);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    color: var(--color-primary-light);
+    z-index: 2;
+  }
+
+  .collagen-fiber {
+    position: absolute;
+    height: 2px;
+    width: 80%;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    top: 45%;
+    left: 10%;
+    opacity: 0.4;
+  }
+
+  .floating-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: rgba(6, 5, 3, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--color-border);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .floating-caption strong {
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+  }
+
+  .floating-caption span {
+    color: var(--color-text-secondary);
+    font-size: 0.75rem;
+  }
+
+  /* Pathways cards */
+  .bg-deep {
+    background-color: var(--color-bg-deep);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .section-header h2 {
+    font-size: 2.25rem;
+    line-height: 1.25;
+  }
+
+  .section-desc {
+    color: var(--color-text-secondary);
+    margin-top: 0.75rem;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .grid-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .glass-card {
+    padding: 2.5rem 2rem;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(212, 166, 84, 0.1) !important;
+    transition: all var(--transition-base);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .glass-card:hover {
+    border-color: rgba(212, 166, 84, 0.25) !important;
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .card-icon-em {
+    font-size: 2.25rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .glass-card h3 {
+    font-size: 1.375rem;
+    color: var(--color-text);
+    margin-bottom: 0.25rem;
+  }
+
+  .card-subtitle {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--color-primary-light);
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .card-body-text {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    flex: 1;
+  }
+
+  .card-anchor-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+
+  .card-anchor-link span {
+    text-decoration: underline;
+  }
+
+  .card-anchor-link:hover {
+    color: var(--color-accent-light);
+  }
+
+  /* Synergy Section */
+  .synergy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 900px) {
+    .synergy-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .synergy-left, .synergy-right {
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.1) !important;
+  }
+
+  .synergy-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .synergy-number {
+    font-family: var(--font-mono);
+    font-size: 1.75rem;
+    color: var(--color-primary);
+    font-weight: 700;
+    opacity: 0.8;
+  }
+
+  .synergy-header h3 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--color-text);
+  }
+
+  .synergy-left p, .synergy-right p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .badge-label {
+    font-size: 0.75rem;
+    background: rgba(212, 166, 84, 0.08);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.2);
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+    font-weight: 600;
+  }
+
+  .synergy-right .badge-label {
+    background: rgba(124, 184, 122, 0.08);
+    color: #a8d5a6;
+    border-color: rgba(124, 184, 122, 0.2);
+  }
+
+  .slogan-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.15) !important;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(212, 166, 84, 0.03) 0%, rgba(0, 0, 0, 0) 100%);
+  }
+
+  .slogan-quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    color: var(--color-accent);
+    line-height: 1.45;
+    margin-bottom: 1rem;
+  }
+
+  .slogan-sub {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    max-width: 760px;
+    margin: 0 auto 2rem;
+  }
+
+  .slogan-cta {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Compliance Section */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .grid-2 {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  .grid-2 h2 {
+    font-size: 2.25rem;
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
+  }
+
+  .grid-2 p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.25rem;
+  }
+
+  .compliance-features {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .comp-item {
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(212, 166, 84, 0.1) !important;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .comp-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(124, 184, 122, 0.15);
+    color: #a8d5a6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .comp-item h4 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--color-text);
+    margin-bottom: 0.25rem;
+  }
+
+  .comp-item p {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* CTA Box */
+  .cta-box {
+    padding: 3.5rem;
+    border-radius: var(--radius-xl);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    border: 1px solid rgba(212, 166, 84, 0.2) !important;
+  }
+
+  .cta-box h2 {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-family: var(--font-display);
+    color: var(--color-text);
+  }
+
+  .cta-box p {
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    line-height: 1.75;
+  }
+
+  .cta-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+</style>

@@ -5,6 +5,8 @@ export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroSection from '../../components/sections/HeroSection.astro';
 import CertificationsMarquee from '../../components/sections/CertificationsMarquee.astro';
+import TwoRoutesSection from '../../components/sections/TwoRoutesSection.astro';
+import ECMPathwaysSection from '../../components/sections/ECMPathwaysSection.astro';
 import ProductCategoriesSection from '../../components/sections/ProductCategoriesSection.astro';
 import StatsSection from '../../components/sections/StatsSection.astro';
 import FeaturedIngredientsSection from '../../components/sections/FeaturedIngredientsSection.astro';
@@ -27,12 +29,14 @@ const websiteSchema = {
 
 <BaseLayout
   lang={lang}
-  title="GINKVORA — Премиальный поставщик растительных экстрактов B2B"
-  description="Чистая природа, доказанная наука. Премиальные ботанические экстракты для производителей нутрицевтиков, косметики и продуктов для здоровья животных. PQQ, NMN, EGCG, глабридин, лютеолин и 500+ высокочистых ингредиентов."
+  title="ECM-таргетные антивозрастные ингредиенты: решения для косметики и нутрицевтики — PQQ, NMN, Glabridin | GINKVORA"
+  description="GINKVORA предлагает ECM-таргетные антивозрастные ингредиенты с двойным применением: наружно (косметические) и перорально (нутрицевтики/пищевые). PQQ, NMN, Glabridin и др. Соответствие REACH, бесплатные образцы."
   structuredData={websiteSchema}
 >
   <HeroSection lang={lang} />
   <CertificationsMarquee />
+  <TwoRoutesSection lang={lang} />
+  <ECMPathwaysSection lang={lang} />
   <ProductCategoriesSection lang={lang} />
   <StatsSection lang={lang} />
   <FeaturedIngredientsSection lang={lang} />

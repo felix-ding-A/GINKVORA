@@ -26,6 +26,7 @@ export const ui = {
     'nav.about':           'About',
     'nav.about_us':        'About Us',
     'nav.our_mission':     'Our Mission',
+    'nav.philosophy':      'Anti-Aging Philosophy',
     'nav.insights':        'Insights',
     'nav.contact':         'Contact',
     'nav.cta':             'Request a Sample',
@@ -41,8 +42,8 @@ export const ui = {
 
     // ── Hero ──
     'hero.badge':          'B2B Plant Extract Supplier',
-    'hero.title_1':        'Premium Plant Extracts &',
-    'hero.title_2':        'Ginkgo Biloba Supplier',
+    'hero.title_1':        'ECM-Targeted Anti-Aging Ingredients —',
+    'hero.title_2':        'Topical & Nutricosmetic Solutions',
     'hero.subtitle':       'Premium botanical extracts for global nutraceutical, cosmetic, and pet health industries. 500+ high-purity ingredients — from PQQ and NMN to EGCG and Glabridin.',
     'hero.cta_explore':    'Explore Products',
     'hero.cta_sample':     'Request a Sample',
@@ -246,6 +247,33 @@ export const ui = {
     'insights_preview.desc':    'Scientific research, market intelligence, and regulatory updates for ingredient procurement professionals.',
     'insights_preview.all':     'All Articles',
 
+    // ── Dual-Track Routes Section ──
+    'routes.label': 'Dual-Track Path',
+    'routes.title_1': 'Two Routes, One Target:',
+    'routes.title_2': 'Topical Protection & Ingestible Activation for ECM Renewal',
+    'routes.desc': 'Topical formulations protect and rebuild the ECM network from the outside, while ingestible nutrients optimize cellular energy to fuel inner ECM biosynthesis. Together, they create an unbreakable loop of dermal matrix remodeling.',
+    'routes.topical_title': 'Topical Shield & Repair',
+    'routes.topical_desc': 'Direct action on the skin surface. These cosmetic grade active ingredients inhibit matrix metalloproteinases (MMPs), stimulate collagen synthesis, and provide anti-glycation defense.',
+    'routes.oral_title': 'Ingestible Activation',
+    'routes.oral_desc': 'Systemic cellular support. Food grade nutrients fuel mitochondrial health and cellular energy, providing the metabolic power required for inner extracellular matrix biosynthesis.',
+    'routes.dual_title': 'Dual-Application Shared Ingredients',
+    'routes.dual_desc': 'We provide premium ingredients certified for both routes. Procure a single ingredient in dual grades to build complete, synergistic "Inside-Out" product lines.',
+    'routes.dual_cta': 'View Dual-Grade Catalog',
+
+    // ── ECM Pathways Section ──
+    'pathways.label': 'Scientific Mechanisms',
+    'pathways.title': 'ECM-Targeted Anti-Aging: Three Pathways to Dermal Matrix Renewal',
+    'pathways.desc': 'We supply premium active ingredients categorized by their exact cellular mechanisms of action on the extracellular matrix.',
+    'pathways.collagen_title': 'Collagen Matrix Support',
+    'pathways.collagen_desc': 'Stimulates fibroblasts to accelerate endogenous collagen synthesis, rebuilding the dermal scaffold.',
+    'pathways.collagen_anchor': 'collagen synthesis stimulants',
+    'pathways.mmp_title': 'MMP Inhibition & Protection',
+    'pathways.mmp_desc': 'Inhibits matrix metalloproteinases (MMPs) to prevent the enzymatic degradation of collagen and elastin fibers.',
+    'pathways.mmp_anchor': 'natural MMP inhibitors',
+    'pathways.glyco_title': 'Anti-Glycation Defense',
+    'pathways.glyco_desc': 'Prevents advanced glycation end-products (AGEs) from cross-linking collagen fibers, maintaining matrix elasticity.',
+    'pathways.glyco_anchor': 'anti-glycation active ingredients',
+
     // ── Common ──
     'common.loading':           'Loading...',
     'common.error':             'An error occurred.',
@@ -269,6 +297,7 @@ export const ui = {
     'nav.about':           'О компании',
     'nav.about_us':        'О компании',
     'nav.our_mission':     'Наша миссия',
+    'nav.philosophy':      'Философия омоложения',
     'nav.insights':        'Блог',
     'nav.contact':         'Контакты',
     'nav.cta':             'Запросить образец',
@@ -284,8 +313,8 @@ export const ui = {
 
     // ── Hero ──
     'hero.badge':          'B2B поставщик растительных экстрактов',
-    'hero.title_1':        'Чистая природа,',
-    'hero.title_2':        'Доказанная наука',
+    'hero.title_1':        'ECM-таргетные антивозрастные ингредиенты —',
+    'hero.title_2':        'Решения для косметики и нутрицевтики',
     'hero.subtitle':       'Премиальные растительные экстракты для мировых производителей нутрицевтиков, косметики и продукции для здоровья животных. 500+ высокочистых ингредиентов — от PQQ и NMN до EGCG и глабридина.',
     'hero.cta_explore':    'Каталог продуктов',
     'hero.cta_sample':     'Запросить образец',
@@ -488,6 +517,33 @@ export const ui = {
     'insights_preview.label':   'База знаний',
     'insights_preview.desc':    'Научные исследования, аналитика рынка и регуляторные обновления для специалистов по закупке ингредиентов.',
     'insights_preview.all':     'Все статьи',
+
+    // ── Dual-Track Routes Section ──
+    'routes.label': 'Двухпутевой подход',
+    'routes.title_1': 'Два пути, одна цель:',
+    'routes.title_2': 'Наружная защита и пероральная активация для обновления ECM',
+    'routes.desc': 'Косметические средства защищают и восстанавливают матрикс (ECM) снаружи, а нутрицевтики оптимизируют клеточную энергию для биосинтеза ECM изнутри. Вместе они создают замкнутый цикл ремоделирования.',
+    'routes.topical_title': 'Наружная защита и восстановление',
+    'routes.topical_desc': 'Прямое действие на поверхность кожи. Активные ингредиенты косметического класса подавляют разрушающие ферменты (MMP), стимулируют синтез коллагена и защищают от гликации.',
+    'routes.oral_title': 'Внутренняя клеточная активация',
+    'routes.oral_desc': 'Системное клеточное питание. Ингредиенты пищевого класса поддерживают здоровье митохондрий, обеспечивая энергию, необходимую для биосинтеза внеклеточного матрикса изнутри.',
+    'routes.dual_title': 'Ингредиенты двойного применения',
+    'routes.dual_desc': 'Мы поставляем премиальное сырье, сертифицированное для обоих путей. Покупайте один компонент в двух спецификациях для создания синергетических линеек.',
+    'routes.dual_cta': 'Смотреть каталог двойного применения',
+
+    // ── ECM Pathways Section ──
+    'pathways.label': 'Научные механизмы',
+    'pathways.title': 'ECM-таргетное омоложение: три пути обновления дермального матрикса',
+    'pathways.desc': 'Мы поставляем премиальное сырье, сгруппированное по точному клеточному механизму действия на внеклеточный матрикс.',
+    'pathways.collagen_title': 'Синтез коллагена',
+    'pathways.collagen_desc': 'Стимулирует фибробласты для ускорения выработки эндогенного коллагена, восстанавливая дермальный каркас.',
+    'pathways.collagen_anchor': 'стимуляторы синтеза коллагена',
+    'pathways.mmp_title': 'Ингибирование MMP',
+    'pathways.mmp_desc': 'Подавляет матриксные металлопротеиназы (MMP), предотвращая ферментативное разрушение волокон коллагена и эластина.',
+    'pathways.mmp_anchor': 'натуральные ингибиторы MMP',
+    'pathways.glyco_title': 'Защита от гликации',
+    'pathways.glyco_desc': 'Предотвращает сшивание коллагеновых волокон конечными продуктами гликации (AGEs), сохраняя эластичность матрикса.',
+    'pathways.glyco_anchor': 'активные ингредиенты против гликации',
 
     // ── Common ──
     'common.loading':           'Загрузка...',

@@ -1,0 +1,338 @@
+---
+// TwoRoutesSection.astro — Dual track anti-aging routes
+import { useTranslations, getLocalePath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang as Lang);
+const lp = (path: string) => getLocalePath(lang as Lang, path);
+
+// Topical ingredients
+const topicalIngredients = [
+  { name: 'Glabridin', purity: '40% / 98%', spec: 'Cosmetic Grade' },
+  { name: 'Copper Tripeptide-1 (GHK-Cu)', purity: '99%', spec: 'Cosmetic Grade' },
+  { name: 'Luteolin', purity: '98%', spec: 'Cosmetic Grade' }
+];
+
+// Ingestible ingredients
+const oralIngredients = [
+  { name: 'NMN (Beta-Nicotinamide Mononucleotide)', purity: '99.5%', spec: 'Food Grade' },
+  { name: 'PQQ Disodium Salt', purity: '99%', spec: 'Food Grade' },
+  { name: 'Chondroitin Sulfate', purity: '90% / 95%', spec: 'Food Grade' }
+];
+---
+
+<section class="routes-section section bg-deep" id="dual-track-routes">
+  <div class="container">
+    <!-- Header -->
+    <div class="section-header reveal">
+      <span class="section-label">{t('routes.label')}</span>
+      <h2 class="section-title">
+        {t('routes.title_1')}<br/>
+        <span class="gradient-text--gold">{t('routes.title_2')}</span>
+      </h2>
+      <p class="section-desc">
+        {t('routes.desc')}
+      </p>
+    </div>
+
+    <!-- Grid of Two Routes -->
+    <div class="routes-grid">
+      <!-- Route 1: Topical -->
+      <div class="route-card glass reveal">
+        <div class="route-badge badge--gold">Topical Route</div>
+        <div class="route-icon" aria-hidden="true">🧴</div>
+        <h3 class="route-card-title">{t('routes.topical_title')}</h3>
+        <p class="route-card-desc">{t('routes.topical_desc')}</p>
+        
+        <div class="route-ingredients-box">
+          <span class="box-label">Featured Actives</span>
+          <ul class="ingredient-list">
+            {topicalIngredients.map((ing) => (
+              <li class="ing-item">
+                <span class="ing-name">{ing.name}</span>
+                <div class="ing-badges">
+                  <span class="badge badge-purity">{ing.purity}</span>
+                  <span class="badge badge-grade">{ing.spec}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Route 2: Oral -->
+      <div class="route-card glass reveal reveal-delay-1">
+        <div class="route-badge badge--green">Ingestible Route</div>
+        <div class="route-icon" aria-hidden="true">💊</div>
+        <h3 class="route-card-title">{t('routes.oral_title')}</h3>
+        <p class="route-card-desc">{t('routes.oral_desc')}</p>
+        
+        <div class="route-ingredients-box">
+          <span class="box-label">Featured Actives</span>
+          <ul class="ingredient-list">
+            {oralIngredients.map((ing) => (
+              <li class="ing-item">
+                <span class="ing-name">{ing.name}</span>
+                <div class="ing-badges">
+                  <span class="badge badge-purity">{ing.purity}</span>
+                  <span class="badge badge-grade">{ing.spec}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar: Dual Application -->
+    <div class="dual-app-banner glass reveal reveal-delay-2">
+      <div class="banner-left">
+        <span class="banner-badge">Dual Application</span>
+        <h3 class="banner-title">{t('routes.dual_title')}</h3>
+        <p class="banner-desc">{t('routes.dual_desc')}</p>
+      </div>
+      <div class="banner-right">
+        <a href={lp('/products?application=dual')} class="btn btn--gold" id="dual-products-btn">
+          {t('routes.dual_cta')}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .routes-section {
+    position: relative;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .section-title {
+    margin: 0.75rem 0 1rem;
+    line-height: 1.15;
+  }
+
+  .section-desc {
+    font-size: 1.0625rem;
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+  }
+
+  /* Grid Layout */
+  .routes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .routes-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .route-card {
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.1) !important;
+    position: relative;
+    transition: all 0.35s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .route-card:hover {
+    border-color: rgba(212, 166, 84, 0.25) !important;
+    transform: translateY(-4px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .route-badge {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .badge--gold {
+    background: rgba(212, 166, 84, 0.1);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.2);
+  }
+
+  .badge--green {
+    background: rgba(124, 184, 122, 0.1);
+    color: #a8d5a6;
+    border: 1px solid rgba(124, 184, 122, 0.2);
+  }
+
+  .route-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .route-card-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .route-card-desc {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  /* Ingredients Showcase inside card */
+  .route-ingredients-box {
+    margin-top: auto;
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--color-border);
+  }
+
+  .box-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .ingredient-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .ing-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.875rem;
+  }
+
+  .ing-name {
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .ing-badges {
+    display: flex;
+    gap: 0.4rem;
+    flex-shrink: 0;
+  }
+
+  .badge-purity {
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .badge-grade {
+    font-size: 0.7rem;
+    background: rgba(212, 166, 84, 0.08);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.15);
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .route-card:nth-child(2) .badge-grade {
+    background: rgba(124, 184, 122, 0.08);
+    color: #a8d5a6;
+    border: 1px solid rgba(124, 184, 122, 0.15);
+  }
+
+  /* Bottom Dual-Application Banner */
+  .dual-app-banner {
+    padding: 2.25rem 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.15) !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    background: linear-gradient(135deg, rgba(212, 166, 84, 0.03) 0%, rgba(0, 0, 0, 0) 100%);
+  }
+
+  @media (max-width: 900px) {
+    .dual-app-banner {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+  }
+
+  .banner-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-primary-light);
+    letter-spacing: 0.1em;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+
+  .banner-title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .banner-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 700px;
+  }
+
+  .banner-right {
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 900px) {
+    .banner-right {
+      align-self: flex-start;
+    }
+    .banner-right .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

@@ -109,6 +109,12 @@ const companyLinks = [
             <span class="cert-badge">Kosher</span>
             <span class="cert-badge">Halal</span>
           </div>
+          <!-- Compliance strip -->
+          <div class="footer-compliance" aria-label="Compliance Standards">
+            <span class="compliance-item">✓ REACH Compliant</span>
+            <span class="compliance-item">✓ FDA Registered</span>
+            <span class="compliance-item">✓ Cruelty-Free</span>
+          </div>
         </div>
 
         <!-- Products -->
@@ -245,6 +251,21 @@ const companyLinks = [
     border: 1px solid var(--color-border-strong);
     color: var(--color-text-muted);
     font-family: var(--font-mono);
+  }
+
+  .footer-compliance {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.75rem;
+  }
+
+  .compliance-item {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
   }
 
   .footer-col-title {

@@ -35,7 +35,11 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
       { label: 'Lead (Pb)', value: '≤ 0.5 ppm' }
     ],
     coaFile: { asset: { url: '#' } },
-    msdsFile: { asset: { url: '#' } }
+    msdsFile: { asset: { url: '#' } },
+    application: ['topical', 'oral'],
+    inciName: 'Pyrroloquinoline Quinone Disodium Salt',
+    complianceNote: 'REACH registered (cosmetic grade). FDA NDI accepted (food grade).',
+    complianceNote_ru: 'Зарегистрировано в REACH (косметический класс). FDA NDI одобрено (пищевой класс).'
   },
   {
     _id: 'prod-2',
@@ -58,7 +62,11 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
       { label: 'Assay (HPLC)', value: '≥ 99.5%' },
       { label: 'Loss on Drying', value: '≤ 1.0%' },
       { label: 'Tap Density', value: '≥ 0.35 g/ml' }
-    ]
+    ],
+    application: ['topical', 'oral'],
+    inciName: 'Nicotinamide Mononucleotide',
+    complianceNote: 'REACH pre-registered. Safe for cosmetic formulations & dietary supplements.',
+    complianceNote_ru: 'Предварительно зарегистрировано в REACH. Безопасно для косметики и пищевых добавок.'
   },
   {
     _id: 'prod-3',
@@ -81,7 +89,11 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
       { label: 'Assay (HPLC)', value: '≥ 40.0% Glabridin' },
       { label: 'Loss on Drying', value: '≤ 5.0%' },
       { label: 'Residue on Ignition', value: '≤ 1.0%' }
-    ]
+    ],
+    application: ['topical'],
+    inciName: 'Glycyrrhiza Glabra (Licorice) Root Extract',
+    complianceNote: 'Fully REACH compliant cosmetic active ingredient. ECOCERT certified organic source.',
+    complianceNote_ru: 'Полностью соответствует REACH. Органический источник, сертифицированный ECOCERT.'
   },
   {
     _id: 'prod-4',
@@ -103,7 +115,11 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
       { label: 'Appearance', value: 'White to off-white powder' },
       { label: 'Assay (HPLC)', value: '≥ 98.0%' },
       { label: 'Loss on Drying', value: '≤ 5.0%' }
-    ]
+    ],
+    application: ['topical', 'oral'],
+    inciName: 'Epigallocatechin Gallate',
+    complianceNote: 'REACH pre-registered for cosmetics. Non-GMO food grade certified.',
+    complianceNote_ru: 'Предварительно зарегистрировано в REACH. Сертифицировано без ГМО (пищевой класс).'
   },
   {
     _id: 'prod-5',
@@ -121,7 +137,11 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
     specifications: [
       { label: 'Appearance', value: 'Light yellow crystalline powder' },
       { label: 'Assay (HPLC)', value: '≥ 98.0%' }
-    ]
+    ],
+    application: ['topical', 'oral'],
+    inciName: 'Luteolin',
+    complianceNote: '98%+ high purity. Certified food grade & cosmetic active.',
+    complianceNote_ru: 'Высокая чистота 98%+. Сертифицировано как пищевой класс и косметический актив.'
   },
   {
     _id: 'prod-6',
@@ -139,7 +159,11 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
     specifications: [
       { label: 'Appearance', value: 'White or off-white needle crystals' },
       { label: 'Assay (HPLC)', value: '≥ 99.0%' }
-    ]
+    ],
+    application: ['oral'],
+    inciName: 'Flavone',
+    complianceNote: 'Research & formulation grade. B2B bulk standard.',
+    complianceNote_ru: 'Для исследовательских и рецептурных целей. B2B стандарт.'
   }
 ];
 

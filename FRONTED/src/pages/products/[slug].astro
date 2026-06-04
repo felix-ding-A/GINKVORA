@@ -144,6 +144,10 @@ const faqSchema = {
             <p class="product-botanical">{product.botanicalName}</p>
           )}
 
+          {product.inciName && (
+            <p class="product-inci"><strong>INCI Name:</strong> <code>{product.inciName}</code></p>
+          )}
+
           <div class="technical-table">
             {product.purity && (
               <div class="tech-row">
@@ -163,9 +167,42 @@ const faqSchema = {
                 <span class="tech-val">{product.activeIngredient}</span>
               </div>
             )}
+            {product.complianceNote && (
+              <div class="tech-row">
+                <span class="tech-label">Compliance / Standard</span>
+                <span class="tech-val">{product.complianceNote}</span>
+              </div>
+            )}
           </div>
 
           <p class="product-short-desc">{product.shortDescription}</p>
+
+          <!-- Application Grade Tabs -->
+          {product.application && product.application.length > 0 && (
+            <div class="grade-tabs-block">
+              <span class="grade-tabs-label">Application Grade Available:</span>
+              <div class="grade-tabs-pills">
+                {product.application.includes('topical') && (
+                  <div class="grade-pill grade-pill--topical">
+                    <span class="grade-icon">🌿</span>
+                    <div>
+                      <strong>Topical Route</strong>
+                      <span>Cosmetic Grade (INCI Registered)</span>
+                    </div>
+                  </div>
+                )}
+                {product.application.includes('oral') && (
+                  <div class="grade-pill grade-pill--oral">
+                    <span class="grade-icon">💊</span>
+                    <div>
+                      <strong>Ingestible Route</strong>
+                      <span>Food Grade / Nutricosmetic</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           <!-- CTAs -->
           <div class="action-buttons">
@@ -416,6 +453,91 @@ const faqSchema = {
   .product-short-desc {
     color: var(--color-text-secondary);
     line-height: 1.6;
+  }
+
+  .product-inci {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin-top: -0.5rem;
+  }
+
+  .product-inci code {
+    font-family: var(--font-mono);
+    color: var(--color-primary-light);
+    font-size: 0.8rem;
+    background: rgba(212, 166, 84, 0.06);
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Grade Tabs ── */
+  .grade-tabs-block {
+    width: 100%;
+    border-top: 1px dashed var(--color-border);
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .grade-tabs-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+  }
+
+  .grade-tabs-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .grade-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    border-radius: var(--radius-md);
+    flex: 1;
+    min-width: 180px;
+  }
+
+  .grade-pill--topical {
+    background: rgba(212, 166, 84, 0.06);
+    border: 1px solid rgba(212, 166, 84, 0.2);
+  }
+
+  .grade-pill--oral {
+    background: rgba(124, 184, 122, 0.06);
+    border: 1px solid rgba(124, 184, 122, 0.2);
+  }
+
+  .grade-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .grade-pill div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .grade-pill strong {
+    font-size: 0.8125rem;
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .grade-pill--topical strong { color: var(--color-primary-light); }
+  .grade-pill--oral strong { color: #a8d5a6; }
+
+  .grade-pill span {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.02em;
   }
 
   .action-buttons {
