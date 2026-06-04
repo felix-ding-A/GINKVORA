@@ -20,6 +20,8 @@ export const ui = {
     // ── Navigation ──
     'nav.products':        'Products',
     'nav.formulator':      'Formulator',
+    'nav.calculator':      'Calculator',
+    'nav.featured_formulas': 'Featured Formulas',
     'nav.quality':         'Quality',
     'nav.about':           'About',
     'nav.about_us':        'About Us',
@@ -261,6 +263,8 @@ export const ui = {
     // ── Navigation ──
     'nav.products':        'Продукты',
     'nav.formulator':      'Формулятор',
+    'nav.calculator':      'Калькулятор',
+    'nav.featured_formulas': 'Рекомендуемые формулы',
     'nav.quality':         'Качество',
     'nav.about':           'О компании',
     'nav.about_us':        'О компании',

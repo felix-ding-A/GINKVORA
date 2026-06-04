@@ -1,0 +1,539 @@
+---
+// src/pages/Featured Formulas.astro — Scientific Formulation Showcase Page
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const siteUrl = 'https://ginkvora.com';
+
+// WebPage schema
+const featuredFormulasSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Featured Formulas & Formulation Library | GINKVORA",
+  "description": "Ready-to-use scientific formulation recipes and templates for nutraceutical, cosmetic, and pet health industries. Utilizing high-purity NMN, PQQ, Glabridin, and EGCG.",
+  "url": `${siteUrl}/Featured%20Formulas`,
+  "isPartOf": { "@type": "WebSite", "url": siteUrl, "name": "GINKVORA" },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": siteUrl },
+      { "@type": "ListItem", "position": 2, "name": "Featured Formulas", "item": `${siteUrl}/Featured%20Formulas` }
+    ]
+  }
+};
+
+const formulas = [
+  {
+    id: "mitochondria-energy",
+    title: "Mitochondria & Cellular Energy Stack",
+    category: "Health Supplements",
+    icon: "⚡",
+    form: "Hard-Shell Capsule (Size #0)",
+    targetWeight: "500 mg",
+    description: "A synergistic B2B formulation targeting cellular longevity, NAD+ restoration, and enhanced mitochondrial ATP production.",
+    actives: [
+      { name: "NMN (Nicotinamide Mononucleotide)", dose: "250 mg", purity: "≥99.5% (HPLC)", overage: "5%" },
+      { name: "PQQ Disodium Salt", dose: "20 mg", purity: "≥99.0% (HPLC)", overage: "3%" },
+      { name: "Coenzyme Q10 (Ubiquinone)", dose: "100 mg", purity: "≥98.0% (HPLC)", overage: "2%" }
+    ],
+    excipients: [
+      { name: "Microcrystalline Cellulose (MCC 102)", role: "Filler / Binder", ratio: "115 mg" },
+      { name: "Magnesium Stearate", role: "Lubricant (Flow aid)", ratio: "5 mg" },
+      { name: "Silicon Dioxide", role: "Glidant (Anti-caking)", ratio: "10 mg" }
+    ],
+    sop: [
+      "Individually weigh NMN, PQQ, and CoQ10 according to batch size, incorporating specified overages to account for loss.",
+      "Sieve all raw active ingredients and MCC through a 40-mesh stainless steel screen to break up agglomerates.",
+      "Pre-blend the micro-dosed PQQ (20mg/unit) with MCC using geometric dilution to ensure uniform distribution.",
+      "Load the NMN, CoQ10, and pre-blended PQQ/MCC mixture into a V-blender. Mix for 15 minutes at 20 rpm.",
+      "Add Silicon Dioxide and Magnesium Stearate to the blender and perform a final lubricated blend for 3 minutes.",
+      "Fill the homogeneous powder blend into size #0 vegetable HPMC capsule shells at a target fill weight of 500 mg."
+    ],
+    notes: "Store under dry, vacuum-sealed conditions below 25°C. Avoid exposure to light, as NMN and CoQ10 are sensitive to heat and photo-oxidation."
+  },
+  {
+    id: "skin-brightening-serum",
+    title: "Advanced Phytochemical Whitening Emulsion",
+    category: "Cosmetic Actives",
+    icon: "✨",
+    form: "Oil-in-Water (O/W) Cream / Serum",
+    targetWeight: "100 g Base",
+    description: "High-performance brightening cream utilizing Glabridin and EGCG to inhibit melanin synthesis, reduce age spots, and provide powerful antioxidant shielding.",
+    actives: [
+      { name: "Glabridin (Standardized Licorice Extract)", dose: "0.5 g (0.5%)", purity: "40.0% (HPLC)", overage: "2%" },
+      { name: "EGCG (Epigallocatechin Gallate)", dose: "1.0 g (1.0%)", purity: "≥98.0% (HPLC)", overage: "4%" },
+      { name: "Ferulic Acid", dose: "0.5 g (0.5%)", purity: "≥99.0% (HPLC)", overage: "2%" }
+    ],
+    excipients: [
+      { name: "Phase A: Deionized Water, Glycerin, Carbomer", role: "Water Phase Base", ratio: "82.0 g" },
+      { name: "Phase B: Caprylic Triglyceride, Jojoba Oil, Glyceryl Stearate", role: "Oil Phase & Emulsifier", ratio: "15.0 g" },
+      { name: "Phase D: Phenoxyethanol, Ethylhexylglycerin", role: "Preservative system", ratio: "1.0 g" }
+    ],
+    sop: [
+      "Prepare Phase A (Water Phase) by dispersing Carbomer in deionized water and Glycerin. Heat to 75-80°C under moderate stirring.",
+      "Prepare Phase B (Oil Phase) by combining lipids and Glyceryl Stearate. Heat to 75-80°C until fully melted and uniform.",
+      "Slowly add Phase B into Phase A under high-shear homogenization (3000-3500 rpm) for 8 minutes to form the core emulsion.",
+      "Cool the emulsion slowly under anchor agitation (50-60 rpm). When the temperature drops below 40°C, prepare Phase C.",
+      "Phase C (Actives): Dissolve Ferulic Acid and EGCG in a small portion of water/propanediol. Solubilize Glabridin in Caprylic Triglyceride. Mix both into the emulsion.",
+      "Add Phase D (Preservatives) at 35°C, measure pH and adjust with Triethanolamine to a final skin-compatible target of 5.5 - 6.0."
+    ],
+    notes: "Recommended emulsifier required HLB value is approximately 10.5. Glabridin should be dissolved in the lipid phase below 40°C to avoid thermal degradation."
+  },
+  {
+    id: "pet-joint-mobility",
+    title: "Pet Joint & Cognitive Mobility Chew",
+    category: "Pet Health",
+    icon: "🐕",
+    form: "Cold-Extruded Soft Chew",
+    targetWeight: "4.0 g",
+    description: "A highly palatable veterinary-grade functional chew designed to reduce joint inflammation and support brain health in senior dogs.",
+    actives: [
+      { name: "Curcumin Extract (Standardized Curcuminoids)", dose: "150 mg", purity: "95.0% (HPLC)", overage: "5%" },
+      { name: "Boswellia Serrata Extract (Boswellic Acids)", dose: "100 mg", purity: "65.0% (Titration)", overage: "3%" },
+      { name: "Ginkgo Biloba Leaf Extract", dose: "40 mg", purity: "24% Flavones / 6% Lactones", overage: "2%" }
+    ],
+    excipients: [
+      { name: "Glycerin & Vegetable Oil", role: "Humectants / Softeners", ratio: "800 mg" },
+      { name: "Brewers Yeast & Natural Chicken Flavor", role: "Palatability Enhancers", ratio: "1400 mg" },
+      { name: "Potato Starch & Chickpea Flour", role: "Structure binders", ratio: "1510 mg" }
+    ],
+    sop: [
+      "Blend all dry ingredients, including Curcumin, Boswellia, Ginkgo extract, starch, flour, and chicken flavor in a horizontal paddle mixer.",
+      "Sieve the dry mix through a 30-mesh screen to ensure uniform particle size distribution.",
+      "Slowly pump the liquid humectants (Glycerin, vegetable oil, water) into the dry powder mixture while mixing continuously.",
+      "Process the mass at room temperature (below 35°C) to form a cohesive, semi-solid dough. Do not apply heat to preserve active curcuminoids.",
+      "Feed the dough into a cold-extrusion machine equipped with a bone or circular die. Cut the extrudate to a target weight of 4.0 g.",
+      "Pass the extruded chews through a low-temperature drying tunnel to reach an water activity (Aw) level < 0.65 for mold prevention."
+    ],
+    notes: "Curcumin has a strong natural yellow pigment. Use stainless steel equipment and clean immediately to prevent cross-batch staining."
+  },
+  {
+    id: "neuro-cognitive-protection",
+    title: "Neuro-Cognitive Protection & Focus Blend",
+    category: "Health Supplements",
+    icon: "🧠",
+    form: "Standard Pressed Tablet",
+    targetWeight: "650 mg",
+    description: "Advanced cognitive formulation linking Luteolin and Ginkgo Biloba extract to support cerebral blood flow, concentration, and combat brain fog.",
+    actives: [
+      { name: "Luteolin (Standardized Shell Extract)", dose: "100 mg", purity: "≥98.0% (HPLC)", overage: "4%" },
+      { name: "Ginkgo Biloba Leaf Extract", dose: "120 mg", purity: "24/6 Standardized (HPLC)", overage: "2%" },
+      { name: "Alpha-GPC (L-Alpha Glycerylphosphorylcholine)", dose: "150 mg", purity: "50.0% Powder (HPLC)", overage: "5%" }
+    ],
+    excipients: [
+      { name: "Dicalcium Phosphate Dihydrate (Emcompress)", role: "Direct Compression Filler", ratio: "250 mg" },
+      { name: "Croscarmellose Sodium (Ac-Di-Sol)", role: "Superdisintegrant", ratio: "20 mg" },
+      { name: "Stearic Acid & Silicon Dioxide", role: "Lubricants & Glidants", ratio: "10 mg" }
+    ],
+    sop: [
+      "Weigh out Luteolin, Ginkgo Biloba, Alpha-GPC, Emcompress, and Croscarmellose Sodium according to batch guidelines.",
+      "Alpha-GPC is highly hygroscopic; ensure mixing room relative humidity (RH) is strictly maintained below 35%.",
+      "Blend active ingredients and Dicalcium Phosphate in a tumble blender for 12 minutes to distribute the dense herbal powders.",
+      "Add Croscarmellose Sodium (superdisintegrant) and blend for another 3 minutes.",
+      "Add Stearic Acid and Silicon Dioxide. Blend for a final 2 minutes. Avoid over-lubrication to prevent tablet softening.",
+      "Feed the dry blend directly into a rotary tablet press equipped with 11mm oval punches. Compress to a hardness of 10-12 kp."
+    ],
+    notes: "Alpha-GPC absorbs moisture rapidly from air. Tablets must be packaged in high-barrier Alu-Alu blisters or sealed HDPE bottles with desiccant immediately after compression."
+  }
+];
+---
+
+<BaseLayout
+  title="Featured Scientific Formulas & Recipes"
+  description="Explore professional formulation templates for B2B health supplements, cosmetic actives, and pet health. Get precise ingredient ratios and step-by-step preparation protocols."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(featuredFormulasSchema)} slot="head" />
+
+  <main class="formulas-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="Page Header">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">Formulation Library</span>
+        <h1 class="banner-title">Featured Scientific Formulas</h1>
+        <p class="banner-desc">
+          Ready-to-scale formulation blueprints combining high-purity botanical extracts, active cofactors, and standardized pharmaceutical excipients.
+        </p>
+      </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <section class="container section">
+      <div class="formulas-intro">
+        <p class="intro-text">
+          Our R&D scientific team has developed these reference formulations to assist product developers, procurement officers, and lab scientists. All active ingredients featured below are available for bulk order and custom sampling. Use our <a href="/calculator" class="highlight-link">Scientific Formulation Console</a> to scale batch weights, adjust overages, or compute complex dilutions.
+        </p>
+      </div>
+
+      <div class="formulas-grid">
+        {formulas.map((formula) => (
+          <article class="formula-card glass" id={formula.id}>
+            <!-- Card Header -->
+            <div class="card-header-bar">
+              <span class="category-badge">{formula.category}</span>
+              <span class="form-badge">{formula.form}</span>
+            </div>
+
+            <div class="card-main-title">
+              <span class="card-icon">{formula.icon}</span>
+              <div>
+                <h2>{formula.title}</h2>
+                <span class="target-weight">Target Unit Weight: <strong>{formula.targetWeight}</strong></span>
+              </div>
+            </div>
+
+            <p class="formula-desc">{formula.description}</p>
+
+            <details class="formula-details">
+              <summary class="details-toggle">
+                <span>View Full Formulation & SOP</span>
+                <svg class="toggle-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </summary>
+
+              <div class="details-content">
+                <!-- Actives Table -->
+                <div class="table-wrapper">
+                  <h3>Active Ingredients (GINKVORA Actives)</h3>
+                  <table class="recipe-table">
+                    <thead>
+                      <tr>
+                        <th>Active Ingredient</th>
+                        <th>Dose / Unit</th>
+                        <th>Min Purity</th>
+                        <th>Overage Factor</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {formula.actives.map(active => (
+                        <tr>
+                          <td class="font-bold text-white">{active.name}</td>
+                          <td class="font-mono font-bold text-primary">{active.dose}</td>
+                          <td class="font-mono">{active.purity}</td>
+                          <td class="font-mono text-muted">{active.overage}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Excipients Table -->
+                <div class="table-wrapper mt-4">
+                  <h3>Recommended Excipients & Carriers</h3>
+                  <table class="recipe-table">
+                    <thead>
+                      <tr>
+                        <th>Excipient Component</th>
+                        <th>Functional Role</th>
+                        <th>Suggested Ratio</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {formula.excipients.map(exc => (
+                        <tr>
+                          <td class="font-bold text-white">{exc.name}</td>
+                          <td>{exc.role}</td>
+                          <td class="font-mono font-bold text-accent">{exc.ratio}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Step-by-Step SOP -->
+                <div class="sop-section mt-4">
+                  <h3>Preparation & Blending SOP</h3>
+                  <ol class="sop-list">
+                    {formula.sop.map(step => (
+                      <li>{step}</li>
+                    ))}
+                  </ol>
+                </div>
+
+                <!-- Technical Notes -->
+                <div class="notes-block mt-4">
+                  <strong>💡 Formulation & Stability Notes:</strong>
+                  <p>{formula.notes}</p>
+                </div>
+              </div>
+            </details>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .formulas-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 5rem 2.5rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Intro Section ── */
+  .formulas-intro {
+    max-width: 800px;
+    margin: 0 auto var(--space-2xl) auto;
+    text-align: center;
+  }
+
+  .intro-text {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .highlight-link {
+    color: var(--color-primary-light);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color var(--transition-base);
+  }
+
+  .highlight-link:hover {
+    color: var(--color-primary);
+  }
+
+  /* ── Formulas Grid & Cards ── */
+  .formulas-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .formula-card {
+    padding: var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .formula-card:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .card-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-sm);
+  }
+
+  .category-badge {
+    background: var(--color-primary-glow);
+    color: var(--color-primary-light);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(212, 166, 84, 0.2);
+  }
+
+  .form-badge {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .card-main-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xs);
+  }
+
+  .card-icon {
+    font-size: 2.25rem;
+    line-height: 1;
+  }
+
+  .card-main-title h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .target-weight {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    display: block;
+    margin-top: 0.125rem;
+  }
+
+  .target-weight strong {
+    color: var(--color-text-secondary);
+  }
+
+  .formula-desc {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-md);
+  }
+
+  /* ── Expandable Details ── */
+  .formula-details {
+    border-top: 1px dashed var(--color-border);
+    padding-top: var(--space-md);
+  }
+
+  .details-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary-light);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    transition: color var(--transition-base);
+  }
+
+  .details-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .details-toggle:hover {
+    color: var(--color-primary);
+  }
+
+  .toggle-arrow {
+    transition: transform 0.25s ease;
+  }
+
+  .formula-details[open] .toggle-arrow {
+    transform: rotate(180deg);
+  }
+
+  .details-content {
+    margin-top: var(--space-md);
+    animation: slideDown 0.3s ease-out;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Recipe Tables ── */
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .table-wrapper h3, .sop-section h3 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-sm);
+  }
+
+  .recipe-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: left;
+  }
+
+  .recipe-table th {
+    border-bottom: 1px solid var(--color-border-strong);
+    padding: 0.5rem 0.75rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .recipe-table td {
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.625rem 0.75rem;
+    color: var(--color-text-secondary);
+  }
+
+  .recipe-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Utility classes inside CSS */
+  .text-white { color: var(--color-text) !important; }
+  .text-primary { color: var(--color-primary-light) !important; }
+  .text-accent { color: var(--color-accent-light) !important; }
+  .text-muted { color: var(--color-text-muted) !important; }
+  .font-bold { font-weight: 600; }
+  .font-mono { font-family: var(--font-mono); }
+  .mt-4 { margin-top: var(--space-md); }
+
+  /* ── SOP List ── */
+  .sop-list {
+    padding-left: 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .sop-list li::marker {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  /* ── Notes Block ── */
+  .notes-block {
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 2px solid var(--color-primary);
+    padding: var(--space-md);
+    border-radius: var(--radius-sm);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .notes-block strong {
+    color: var(--color-primary-light);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .notes-block p {
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+</style>

@@ -1,5 +1,5 @@
 ---
-// src/pages/formulator.astro — Scientific Formulation Solver Page
+// src/pages/calculator.astro — Scientific Formulation Solver Page
 export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FormulatorConsole from '../components/calculators/FormulatorConsole.vue';
@@ -12,13 +12,13 @@ const formulatorSchema = {
   "@type": "WebPage",
   "name": "Scientific Formulation Solver | GINKVORA",
   "description": "Free B2B interactive calculators for chemical molarity, serial dilutions, molecular weight parsing, and cosmetic/supplement recipe builders.",
-  "url": `${siteUrl}/formulator`,
+  "url": `${siteUrl}/calculator`,
   "isPartOf": { "@type": "WebSite", "url": siteUrl, "name": "GINKVORA" },
   "breadcrumb": {
     "@type": "BreadcrumbList",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": siteUrl },
-      { "@type": "ListItem", "position": 2, "name": "Formulation Solver", "item": `${siteUrl}/formulator` }
+      { "@type": "ListItem", "position": 2, "name": "Formulation Solver", "item": `${siteUrl}/calculator` }
     ]
   }
 };
@@ -32,7 +32,7 @@ const appSchema = {
   "applicationCategory": "ScienceApplication",
   "operatingSystem": "Web Browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "url": `${siteUrl}/formulator`,
+  "url": `${siteUrl}/calculator`,
   "provider": { "@type": "Organization", "name": "GINKVORA", "url": siteUrl }
 };
 

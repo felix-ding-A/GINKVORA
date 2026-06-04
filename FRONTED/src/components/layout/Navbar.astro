@@ -43,7 +43,14 @@ const navLinks = [
     label: t('nav.products'),
     dropdown: productsDropdown
   },
-  { href: lp('/formulator'), label: t('nav.formulator') },
+  {
+    href: lp('/calculator'),
+    label: t('nav.formulator'),
+    dropdown: [
+      { href: lp('/calculator'), label: t('nav.calculator') },
+      { href: lp('/Featured Formulas'), label: t('nav.featured_formulas') }
+    ]
+  },
   { href: lp('/quality'),    label: t('nav.quality') },
   {
     href: lp('/about'),
