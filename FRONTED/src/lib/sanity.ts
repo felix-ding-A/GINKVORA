@@ -393,7 +393,7 @@ export type SanityProduct = {
   activeIngredient?: string;
   casNumber?: string;
   shortDescription?: string;
-  description?: string;
+  description?: any;
   featured?: boolean;
   heroImage?: any;
   applications?: any;

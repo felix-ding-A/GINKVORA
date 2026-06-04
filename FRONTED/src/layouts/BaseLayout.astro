@@ -29,7 +29,7 @@ const {
 } = Astro.props;
 
 const siteUrl = 'https://ginkvora.com';
-const fullTitle = title === 'GINKVORA' ? title : `${title} | GINKVORA`;
+const fullTitle = title.includes('GINKVORA') ? title : `${title} | GINKVORA`;
 const canonical = canonicalUrl || new URL(Astro.url.pathname, siteUrl).toString();
 
 // Use dynamic OG image generator if no explicit image is provided
