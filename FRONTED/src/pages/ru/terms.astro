@@ -2,8 +2,20 @@
 // src/pages/ru/terms.astro — Russian Terms of Service (simplified)
 export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const termsSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Условия обслуживания",
+  "description": "Условия обслуживания GINKVORA — правила использования сайта и условия B2B поставок.",
+  "url": "https://ginkvora.com/ru/terms",
+  "additionalType": [
+    "https://en.wikipedia.org/wiki/Terms_of_service"
+  ]
+};
 ---
 <BaseLayout lang="ru" title="Условия обслуживания | GINKVORA" description="Условия обслуживания GINKVORA — правила использования сайта и условия B2B поставок.">
+  <script type="application/ld+json" set:html={JSON.stringify(termsSchema)} slot="head" />
   <main class="legal-page bg-noise">
     <div class="container legal-content">
       <h1>Условия обслуживания</h1>

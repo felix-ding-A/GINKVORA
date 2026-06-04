@@ -1,12 +1,24 @@
 ---
 // src/pages/privacy.astro — Premium B2B Privacy Policy Page
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const privacySchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Privacy Policy",
+  "description": "How GINKVORA collects, processes, and safeguards corporate information, transaction data, and sample request logs in our international B2B botanical extract operations.",
+  "url": "https://ginkvora.com/privacy",
+  "additionalType": [
+    "https://en.wikipedia.org/wiki/Privacy_policy"
+  ]
+};
 ---
 
 <BaseLayout
   title="Privacy Policy | GINKVORA Sourcing Compliance"
   description="Learn how GINKVORA handles and protects corporate data, sample requests, and communication logs in accordance with international B2B security standards."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(privacySchema)} slot="head" />
   <main class="privacy-page bg-noise">
     <!-- Header banner -->
     <header class="page-banner" aria-label="Page Header">

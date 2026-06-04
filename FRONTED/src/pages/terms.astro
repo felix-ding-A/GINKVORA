@@ -1,12 +1,24 @@
 ---
 // src/pages/terms.astro — Premium B2B Terms of Service Page
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const termsSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Terms of Service",
+  "description": "Review the business terms, ingredient specification warranties, payment requirements, and delivery liability limits governing GINKVORA's global B2B supplier operations.",
+  "url": "https://ginkvora.com/terms",
+  "additionalType": [
+    "https://en.wikipedia.org/wiki/Terms_of_service"
+  ]
+};
 ---
 
 <BaseLayout
   title="Terms of Service | GINKVORA Wholesale Commercial Terms"
   description="Review the business terms, ingredient specification warranties, payment requirements, and delivery liability limits governing GINKVORA's global B2B supplier operations."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(termsSchema)} slot="head" />
   <main class="terms-page bg-noise">
     <!-- Header banner -->
     <header class="page-banner" aria-label="Page Header">
