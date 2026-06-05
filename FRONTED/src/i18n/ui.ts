@@ -41,10 +41,11 @@ export const ui = {
     'nav.industry_news':        'Industry News',
 
     // ── Hero ──
-    'hero.badge':          'B2B Plant Extract Supplier',
-    'hero.title_1':        'ECM-Targeted Anti-Aging Ingredients —',
-    'hero.title_2':        'Topical & Nutricosmetic Solutions',
-    'hero.subtitle':       'Premium botanical extracts for global nutraceutical, cosmetic, and pet health industries. 500+ high-purity ingredients — from PQQ and NMN to EGCG and Glabridin.',
+    'hero.badge':          'ECM Science & Nutricosmetic Specialist',
+    'hero.title_1':        'ECM-Targeted Anti-Aging &',
+    'hero.title_2':        'Nutricosmetic Ingredients',
+    'hero.sub_headline':   'Topical & Ingestible Solutions for Premium Formulations.',
+    'hero.subtitle':       'Premium active ingredients for global nutraceutical, cosmetic, and pet health industries. Featuring high-purity PQQ, NMN, EGCG, and Glabridin.',
     'hero.cta_explore':    'Explore Products',
     'hero.cta_sample':     'Request a Sample',
     'hero.trust_gmp':      'GMP Certified',
@@ -312,10 +313,11 @@ export const ui = {
     'nav.industry_news':        'Новости отрасли',
 
     // ── Hero ──
-    'hero.badge':          'B2B поставщик растительных экстрактов',
-    'hero.title_1':        'ECM-таргетные антивозрастные ингредиенты —',
-    'hero.title_2':        'Решения для косметики и нутрицевтики',
-    'hero.subtitle':       'Премиальные растительные экстракты для мировых производителей нутрицевтиков, косметики и продукции для здоровья животных. 500+ высокочистых ингредиентов — от PQQ и NMN до EGCG и глабридина.',
+    'hero.badge':          'ECM-наука и нутрикосметика',
+    'hero.title_1':        'ECM-таргетные антивозрастные',
+    'hero.title_2':        'нутрикосметические ингредиенты',
+    'hero.sub_headline':   'Наружные и пероральные решения для премиальных формуляций.',
+    'hero.subtitle':       'Премиальные активные ингредиенты для мировых производителей нутрицевтиков, косметики и продукции для здоровья животных. PQQ, NMN, EGCG и глабридин высокой чистоты.',
     'hero.cta_explore':    'Каталог продуктов',
     'hero.cta_sample':     'Запросить образец',
     'hero.trust_gmp':      'GMP сертификат',
