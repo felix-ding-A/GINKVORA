@@ -183,7 +183,7 @@ export const ui = {
     'extraction.step5_desc':    'Finished ingredients are packaged under inert nitrogen atmosphere in food-grade sealed bags (1kg, 5kg, 25kg drums), with COA, MSDS, and specification sheets included for every shipment.',
     'extraction.vis_plant':     'GMP Extraction Plant',
     'extraction.vis_lab':       'QC Laboratory',
-    'extraction.vis_tested':    'Products Tested Monthly',
+    'extraction.vis_tested':    'Batches Tested',
     'extraction.vis_purity':    'Standard Purity Target',
     'extraction.cta_quality':   'View Full Quality Standards',
     'extraction.cta_sample':    'Request a Sample',
@@ -241,7 +241,7 @@ export const ui = {
     'featured.title_1':         'High-Purity Botanicals',
     'featured.title_2':         'You Can Trust',
     'featured.desc':            'Every ingredient is rigorously tested and comes with comprehensive analytical documentation — COA, MSDS, and third-party test reports.',
-    'featured.cta':             'View All 500+ Ingredients',
+    'featured.cta':             'View All Premium Ingredients',
 
     // ── Insights Preview Section ──
     'insights_preview.label':   'Knowledge Hub',
@@ -455,7 +455,7 @@ export const ui = {
     'extraction.step5_desc':    'Готовые ингредиенты упаковываются в инертной атмосфере азота в пищевые герметичные пакеты (1 кг, 5 кг, бочки 25 кг) с COA, MSDS и спецификациями для каждой поставки.',
     'extraction.vis_plant':     'Завод GMP-экстракции',
     'extraction.vis_lab':       'Лаборатория QC',
-    'extraction.vis_tested':    'Продуктов тестируется в месяц',
+    'extraction.vis_tested':    'Партий протестировано',
     'extraction.vis_purity':    'Целевой стандарт чистоты',
     'extraction.cta_quality':   'Стандарты качества',
     'extraction.cta_sample':    'Запросить образец',
@@ -513,7 +513,7 @@ export const ui = {
     'featured.title_1':         'Высокочистые ботаники,',
     'featured.title_2':         'которым вы можете доверять',
     'featured.desc':            'Каждый ингредиент проходит строгие испытания и поставляется с полной аналитической документацией — COA, MSDS и отчётами независимых лабораторий.',
-    'featured.cta':             'Смотреть все 500+ ингредиентов',
+    'featured.cta':             'Смотреть все продукты',
 
     // ── Insights Preview Section ──
     'insights_preview.label':   'База знаний',
