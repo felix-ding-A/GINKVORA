@@ -121,15 +121,15 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
         </div>
 
         <!-- Mini floating cards -->
-        <div class="mini-card glass" style="--float-d:0s; top:8%; right:-4%;">
+        <div class="mini-card glass" style="--float-d:0s; top:2%; right:-4%;">
           <span class="mini-card-name">NMN</span>
           <span class="mini-card-purity">≥ 99%</span>
         </div>
-        <div class="mini-card glass" style="--float-d:1.5s; bottom:18%; left:-6%;">
+        <div class="mini-card glass" style="--float-d:1.5s; top:42%; left:-8%;">
           <span class="mini-card-name">EGCG</span>
           <span class="mini-card-purity">≥ 98%</span>
         </div>
-        <div class="mini-card glass" style="--float-d:3s; bottom:4%; right:2%;">
+        <div class="mini-card glass" style="--float-d:3s; bottom:2%; left:8%;">
           <span class="mini-card-name">Luteolin</span>
           <span class="mini-card-purity">≥ 98%</span>
         </div>
@@ -160,6 +160,15 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
     position: absolute;
     inset: 0;
     background: linear-gradient(135deg, #030201 0%, #0a0703 35%, #120a04 65%, #060503 100%);
+  }
+
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('/images/hero-bg.png') center/cover no-repeat;
+    opacity: 0.35;
+    mix-blend-mode: screen;
   }
 
   .hero-gradient {
@@ -294,13 +303,14 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
   .hero-right {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 1rem;
   }
 
   .ingredient-card-stack {
     position: relative;
-    width: 320px;
-    height: 390px;
+    width: 340px;
+    height: 440px;
   }
 
   .ingredient-showcase {
