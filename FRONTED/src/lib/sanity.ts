@@ -139,7 +139,14 @@ export const PRODUCT_FIELDS = `
   _id,
   name,
   "slug": slug.current,
-  category->{name, "slug": slug.current},
+  "categories": select(
+    defined(category[0]) => category[]->{name, "slug": slug.current},
+    defined(category) => [category->{name, "slug": slug.current}]
+  ),
+  "category": select(
+    defined(category[0]) => category[0]->{name, "slug": slug.current},
+    defined(category) => category->{name, "slug": slug.current}
+  ),
   botanicalName,
   purity,
   activeIngredient,
@@ -413,6 +420,7 @@ export type SanityProduct = {
   name: string;
   slug: string;
   category: { name: string; slug: string };
+  categories?: { name: string; slug: string }[];
   botanicalName?: string;
   purity?: string;
   activeIngredient?: string;

@@ -97,12 +97,17 @@ const breadcrumbSchema = {
         <!-- Right: Specs and Quick Order -->
         <section class="info-section" aria-label="Информация о продукте">
           <div class="product-header-badges">
-            <span class="badge badge--gold">{product.category.name}</span>
+            {product.categories && product.categories.length > 0
+              ? product.categories.map(cat => (
+                  <span class="badge badge--gold">{cat.name}</span>
+                ))
+              : <span class="badge badge--gold">{product.category?.name}</span>
+            }
             {product.applicationDisplay && (
               <span class={`card-app-badge app--${product.applicationDisplay}`}>
-                {product.applicationDisplay === 'dual' && '● Двойное применение (Общий ингредиент)'}
-                {product.applicationDisplay === 'topical' && '● Наружное применение (Косметический класс)'}
-                {product.applicationDisplay === 'oral' && '● Перорально (Нутрицевтик)'}
+                {product.applicationDisplay === 'dual' && '● Двойное применение'}
+                {product.applicationDisplay === 'topical' && '● Наружное применение'}
+                {product.applicationDisplay === 'oral' && '● Перорально'}
               </span>
             )}
           </div>

@@ -189,7 +189,11 @@ const breadcrumbsSchema = {
                 </div>
                 <div class="card-body">
                   <div class="card-top">
-                    <span class="card-category">{product.category?.name}</span>
+                    <span class="card-category">
+                      {product.categories && product.categories.length > 0
+                        ? product.categories.map(c => c.name).join(' · ')
+                        : product.category?.name}
+                    </span>
                     {product.purity && (
                       <span class="card-purity font-mono">{product.purity}</span>
                     )}
@@ -210,9 +214,9 @@ const breadcrumbsSchema = {
                     )}
                     {product.applicationDisplay && (
                       <span class={`card-app-badge app--${product.applicationDisplay}`}>
-                        {product.applicationDisplay === 'dual' && '● Двойное применение (Общий ингредиент)'}
-                        {product.applicationDisplay === 'topical' && '● Наружное применение (Косметический класс)'}
-                        {product.applicationDisplay === 'oral' && '● Перорально (Нутрицевтик)'}
+                        {product.applicationDisplay === 'dual' && '● Двойное применение'}
+                        {product.applicationDisplay === 'topical' && '● Наружное применение'}
+                        {product.applicationDisplay === 'oral' && '● Перорально'}
                       </span>
                     )}
                   </div>

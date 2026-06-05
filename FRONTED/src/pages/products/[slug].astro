@@ -138,12 +138,17 @@ const faqSchema = {
         <!-- Right: Specs and Quick Order -->
         <section class="info-section" aria-label="Product Information">
           <div class="product-header-badges">
-            <span class="badge badge--gold">{product.category.name}</span>
+            {product.categories && product.categories.length > 0
+              ? product.categories.map(cat => (
+                  <span class="badge badge--gold">{cat.name}</span>
+                ))
+              : <span class="badge badge--gold">{product.category?.name}</span>
+            }
             {product.applicationDisplay && (
               <span class={`card-app-badge app--${product.applicationDisplay}`}>
-                {product.applicationDisplay === 'dual' && '● Dual Application (Shared Ingredient)'}
-                {product.applicationDisplay === 'topical' && '● Topical Use (Cosmetic Grade)'}
-                {product.applicationDisplay === 'oral' && '● Oral Use (Nutricosmetic)'}
+                {product.applicationDisplay === 'dual' && '● Dual Application'}
+                {product.applicationDisplay === 'topical' && '● Topical Use'}
+                {product.applicationDisplay === 'oral' && '● Oral Use'}
               </span>
             )}
           </div>

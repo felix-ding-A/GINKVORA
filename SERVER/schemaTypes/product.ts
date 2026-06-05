@@ -43,10 +43,11 @@ export const productType = defineType({
     defineField({
       name: 'category',
       title: 'Category',
-      type: 'reference',
-      to: [{ type: 'category' }],
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'category' }] }],
       group: 'basic',
-      validation: (Rule) => Rule.required(),
+      description: 'Select one or more product categories (multi-select supported).',
+      validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: 'mainCategories',
@@ -381,13 +382,15 @@ export const productType = defineType({
   preview: {
     select: {
       title: 'name',
-      categoryName: 'category.name',
+      cat0Name: 'category.0.name',
+      cat1Name: 'category.1.name',
       subtitle: 'purity',
       media: 'heroImage',
     },
-    prepare({ title, categoryName, subtitle, media }) {
+    prepare({ title, cat0Name, cat1Name, subtitle, media }) {
       const subtitleParts = []
-      if (categoryName) subtitleParts.push(categoryName)
+      const catNames = [cat0Name, cat1Name].filter(Boolean)
+      if (catNames.length > 0) subtitleParts.push(catNames.join(', '))
       if (subtitle) subtitleParts.push(`Purity: ${subtitle}`)
       return {
         title: title || 'Untitled Product',

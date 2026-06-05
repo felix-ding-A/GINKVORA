@@ -202,7 +202,11 @@ const itemListSchema = {
                     />
                   </picture>
                 </a>
-                <span class="card-category-badge">{prod.category.name}</span>
+                <span class="card-category-badge">
+                  {prod.categories && prod.categories.length > 0
+                    ? prod.categories.map(c => c.name).join(' · ')
+                    : prod.category?.name}
+                </span>
               </div>
 
               <div class="card-content">
@@ -215,9 +219,9 @@ const itemListSchema = {
                   )}
                   {prod.applicationDisplay && (
                     <span class={`card-app-badge app--${prod.applicationDisplay}`}>
-                      {prod.applicationDisplay === 'dual' && '● Dual Application (Shared Ingredient)'}
-                      {prod.applicationDisplay === 'topical' && '● Topical Use (Cosmetic Grade)'}
-                      {prod.applicationDisplay === 'oral' && '● Oral Use (Nutricosmetic)'}
+                      {prod.applicationDisplay === 'dual' && '● Dual Application'}
+                      {prod.applicationDisplay === 'topical' && '● Topical Use'}
+                      {prod.applicationDisplay === 'oral' && '● Oral Use'}
                     </span>
                   )}
                 </div>
