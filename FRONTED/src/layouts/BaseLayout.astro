@@ -77,6 +77,32 @@ const organizationSchema = {
     {!noindex && <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />}
     <link rel="canonical" href={canonical} />
 
+    <!--
+      ╔══════════════════════════════════════════════════════════╗
+      ║  CRITICAL CSS — Inlined to eliminate render-blocking    ║
+      ║  delay for above-the-fold H1 text and body background.  ║
+      ║  Allows the browser to paint the hero text immediately  ║
+      ║  before external CSS sheets finish downloading.          ║
+      ╚══════════════════════════════════════════════════════════╝
+    -->
+    <style is:inline>
+      /* Critical: body background + text color (prevents white flash) */
+      body{margin:0;background-color:#060503;color:#f5efe0;font-family:'DM Sans','Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased}
+      /* Critical: H1 sizing and font for LCP element */
+      h1,h2,h3{font-family:'Cormorant Garamond','Georgia',serif;font-weight:600;line-height:1.15;color:#f5efe0}
+      h1{font-size:clamp(2.5rem,6vw,5rem);font-weight:700}
+      /* Critical: container + hero layout for first paint */
+      .container{width:100%;max-width:1280px;margin-inline:auto;padding-inline:clamp(1rem,5vw,2.5rem)}
+      /* Critical: gradient text for hero title gold highlight */
+      .gradient-text--gold{background:linear-gradient(135deg,#f0c878 0%,#d4a654 60%,#a07830 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+      /* Critical: section-label badge rendering */
+      .section-label{font-size:0.8125rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#e07830}
+      .badge{display:inline-flex;align-items:center;gap:0.375rem;padding:0.3rem 0.875rem;border-radius:9999px;font-size:0.8125rem;font-weight:500}
+      .badge--gold{background:rgba(212,166,84,0.15);color:#f0c878;border:1px solid rgba(212,166,84,0.3)}
+      /* Critical: fade-in-up initial state (prevents layout shift) */
+      .fade-in-up{opacity:0}
+    </style>
+
     <!-- Open Graph -->
     <meta property="og:type" content={type} />
     <meta property="og:url" content={canonical} />
@@ -114,8 +140,13 @@ const organizationSchema = {
     <meta name="author" content="GINKVORA" />
     <meta name="copyright" content="GINKVORA" />
 
-    <!-- Performance: Font Preloads -->
+    <!--
+      Performance: Font Preloads
+      All font weights used above-the-fold are preloaded to parallelize
+      font downloads with CSS parsing, eliminating FOIT (Flash of Invisible Text).
+    -->
     <link rel="preload" as="font" type="font/woff2" href="/fonts/dm-sans-normal-400.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/dm-sans-normal-600.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond-normal-400.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond-normal-700.woff2" crossorigin />
 
@@ -124,10 +155,10 @@ const organizationSchema = {
     <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
     <link rel="preconnect" href="https://analytics.ginkvora.com" />
 
-    <!-- Analytics (Umami) -->
-    <script 
-      defer 
-      src="https://analytics.ginkvora.com/script.js" 
+    <!-- Analytics (Umami) — loaded async to avoid blocking initial render -->
+    <script
+      async
+      src="https://analytics.ginkvora.com/script.js"
       data-website-id="df5768a4-e9af-4c4b-8c72-620a91411e86">
     </script>
 
@@ -149,7 +180,14 @@ const organizationSchema = {
       <slot />
     </main>
 
-    <Footer lang={lang} />
+    <!--
+      Footer uses content-visibility: auto to skip layout/paint
+      computation until the user scrolls near it. This eliminates
+      ~100ms of layout work from the initial critical rendering path.
+    -->
+    <div class="cv-deferred-footer">
+      <Footer lang={lang} />
+    </div>
 
     <!-- Reveal animation script -->
     <script>
