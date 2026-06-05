@@ -1,17 +1,61 @@
 ---
 // src/pages/ru/products/index.astro — Russian products listing page
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getAllProducts, getAllCategories, urlFor, getLocalizedField } from '../../../lib/sanity';
+import { getAllProducts, urlFor, getLocalizedField } from '../../../lib/sanity';
 import { useTranslations } from '../../../i18n/utils';
 
 const lang = 'ru';
 const t = useTranslations(lang);
 
-const products = await getAllProducts();
-const categories = await getAllCategories();
+const category = Astro.url.searchParams.get('category');
+const mechanism = Astro.url.searchParams.get('mechanism');
+
+// Fetch products based on filters
+const products = await getAllProducts(category, mechanism);
 
 const siteUrl = 'https://ginkvora.com';
 
+const categoriesList = [
+  { slug: 'liposomal', name: 'Липосомальные формулы', icon: '🧬' },
+  { slug: 'pet-longevity', name: 'Долголетие питомцев', icon: '🐾' },
+  { slug: 'superfood', name: 'Суперфуды', icon: '🍎' },
+  { slug: 'cosmetic-ingredients', name: 'Косметическое сырье', icon: '🌿' }
+];
+
+const mechanismsList = [
+  { slug: 'collagen-stimulant', name: 'Коллагеновый матрикс', icon: '🧬' },
+  { slug: 'mmp-inhibitor', name: 'Защита от MMP', icon: '🛡️' },
+  { slug: 'anti-glycation', name: 'Глико-защита', icon: '⏳' }
+];
+
+function getFilterUrl(cat: string | null, mech: string | null) {
+  const params = new URLSearchParams();
+  if (cat) params.set('category', cat);
+  if (mech) params.set('mechanism', mech);
+  const q = params.toString();
+  return `/ru/products${q ? '?' + q : ''}`;
+}
+
+let pageTitle = "ECM-таргетные антивозрастные ингредиенты: решения для косметики и нутрицевтики | GINKVORA";
+if (mechanism === 'collagen-stimulant') {
+  pageTitle = "Стимуляторы синтеза коллагена оптом | GINKVORA";
+} else if (mechanism === 'mmp-inhibitor') {
+  pageTitle = "Ингибиторы MMP оптом | Косметический класс | GINKVORA";
+} else if (mechanism === 'anti-glycation') {
+  pageTitle = "Ингредиенты против гликации оптом | GINKVORA";
+}
+
+let pageDescription = "Каталог B2B сырья GINKVORA для косметики и БАД. Ингибирование металлопротеиназ (MMP), стимуляторы синтеза коллагена, защита от гликации.";
+if (category === 'pet-longevity') {
+  pageDescription = "Высокочистое растительное сырье, направленное на замедление клеточного старения собак и кошек. Премиальные активаторы сиртуинов и митохондриальные протекторы для долголетия домашних животных.";
+}
+
+let academicIntro = "";
+if (category === 'pet-longevity') {
+  academicIntro = "Борьба с клеточным старением собак и кошек с помощью высокочистых активаторов сиртуинов и протекторов митохондрий.";
+}
+
+// Breadcrumbs Schema
 const breadcrumbsSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -24,8 +68,8 @@ const breadcrumbsSchema = {
 
 <BaseLayout
   lang={lang}
-  title="ECM-таргетные антивозрастные ингредиенты: решения для косметики и нутрицевтики | GINKVORA"
-  description="Каталог B2B сырья GINKVORA для косметики и БАД. Ингибирование металлопротеиназ (MMP), стимуляторы синтеза коллагена, защита от гликации."
+  title={pageTitle}
+  description={pageDescription}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
 
@@ -35,17 +79,28 @@ const breadcrumbsSchema = {
       <div class="banner-gradient"></div>
       <div class="container banner-content">
         <span class="section-label">B2B каталог сырья</span>
-        <h1 class="banner-title">ECM-таргетные омолаживающие ингредиенты: решения для косметики и нутрицевтики</h1>
-        <p class="banner-desc">Высокочистое растительное сырье, протестированное по стандартам USP/EP для производителей косметики, пищевых добавок и функционального питания.</p>
+        <h1 class="banner-title">
+          {mechanism === 'collagen-stimulant' && "Стимуляторы синтеза коллагена оптом"}
+          {mechanism === 'mmp-inhibitor' && "Ингибиторы MMP оптом (Косметический класс)"}
+          {mechanism === 'anti-glycation' && "Ингредиенты против гликации оптом"}
+          {!mechanism && "ECM-таргетные омолаживающие ингредиенты: решения для косметики и нутрицевтики"}
+        </h1>
+        <p class="banner-desc">
+          {academicIntro ? (
+            <span class="academic-highlight">{academicIntro}</span>
+          ) : (
+            "Высокочистое растительное сырье, протестированное по стандартам USP/EP для производителей косметики, пищевых добавок и функционального питания."
+          )}
+        </p>
       </div>
     </header>
 
     <div class="container products-layout">
       <!-- Search & Filter bar -->
-      <div class="filter-bar glass">
+      <section class="filter-bar glass" aria-label="Фильтры и поиск">
         <div class="search-wrap">
           <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
           </svg>
           <input
             type="search"
@@ -56,97 +111,137 @@ const breadcrumbsSchema = {
             autocomplete="off"
           />
         </div>
-        <div class="category-pills" id="category-pills" role="list">
-          <button class="cat-pill active" data-cat="" role="listitem">{t('products.all_categories')}</button>
-          {categories.map((cat: any) => (
-            <button class="cat-pill" data-cat={cat.slug} role="listitem">{cat.name}</button>
-          ))}
+
+        <div class="filter-row">
+          <span class="filter-label">Категория:</span>
+          <nav class="category-pills" aria-label="Категории продуктов">
+            <a 
+              href={getFilterUrl(null, mechanism)} 
+              class={`cat-pill ${!category ? 'active' : ''}`}
+            >
+              Все категории
+            </a>
+            {categoriesList.map((cat) => (
+              <a 
+                href={getFilterUrl(cat.slug, mechanism)} 
+                class={`cat-pill ${category === cat.slug ? 'active' : ''}`}
+              >
+                <span class="tab-icon">{cat.icon}</span>
+                {cat.name}
+              </a>
+            ))}
+          </nav>
         </div>
 
-        <div class="application-filter-group">
-          <span class="filter-label">Путь применения:</span>
-          <div class="application-tabs" id="application-tabs">
-            <button class="app-tab active" data-app="all">Все пути</button>
-            <button class="app-tab" data-app="topical">Наружно (косметический класс)</button>
-            <button class="app-tab" data-app="oral">Перорально (пищевой / нутрицевтический класс)</button>
-            <button class="app-tab" data-app="dual">Двойное применение</button>
-          </div>
+        <div class="filter-row">
+          <span class="filter-label">Целевой механизм:</span>
+          <nav class="category-pills" aria-label="Механизмы действия">
+            <a 
+              href={getFilterUrl(category, null)} 
+              class={`cat-pill ${!mechanism ? 'active' : ''}`}
+            >
+              Все механизмы
+            </a>
+            {mechanismsList.map((mech) => (
+              <a 
+                href={getFilterUrl(category, mech.slug)} 
+                class={`cat-pill ${mechanism === mech.slug ? 'active' : ''}`}
+              >
+                <span class="tab-icon">{mech.icon}</span>
+                {mech.name}
+              </a>
+            ))}
+          </nav>
         </div>
-      </div>
+      </section>
 
       <!-- Product Grid -->
-      <div id="product-grid" class="product-grid" role="list" aria-label="Каталог продуктов">
-        {products.map((product: any) => {
-          const localShortDesc = (getLocalizedField(product, 'shortDescription', lang) ?? product.shortDescription) as string | undefined;
-          return (
-            <article
-              class="product-card glass"
-              data-name={product.name.toLowerCase()}
-              data-category={product.category?.slug ?? ''}
-              data-application={product.application ? product.application.join(',') : ''}
-              role="listitem"
-            >
-              {product.featured && (
-                <div class="card-featured-badge">{t('products.featured_badge')}</div>
-              )}
-              <div class="card-image">
-                <a href={`/ru/products/${product.slug}`} aria-label={`Подробнее о ${product.name}`}>
-                  <picture>
-                    <source srcset={urlFor(product.heroImage).width(400).format('webp').url()} type="image/webp" />
-                    <img
-                      src={urlFor(product.heroImage).width(400).url()}
-                      alt={product.name}
-                      loading="lazy"
-                      class="card-img"
-                    />
-                  </picture>
-                </a>
-              </div>
-              <div class="card-body">
-                <div class="card-top">
-                  <span class="card-category">{product.category?.name}</span>
-                  {product.purity && (
-                    <span class="card-purity font-mono">{product.purity}</span>
-                  )}
-                  {product.application && product.application.map((app: string) => (
-                    <span class={`card-app-badge app--${app}`}>
-                      {app === 'topical' ? 'Наружно' : 'Перорально'}
-                    </span>
-                  ))}
-                </div>
-                <h2 class="card-title">
-                  <a href={`/ru/products/${product.slug}`}>{product.name}</a>
-                </h2>
-                {product.botanicalName && (
-                  <p class="card-botanical">{product.botanicalName}</p>
-                )}
-                {localShortDesc && (
-                  <p class="card-desc">{localShortDesc}</p>
-                )}
-                <div class="card-actions">
-                  <a href={`/ru/products/${product.slug}`} class="btn btn--secondary btn--sm">
-                    {t('products.view_details')}
-                  </a>
-                  <a href="/ru/contact" class="btn btn--gold btn--sm">
-                    {t('products.request_sample')}
-                  </a>
-                </div>
-              </div>
-            </article>
-          );
-        })}
-      </div>
+      <section class="products-section" aria-label="Каталог продуктов">
+        <div class="products-count" id="products-count-label">
+          Показано {products.length} продуктов
+        </div>
 
-      <!-- No results message -->
-      <div id="no-results" class="no-results" style="display: none;" aria-live="polite">
-        <p>{t('products.no_results')}</p>
-      </div>
+        <div id="product-grid" class="product-grid">
+          {products.map((product: any) => {
+            const localShortDesc = (getLocalizedField(product, 'shortDescription', lang) ?? product.shortDescription) as string | undefined;
+            return (
+              <article
+                class="product-card glass"
+                data-name={product.name.toLowerCase()}
+                data-cas={product.casNumber ? product.casNumber.toLowerCase() : ''}
+                data-desc={localShortDesc ? localShortDesc.toLowerCase() : ''}
+              >
+                {product.featured && (
+                  <div class="card-featured-badge">{t('products.featured_badge')}</div>
+                )}
+                <div class="card-image">
+                  <a href={`/ru/products/${product.slug}`} aria-label={`Подробнее о ${product.name}`}>
+                    <picture>
+                      <source srcset={urlFor(product.heroImage).width(400).format('webp').url()} type="image/webp" />
+                      <img
+                        src={urlFor(product.heroImage).width(400).url()}
+                        alt={product.name}
+                        loading="lazy"
+                        class="card-img"
+                      />
+                    </picture>
+                  </a>
+                </div>
+                <div class="card-body">
+                  <div class="card-top">
+                    <span class="card-category">{product.category?.name}</span>
+                    {product.purity && (
+                      <span class="card-purity font-mono">{product.purity}</span>
+                    )}
+                  </div>
+                  <h2 class="card-title">
+                    <a href={`/ru/products/${product.slug}`}>{product.name}</a>
+                  </h2>
+                  {product.botanicalName && (
+                    <p class="card-botanical">{product.botanicalName}</p>
+                  )}
+                  {localShortDesc && (
+                    <p class="card-desc">{localShortDesc}</p>
+                  )}
+
+                  <div class="card-specs">
+                    {product.casNumber && (
+                      <span class="card-cas">CAS: {product.casNumber}</span>
+                    )}
+                    {product.applicationDisplay && (
+                      <span class={`card-app-badge app--${product.applicationDisplay}`}>
+                        {product.applicationDisplay === 'dual' && '● Двойное применение (Общий ингредиент)'}
+                        {product.applicationDisplay === 'topical' && '● Наружное применение (Косметический класс)'}
+                        {product.applicationDisplay === 'oral' && '● Перорально (Нутрицевтик)'}
+                      </span>
+                    )}
+                  </div>
+
+                  <div class="card-actions">
+                    <a href={`/ru/products/${product.slug}`} class="btn btn--secondary btn--sm">
+                      {t('products.view_details')}
+                    </a>
+                    <a href="/ru/contact" class="btn btn--gold btn--sm">
+                      {t('products.request_sample')}
+                    </a>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        <!-- No results message -->
+        <div id="no-results" class="no-results" style="display: none;" aria-live="polite">
+          <p>{t('products.no_results')}</p>
+          <button class="btn btn--gold" id="reset-filters">Сбросить фильтры</button>
+        </div>
+      </section>
     </div>
   </main>
 </BaseLayout>
 
 <style>
-  /* Same styles as English product listing — classes match */
   .products-page { padding-block: 0 var(--space-4xl); }
 
   .page-banner {
@@ -161,6 +256,16 @@ const breadcrumbsSchema = {
   .banner-content { position: relative; z-index: 1; text-align: center; max-width: 700px; margin-inline: auto; }
   .banner-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
   .banner-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.75; }
+
+  .academic-highlight {
+    display: block;
+    font-style: italic;
+    color: var(--color-primary-light);
+    border-left: 2px solid var(--color-primary);
+    padding-left: 1rem;
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
 
   .products-layout { display: flex; flex-direction: column; gap: var(--space-xl); }
 
@@ -178,15 +283,56 @@ const breadcrumbsSchema = {
     transition: border-color var(--transition-fast);
   }
   .search-input:focus { outline: none; border-color: var(--color-primary); }
+
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.25rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .filter-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+
+  .filter-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    min-width: 180px;
+    flex-shrink: 0;
+  }
+
   .category-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .cat-pill {
     padding: 0.375rem 0.875rem; border-radius: var(--radius-full);
     border: 1px solid var(--color-border); background: transparent;
     color: var(--color-text-secondary); font-size: 0.8125rem; cursor: pointer;
+    text-decoration: none;
     transition: all var(--transition-fast);
   }
   .cat-pill:hover { border-color: var(--color-primary); color: var(--color-primary-light); }
   .cat-pill.active { background: rgba(212,166,84,0.12); border-color: var(--color-primary); color: var(--color-primary-light); }
+
+  .products-section {
+    margin-top: 2.5rem;
+  }
+
+  .products-count {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+    font-family: var(--font-mono);
+  }
 
   .product-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;
@@ -218,168 +364,103 @@ const breadcrumbsSchema = {
   .card-botanical { font-style: italic; font-size: 0.8125rem; color: var(--color-text-muted); }
   .card-desc { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .card-actions { display: flex; gap: 0.5rem; margin-top: auto; padding-top: 0.5rem; flex-wrap: wrap; }
+  .card-actions .btn { flex-grow: 1; text-align: center; }
 
   .no-results { text-align: center; padding: 4rem 2rem; color: var(--color-text-muted); }
 
-  /* ── Application Filter Group ── */
-  .application-filter-group {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    border-top: 1px solid var(--color-border);
-    padding-top: 1.25rem;
-    margin-top: 0.5rem;
-    width: 100%;
-  }
-  @media (max-width: 768px) {
-    .application-filter-group {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
-  }
-  .filter-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .application-tabs {
+  .card-specs {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
-  }
-  .app-tab {
-    padding: 0.35rem 0.85rem;
-    border-radius: var(--radius-full);
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--color-text-secondary);
-    background: transparent;
-    border: 1px solid var(--color-border);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-  }
-  .app-tab:hover {
-    color: var(--color-primary-light);
-    border-color: var(--color-border-strong);
-    background: rgba(212, 166, 84, 0.05);
-  }
-  .app-tab.active {
-    color: var(--color-bg);
-    background: var(--color-primary);
-    border-color: var(--color-primary);
+    margin-bottom: 0.5rem;
+    margin-top: 0.25rem;
   }
 
-  /* ── Card Application Badges ── */
-  .card-app-badge {
-    font-size: 0.7rem;
-    font-weight: 500;
+  .card-cas {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    background: var(--color-bg-deep);
     padding: 0.1rem 0.5rem;
     border-radius: var(--radius-full);
-    text-transform: uppercase;
+  }
+
+  .card-app-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
     letter-spacing: 0.02em;
-    margin-left: 0.5rem;
+    display: inline-block;
+  }
+  .app--dual {
+    background: rgba(212, 166, 84, 0.15);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.4);
+    box-shadow: 0 0 8px rgba(212, 166, 84, 0.2);
   }
   .app--topical {
-    background: rgba(212, 166, 84, 0.1);
-    color: var(--color-primary-light);
-    border: 1px solid rgba(212, 166, 84, 0.25);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
   .app--oral {
-    background: rgba(124, 184, 122, 0.1);
-    color: #a8d5a6;
-    border: 1px solid rgba(124, 184, 122, 0.25);
+    background: rgba(224, 120, 48, 0.1);
+    color: #f39b60;
+    border: 1px solid rgba(224, 120, 48, 0.3);
   }
 </style>
 
 <script>
   function initFilters() {
     const searchInput  = document.getElementById('product-search') as HTMLInputElement;
-    const pills        = document.querySelectorAll('.cat-pill');
-    const appTabs      = document.querySelectorAll('.app-tab');
     const cards        = document.querySelectorAll('.product-card') as NodeListOf<HTMLElement>;
     const noResults    = document.getElementById('no-results');
+    const grid         = document.getElementById('product-grid');
+    const countLabel   = document.getElementById('products-count-label');
 
-    let activeCategory = '';
     let searchTerm     = '';
-    let currentApp     = 'all';
-
-    // Read category from URL search params if present
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoryParam = urlParams.get('category');
-    if (categoryParam) {
-      const targetPill = Array.from(pills).find(
-        (pill) => (pill as HTMLElement).dataset.cat === categoryParam
-      );
-      if (targetPill) {
-        pills.forEach(p => p.classList.remove('active'));
-        targetPill.classList.add('active');
-        activeCategory = categoryParam;
-      }
-    }
-
-    const appParam = urlParams.get('application');
-    if (appParam) {
-      const targetAppTab = Array.from(appTabs).find(
-        (tab) => (tab as HTMLElement).dataset.app === appParam
-      );
-      if (targetAppTab) {
-        appTabs.forEach(t => t.classList.remove('active'));
-        targetAppTab.classList.add('active');
-        currentApp = appParam;
-      }
-    }
 
     function filterProducts() {
       let visible = 0;
       cards.forEach(card => {
         const name = card.dataset.name ?? '';
-        const cat  = card.dataset.category ?? '';
-        const apps = (card.dataset.application ?? '').split(',');
+        const cas  = card.dataset.cas ?? '';
+        const desc = card.dataset.desc ?? '';
 
-        const matchSearch = !searchTerm || name.includes(searchTerm.toLowerCase());
-        const matchCat    = !activeCategory || cat === activeCategory;
+        const matchesSearch =
+          !searchTerm ||
+          name.includes(searchTerm) ||
+          cas.includes(searchTerm) ||
+          desc.includes(searchTerm);
 
-        let matchApp = true;
-        if (currentApp !== 'all') {
-          if (currentApp === 'dual') {
-            matchApp = apps.includes('topical') && apps.includes('oral');
-          } else {
-            matchApp = apps.includes(currentApp);
-          }
-        }
-
-        const show = matchSearch && matchCat && matchApp;
-        card.style.display = show ? '' : 'none';
-        if (show) visible++;
+        card.style.display = matchesSearch ? '' : 'none';
+        if (matchesSearch) visible++;
       });
+
+      if (countLabel) {
+        countLabel.textContent = `Показано ${visible} продуктов`;
+      }
+
       if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+      if (grid) grid.style.display = visible === 0 ? 'none' : 'grid';
     }
 
-    pills.forEach(pill => {
-      pill.addEventListener('click', () => {
-        pills.forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        activeCategory = (pill as HTMLElement).dataset.cat ?? '';
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        searchTerm = searchInput.value.toLowerCase().trim();
         filterProducts();
       });
-    });
+    }
 
-    appTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        appTabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        currentApp = (tab as HTMLElement).dataset.app ?? 'all';
+    const resetButton = document.getElementById('reset-filters');
+    if (resetButton) {
+      resetButton.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        searchTerm = '';
         filterProducts();
       });
-    });
-
-    searchInput?.addEventListener('input', () => {
-      searchTerm = searchInput.value;
-      filterProducts();
-    });
+    }
 
     filterProducts();
   }

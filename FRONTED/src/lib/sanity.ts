@@ -153,6 +153,9 @@ export const PRODUCT_FIELDS = `
   application,
   inciName,
   certifications[],
+  mainCategories,
+  antiAgingMechanisms,
+  applicationDisplay,
   "updatedAt": _updatedAt
 `;
 
@@ -174,19 +177,37 @@ export const PRODUCT_DETAIL_FIELDS = `
   seoDescription_ru
 `;
 
-export async function getAllProducts() {
+export async function getAllProducts(category: string | null = null, mechanism: string | null = null) {
+  const queryParams: any = {
+    category: category || '',
+    mechanism: mechanism || ''
+  };
+
+  const query = `
+    *[_type == "product"
+      && ($category == "" || $category in mainCategories)
+      && ($mechanism == "" || $mechanism in antiAgingMechanisms)
+    ] | order(featured desc, name asc) {
+      ${PRODUCT_FIELDS}
+    }
+  `;
+
   try {
-    const data = await sanityClient.fetch(`
-      *[_type == "product"] | order(featured desc, name asc) {
-        ${PRODUCT_FIELDS}
-      }
-    `);
+    const data = await sanityClient.fetch(query, queryParams);
     if (data && data.length > 0) return data;
-    return MOCK_PRODUCTS;
+    return filterMockProducts(MOCK_PRODUCTS, category, mechanism);
   } catch (err) {
-    console.warn('Sanity API connection failed, using fallback mock data for products.');
-    return MOCK_PRODUCTS;
+    console.warn('Sanity API connection failed, filtering mock data locally.');
+    return filterMockProducts(MOCK_PRODUCTS, category, mechanism);
   }
+}
+
+function filterMockProducts(products: any[], category: string | null, mechanism: string | null) {
+  return products.filter(prod => {
+    const matchCat = !category || (prod.mainCategories && prod.mainCategories.includes(category));
+    const matchMech = !mechanism || (prod.antiAgingMechanisms && prod.antiAgingMechanisms.includes(mechanism));
+    return matchCat && matchMech;
+  });
 }
 
 export async function getFeaturedProducts() {
@@ -409,6 +430,9 @@ export type SanityProduct = {
   complianceNote_ru?: string;
   seo?: { title?: string; description?: string };
   seo_ru?: { title?: string; description?: string };
+  mainCategories?: string[];
+  antiAgingMechanisms?: string[];
+  applicationDisplay?: 'topical' | 'oral' | 'dual';
 };
 
 export type SanityPost = {

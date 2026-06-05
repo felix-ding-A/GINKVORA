@@ -96,7 +96,16 @@ const breadcrumbSchema = {
 
         <!-- Right: Specs and Quick Order -->
         <section class="info-section" aria-label="Информация о продукте">
-          <span class="badge badge--gold">{product.category.name}</span>
+          <div class="product-header-badges">
+            <span class="badge badge--gold">{product.category.name}</span>
+            {product.applicationDisplay && (
+              <span class={`card-app-badge app--${product.applicationDisplay}`}>
+                {product.applicationDisplay === 'dual' && '● Двойное применение (Общий ингредиент)'}
+                {product.applicationDisplay === 'topical' && '● Наружное применение (Косметический класс)'}
+                {product.applicationDisplay === 'oral' && '● Перорально (Нутрицевтик)'}
+              </span>
+            )}
+          </div>
           <h1 class="product-title">{localName}</h1>
 
           {product.botanicalName && (
@@ -125,6 +134,33 @@ const breadcrumbSchema = {
           </div>
 
           <p class="product-short-desc">{localShortDesc}</p>
+
+          <!-- Application Grade Tabs -->
+          {product.applicationDisplay && (
+            <div class="grade-tabs-block">
+              <span class="grade-tabs-label">Доступная спецификация:</span>
+              <div class="grade-tabs-pills">
+                {(product.applicationDisplay === 'topical' || product.applicationDisplay === 'dual') && (
+                  <div class="grade-pill grade-pill--topical">
+                    <span class="grade-icon">🌿</span>
+                    <div>
+                      <strong>Наружный тракт</strong>
+                      <span>Косметический класс (зарегистрировано в INCI)</span>
+                    </div>
+                  </div>
+                )}
+                {(product.applicationDisplay === 'oral' || product.applicationDisplay === 'dual') && (
+                  <div class="grade-pill grade-pill--oral">
+                    <span class="grade-icon">💊</span>
+                    <div>
+                      <strong>Внутренний тракт</strong>
+                      <span>Пищевой класс / нутрицевтик оптом</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           <!-- CTAs -->
           <div class="action-buttons">
@@ -254,6 +290,97 @@ const breadcrumbSchema = {
   .main-image { width: 100%; height: 100%; object-fit: cover; }
 
   .info-section { display: flex; flex-direction: column; gap: 1.25rem; }
+  .product-header-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .card-app-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.02em;
+    display: inline-block;
+  }
+  .app--dual {
+    background: rgba(212, 166, 84, 0.15);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.4);
+    box-shadow: 0 0 8px rgba(212, 166, 84, 0.2);
+  }
+  .app--topical {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .app--oral {
+    background: rgba(224, 120, 48, 0.1);
+    color: #f39b60;
+    border: 1px solid rgba(224, 120, 48, 0.3);
+  }
+
+  /* ── Grade Tabs ── */
+  .grade-tabs-block {
+    width: 100%;
+    border-top: 1px dashed var(--color-border);
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .grade-tabs-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+  }
+  .grade-tabs-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .grade-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    border-radius: var(--radius-md);
+    flex: 1;
+    min-width: 180px;
+  }
+  .grade-pill--topical {
+    background: rgba(212, 166, 84, 0.06);
+    border: 1px solid rgba(212, 166, 84, 0.2);
+  }
+  .grade-pill--oral {
+    background: rgba(124, 184, 122, 0.06);
+    border: 1px solid rgba(124, 184, 122, 0.2);
+  }
+  .grade-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+  .grade-pill div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  .grade-pill strong {
+    font-size: 0.8125rem;
+    color: var(--color-text);
+    font-weight: 600;
+  }
+  .grade-pill--topical strong { color: var(--color-primary-light); }
+  .grade-pill--oral strong { color: #a8d5a6; }
+  .grade-pill span {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.02em;
+  }
+
   .product-title { font-size: clamp(1.75rem, 3.5vw, 2.75rem); font-weight: 700; line-height: 1.15; color: var(--color-text); }
   .product-botanical { font-style: italic; color: var(--color-text-muted); font-size: 0.9375rem; }
   .product-short-desc { font-size: 1rem; line-height: 1.75; color: var(--color-text-secondary); }

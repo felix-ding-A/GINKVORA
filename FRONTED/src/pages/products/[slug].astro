@@ -137,7 +137,16 @@ const faqSchema = {
 
         <!-- Right: Specs and Quick Order -->
         <section class="info-section" aria-label="Product Information">
-          <span class="badge badge--gold">{product.category.name}</span>
+          <div class="product-header-badges">
+            <span class="badge badge--gold">{product.category.name}</span>
+            {product.applicationDisplay && (
+              <span class={`card-app-badge app--${product.applicationDisplay}`}>
+                {product.applicationDisplay === 'dual' && '● Dual Application (Shared Ingredient)'}
+                {product.applicationDisplay === 'topical' && '● Topical Use (Cosmetic Grade)'}
+                {product.applicationDisplay === 'oral' && '● Oral Use (Nutricosmetic)'}
+              </span>
+            )}
+          </div>
           <h1 class="product-title">{product.name}</h1>
           
           {product.botanicalName && (
@@ -178,11 +187,11 @@ const faqSchema = {
           <p class="product-short-desc">{product.shortDescription}</p>
 
           <!-- Application Grade Tabs -->
-          {product.application && product.application.length > 0 && (
+          {product.applicationDisplay && (
             <div class="grade-tabs-block">
               <span class="grade-tabs-label">Application Grade Available:</span>
               <div class="grade-tabs-pills">
-                {product.application.includes('topical') && (
+                {(product.applicationDisplay === 'topical' || product.applicationDisplay === 'dual') && (
                   <div class="grade-pill grade-pill--topical">
                     <span class="grade-icon">🌿</span>
                     <div>
@@ -191,7 +200,7 @@ const faqSchema = {
                     </div>
                   </div>
                 )}
-                {product.application.includes('oral') && (
+                {(product.applicationDisplay === 'oral' || product.applicationDisplay === 'dual') && (
                   <div class="grade-pill grade-pill--oral">
                     <span class="grade-icon">💊</span>
                     <div>
@@ -468,6 +477,39 @@ const faqSchema = {
     background: rgba(212, 166, 84, 0.06);
     padding: 0.1rem 0.4rem;
     border-radius: var(--radius-sm);
+  }
+
+  .product-header-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  /* ── Card Application Badges ── */
+  .card-app-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.02em;
+    display: inline-block;
+  }
+  .app--dual {
+    background: rgba(212, 166, 84, 0.15);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.4);
+    box-shadow: 0 0 8px rgba(212, 166, 84, 0.2);
+  }
+  .app--topical {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .app--oral {
+    background: rgba(224, 120, 48, 0.1);
+    color: #f39b60;
+    border: 1px solid rgba(224, 120, 48, 0.3);
   }
 
   /* ── Grade Tabs ── */

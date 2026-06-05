@@ -1,12 +1,55 @@
 ---
 // src/pages/products/index.astro — Products listing page with search and category filters
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getAllProducts, getAllCategories, urlFor } from '../../lib/sanity';
+import { getAllProducts, urlFor } from '../../lib/sanity';
 
-const products = await getAllProducts();
-const categories = await getAllCategories();
+const category = Astro.url.searchParams.get('category');
+const mechanism = Astro.url.searchParams.get('mechanism');
+
+// Fetch products based on filters
+const products = await getAllProducts(category, mechanism);
 
 const siteUrl = 'https://ginkvora.com';
+
+const categoriesList = [
+  { slug: 'liposomal', name: 'Liposomal Formulations', icon: '🧬' },
+  { slug: 'pet-longevity', name: 'Pet Longevity', icon: '🐾' },
+  { slug: 'superfood', name: 'Superfoods', icon: '🍎' },
+  { slug: 'cosmetic-ingredients', name: 'Cosmetic Ingredients', icon: '🌿' }
+];
+
+const mechanismsList = [
+  { slug: 'collagen-stimulant', name: 'Collagen Matrix', icon: '🧬' },
+  { slug: 'mmp-inhibitor', name: 'MMP Shield', icon: '🛡️' },
+  { slug: 'anti-glycation', name: 'Glyco Defense', icon: '⏳' }
+];
+
+function getFilterUrl(cat: string | null, mech: string | null) {
+  const params = new URLSearchParams();
+  if (cat) params.set('category', cat);
+  if (mech) params.set('mechanism', mech);
+  const q = params.toString();
+  return `/products${q ? '?' + q : ''}`;
+}
+
+let pageTitle = "ECM-Targeted Anti-Aging Ingredients: Topical & Nutricosmetic Solutions | GINKVORA";
+if (mechanism === 'collagen-stimulant') {
+  pageTitle = "Collagen Synthesis Stimulants Wholesale | GINKVORA";
+} else if (mechanism === 'mmp-inhibitor') {
+  pageTitle = "MMP Inhibitors Wholesale | Cosmetic Grade | GINKVORA";
+} else if (mechanism === 'anti-glycation') {
+  pageTitle = "Anti-Glycation Active Ingredients Wholesale | GINKVORA";
+}
+
+let pageDescription = "Explore GINKVORA's B2B catalog of ECM-targeted anti-aging raw materials. Inhibit MMPs, stimulate collagen matrix rebuilding, and provide anti-glycation defense.";
+if (category === 'pet-longevity') {
+  pageDescription = "High-purity botanical raw materials targeting canine and feline cellular senescence. Premium sirtuin activators and mitochondrial protectants for pet longevity.";
+}
+
+let academicIntro = "";
+if (category === 'pet-longevity') {
+  academicIntro = "Targeting canine and feline cellular senescence via high-purity sirtuin activators and mitochondrial protectants.";
+}
 
 // Breadcrumb structured data
 const breadcrumbsSchema = {
@@ -33,7 +76,7 @@ const itemListSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "GINKVORA Plant Extract Product Catalog",
-  "description": "Premium B2B botanical extracts and active ingredients — PQQ, NMN, EGCG, Glabridin, and other core botanicals.",
+  "description": pageDescription,
   "url": `${siteUrl}/products`,
   "numberOfItems": products.length,
   "itemListElement": products.map((prod, i) => ({
@@ -46,12 +89,11 @@ const itemListSchema = {
 ---
 
 <BaseLayout
-  title="ECM-Targeted Anti-Aging Ingredients: Topical & Nutricosmetic Solutions | GINKVORA"
-  description="Explore GINKVORA's B2B catalog of ECM-targeted anti-aging raw materials. Inhibit MMPs, stimulate collagen matrix rebuilding, and provide anti-glycation defense."
+  title={pageTitle}
+  description={pageDescription}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />
-
 
   <main class="products-page bg-noise">
     <!-- Header banner -->
@@ -59,9 +101,18 @@ const itemListSchema = {
       <div class="banner-gradient"></div>
       <div class="container banner-content">
         <span class="section-label">B2B Product Catalog</span>
-        <h1 class="banner-title">ECM-Targeted Anti-Aging Ingredients: Topical & Nutricosmetic Solutions</h1>
+        <h1 class="banner-title">
+          {mechanism === 'collagen-stimulant' && "Collagen Synthesis Stimulants Wholesale"}
+          {mechanism === 'mmp-inhibitor' && "MMP Inhibitors Wholesale (Cosmetic Grade)"}
+          {mechanism === 'anti-glycation' && "Anti-Glycation Active Ingredients Wholesale"}
+          {!mechanism && "ECM-Targeted Anti-Aging Ingredients: Topical & Nutricosmetic Solutions"}
+        </h1>
         <p class="banner-desc">
-          Premium raw materials tested under strict USP/EP quality standards for supplement, cosmetic, and functional food manufacturers.
+          {academicIntro ? (
+            <span class="academic-highlight">{academicIntro}</span>
+          ) : (
+            "Premium raw materials tested under strict USP/EP quality standards for supplement, cosmetic, and functional food manufacturers."
+          )}
         </p>
       </div>
     </header>
@@ -77,31 +128,51 @@ const itemListSchema = {
           <input
             type="search"
             id="product-search"
-            placeholder="Search ingredients by name, CAS number, or application..."
+            placeholder="Search ingredients by name, CAS number, or description..."
             aria-label="Search ingredients"
           />
         </div>
 
-        <nav class="category-tabs" aria-label="Product categories">
-          <button class="category-tab active" data-category="all" id="btn-cat-all">
-            All Products
-          </button>
-          {categories.map((cat) => (
-            <button class="category-tab" data-category={cat.slug} id={`btn-cat-${cat.slug}`}>
-              <span class="tab-icon">{cat.icon || '🌿'}</span>
-              {cat.name}
-            </button>
-          ))}
-        </nav>
+        <div class="filter-row">
+          <span class="filter-label">Filter by Category:</span>
+          <nav class="category-tabs" aria-label="Product categories">
+            <a 
+              href={getFilterUrl(null, mechanism)} 
+              class={`category-tab ${!category ? 'active' : ''}`}
+            >
+              All Categories
+            </a>
+            {categoriesList.map((cat) => (
+              <a 
+                href={getFilterUrl(cat.slug, mechanism)} 
+                class={`category-tab ${category === cat.slug ? 'active' : ''}`}
+              >
+                <span class="tab-icon">{cat.icon}</span>
+                {cat.name}
+              </a>
+            ))}
+          </nav>
+        </div>
 
-        <div class="application-filter-group">
-          <span class="filter-label">Application Route:</span>
-          <div class="application-tabs" id="application-tabs">
-            <button class="app-tab active" data-app="all">All Routes</button>
-            <button class="app-tab" data-app="topical">Topical Use (Cosmetic Grade)</button>
-            <button class="app-tab" data-app="oral">Oral Use (Nutricosmetic / Food Grade)</button>
-            <button class="app-tab" data-app="dual">Dual Application</button>
-          </div>
+        <div class="filter-row">
+          <span class="filter-label">Filter by Anti-Aging Target:</span>
+          <nav class="category-tabs" aria-label="Anti-aging targets">
+            <a 
+              href={getFilterUrl(category, null)} 
+              class={`category-tab ${!mechanism ? 'active' : ''}`}
+            >
+              All Targets
+            </a>
+            {mechanismsList.map((mech) => (
+              <a 
+                href={getFilterUrl(category, mech.slug)} 
+                class={`category-tab ${mechanism === mech.slug ? 'active' : ''}`}
+              >
+                <span class="tab-icon">{mech.icon}</span>
+                {mech.name}
+              </a>
+            ))}
+          </nav>
         </div>
       </section>
 
@@ -115,11 +186,9 @@ const itemListSchema = {
           {products.map((prod) => (
             <article
               class="product-card glass reveal"
-              data-category={prod.category.slug}
               data-name={prod.name.toLowerCase()}
               data-cas={prod.casNumber ? prod.casNumber.toLowerCase() : ''}
               data-desc={prod.shortDescription ? prod.shortDescription.toLowerCase() : ''}
-              data-application={prod.application ? prod.application.join(',') : ''}
             >
               <div class="card-image-wrapper">
                 <a href={`/products/${prod.slug}`} class="card-image-link" aria-label={`View details of ${prod.name}`}>
@@ -144,11 +213,13 @@ const itemListSchema = {
                   {prod.casNumber && (
                     <span class="card-cas">CAS: {prod.casNumber}</span>
                   )}
-                  {prod.application && prod.application.map(app => (
-                    <span class={`card-app-badge app--${app}`}>
-                      {app === 'topical' ? 'Topical' : 'Oral'}
+                  {prod.applicationDisplay && (
+                    <span class={`card-app-badge app--${prod.applicationDisplay}`}>
+                      {prod.applicationDisplay === 'dual' && '● Dual Application (Shared Ingredient)'}
+                      {prod.applicationDisplay === 'topical' && '● Topical Use (Cosmetic Grade)'}
+                      {prod.applicationDisplay === 'oral' && '● Oral Use (Nutricosmetic)'}
                     </span>
-                  ))}
+                  )}
                 </div>
 
                 <h3 class="card-title">
@@ -225,6 +296,16 @@ const itemListSchema = {
     font-size: 1.0625rem;
   }
 
+  .academic-highlight {
+    display: block;
+    font-style: italic;
+    color: var(--color-primary-light);
+    border-left: 2px solid var(--color-primary);
+    padding-left: 1rem;
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
+
   /* ── Controls Section ── */
   .catalog-container {
     margin-top: -2rem;
@@ -272,12 +353,38 @@ const itemListSchema = {
     box-shadow: 0 0 0 3px rgba(212, 166, 84, 0.15);
   }
 
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.25rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .filter-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+
+  .filter-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    min-width: 180px;
+    flex-shrink: 0;
+  }
+
   .category-tabs {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
-    border-top: 1px solid var(--color-border);
-    padding-top: 1.25rem;
   }
 
   .category-tab {
@@ -292,6 +399,7 @@ const itemListSchema = {
     background: transparent;
     border: 1px solid transparent;
     cursor: pointer;
+    text-decoration: none;
     transition: all var(--transition-fast);
   }
 
@@ -432,6 +540,7 @@ const itemListSchema = {
 
   .card-title a {
     color: var(--color-text);
+    text-decoration: none;
   }
 
   .card-title a:hover {
@@ -496,119 +605,42 @@ const itemListSchema = {
     margin-bottom: 1.5rem;
   }
 
-  /* ── Application Filter Group ── */
-  .application-filter-group {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    border-top: 1px solid var(--color-border);
-    padding-top: 1.25rem;
-    margin-top: 0.5rem;
-    width: 100%;
-  }
-  @media (max-width: 768px) {
-    .application-filter-group {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
-  }
-  .filter-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .application-tabs {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-  .app-tab {
-    padding: 0.35rem 0.85rem;
-    border-radius: var(--radius-full);
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--color-text-secondary);
-    background: transparent;
-    border: 1px solid var(--color-border);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-  }
-  .app-tab:hover {
-    color: var(--color-primary-light);
-    border-color: var(--color-border-strong);
-    background: rgba(212, 166, 84, 0.05);
-  }
-  .app-tab.active {
-    color: var(--color-bg);
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-  }
-
   /* ── Card Application Badges ── */
   .card-app-badge {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 500;
-    padding: 0.1rem 0.5rem;
-    border-radius: var(--radius-full);
-    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
     letter-spacing: 0.02em;
+    display: inline-block;
+  }
+  .app--dual {
+    background: rgba(212, 166, 84, 0.15);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.4);
+    box-shadow: 0 0 8px rgba(212, 166, 84, 0.2);
   }
   .app--topical {
-    background: rgba(212, 166, 84, 0.1);
-    color: var(--color-primary-light);
-    border: 1px solid rgba(212, 166, 84, 0.25);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
   .app--oral {
-    background: rgba(124, 184, 122, 0.1);
-    color: #a8d5a6;
-    border: 1px solid rgba(124, 184, 122, 0.25);
+    background: rgba(224, 120, 48, 0.1);
+    color: #f39b60;
+    border: 1px solid rgba(224, 120, 48, 0.3);
   }
 </style>
 
 <script>
-  // Simple reactive frontend filter
   function initFilters() {
     const searchInput = document.getElementById('product-search') as HTMLInputElement;
-    const categoryTabs = document.querySelectorAll('.category-tab');
-    const appTabs = document.querySelectorAll('.app-tab');
     const productCards = document.querySelectorAll('.product-card');
     const emptyState = document.getElementById('empty-state');
     const grid = document.getElementById('products-grid');
     const countLabel = document.getElementById('products-count-label');
-    const resetButton = document.getElementById('reset-filters');
 
     let currentSearch = '';
-    let currentCategory = 'all';
-    let currentApp = 'all';
-
-    // Read parameters from URL search params if present
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoryParam = urlParams.get('category');
-    if (categoryParam) {
-      const targetTab = Array.from(categoryTabs).find(
-        (tab) => tab.getAttribute('data-category') === categoryParam
-      );
-      if (targetTab) {
-        categoryTabs.forEach(t => t.classList.remove('active'));
-        targetTab.classList.add('active');
-        currentCategory = categoryParam;
-      }
-    }
-
-    const appParam = urlParams.get('application');
-    if (appParam) {
-      const targetAppTab = Array.from(appTabs).find(
-        (tab) => tab.getAttribute('data-app') === appParam
-      );
-      if (targetAppTab) {
-        appTabs.forEach(t => t.classList.remove('active'));
-        targetAppTab.classList.add('active');
-        currentApp = appParam;
-      }
-    }
 
     function filterProducts() {
       let visibleCount = 0;
@@ -617,26 +649,14 @@ const itemListSchema = {
         const name = card.getAttribute('data-name') || '';
         const cas = card.getAttribute('data-cas') || '';
         const desc = card.getAttribute('data-desc') || '';
-        const cat = card.getAttribute('data-category') || '';
-        const apps = (card.getAttribute('data-application') || '').split(',');
 
         const matchesSearch =
+          !currentSearch ||
           name.includes(currentSearch) ||
           cas.includes(currentSearch) ||
           desc.includes(currentSearch);
 
-        const matchesCategory = currentCategory === 'all' || cat === currentCategory;
-
-        let matchesApp = true;
-        if (currentApp !== 'all') {
-          if (currentApp === 'dual') {
-            matchesApp = apps.includes('topical') && apps.includes('oral');
-          } else {
-            matchesApp = apps.includes(currentApp);
-          }
-        }
-
-        if (matchesSearch && matchesCategory && matchesApp) {
+        if (matchesSearch) {
           (card as HTMLElement).style.display = 'flex';
           visibleCount++;
         } else {
@@ -659,7 +679,6 @@ const itemListSchema = {
       }
     }
 
-    // Search event
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
         currentSearch = (e.target as HTMLInputElement).value.toLowerCase().trim();
@@ -667,48 +686,19 @@ const itemListSchema = {
       });
     }
 
-    // Category click events
-    categoryTabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        categoryTabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        currentCategory = tab.getAttribute('data-category') || 'all';
-        filterProducts();
-      });
-    });
-
-    // Application click events
-    appTabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        appTabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        currentApp = tab.getAttribute('data-app') || 'all';
-        filterProducts();
-      });
-    });
-
-    // Reset button
+    // Reset button inside empty state
+    const resetButton = document.getElementById('reset-filters');
     if (resetButton) {
       resetButton.addEventListener('click', () => {
         if (searchInput) searchInput.value = '';
         currentSearch = '';
-        categoryTabs.forEach(t => t.classList.remove('active'));
-        const allTab = document.getElementById('btn-cat-all');
-        if (allTab) allTab.classList.add('active');
-        currentCategory = 'all';
-
-        appTabs.forEach(t => t.classList.remove('active'));
-        const allAppTab = document.querySelector('[data-app="all"]');
-        if (allAppTab) allAppTab.classList.add('active');
-        currentApp = 'all';
-
         filterProducts();
       });
     }
+
     filterProducts();
   }
 
-  // Support Astro transitions lifecycle
   initFilters();
   document.addEventListener('astro:page-load', initFilters);
 </script>

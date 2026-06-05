@@ -49,6 +49,51 @@ export const productType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'mainCategories',
+      title: 'Main Categories',
+      type: 'array',
+      of: [defineArrayMember({ type: 'string' })],
+      options: {
+        list: [
+          { title: 'Liposomal Formulations', value: 'liposomal' },
+          { title: 'Pet Longevity', value: 'pet-longevity' },
+          { title: 'Superfoods', value: 'superfood' },
+          { title: 'Cosmetic Ingredients', value: 'cosmetic-ingredients' },
+        ],
+        layout: 'tags',
+      },
+      group: 'basic',
+    }),
+    defineField({
+      name: 'antiAgingMechanisms',
+      title: 'Anti-Aging Mechanisms',
+      type: 'array',
+      of: [defineArrayMember({ type: 'string' })],
+      options: {
+        list: [
+          { title: 'Collagen Stimulant', value: 'collagen-stimulant' },
+          { title: 'MMP Inhibitor', value: 'mmp-inhibitor' },
+          { title: 'Anti-Glycation', value: 'anti-glycation' },
+        ],
+        layout: 'tags',
+      },
+      group: 'basic',
+    }),
+    defineField({
+      name: 'applicationDisplay',
+      title: 'Application Display Mode',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Topical Use (Cosmetic Grade)', value: 'topical' },
+          { title: 'Oral Use (Nutricosmetic)', value: 'oral' },
+          { title: 'Dual Application (Shared Ingredient)', value: 'dual' },
+        ],
+        layout: 'radio',
+      },
+      group: 'basic',
+    }),
+    defineField({
       name: 'featured',
       title: 'Featured Product',
       type: 'boolean',
