@@ -1,5 +1,5 @@
----
-// src/pages/insights/index.astro — B2B Industry Insights & Ingredient Research Blog
+﻿---
+// src/pages/insights/index.astro 鈥?B2B Industry Insights & Ingredient Research Blog
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPostsPaginated, urlFor } from '../../lib/sanity';
 
@@ -73,7 +73,7 @@ const itemListSchema = {
       <div class="banner-gradient"></div>
       <div class="container banner-content">
         <span class="section-label">Industry Insights</span>
-        <h1 class="banner-title">Scientific & Market Research</h1>
+        <h1 class="banner-title">ECM-Targeted Anti-Aging Research & Ingredient Insights</h1>
         <p class="banner-desc">
           In-depth technical spotlights, scientific whitepapers, and regulatory updates for health brand formulary and procurement officers.
         </p>
@@ -138,7 +138,7 @@ const itemListSchema = {
                   </time>
                   {post.readTime && (
                     <>
-                      <span class="meta-dot">·</span>
+                      <span class="meta-dot">路</span>
                       <span>{post.readTime} min read</span>
                     </>
                   )}
@@ -239,7 +239,7 @@ const itemListSchema = {
     padding-bottom: var(--space-4xl);
   }
 
-  /* ── Banner ── */
+  /* 鈹€鈹€ Banner 鈹€鈹€ */
   .page-banner {
     position: relative;
     padding-block: 8rem 4rem;
@@ -268,7 +268,7 @@ const itemListSchema = {
     font-size: 1.0625rem;
   }
 
-  /* ── Filter Tabs ── */
+  /* 鈹€鈹€ Filter Tabs 鈹€鈹€ */
   .filter-container {
     margin-top: -1.75rem;
     position: relative;
@@ -312,7 +312,7 @@ const itemListSchema = {
     color: var(--color-surface-bg) !important;
   }
 
-  /* ── Empty State ── */
+  /* 鈹€鈹€ Empty State 鈹€鈹€ */
   .no-posts {
     display: flex;
     flex-direction: column;
@@ -345,7 +345,7 @@ const itemListSchema = {
     line-height: 1.6;
   }
 
-  /* ── Grid ── */
+  /* 鈹€鈹€ Grid 鈹€鈹€ */
   .insights-container {
     margin-top: 3rem;
     position: relative;
@@ -365,7 +365,7 @@ const itemListSchema = {
     .insights-grid { grid-template-columns: 1fr; }
   }
 
-  /* ── Card ── */
+  /* 鈹€鈹€ Card 鈹€鈹€ */
   .blog-card {
     display: flex;
     flex-direction: column;
@@ -489,7 +489,7 @@ const itemListSchema = {
     transform: translateX(3px);
   }
 
-  /* ── Pagination ── */
+  /* 鈹€鈹€ Pagination 鈹€鈹€ */
   .pagination {
     display: flex;
     justify-content: center;

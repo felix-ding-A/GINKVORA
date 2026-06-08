@@ -42,8 +42,8 @@ export const ui = {
 
     // ── Hero ──
     'hero.badge':          'ECM Science & Nutricosmetic Specialist',
-    'hero.title_1':        'ECM-Targeted Anti-Aging &',
-    'hero.title_2':        'Nutricosmetic Ingredients',
+    'hero.title_1':        'ECM-Targeted Anti-Aging Ingredients —',
+    'hero.title_2':        'Topical & Nutricosmetic Solutions',
     'hero.sub_headline':   'Topical & Ingestible Solutions for Premium Formulations.',
     'hero.subtitle':       'Premium active ingredients for global nutraceutical, cosmetic, and pet health industries. Featuring high-purity PQQ, NMN, EGCG, and Glabridin.',
     'hero.cta_explore':    'Explore Products',
@@ -314,8 +314,8 @@ export const ui = {
 
     // ── Hero ──
     'hero.badge':          'ECM-наука и нутрикосметика',
-    'hero.title_1':        'ECM-таргетные антивозрастные',
-    'hero.title_2':        'нутрикосметические ингредиенты',
+    'hero.title_1':        'ECM-таргетные антивозрастные ингредиенты —',
+    'hero.title_2':        'наружные и нутрикосметические решения',
     'hero.sub_headline':   'Наружные и пероральные решения для премиальных формуляций.',
     'hero.subtitle':       'Премиальные активные ингредиенты для мировых производителей нутрицевтиков, косметики и продукции для здоровья животных. PQQ, NMN, EGCG и глабридин высокой чистоты.',
     'hero.cta_explore':    'Каталог продуктов',

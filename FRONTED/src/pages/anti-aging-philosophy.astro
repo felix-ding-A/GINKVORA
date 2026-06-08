@@ -153,6 +153,47 @@ const philosophySchema = {
         </div>
       </div>
 
+      <!-- Shared Ingredients Showcase -->
+      <div class="shared-ingredients reveal reveal-delay-1">
+        <div class="shared-header">
+          <span class="shared-label">Dual-Application Shared Ingredients</span>
+          <p class="shared-desc">The same raw material. Two certified grades. One complete anti-aging product line.</p>
+        </div>
+        <div class="shared-grid">
+          <div class="shared-card glass">
+            <div class="shared-card-name">PQQ</div>
+            <div class="shared-card-full">Pyrroloquinoline Quinone</div>
+            <div class="shared-grades">
+              <span class="grade-badge grade-badge--cosmetic">Cosmetic Grade &middot; INCI Registered</span>
+              <span class="grade-badge grade-badge--food">Food Grade &middot; GMP Certified</span>
+            </div>
+            <p class="shared-card-desc">Topically: inhibits MMP-1, protects dermal collagen. Orally: activates mitochondrial biogenesis in fibroblasts to fuel ECM synthesis.</p>
+          </div>
+          <div class="shared-card glass">
+            <div class="shared-card-name">NMN</div>
+            <div class="shared-card-full">Nicotinamide Mononucleotide</div>
+            <div class="shared-grades">
+              <span class="grade-badge grade-badge--cosmetic">Cosmetic Grade &middot; INCI Registered</span>
+              <span class="grade-badge grade-badge--food">Food Grade &middot; FDA NDI Accepted</span>
+            </div>
+            <p class="shared-card-desc">Topically: replenishes NAD&sup1; in skin cells to support collagen synthesis. Orally: elevates systemic NAD&sup1; to power fibroblast ECM remodeling.</p>
+          </div>
+          <div class="shared-card glass">
+            <div class="shared-card-name">Glabridin</div>
+            <div class="shared-card-full">Licorice Root Extract</div>
+            <div class="shared-grades">
+              <span class="grade-badge grade-badge--cosmetic">Cosmetic Grade &middot; REACH Compliant</span>
+              <span class="grade-badge grade-badge--food">Food Grade &middot; EFSA Listed</span>
+            </div>
+            <p class="shared-card-desc">Topically: potent MMP inhibitor and brightening active. Orally: anti-glycation defense to prevent AGE-induced ECM cross-linking.</p>
+          </div>
+        </div>
+        <div class="shared-cta">
+          <a href="/products" class="btn btn--primary">Browse Dual-Grade Ingredient Catalog</a>
+          <a href="/contact" class="btn btn--gold">Request Dual-Application Samples</a>
+        </div>
+      </div>
+
       <div class="slogan-container glass reveal reveal-delay-2">
         <div class="slogan-quote">“Topical formulations protect the matrix from the outside, while ingestible nutrients optimize cellular energy to fuel inner ECM biosynthesis.”</div>
         <p class="slogan-sub">
@@ -538,6 +579,119 @@ const philosophySchema = {
     background: rgba(124, 184, 122, 0.08);
     color: #a8d5a6;
     border-color: rgba(124, 184, 122, 0.2);
+  }
+
+  /* ── Shared Ingredients Showcase ── */
+  .shared-ingredients {
+    margin: 3rem 0;
+  }
+
+  .shared-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .shared-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-primary);
+    background: rgba(212,166,84,0.1);
+    border: 1px solid rgba(212,166,84,0.25);
+    padding: 0.3rem 0.85rem;
+    border-radius: var(--radius-full);
+    margin-bottom: 0.75rem;
+  }
+
+  .shared-desc {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    margin: 0;
+  }
+
+  .shared-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .shared-grid { grid-template-columns: 1fr; }
+  }
+
+  .shared-card {
+    padding: 1.75rem 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212,166,84,0.15) !important;
+    transition: border-color var(--transition-base), transform var(--transition-base);
+  }
+
+  .shared-card:hover {
+    border-color: rgba(212,166,84,0.35) !important;
+    transform: translateY(-3px);
+  }
+
+  .shared-card-name {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #f0c878, #d4a654);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.2rem;
+  }
+
+  .shared-card-full {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .shared-grades {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .grade-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+  }
+
+  .grade-badge--cosmetic {
+    background: rgba(212,166,84,0.1);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212,166,84,0.25);
+  }
+
+  .grade-badge--food {
+    background: rgba(124,184,122,0.08);
+    color: #a8d5a6;
+    border: 1px solid rgba(124,184,122,0.2);
+  }
+
+  .shared-card-desc {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .shared-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
   }
 
   .slogan-container {
