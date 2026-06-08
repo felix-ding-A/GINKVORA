@@ -275,3 +275,23 @@ export const MOCK_SITE_SETTINGS = {
     { value: '99', suffix: '%', label: 'Purity Standard' }
   ]
 };
+
+export const MOCK_AUTHORS = [
+  {
+    _id: 'author-1',
+    name: 'Dr. Evelyn Carter',
+    title: 'Chief Scientific Advisor',
+    credentials: 'PhD (Biochemistry)',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80',
+    bio: 'Over 15 years of experience in cellular health, mitochondrial cofactor research, and botanical drug discovery pipelines.'
+  },
+  {
+    _id: 'author-2',
+    name: 'Sarah Lindqvist',
+    title: 'Head of Quality Assurance',
+    credentials: 'MSc (Pharmacognosy)',
+    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&auto=format&fit=crop&q=80',
+    bio: 'Dedicated to implementing strict global certifications, cGMP audits, and high-precision chromatography testing standards.'
+  }
+];
+

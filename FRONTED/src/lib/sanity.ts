@@ -1,7 +1,7 @@
 // src/lib/sanity.ts — Sanity client and query helpers (with robust Mock Data fallback)
 import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
-import { MOCK_PRODUCTS, MOCK_CATEGORIES, MOCK_POSTS, MOCK_SITE_SETTINGS } from './mockData';
+import { MOCK_PRODUCTS, MOCK_CATEGORIES, MOCK_POSTS, MOCK_SITE_SETTINGS, MOCK_AUTHORS } from './mockData';
 
 // ---------------------------------------------------------------------------
 // Client Configuration
@@ -407,10 +407,31 @@ export async function getSiteSettings() {
   }
 }
 
+export async function getAllAuthors() {
+  try {
+    const data = await sanityClient.fetch(`
+      *[_type == "author"] | order(name asc) {
+        _id,
+        name,
+        title,
+        credentials,
+        avatar,
+        bio
+      }
+    `);
+    if (data && data.length > 0) return data;
+    return MOCK_AUTHORS;
+  } catch (err) {
+    console.warn('Sanity API connection failed, using fallback mock authors.');
+    return MOCK_AUTHORS;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Re-export i18n helpers for convenience in page files
 // ---------------------------------------------------------------------------
 export { getLocalizedField } from '../i18n/utils';
+
 
 // ---------------------------------------------------------------------------
 // Utility Types (for TypeScript)
@@ -469,3 +490,13 @@ export type SanityPost = {
     heroImage?: any;
   };
 };
+
+export type SanityAuthor = {
+  _id: string;
+  name: string;
+  title?: string;
+  credentials?: string;
+  avatar?: any;
+  bio?: string;
+};
+

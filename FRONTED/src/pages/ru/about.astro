@@ -3,9 +3,11 @@
 export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { useTranslations } from '../../i18n/utils';
+import { getAllAuthors, urlFor } from '../../lib/sanity';
 
 const lang = 'ru';
 const t = useTranslations(lang);
+const authors = await getAllAuthors();
 ---
 
 <BaseLayout
@@ -82,6 +84,38 @@ const t = useTranslations(lang);
       </div>
     </section>
 
+    <!-- Authors Section -->
+    <section class="container section authors-section" aria-label="Our Scientific Experts">
+      <div class="section-header">
+        <span class="section-label">Научный потенциал</span>
+        <h2>Наша научно-исследовательская команда</h2>
+        <p class="section-desc">
+          Познакомьтесь с исследователями, разработчиками и экспертами по качеству, создающими чистые растительные биоактивные вещества GINKVORA.
+        </p>
+      </div>
+
+      <div class="authors-grid">
+        {authors.map((author) => (
+          <div class="author-card glass reveal">
+            <div class="author-avatar-wrapper">
+              <img
+                src={urlFor(author.avatar).width(160).height(160).fit('crop').url()}
+                alt={author.name}
+                class="author-avatar"
+                loading="lazy"
+              />
+            </div>
+            <div class="author-info">
+              <h3>{author.name}</h3>
+              {author.title && <p class="author-title">{author.title}</p>}
+              {author.credentials && <span class="author-creds">{author.credentials}</span>}
+              {author.bio && <p class="author-bio">{author.bio}</p>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
     <!-- CTA -->
     <section class="container section cta-section">
       <div class="cta-box glass">
@@ -133,4 +167,106 @@ const t = useTranslations(lang);
   .cta-box h2 { font-size: clamp(1.75rem, 3vw, 2.25rem); font-family: var(--font-display); }
   .cta-box p { color: var(--color-text-secondary); max-width: 520px; line-height: 1.75; }
   .cta-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+  /* ── Authors Section ── */
+  .authors-section {
+    margin-top: 2rem;
+  }
+
+  .authors-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    .authors-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  .author-card {
+    display: flex;
+    gap: 2rem;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.1) !important;
+    align-items: center;
+    transition: border-color var(--transition-base), transform var(--transition-base);
+  }
+
+  @media (max-width: 540px) {
+    .author-card {
+      flex-direction: column;
+      text-align: center;
+      padding: 2rem;
+    }
+  }
+
+  .author-card:hover {
+    border-color: rgba(212, 166, 84, 0.25) !important;
+    transform: translateY(-3px);
+  }
+
+  .author-avatar-wrapper {
+    flex-shrink: 0;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--color-primary-light);
+    box-shadow: 0 0 15px rgba(212, 166, 84, 0.15);
+  }
+
+  .author-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .author-info h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .author-title {
+    font-size: 0.9rem;
+    color: var(--color-primary-light);
+    font-weight: 500;
+  }
+
+  .author-creds {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    background: rgba(212, 166, 84, 0.08);
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+    align-self: start;
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 540px) {
+    .author-creds {
+      align-self: center;
+    }
+  }
+
+  .author-bio {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-top: 0.25rem;
+  }
 </style>
