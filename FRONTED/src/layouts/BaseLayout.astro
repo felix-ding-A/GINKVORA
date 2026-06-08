@@ -4,6 +4,8 @@ import '../styles/global.css';
 import Navbar from '../components/layout/Navbar.astro';
 import Footer from '../components/layout/Footer.astro';
 
+const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
+
 interface Props {
   title: string;
   description?: string;
@@ -69,6 +71,19 @@ const organizationSchema = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Google Tag Manager -->
+    {gtmId && (
+      <script is:inline define:vars={{ gtmId }}>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+        f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer',gtmId);
+      </script>
+    )}
+    <!-- End Google Tag Manager -->
 
     <!-- Primary Meta -->
     <title>{fullTitle}</title>
@@ -171,6 +186,19 @@ const organizationSchema = {
   </head>
 
   <body class="bg-noise">
+    <!-- Google Tag Manager (noscript) -->
+    {gtmId && (
+      <noscript>
+        <iframe
+          src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+          height="0"
+          width="0"
+          style="display:none;visibility:hidden"
+        ></iframe>
+      </noscript>
+    )}
+    <!-- End Google Tag Manager (noscript) -->
+
     <!-- Skip to main content (accessibility) -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -206,6 +234,25 @@ const organizationSchema = {
 
       document.querySelectorAll('.reveal').forEach((el) => {
         observer.observe(el);
+      });
+    </script>
+
+    <!--
+      GTM Virtual Pageview — Astro ClientRouter (SPA) support.
+      On every client-side navigation (astro:after-swap), the new page's
+      pathname and title are already updated in the DOM, so we push a
+      virtualPageview event to the dataLayer for GTM to pick up.
+      This is a no-op if GTM is not loaded (dataLayer falls back to an
+      empty array, which is safe).
+    -->
+    <script is:inline>
+      document.addEventListener('astro:after-swap', function () {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'virtualPageview',
+          pagePath: window.location.pathname,
+          pageTitle: document.title,
+        });
       });
     </script>
   </body>
