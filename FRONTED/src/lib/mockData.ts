@@ -255,7 +255,7 @@ export const MOCK_SITE_SETTINGS = {
   siteName: 'GINKVORA',
   tagline: 'Pure Nature, Proven Science',
   contactEmail: 'inquiry@ginkvora.com',
-  phone: '+86 (029) 8888-8888',
+  phone: '+1 6802556637',
   address: {
     street: 'Xi\'an International Trade & Logistics Park',
     city: 'Xi\'an',
