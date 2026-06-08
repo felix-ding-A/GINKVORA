@@ -5,9 +5,18 @@ import { getAllProducts, urlFor } from '../../lib/sanity';
 
 const category = Astro.url.searchParams.get('category');
 const mechanism = Astro.url.searchParams.get('mechanism');
+const pageParam = Astro.url.searchParams.get('page');
 
 // Fetch products based on filters
-const products = await getAllProducts(category, mechanism);
+const allProducts = await getAllProducts(category, mechanism);
+
+// Pagination config
+const PRODUCTS_PER_PAGE = 12;
+const totalProducts = allProducts.length;
+const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE));
+const currentPage = Math.min(Math.max(1, parseInt(pageParam ?? '1') || 1), totalPages);
+const pageStart = (currentPage - 1) * PRODUCTS_PER_PAGE;
+const products = allProducts.slice(pageStart, pageStart + PRODUCTS_PER_PAGE);
 
 const siteUrl = 'https://ginkvora.com';
 
@@ -30,6 +39,31 @@ function getFilterUrl(cat: string | null, mech: string | null) {
   if (mech) params.set('mechanism', mech);
   const q = params.toString();
   return `/products${q ? '?' + q : ''}`;
+}
+
+function getPageUrl(page: number) {
+  const params = new URLSearchParams();
+  if (category) params.set('category', category);
+  if (mechanism) params.set('mechanism', mechanism);
+  if (page > 1) params.set('page', String(page));
+  const q = params.toString();
+  return `/products${q ? '?' + q : ''}`;
+}
+
+// Pre-compute pagination items to avoid Astro JSX parsing issues with > in templates
+type PageItem = { type: 'page'; page: number; url: string; active: boolean } | { type: 'ellipsis' };
+const pageItems: PageItem[] = [];
+if (totalPages > 1) {
+  const visiblePages = Array.from({ length: totalPages }, (_, i) => i + 1).filter(p =>
+    p === 1 || p === totalPages ||
+    (p >= currentPage - 1 && p <= currentPage + 1) ||
+    (p === currentPage - 2 && currentPage > 3) ||
+    (p === currentPage + 2 && currentPage < totalPages - 2)
+  );
+  visiblePages.forEach((p, idx) => {
+    if (idx > 0 && p - visiblePages[idx - 1] > 1) pageItems.push({ type: 'ellipsis' });
+    pageItems.push({ type: 'page', page: p, url: getPageUrl(p), active: p === currentPage });
+  });
 }
 
 let pageTitle = "ECM-Targeted Anti-Aging Ingredients: Topical & Nutricosmetic Solutions | GINKVORA";
@@ -78,8 +112,8 @@ const itemListSchema = {
   "name": "GINKVORA Plant Extract Product Catalog",
   "description": pageDescription,
   "url": `${siteUrl}/products`,
-  "numberOfItems": products.length,
-  "itemListElement": products.map((prod, i) => ({
+  "numberOfItems": totalProducts,
+  "itemListElement": allProducts.map((prod, i) => ({
     "@type": "ListItem",
     "position": i + 1,
     "url": `${siteUrl}/products/${prod.slug}`,
@@ -179,7 +213,7 @@ const itemListSchema = {
       <!-- Products Grid -->
       <section class="products-section" aria-label="Product List">
         <div class="products-count" id="products-count-label">
-          Showing {products.length} products
+          Showing {pageStart + 1}–{Math.min(pageStart + PRODUCTS_PER_PAGE, totalProducts)} of {totalProducts} products
         </div>
 
         <div class="products-grid" id="products-grid">
@@ -256,6 +290,39 @@ const itemListSchema = {
           <p>Try checking your spelling, selecting a different category, or contacting us for custom sourcing.</p>
           <button class="btn btn--gold" id="reset-filters">Reset Filters</button>
         </div>
+
+        <!-- Pagination -->
+        {totalPages > 1 && (
+          <nav class="pagination" aria-label="Product pages" id="pagination-nav">
+            <a
+              href={getPageUrl(currentPage - 1)}
+              class={`page-btn page-prev ${currentPage === 1 ? 'disabled' : ''}`}
+              aria-disabled={currentPage === 1}
+              aria-label="Previous page"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+            </a>
+
+            {pageItems.map((item) =>
+              item.type === 'ellipsis'
+                ? <span class="page-ellipsis">…</span>
+                : <a
+                    href={item.url}
+                    class={`page-btn page-num ${item.active ? 'active' : ''}`}
+                    aria-current={item.active ? 'page' : undefined}
+                  >{item.page}</a>
+            )}
+
+            <a
+              href={getPageUrl(currentPage + 1)}
+              class={`page-btn page-next ${currentPage === totalPages ? 'disabled' : ''}`}
+              aria-disabled={currentPage === totalPages}
+              aria-label="Next page"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </a>
+          </nav>
+        )}
       </section>
     </div>
   </main>
@@ -609,6 +676,68 @@ const itemListSchema = {
     margin-bottom: 1.5rem;
   }
 
+  /* ── Pagination ── */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    flex-wrap: wrap;
+  }
+
+  .page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.625rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .page-btn:hover:not(.disabled):not(.active) {
+    color: var(--color-primary-light);
+    border-color: var(--color-primary);
+    background: rgba(212, 166, 84, 0.07);
+  }
+
+  .page-btn.active {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    border-color: var(--color-primary);
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(212, 166, 84, 0.25);
+    pointer-events: none;
+  }
+
+  .page-btn.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .page-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    user-select: none;
+  }
+
   /* ── Card Application Badges ── */
   .card-app-badge {
     font-size: 0.75rem;
@@ -643,6 +772,7 @@ const itemListSchema = {
     const emptyState = document.getElementById('empty-state');
     const grid = document.getElementById('products-grid');
     const countLabel = document.getElementById('products-count-label');
+    const paginationNav = document.getElementById('pagination-nav');
 
     let currentSearch = '';
 
@@ -670,18 +800,30 @@ const itemListSchema = {
 
       // Update count label
       if (countLabel) {
-        countLabel.textContent = `Showing ${visibleCount} product${visibleCount === 1 ? '' : 's'}`;
+        if (currentSearch) {
+          countLabel.textContent = `Showing ${visibleCount} product${visibleCount === 1 ? '' : 's'} matching "${currentSearch}"`;
+        } else {
+          // Restore original server-rendered text
+          const original = countLabel.getAttribute('data-original') || countLabel.textContent || '';
+          if (!countLabel.getAttribute('data-original')) countLabel.setAttribute('data-original', original);
+          countLabel.textContent = countLabel.getAttribute('data-original') || '';
+        }
       }
 
-      // Handle empty state
+      // Handle empty state and pagination visibility
       if (visibleCount === 0) {
         if (grid) grid.style.display = 'none';
         if (emptyState) emptyState.style.display = 'block';
+        if (paginationNav) paginationNav.style.display = 'none';
       } else {
         if (grid) grid.style.display = 'grid';
         if (emptyState) emptyState.style.display = 'none';
+        if (paginationNav) paginationNav.style.display = currentSearch ? 'none' : '';
       }
     }
+
+    // Cache original count text
+    if (countLabel) countLabel.setAttribute('data-original', countLabel.textContent || '');
 
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
