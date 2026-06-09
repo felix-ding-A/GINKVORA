@@ -642,53 +642,53 @@ onMounted(() => {
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="form-label text-xs">Dosage per Injection (mg/kg)</label>
-            <input type="number" class="form-input font-mono" v-model="dose" />
+            <label for="animal-dose" class="form-label text-xs">Dosage per Injection (mg/kg)</label>
+            <input id="animal-dose" type="number" class="form-input font-mono" v-model="dose" />
           </div>
           <div>
-            <label class="form-label text-xs">Average Animal Weight (g)</label>
-            <input type="number" class="form-input font-mono" v-model="weight" />
+            <label for="animal-weight" class="form-label text-xs">Average Animal Weight (g)</label>
+            <input id="animal-weight" type="number" class="form-input font-mono" v-model="weight" />
           </div>
           <div>
-            <label class="form-label text-xs">Injection Volume per Animal (μL)</label>
-            <input type="number" class="form-input font-mono" v-model="volumePer" />
+            <label for="animal-volume" class="form-label text-xs">Injection Volume per Animal (μL)</label>
+            <input id="animal-volume" type="number" class="form-input font-mono" v-model="volumePer" />
           </div>
           <div>
-            <label class="form-label text-xs">Number of Animals</label>
-            <input type="number" class="form-input font-mono" v-model="count" />
+            <label for="animal-count" class="form-label text-xs">Number of Animals</label>
+            <input id="animal-count" type="number" class="form-input font-mono" v-model="count" />
           </div>
           <div class="md:col-span-2">
-            <label class="form-label text-xs">Solubility Limit in DMSO (mg/mL)</label>
-            <input type="number" class="form-input font-mono" v-model="solubilityLimit" />
+            <label for="animal-solubility" class="form-label text-xs">Solubility Limit in DMSO (mg/mL)</label>
+            <input id="animal-solubility" type="number" class="form-input font-mono" v-model="solubilityLimit" />
           </div>
         </div>
 
         <!-- Solvent Percentages -->
         <div class="border-t border-[var(--color-border)] pt-4 flex flex-col gap-3">
-          <label class="form-label text-xs font-bold uppercase tracking-wider">Solvent Volume Percentages (Must sum to 100%)</label>
+          <span class="form-label text-xs font-bold uppercase tracking-wider block">Solvent Volume Percentages (Must sum to 100%)</span>
           <div v-if="pctError" class="p-2.5 bg-[var(--color-error)]/10 border border-[var(--color-error)]/30 rounded-lg text-xs text-[var(--color-error)]">
             {{ pctError }}
           </div>
           <div class="grid grid-cols-5 gap-2">
             <div>
-              <label class="form-label text-[10px] text-center mb-1 block">DMSO %</label>
-              <input type="number" class="form-input font-mono text-center p-1.5" v-model="dmsoPct" />
+              <label for="solvent-dmso" class="form-label text-[10px] text-center mb-1 block">DMSO %</label>
+              <input id="solvent-dmso" type="number" class="form-input font-mono text-center p-1.5" v-model="dmsoPct" />
             </div>
             <div>
-              <label class="form-label text-[10px] text-center mb-1 block">PEG300 %</label>
-              <input type="number" class="form-input font-mono text-center p-1.5" v-model="pegPct" />
+              <label for="solvent-peg" class="form-label text-[10px] text-center mb-1 block">PEG300 %</label>
+              <input id="solvent-peg" type="number" class="form-input font-mono text-center p-1.5" v-model="pegPct" />
             </div>
             <div>
-              <label class="form-label text-[10px] text-center mb-1 block">Tween80 %</label>
-              <input type="number" class="form-input font-mono text-center p-1.5" v-model="tweenPct" />
+              <label for="solvent-tween" class="form-label text-[10px] text-center mb-1 block">Tween80 %</label>
+              <input id="solvent-tween" type="number" class="form-input font-mono text-center p-1.5" v-model="tweenPct" />
             </div>
             <div>
-              <label class="form-label text-[10px] text-center mb-1 block">ddH₂O %</label>
-              <input type="number" class="form-input font-mono text-center p-1.5" v-model="waterPct" />
+              <label for="solvent-water" class="form-label text-[10px] text-center mb-1 block">ddH₂O %</label>
+              <input id="solvent-water" type="number" class="form-input font-mono text-center p-1.5" v-model="waterPct" />
             </div>
             <div>
-              <label class="form-label text-[10px] text-center mb-1 block">Corn Oil %</label>
-              <input type="number" class="form-input font-mono text-center p-1.5" v-model="cornOilPct" />
+              <label for="solvent-cornoil" class="form-label text-[10px] text-center mb-1 block">Corn Oil %</label>
+              <input id="solvent-cornoil" type="number" class="form-input font-mono text-center p-1.5" v-model="cornOilPct" />
             </div>
           </div>
         </div>
@@ -758,7 +758,7 @@ onMounted(() => {
       <div class="glass p-6 border border-[var(--color-border)] flex flex-col gap-6">
         <div class="flex justify-between items-center border-b border-[var(--color-border)] pb-3">
           <h3 class="text-lg font-semibold text-[var(--color-primary-light)]">Active Ingredients & Parameters</h3>
-          <select class="form-input form-select w-40 text-xs py-1" v-model="suppType">
+          <select class="form-input form-select w-40 text-xs py-1" v-model="suppType" aria-label="Supplement type">
             <option value="tablet">Tablet</option>
             <option value="capsule">Capsule</option>
             <option value="softgel">Softgel</option>
@@ -770,16 +770,16 @@ onMounted(() => {
         <!-- Target parameters -->
         <div class="grid grid-cols-3 gap-3">
           <div>
-            <label class="form-label text-[11px] font-bold">Target Weight (mg)</label>
-            <input type="number" class="form-input font-mono text-xs" v-model="suppTargetWeight" />
+            <label for="supp-weight" class="form-label text-[11px] font-bold">Target Weight (mg)</label>
+            <input id="supp-weight" type="number" class="form-input font-mono text-xs" v-model="suppTargetWeight" />
           </div>
           <div>
-            <label class="form-label text-[11px] font-bold">Batch Size (Units)</label>
-            <input type="number" class="form-input font-mono text-xs" v-model="suppBatchSize" />
+            <label for="supp-batch" class="form-label text-[11px] font-bold">Batch Size (Units)</label>
+            <input id="supp-batch" type="number" class="form-input font-mono text-xs" v-model="suppBatchSize" />
           </div>
           <div>
-            <label class="form-label text-[11px] font-bold">Bulk Density (g/mL)</label>
-            <input type="number" class="form-input font-mono text-xs" step="0.05" v-model="suppBulkDensity" :disabled="suppType !== 'capsule' && suppType !== 'tablet'" />
+            <label for="supp-density" class="form-label text-[11px] font-bold">Bulk Density (g/mL)</label>
+            <input id="supp-density" type="number" class="form-input font-mono text-xs" step="0.05" v-model="suppBulkDensity" :disabled="suppType !== 'capsule' && suppType !== 'tablet'" />
           </div>
         </div>
 

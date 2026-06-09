@@ -109,8 +109,9 @@ onMounted(() => {
         <!-- Input & Keyboard Panel -->
         <div class="glass p-6 border border-[var(--color-border)] flex flex-col gap-6">
           <div>
-            <label class="form-label text-xs uppercase font-bold tracking-wider mb-2 block">Enter Chemical Formula</label>
+            <label for="chem-formula-input" class="form-label text-xs uppercase font-bold tracking-wider mb-2 block">Enter Chemical Formula</label>
             <input
+              id="chem-formula-input"
               type="text"
               class="form-input font-mono text-xl py-3 px-4 border border-[var(--color-border)]"
               v-model="formula"

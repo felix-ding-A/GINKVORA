@@ -340,7 +340,7 @@ onMounted(() => {
           <!-- Mass input -->
           <div :class="['p-4 rounded-xl border transition-all', target === 'mass' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
             <div class="flex justify-between items-center mb-2">
-              <label class="form-label font-semibold text-xs uppercase tracking-wider">Solute Mass (m)</label>
+              <label for="molarity-mass" class="form-label font-semibold text-xs uppercase tracking-wider">Solute Mass (m)</label>
               <button 
                 @click="target = 'mass'" 
                 :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'mass' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
@@ -350,13 +350,14 @@ onMounted(() => {
             </div>
             <div class="flex gap-2">
               <input
+                id="molarity-mass"
                 type="number"
                 class="form-input font-mono"
                 v-model="mass"
                 :disabled="target === 'mass'"
                 placeholder="Enter mass"
               />
-              <select class="form-input form-select w-24" v-model="massUnit">
+              <select class="form-input form-select w-24" v-model="massUnit" aria-label="Mass unit">
                 <option v-for="u in MASS_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
               </select>
             </div>
@@ -365,7 +366,7 @@ onMounted(() => {
           <!-- Concentration input -->
           <div :class="['p-4 rounded-xl border transition-all', target === 'conc' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
             <div class="flex justify-between items-center mb-2">
-              <label class="form-label font-semibold text-xs uppercase tracking-wider">Target Concentration (C)</label>
+              <label for="molarity-conc" class="form-label font-semibold text-xs uppercase tracking-wider">Target Concentration (C)</label>
               <button 
                 @click="target = 'conc'" 
                 :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'conc' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
@@ -375,13 +376,14 @@ onMounted(() => {
             </div>
             <div class="flex gap-2">
               <input
+                id="molarity-conc"
                 type="number"
                 class="form-input font-mono"
                 v-model="conc"
                 :disabled="target === 'conc'"
                 placeholder="Enter conc"
               />
-              <select class="form-input form-select w-24" v-model="concUnit">
+              <select class="form-input form-select w-24" v-model="concUnit" aria-label="Concentration unit">
                 <option v-for="u in CONC_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
               </select>
             </div>
@@ -390,7 +392,7 @@ onMounted(() => {
           <!-- Volume input -->
           <div :class="['p-4 rounded-xl border transition-all', target === 'volume' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
             <div class="flex justify-between items-center mb-2">
-              <label class="form-label font-semibold text-xs uppercase tracking-wider">Solvent Volume (V)</label>
+              <label for="molarity-volume" class="form-label font-semibold text-xs uppercase tracking-wider">Solvent Volume (V)</label>
               <button 
                 @click="target = 'volume'" 
                 :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'volume' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
@@ -400,13 +402,14 @@ onMounted(() => {
             </div>
             <div class="flex gap-2">
               <input
+                id="molarity-volume"
                 type="number"
                 class="form-input font-mono"
                 v-model="volume"
                 :disabled="target === 'volume'"
                 placeholder="Enter volume"
               />
-              <select class="form-input form-select w-24" v-model="volumeUnit">
+              <select class="form-input form-select w-24" v-model="volumeUnit" aria-label="Volume unit">
                 <option v-for="u in VOL_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
               </select>
             </div>
@@ -415,7 +418,7 @@ onMounted(() => {
           <!-- Molecular Weight input -->
           <div :class="['p-4 rounded-xl border transition-all', target === 'mw' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
             <div class="flex justify-between items-center mb-2">
-              <label class="form-label font-semibold text-xs uppercase tracking-wider">Molecular Weight (MW)</label>
+              <label for="molarity-mw" class="form-label font-semibold text-xs uppercase tracking-wider">Molecular Weight (MW)</label>
               <button 
                 @click="target = 'mw'" 
                 :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'mw' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
@@ -425,6 +428,7 @@ onMounted(() => {
             </div>
             <div class="flex gap-2">
               <input
+                id="molarity-mw"
                 type="number"
                 class="form-input font-mono"
                 v-model="mw"
@@ -443,7 +447,7 @@ onMounted(() => {
           <!-- Solute Amount -->
           <div :class="['p-4 rounded-xl border transition-all', pctTarget === 'solute' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
             <div class="flex justify-between items-center mb-2">
-              <label class="form-label font-semibold text-xs uppercase tracking-wider">Solute Amount</label>
+              <label for="pct-solute" class="form-label font-semibold text-xs uppercase tracking-wider">Solute Amount</label>
               <button 
                 @click="pctTarget = 'solute'" 
                 :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', pctTarget === 'solute' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
@@ -453,13 +457,14 @@ onMounted(() => {
             </div>
             <div class="flex gap-2">
               <input
+                id="pct-solute"
                 type="number"
                 class="form-input font-mono"
                 v-model="pctSolute"
                 :disabled="pctTarget === 'solute'"
                 placeholder="Enter solute"
               />
-              <select class="form-input form-select w-24" v-model="pctSoluteUnit">
+              <select class="form-input form-select w-24" v-model="pctSoluteUnit" aria-label="Solute unit">
                 <option value="g">g</option>
                 <option value="mg">mg</option>
                 <option value="kg">kg</option>
@@ -472,7 +477,7 @@ onMounted(() => {
           <!-- Total Amount -->
           <div :class="['p-4 rounded-xl border transition-all', pctTarget === 'total' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
             <div class="flex justify-between items-center mb-2">
-              <label class="form-label font-semibold text-xs uppercase tracking-wider">Total Formula Amount</label>
+              <label for="pct-total" class="form-label font-semibold text-xs uppercase tracking-wider">Total Formula Amount</label>
               <button 
                 @click="pctTarget = 'total'" 
                 :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', pctTarget === 'total' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
@@ -482,13 +487,14 @@ onMounted(() => {
             </div>
             <div class="flex gap-2">
               <input
+                id="pct-total"
                 type="number"
                 class="form-input font-mono"
                 v-model="pctTotal"
                 :disabled="pctTarget === 'total'"
                 placeholder="Enter total"
               />
-              <select class="form-input form-select w-24" v-model="pctTotalUnit">
+              <select class="form-input form-select w-24" v-model="pctTotalUnit" aria-label="Total unit">
                 <option value="g">g</option>
                 <option value="kg">kg</option>
                 <option value="mL">mL</option>
@@ -500,7 +506,7 @@ onMounted(() => {
           <!-- Percentage Value -->
           <div :class="['p-4 rounded-xl border transition-all', pctTarget === 'pct' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
             <div class="flex justify-between items-center mb-2">
-              <label class="form-label font-semibold text-xs uppercase tracking-wider">Concentration Percentage</label>
+              <label for="pct-value" class="form-label font-semibold text-xs uppercase tracking-wider">Concentration Percentage</label>
               <button 
                 @click="pctTarget = 'pct'" 
                 :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', pctTarget === 'pct' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
@@ -510,6 +516,7 @@ onMounted(() => {
             </div>
             <div class="flex gap-2">
               <input
+                id="pct-value"
                 type="number"
                 class="form-input font-mono"
                 v-model="pctValue"
@@ -524,7 +531,7 @@ onMounted(() => {
 
           <!-- Pct Type Select -->
           <div class="p-4 rounded-xl border border-[var(--color-border)] bg-black/20">
-            <label class="form-label font-semibold text-xs uppercase tracking-wider mb-2 block">Percentage Relation Type</label>
+            <span class="form-label font-semibold text-xs uppercase tracking-wider mb-2 block">Percentage Relation Type</span>
             <div class="flex gap-4 h-[42px] items-center">
               <label class="flex items-center gap-2 cursor-pointer text-sm">
                 <input type="radio" value="ww" v-model="pctType" class="accent-[var(--color-primary)]" />
@@ -589,8 +596,8 @@ onMounted(() => {
           
           <div class="flex flex-col gap-3">
             <div>
-              <label class="form-label text-[11px] mb-1.5 block">Vitamin Active Ingredient</label>
-              <select class="form-input form-select text-xs" v-model="iuActiveKey">
+              <label for="iu-ingredient-select" class="form-label text-[11px] mb-1.5 block">Vitamin Active Ingredient</label>
+              <select id="iu-ingredient-select" class="form-input form-select text-xs" v-model="iuActiveKey">
                 <option value="vitA">Vitamin A (Retinol)</option>
                 <option value="vitD3">Vitamin D3 (Cholecalciferol)</option>
                 <option value="vitE">Vitamin E (d-α-Tocopherol)</option>
@@ -611,8 +618,9 @@ onMounted(() => {
 
             <div class="grid grid-cols-2 gap-2">
               <div>
-                <label class="form-label text-[10px] mb-1 block">Activity (IU)</label>
+                <label for="converter-iu" class="form-label text-[10px] mb-1 block">Activity (IU)</label>
                 <input
+                  id="converter-iu"
                   type="number"
                   class="form-input font-mono text-xs"
                   :value="iuValue"
@@ -621,8 +629,9 @@ onMounted(() => {
                 />
               </div>
               <div>
-                <label class="form-label text-[10px] mb-1 block">Mass (mg)</label>
+                <label for="converter-mg" class="form-label text-[10px] mb-1 block">Mass (mg)</label>
                 <input
+                  id="converter-mg"
                   type="number"
                   class="form-input font-mono text-xs"
                   :value="mgValue"
