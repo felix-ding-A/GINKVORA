@@ -14,10 +14,10 @@ const lp = (path: string) => getLocalePath(typedLang, path);
 const currentYear = new Date().getFullYear();
 
 const productLinks = [
-  { href: `${lp('/products')}?category=health-supplements`, label: t('footer.link_supplements') },
-  { href: `${lp('/products')}?category=cosmetic-actives`,   label: t('footer.link_cosmetics') },
-  { href: `${lp('/products')}?category=pet-health`,         label: t('footer.link_pet') },
-  { href: lp('/custom-formulation'),                        label: t('footer.link_custom') },
+  { href: `${lp('/products')}?category=superfood`,     label: t('footer.link_supplements') },
+  { href: `${lp('/products')}?category=liposomal`,     label: t('footer.link_cosmetics') },
+  { href: `${lp('/products')}?category=pet-longevity`, label: t('footer.link_pet') },
+  { href: lp('/custom-formulation'),                   label: t('footer.link_custom') },
 ];
 
 const solutionsLinks = [
