@@ -3,6 +3,7 @@
 import '../styles/global.css';
 import Navbar from '../components/layout/Navbar.astro';
 import Footer from '../components/layout/Footer.astro';
+import { stripLangPrefix } from '../i18n/utils';
 
 const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
 
@@ -33,6 +34,7 @@ const {
 const siteUrl = 'https://ginkvora.com';
 const fullTitle = title.includes('GINKVORA') ? title : `${title} | GINKVORA`;
 const canonical = canonicalUrl || new URL(Astro.url.pathname, siteUrl).toString();
+const basePath = stripLangPrefix(Astro.url.pathname);
 
 // Use dynamic OG image generator if no explicit image is provided
 const ogImageParams = new URLSearchParams({
@@ -142,11 +144,11 @@ const organizationSchema = {
     <meta name="msapplication-TileColor" content="#080d08" />
 
     <!-- hreflang for i18n -->
-    <link rel="alternate" hreflang="en" href={`${siteUrl}${Astro.url.pathname}`} />
-    <link rel="alternate" hreflang="ru" href={`${siteUrl}/ru${Astro.url.pathname}`} />
-    <link rel="alternate" hreflang="es" href={`${siteUrl}/es${Astro.url.pathname}`} />
-    <link rel="alternate" hreflang="ar" href={`${siteUrl}/ar${Astro.url.pathname}`} />
-    <link rel="alternate" hreflang="x-default" href={`${siteUrl}${Astro.url.pathname}`} />
+    <link rel="alternate" hreflang="en" href={`${siteUrl}${basePath === '/' ? '' : basePath}`} />
+    <link rel="alternate" hreflang="ru" href={`${siteUrl}/ru${basePath === '/' ? '' : basePath}`} />
+    <link rel="alternate" hreflang="es" href={`${siteUrl}/es${basePath === '/' ? '' : basePath}`} />
+    <link rel="alternate" hreflang="ar" href={`${siteUrl}/ar${basePath === '/' ? '' : basePath}`} />
+    <link rel="alternate" hreflang="x-default" href={`${siteUrl}${basePath === '/' ? '' : basePath}`} />
 
     <!-- Keywords (B2B SEO) -->
     <meta name="keywords" content="plant extract supplier, botanical ingredients, PQQ supplier, NMN bulk, EGCG extract, Glabridin, Luteolin, Flavone, nutraceutical ingredients, cosmetic actives, pet supplement ingredients, B2B botanical extracts" />

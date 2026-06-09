@@ -17,16 +17,13 @@ const productLinks = [
   { href: `${lp('/products')}?category=health-supplements`, label: t('footer.link_supplements') },
   { href: `${lp('/products')}?category=cosmetic-actives`,   label: t('footer.link_cosmetics') },
   { href: `${lp('/products')}?category=pet-health`,         label: t('footer.link_pet') },
-  { href: lp('/contact'),                                   label: t('footer.link_custom') },
+  { href: lp('/custom-formulation'),                        label: t('footer.link_custom') },
 ];
 
-const popularIngredients = [
-  { href: lp('/products/pqq-disodium-salt'),              label: 'PQQ' },
-  { href: lp('/products/nmn-beta-nicotinamide-mononucleotide'), label: 'NMN' },
-  { href: lp('/products/egcg-98'),                        label: 'EGCG' },
-  { href: lp('/products/glabridin-40'),                   label: 'Glabridin' },
-  { href: lp('/products/luteolin-98'),                    label: 'Luteolin' },
-  { href: lp('/products/flavone-99'),                     label: 'Flavone' },
+const solutionsLinks = [
+  { href: lp('/anti-aging-philosophy'), label: t('nav.philosophy') },
+  { href: lp('/Featured Formulas'),      label: t('nav.featured_formulas') },
+  { href: lp('/calculator'),             label: t('nav.calculator') },
 ];
 
 const companyLinks = [
@@ -127,11 +124,11 @@ const companyLinks = [
           </ul>
         </div>
 
-        <!-- Popular Ingredients -->
+        <!-- Solutions & Expertise -->
         <div class="footer-col">
-          <h3 class="footer-col-title">{t('footer.col_ingredients')}</h3>
+          <h3 class="footer-col-title">{t('footer.col_solutions')}</h3>
           <ul class="footer-links" role="list">
-            {popularIngredients.map((link) => (
+            {solutionsLinks.map((link) => (
               <li><a href={link.href} class="footer-link">{link.label}</a></li>
             ))}
           </ul>
@@ -168,7 +165,7 @@ const companyLinks = [
       <!-- Bottom bar -->
       <div class="footer-bottom">
         <p class="footer-copy">
-          &copy; {currentYear} GINKVORA. {t('footer.copyright')}
+          &copy; {currentYear} Xi'an Ginkvora Biotechnology Co., Ltd. {t('footer.copyright')}
         </p>
         <div class="footer-legal">
           <a href={lp('/privacy')} class="footer-legal-link">{t('footer.privacy')}</a>

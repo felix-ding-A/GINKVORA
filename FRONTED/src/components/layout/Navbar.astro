@@ -31,7 +31,7 @@ const productsDropdown = [
     const translationKey = categoryTranslations[cat.slug];
     const label = translationKey ? t(translationKey as any) : cat.name;
     return {
-      href: `${lp('/products')}?category=${cat.slug}`,
+      href: cat.slug === 'custom-formulation' ? lp('/custom-formulation') : `${lp('/products')}?category=${cat.slug}`,
       label: label
     };
   })

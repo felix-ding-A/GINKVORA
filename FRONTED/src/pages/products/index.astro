@@ -216,71 +216,77 @@ const itemListSchema = {
           Showing {pageStart + 1}–{Math.min(pageStart + PRODUCTS_PER_PAGE, totalProducts)} of {totalProducts} products
         </div>
 
-        <div class="products-grid" id="products-grid">
-          {products.map((prod) => (
-            <article
-              class="product-card glass reveal"
-              data-name={prod.name.toLowerCase()}
-              data-cas={prod.casNumber ? prod.casNumber.toLowerCase() : ''}
-              data-desc={prod.shortDescription ? prod.shortDescription.toLowerCase() : ''}
-            >
-              <div class="card-image-wrapper">
-                <a href={`/products/${prod.slug}`} class="card-image-link" aria-label={`View details of ${prod.name}`}>
-                  <picture style="display: contents;">
-                    <source srcset={urlFor(prod.heroImage).width(800).format('webp').url()} type="image/webp" />
-                    <img
-                      src={urlFor(prod.heroImage).width(800).url()}
-                      alt={prod.name}
-                      loading="lazy"
-                      class="card-image"
-                    />
-                  </picture>
-                </a>
-                <span class="card-category-badge">
-                  {prod.categories && prod.categories.length > 0
-                    ? prod.categories.map(c => c.name).join(' · ')
-                    : prod.category?.name}
-                </span>
-              </div>
-
-              <div class="card-content">
-                <div class="card-specs">
-                  {prod.purity && (
-                    <span class="card-purity">{prod.purity}</span>
-                  )}
-                  {prod.casNumber && (
-                    <span class="card-cas">CAS: {prod.casNumber}</span>
-                  )}
-                  {prod.applicationDisplay && (
-                    <span class={`card-app-badge app--${prod.applicationDisplay}`}>
-                      {prod.applicationDisplay === 'dual' && '● Dual Application'}
-                      {prod.applicationDisplay === 'topical' && '● Topical Use'}
-                      {prod.applicationDisplay === 'oral' && '● Oral Use'}
-                    </span>
-                  )}
+        <div class="products-grid" id="products-grid" data-current-page={currentPage}>
+          {allProducts.map((prod, index) => {
+            const pageIndex = Math.floor(index / PRODUCTS_PER_PAGE) + 1;
+            const isInitiallyVisible = pageIndex === currentPage;
+            return (
+              <article
+                class="product-card glass reveal"
+                data-name={prod.name.toLowerCase()}
+                data-cas={prod.casNumber ? prod.casNumber.toLowerCase() : ''}
+                data-desc={prod.shortDescription ? prod.shortDescription.toLowerCase() : ''}
+                data-page-index={pageIndex}
+                style={isInitiallyVisible ? "display: flex;" : "display: none;"}
+              >
+                <div class="card-image-wrapper">
+                  <a href={`/products/${prod.slug}`} class="card-image-link" aria-label={`View details of ${prod.name}`}>
+                    <picture style="display: contents;">
+                      <source srcset={urlFor(prod.heroImage).width(800).format('webp').url()} type="image/webp" />
+                      <img
+                        src={urlFor(prod.heroImage).width(800).url()}
+                        alt={prod.name}
+                        loading="lazy"
+                        class="card-image"
+                      />
+                    </picture>
+                  </a>
+                  <span class="card-category-badge">
+                    {prod.categories && prod.categories.length > 0
+                      ? prod.categories.map(c => c.name).join(' · ')
+                      : prod.category?.name}
+                  </span>
                 </div>
 
-                <h3 class="card-title">
-                  <a href={`/products/${prod.slug}`}>{prod.name}</a>
-                </h3>
+                <div class="card-content">
+                  <div class="card-specs">
+                    {prod.purity && (
+                      <span class="card-purity">{prod.purity}</span>
+                    )}
+                    {prod.casNumber && (
+                      <span class="card-cas">CAS: {prod.casNumber}</span>
+                    )}
+                    {prod.applicationDisplay && (
+                      <span class={`card-app-badge app--${prod.applicationDisplay}`}>
+                        {prod.applicationDisplay === 'dual' && '● Dual Application'}
+                        {prod.applicationDisplay === 'topical' && '● Topical Use'}
+                        {prod.applicationDisplay === 'oral' && '● Oral Use'}
+                      </span>
+                    )}
+                  </div>
 
-                {prod.botanicalName && (
-                  <p class="card-botanical">{prod.botanicalName}</p>
-                )}
+                  <h3 class="card-title">
+                    <a href={`/products/${prod.slug}`}>{prod.name}</a>
+                  </h3>
 
-                <p class="card-desc">{prod.shortDescription}</p>
+                  {prod.botanicalName && (
+                    <p class="card-botanical">{prod.botanicalName}</p>
+                  )}
 
-                <div class="card-footer">
-                  <a href={`/products/${prod.slug}`} class="btn btn--secondary btn--sm">
-                    Specifications
-                  </a>
-                  <a href={`/contact?product=${encodeURIComponent(prod.name)}`} class="btn btn--primary btn--sm">
-                    Inquire
-                  </a>
+                  <p class="card-desc">{prod.shortDescription}</p>
+
+                  <div class="card-footer">
+                    <a href={`/products/${prod.slug}`} class="btn btn--secondary btn--sm">
+                      Specifications
+                    </a>
+                    <a href={`/contact?product=${encodeURIComponent(prod.name)}`} class="btn btn--primary btn--sm">
+                      Inquire
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
 
         <!-- Empty state -->
@@ -775,6 +781,7 @@ const itemListSchema = {
     const paginationNav = document.getElementById('pagination-nav');
 
     let currentSearch = '';
+    const currentPage = parseInt(grid?.getAttribute('data-current-page') || '1');
 
     function filterProducts() {
       let visibleCount = 0;
@@ -783,14 +790,19 @@ const itemListSchema = {
         const name = card.getAttribute('data-name') || '';
         const cas = card.getAttribute('data-cas') || '';
         const desc = card.getAttribute('data-desc') || '';
+        const pageIndex = parseInt(card.getAttribute('data-page-index') || '1');
 
-        const matchesSearch =
-          !currentSearch ||
-          name.includes(currentSearch) ||
-          cas.includes(currentSearch) ||
-          desc.includes(currentSearch);
+        let matches = false;
+        if (currentSearch) {
+          matches =
+            name.includes(currentSearch) ||
+            cas.includes(currentSearch) ||
+            desc.includes(currentSearch);
+        } else {
+          matches = pageIndex === currentPage;
+        }
 
-        if (matchesSearch) {
+        if (matches) {
           (card as HTMLElement).style.display = 'flex';
           visibleCount++;
         } else {

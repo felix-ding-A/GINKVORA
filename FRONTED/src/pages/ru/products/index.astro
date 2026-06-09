@@ -195,8 +195,10 @@ const breadcrumbsSchema = {
           Показано {pageStart + 1}–{Math.min(pageStart + PRODUCTS_PER_PAGE, totalProducts)} из {totalProducts} продуктов
         </div>
 
-        <div id="product-grid" class="product-grid">
-          {products.map((product: any) => {
+        <div id="product-grid" class="product-grid" data-current-page={currentPage}>
+          {allProducts.map((product: any, index) => {
+            const pageIndex = Math.floor(index / PRODUCTS_PER_PAGE) + 1;
+            const isInitiallyVisible = pageIndex === currentPage;
             const localShortDesc = (getLocalizedField(product, 'shortDescription', lang) ?? product.shortDescription) as string | undefined;
             return (
               <article
@@ -204,6 +206,8 @@ const breadcrumbsSchema = {
                 data-name={product.name.toLowerCase()}
                 data-cas={product.casNumber ? product.casNumber.toLowerCase() : ''}
                 data-desc={localShortDesc ? localShortDesc.toLowerCase() : ''}
+                data-page-index={pageIndex}
+                style={isInitiallyVisible ? "display: flex;" : "display: none;"}
               >
                 {product.featured && (
                   <div class="card-featured-badge">{t('products.featured_badge')}</div>
@@ -554,6 +558,7 @@ const breadcrumbsSchema = {
     const paginationNav = document.getElementById('pagination-nav');
 
     let searchTerm     = '';
+    const currentPage = parseInt(grid?.getAttribute('data-current-page') || '1');
 
     function filterProducts() {
       let visible = 0;
@@ -561,15 +566,20 @@ const breadcrumbsSchema = {
         const name = card.dataset.name ?? '';
         const cas  = card.dataset.cas ?? '';
         const desc = card.dataset.desc ?? '';
+        const pageIndex = parseInt(card.getAttribute('data-page-index') || '1');
 
-        const matchesSearch =
-          !searchTerm ||
-          name.includes(searchTerm) ||
-          cas.includes(searchTerm) ||
-          desc.includes(searchTerm);
+        let matches = false;
+        if (searchTerm) {
+          matches =
+            name.includes(searchTerm) ||
+            cas.includes(searchTerm) ||
+            desc.includes(searchTerm);
+        } else {
+          matches = pageIndex === currentPage;
+        }
 
-        card.style.display = matchesSearch ? '' : 'none';
-        if (matchesSearch) visible++;
+        card.style.display = matches ? 'flex' : 'none';
+        if (matches) visible++;
       });
 
       if (countLabel) {

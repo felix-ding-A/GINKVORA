@@ -60,13 +60,13 @@
 /* ── Design Tokens ── */
 :root {
   /* ── Background ── */
-  --color-bg:            #060503;
-  --color-bg-deep:       #030302;
-  --color-surface:       #100d07;
-  --color-surface-2:     #181208;
-  --color-surface-glass: rgba(16, 13, 7, 0.65);
-  --color-border:        rgba(212, 166, 84, 0.12);
-  --color-border-strong: rgba(212, 166, 84, 0.28);
+  --color-bg:            #0b0c0d;   /* cool dark gray background */
+  --color-bg-deep:       #060708;   /* deep cool dark gray */
+  --color-surface:       #16181a;   /* slightly brighter surface dark gray */
+  --color-surface-2:     #1e2124;   /* neutral lighter dark gray for secondary panels */
+  --color-surface-glass: rgba(22, 24, 26, 0.65);
+  --color-border:        rgba(255, 255, 255, 0.08); /* clean, subtle border */
+  --color-border-strong: rgba(255, 255, 255, 0.16);
 
   /* ── Brand: Gold + Orange ── */
   --color-primary:       #d4a654;   /* gold */
@@ -74,15 +74,16 @@
   --color-primary-dark:  #a07830;   /* deep gold */
   --color-primary-glow:  rgba(212, 166, 84, 0.15);
 
+  /* Orange is reserved as accent color only */
   --color-accent:        #e07830;   /* orange */
   --color-accent-light:  #f09050;   /* light orange */
   --color-accent-dark:   #b05818;   /* deep orange */
   --color-accent-glow:   rgba(224, 120, 48, 0.15);
 
-  /* ── Text (warm white tones) ── */
-  --color-text:          #f5efe0;
-  --color-text-secondary:#c8b898;
-  --color-text-muted:    #9a8060;
+  /* ── Text (cool white / gray tones for high contrast and zero fatigue) ── */
+  --color-text:          #ffffff;                  /* pure white for prominent text */
+  --color-text-secondary: rgba(255, 255, 255, 0.7); /* high-readability cool gray for body copy */
+  --color-text-muted:    rgba(255, 255, 255, 0.45);/* soft muted text */
   --color-text-inverse:  #060503;
 
   /* ── Status ── */
@@ -213,7 +214,7 @@ button { cursor: pointer; font-family: var(--font-body); }
 
 /* ── Glass ── */
 .glass {
-  background: rgba(16, 13, 7, 0.85); /* Slightly more opaque for mobile */
+  background: rgba(22, 24, 26, 0.85); /* Slightly more opaque for mobile */
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border: 1px solid var(--color-border);

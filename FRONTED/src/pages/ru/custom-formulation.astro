@@ -1,0 +1,1064 @@
+---
+// src/pages/ru/custom-formulation.astro — Premium B2B Custom Formulation & OEM Page (Russian)
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Главная', item: 'https://ginkvora.com/ru' },
+    { '@type': 'ListItem', position: 2, name: 'Разработка рецептур', item: 'https://ginkvora.com/ru/custom-formulation' },
+  ],
+};
+
+const pageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  'name': 'Разработка индивидуальных рецептур и контрактное производство | GINKVORA',
+  'description': 'Услуги контрактного производства и разработки индивидуальных рецептур для оральных пленок (OTF) и передового липосомального капсулирования. OEM/ODM решения B2B.',
+  'url': 'https://ginkvora.com/ru/custom-formulation',
+};
+---
+
+<BaseLayout
+  title="Разработка индивидуальных рецептур и контрактное производство"
+  description="Расширяем возможности вашего бренда с помощью передовых технологий оральных пленок (OTF) и капсулирования. Разработка под ваши требования. Контрактное производство GMP."
+  lang="ru"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} slot="head" />
+
+  <main class="formulation-page bg-noise">
+    <!-- Hero Section -->
+    <header class="page-banner" aria-label="Page Header">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <div class="hero-columns">
+          <div class="hero-text-col reveal">
+            <span class="section-label">B2B OEM/ODM РЕШЕНИЯ</span>
+            <h1 class="banner-title">Разработка индивидуальных рецептур: <span class="gradient-text--gold">от инновации до готового продукта</span></h1>
+            <p class="banner-desc">
+              Расширяем возможности вашего бренда с помощью передовых технологий оральных пленок (OTF) и микрокапсулирования. Разработка под ваши конкретные требования к ингредиентам с оптимизацией для максимальной эффективности.
+            </p>
+            <div class="hero-actions">
+              <a href="#inquiry-form-section" class="btn btn--gold">Запросить расчет рецептуры</a>
+              <a href="#otf-focus" class="btn btn--outline">Изучить технологии</a>
+            </div>
+          </div>
+          <div class="hero-visual-col reveal reveal-delay-2">
+            <div class="image-showcase glass">
+              <img
+                src="/images/ecm-dermal-scaffold-architecture-guide.webp"
+                alt="Высокотехнологичный научный микроскопический вид полимерной матрицы оральной пленки и структуры капсулирования"
+                class="showcase-img"
+                width="600"
+                height="400"
+              />
+              <div class="showcase-caption">Структура полимерной матрицы под микроскопом</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- The Core Focus: OTF -->
+    <section class="section otf-section bg-deep" id="otf-focus" aria-label="Oral Thin Film Technology">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">Ключевая специализация</span>
+          <h2 class="section-title">Высокотехнологичные оральные быстрорастворимые пленки (OTF)</h2>
+          <p class="section-desc">
+            Используйте нашу передовую технологию доставки веществ в виде тонких пленок, чтобы выгодно отличить ваш бренд от стандартных капсул и таблеток.
+          </p>
+        </div>
+
+        <div class="grid-2-columns">
+          <div class="visual-panel reveal">
+            <div class="image-showcase glass">
+              <img
+                src="/images/ginkvora-rd-analytical-laboratory.webp"
+                alt="Аналитическая лаборатория R&D GINKVORA готовит индивидуальные рецептуры оральных пленок (OTF)"
+                class="showcase-img"
+                width="600"
+                height="400"
+              />
+            </div>
+          </div>
+
+          <div class="content-panel">
+            <div class="feature-card glass reveal reveal-delay-1">
+              <div class="feature-icon">⚡</div>
+              <div class="feature-body">
+                <h3>Быстрое усвоение и биодоступность</h3>
+                <p>
+                  Обходит первичный метаболизм в печени. Мгновенно растворяется в полости рта для быстрого всасывания через слизистую оболочку и прямого системного действия.
+                </p>
+              </div>
+            </div>
+
+            <div class="feature-card glass reveal reveal-delay-2">
+              <div class="feature-icon">🧪</div>
+              <div class="feature-body">
+                <h3>Настраиваемая полимерная матрица</h3>
+                <p>
+                  Технологии маскирования вкуса, индивидуальные профили растворения (от мгновенного до контролируемого) и дозировка активных компонентов до 150 мг на одну пленку.
+                </p>
+              </div>
+            </div>
+
+            <div class="feature-card glass reveal reveal-delay-3">
+              <div class="feature-icon">💧</div>
+              <div class="feature-body">
+                <h3>Не требует запивания водой</h3>
+                <p>
+                  Не требуется вода для запивания. Обеспечивает максимальное удобство приема "на ходу" для активного образа жизни, повышая регулярность приема и лояльность к бренду.
+                </p>
+              </div>
+            </div>
+
+            <div class="feature-card glass reveal reveal-delay-4">
+              <div class="feature-icon">🌿</div>
+              <div class="feature-body">
+                <h3>Сферы применения: Anti-Aging, ноотропы и бьюти-сфера</h3>
+                <p>
+                  Идеально подходит для предшественников NAD+ (NMN), PQQ, глутатиона и растительных экстрактов. Наша технология OTF обеспечивает оптимальную доставку биоактивных омолажающих ингредиентов, поддерживая здоровье клеток изнутри (ECM).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diversified Solutions: Encapsulation -->
+    <section class="container section encapsulation-section" aria-label="Encapsulation Services">
+      <div class="section-header reveal">
+        <span class="section-label">Различные системы доставки</span>
+        <h2 class="section-title">Передовые услуги капсулирования</h2>
+        <p class="section-desc">
+          Помимо тонких пленок, GINKVORA предлагает различные современные форматы инкапсуляции для стабилизации чувствительных веществ и контроля кинетики их высвобождения.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <div class="cap-card glass reveal">
+          <div class="cap-icon">🧬</div>
+          <h3>Липосомальное инкапсулирование</h3>
+          <p>
+            Липидные бислойные микросферы защищают хрупкие молекулы (такие как витамин C или глабридин) от воздействия желудочного сока, максимизируя всасывание в кишечнике.
+          </p>
+          <div class="cap-tag">Стабильность и биодоступность</div>
+        </div>
+
+        <div class="cap-card glass reveal reveal-delay-1">
+          <div class="cap-icon">⏳</div>
+          <h3>Матрица пролонгированного действия</h3>
+          <p>
+            Технологии нанесения пленочного покрытия на пеллеты и микрогранулы для постепенного высвобождения активных соединений в течение 8–12 часов.
+          </p>
+          <div class="cap-tag">Контролируемое высвобождение</div>
+        </div>
+
+        <div class="cap-card glass reveal reveal-delay-2">
+          <div class="cap-icon">💊</div>
+          <h3>Капсулы на заказ</h3>
+          <p>
+            Наполнение вегетарианских капсул HPMC и пуллулана с высокой точностью дозирования. Возможность смешивания сложных сухих экстрактов с минимальным использованием вспомогательных веществ.
+          </p>
+          <div class="cap-tag">Масштабируемое производство</div>
+        </div>
+      </div>
+
+      <div class="encap-footer-visual reveal mt-6">
+        <div class="image-showcase glass">
+          <img
+            src="/images/ginkvora Mixing and Blending of Raw Materials_600size.webp"
+            alt="Смешивание сырья и масштабирование рецептур в производственной среде, сертифицированной по стандарту GMP"
+            class="showcase-img"
+            width="800"
+            height="320"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Capabilities -->
+    <section class="section capabilities-section bg-deep" aria-label="Technical Capabilities">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">Почему выбирают GINKVORA</span>
+          <h2 class="section-title">Технические возможности и R&D</h2>
+          <p class="section-desc">
+            Мы помогаем перенести лабораторные инновации на промышленные линии GMP контрактного производства.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <div class="capability-item reveal">
+            <div class="cap-num">01</div>
+            <h3>Превосходство в R&D</h3>
+            <p>
+              Наши ученые настраивают эластичность, толщину, вкус пленок и параметры загрузки активных веществ в соответствии с вашими индивидуальными формулами.
+            </p>
+          </div>
+
+          <div class="capability-item reveal reveal-delay-1">
+            <div class="cap-num">02</div>
+            <h3>Стандарты качества GMP</h3>
+            <p>
+              Чистые помещения с регулируемой температурой и влажностью полностью соответствуют стандартам GMP. Все пилотные и коммерческие партии проходят строгий контроль качества (HPLC/ICP-MS).
+            </p>
+          </div>
+
+          <div class="capability-item reveal reveal-delay-2">
+            <div class="cap-num">03</div>
+            <h3>Комплексная поддержка</h3>
+            <p>
+              От закупки сырья и тестирования активных ингредиентов до разработки рецептур, опытно-промышленных испытаний и финальной блистерной упаковки.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How We Work -->
+    <section class="container section timeline-section" aria-label="Process Flow">
+      <div class="section-header reveal">
+        <span class="section-label">Пошаговая интеграция</span>
+        <h2 class="section-title">Наш процесс сотрудничества</h2>
+        <p class="section-desc">
+          Как мы ведем разработку вашего продукта от концепции до отгрузки готовых партий.
+        </p>
+      </div>
+
+      <div class="process-timeline" role="list">
+        <!-- Step 1 -->
+        <div class="process-step" role="listitem">
+          <div class="step-connector">
+            <div class="step-node"><span class="step-num">01</span></div>
+            <div class="step-line" aria-hidden="true"></div>
+          </div>
+          <div class="step-content glass reveal">
+            <div class="step-icon-emoji">💬</div>
+            <div class="step-body">
+              <h3>Консультация и концепт</h3>
+              <p>Обсуждение активных компонентов (например, NMN, PQQ), целей дозирования, требований к высвобождению и стандартов целевого региона.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="process-step" role="listitem">
+          <div class="step-connector">
+            <div class="step-node"><span class="step-num">02</span></div>
+            <div class="step-line" aria-hidden="true"></div>
+          </div>
+          <div class="step-content glass reveal reveal-delay-1">
+            <div class="step-icon-emoji">🔬</div>
+            <div class="step-body">
+              <h3>Разработка рецептуры</h3>
+              <p>Наша лаборатория проектирует полимерную матрицу, подбирает маскирующие агенты и создает физические образцы для оценки стабильности и распадаемости.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="process-step" role="listitem">
+          <div class="step-connector">
+            <div class="step-node"><span class="step-num">03</span></div>
+            <div class="step-line" aria-hidden="true"></div>
+          </div>
+          <div class="step-content glass reveal reveal-delay-2">
+            <div class="step-icon-emoji">⚙️</div>
+            <div class="step-body">
+              <h3>Масштабирование и пилотный выпуск</h3>
+              <p>Мы переносим лабораторную рецептуру на пилотную линию, тестируя параметры процесса, кинетику сушки и равномерность дозирования.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="process-step process-step--last" role="listitem">
+          <div class="step-connector">
+            <div class="step-node"><span class="step-num">04</span></div>
+          </div>
+          <div class="step-content glass reveal reveal-delay-3">
+            <div class="step-icon-emoji">📦</div>
+            <div class="step-body">
+              <h3>Промышленное производство GMP</h3>
+              <p>После утверждения пилотной партии мы запускаем крупносерийное производство по стандартам GMP, оформляем COA и упаковываем готовую продукцию в барабаны или блистеры.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA & Form Section -->
+    <section class="section form-section bg-deep" id="inquiry-form-section" aria-label="Formulation Inquiry Form">
+      <div class="container">
+        <div class="grid-cta">
+          <!-- Left info -->
+          <div class="cta-info reveal">
+            <span class="section-label">Коммерческое снабжение</span>
+            <h2>Готовы воплотить вашу концепцию в жизнь?</h2>
+            <p class="cta-desc">
+              Свяжитесь с нашим отделом разработки. Мы предлагаем контрактное производство, услуги OEM/ODM (Private Label) и пилотные партии образцов для квалифицированных партнеров.
+            </p>
+
+            <div class="contact-list">
+              <div class="contact-item">
+                <span class="icon">📧</span>
+                <div>
+                  <strong>Email для прямых запросов</strong>
+                  <a href="mailto:inquiry@ginkvora.com">inquiry@ginkvora.com</a>
+                </div>
+              </div>
+              <div class="contact-item">
+                <span class="icon">📞</span>
+                <div>
+                  <strong>WhatsApp поддержка продаж</strong>
+                  <a href="https://wa.me/16802556637" target="_blank" rel="noopener noreferrer">+1 6802556637</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="policy-card glass mt-6">
+              <h3>Руководство по OEM и Private Label</h3>
+              <ul class="policy-list">
+                <li><strong>Образцы:</strong> Тестовые образцы пленок доступны для квалифицированных косметических брендов и производителей добавок.</li>
+                <li><strong>Документация:</strong> Аналитические паспорта (COA), тесты на тяжелые металлы и спецификации процесса предоставляются с каждым расчетом.</li>
+                <li><strong>Сырье:</strong> Мы можем работать на давальческом сырье заказчика или закупать ингредиенты через наших проверенных поставщиков.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Right form -->
+          <div class="cta-form-wrapper reveal reveal-delay-1">
+            <div class="form-card glass">
+              <h3>Запросить расчет рецептуры</h3>
+              <p class="form-sub">Поля, отмеченные звездочкой (*), обязательны для заполнения.</p>
+
+              <form id="formulation-quote-form" class="custom-form">
+                <!-- Honeypot -->
+                <input type="text" name="b_website" class="honeypot-field" autocomplete="off" tabindex="-1" placeholder="Leave this field empty" />
+
+                <div class="form-field">
+                  <label for="name" class="form-label">Полное имя *</label>
+                  <input type="text" id="name" name="name" required class="form-input" placeholder="Ваше имя" />
+                </div>
+
+                <div class="form-row-2">
+                  <div class="form-field">
+                    <label for="email" class="form-label">Рабочий Email *</label>
+                    <input type="email" id="email" name="email" required class="form-input" placeholder="name@company.com" />
+                  </div>
+                  <div class="form-field">
+                    <label for="company" class="form-label">Название компании *</label>
+                    <input type="text" id="company" name="company" required class="form-input" placeholder="ООО Компания" />
+                  </div>
+                </div>
+
+                <div class="form-row-2">
+                  <div class="form-field">
+                    <label for="productConcept" class="form-label">Концепция продукта *</label>
+                    <input type="text" id="productConcept" name="productConcept" required class="form-input" placeholder="Напр. быстрорастворимая пленка, липосомы" />
+                  </div>
+                  <div class="form-field">
+                    <label for="expectedVolume" class="form-label">Ожидаемый объем *</label>
+                    <select id="expectedVolume" name="expectedVolume" required class="form-input form-select">
+                      <option value="" disabled selected>Выберите объем заказа...</option>
+                      <option value="under-100k">&lt; 100k шт</option>
+                      <option value="100k-500k">100k - 500k шт</option>
+                      <option value="over-500k">&gt; 500k шт</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-field">
+                  <label for="message" class="form-label">Детальные требования к рецептуре *</label>
+                  <textarea id="message" name="message" required class="form-input" rows="4" placeholder="Опишите активные ингредиенты, дозировки, желаемую скорость растворения и другие предпочтения..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn--gold btn--lg btn--block" id="submit-btn">
+                  Отправить запрос на рецептуру
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  </svg>
+                </button>
+
+                <div id="success-msg" class="success-message" style="display: none;" role="alert">
+                  ✓ Запрос успешно отправлен. Наша команда R&D свяжется с вами в течение 12 часов.
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .formulation-page {
+    padding-bottom: 0;
+  }
+
+  /* --- Hero Banner --- */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 5rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 45% 60% at 85% 20%, rgba(212, 166, 84, 0.09) 0%, transparent 100%);
+  }
+
+  .hero-columns {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-text-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .banner-desc {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .image-showcase {
+    position: relative;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.15) !important;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .showcase-img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 3/2;
+    transition: transform 0.6s ease;
+  }
+
+  .image-showcase:hover .showcase-img {
+    transform: scale(1.03);
+  }
+
+  .showcase-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-primary-light);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* --- Grid layouts --- */
+  .grid-2-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+    margin-top: 3rem;
+  }
+
+  .content-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .grid-cta {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  /* --- Feature Cards --- */
+  .feature-card {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.08) !important;
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .feature-card:hover {
+    border-color: rgba(212, 166, 84, 0.22) !important;
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .feature-icon {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+  }
+
+  .feature-body h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-body p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* --- Encapsulation Cards --- */
+  .cap-card {
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.08) !important;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .cap-card:hover {
+    border-color: rgba(212, 166, 84, 0.22) !important;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .cap-icon {
+    font-size: 2.25rem;
+    line-height: 1;
+  }
+
+  .cap-card h3 {
+    font-size: 1.375rem;
+    color: var(--color-primary-light);
+    margin: 0;
+  }
+
+  .cap-card p {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  .cap-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .encap-footer-visual .showcase-img {
+    aspect-ratio: 5/2;
+  }
+
+  /* --- Capabilities --- */
+  .capability-item {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .cap-num {
+    font-family: var(--font-mono);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: rgba(212, 166, 84, 0.15);
+    line-height: 1;
+    border-bottom: 2px solid rgba(212, 166, 84, 0.1);
+    padding-bottom: 0.5rem;
+    width: fit-content;
+  }
+
+  .capability-item h3 {
+    font-size: 1.375rem;
+    color: var(--color-primary-light);
+    margin: 0;
+  }
+
+  .capability-item p {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* --- Timeline process --- */
+  .process-timeline {
+    max-width: 800px;
+    margin: 3rem auto 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .process-step {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .step-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .step-node {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color-bg-deep);
+    border: 2px solid var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    box-shadow: 0 0 16px rgba(212, 166, 84, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .process-step:hover .step-node {
+    box-shadow: var(--shadow-glow-gold);
+    background: var(--color-accent);
+    border-color: var(--color-accent-light, #e09040);
+  }
+
+  .process-step:hover .step-node .step-num {
+    color: var(--color-bg);
+  }
+
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-primary-light);
+  }
+
+  .step-line {
+    width: 2px;
+    height: 100px;
+    background: linear-gradient(to bottom, var(--color-primary), transparent);
+    opacity: 0.3;
+    margin-top: 4px;
+  }
+
+  .process-step--last .step-line {
+    display: none;
+  }
+
+  .step-content {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.08) !important;
+    align-items: flex-start;
+    transition: all 0.3s ease;
+  }
+
+  .step-content:hover {
+    border-color: rgba(212, 166, 84, 0.22) !important;
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .step-icon-emoji {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .step-body h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .step-body p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* --- Form Section Details --- */
+  .cta-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .cta-info h2 {
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .cta-desc {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .contact-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .contact-item .icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    margin-top: 0.125rem;
+  }
+
+  .contact-item strong {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    margin-bottom: 0.125rem;
+  }
+
+  .contact-item a {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .contact-item a:hover {
+    color: var(--color-primary-light);
+  }
+
+  .policy-card {
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border-color: rgba(212, 166, 84, 0.06) !important;
+  }
+
+  .policy-card h3 {
+    font-size: 1rem;
+    color: var(--color-primary-light);
+    margin-bottom: 1rem;
+  }
+
+  .policy-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .policy-list li {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+
+  .policy-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary-light);
+    font-weight: bold;
+  }
+
+  .form-card {
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.15) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .form-card h3 {
+    font-size: 1.625rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .form-sub {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1.75rem;
+  }
+
+  .custom-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.02em;
+  }
+
+  .form-input {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    padding: 0.75rem 1rem;
+    font-size: 0.9375rem;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--color-primary-light);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 10px rgba(212, 166, 84, 0.15);
+  }
+
+  .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23d4a654' stroke-width='3'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+
+  .form-select option {
+    background-color: #0c0b08;
+    color: var(--color-text);
+  }
+
+  .form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .honeypot-field {
+    display: none !important;
+  }
+
+  .btn--block {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .success-message {
+    padding: 1rem;
+    background: rgba(124, 184, 122, 0.12);
+    border: 1px solid var(--color-success);
+    color: var(--color-success);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    font-weight: 500;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 1024px) {
+    .hero-columns {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .grid-2-columns {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .grid-3 {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .grid-cta {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .encap-footer-visual .showcase-img {
+      aspect-ratio: 3/2;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .form-row-2 {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+    }
+
+    .hero-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .process-step {
+      grid-template-columns: 40px 1fr;
+      gap: 1rem;
+    }
+
+    .step-node {
+      width: 36px;
+      height: 36px;
+    }
+
+    .step-content {
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1.25rem;
+    }
+
+    .form-card {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  function initFormulationForm() {
+    const form = document.getElementById('formulation-quote-form') as HTMLFormElement;
+    const successMsg = document.getElementById('success-msg');
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = 'Отправка запроса...';
+        }
+
+        const formData = new FormData(form);
+        
+        // Anti-spam honey pot check
+        if (formData.get('b_website')) {
+          console.warn('Honeypot trigger.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Отправить запрос на рецептуру';
+          }
+          return;
+        }
+
+        const data = {
+          name: formData.get('name'),
+          email: formData.get('email'),
+          company: formData.get('company'),
+          interest: 'Custom Formulation',
+          productName: formData.get('productConcept'),
+          quantity: formData.get('expectedVolume'),
+          message: formData.get('message'),
+          b_website: formData.get('b_website')
+        };
+
+        try {
+          const res = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+
+          if (res.ok) {
+            form.reset();
+            if (successMsg) successMsg.style.display = 'block';
+            if (submitBtn) submitBtn.innerHTML = 'Отправлено ✓';
+          } else {
+            alert('Не удалось отправить запрос. Пожалуйста, проверьте данные или напишите нам на электронную почту inquiry@ginkvora.com.');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = 'Отправить запрос на рецептуру';
+            }
+          }
+        } catch (err) {
+          alert('Ошибка сети. Пожалуйста, попробуйте еще раз.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Отправить запрос на рецептуру';
+          }
+        }
+      });
+    }
+  }
+
+  // Support SPA navigation loading
+  initFormulationForm();
+  document.addEventListener('astro:page-load', initFormulationForm);
+</script>
