@@ -21,9 +21,22 @@ const productSchema = {
   "description": product.seoDescription || product.seo?.description || product.shortDescription,
   "category": product.category.name,
   "image": urlFor(product.heroImage).url(),
+  "sku": product.casNumber || product._id || slug,
+  "mpn": product.casNumber || product._id || slug,
   "brand": {
     "@type": "Brand",
     "name": "GINKVORA"
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "USD",
+    "lowPrice": "1.00",
+    "highPrice": "1000.00",
+    "offerCount": "1",
+    "priceValidUntil": "2030-12-31",
+    "itemCondition": "https://schema.org/NewCondition",
+    "availability": "https://schema.org/InStock",
+    "url": `${siteUrl}/products/${product.slug?.current ?? slug}`
   },
   "additionalProperty": [
     { "@type": "PropertyValue", "name": "CAS Number", "value": product.casNumber || 'N/A' },

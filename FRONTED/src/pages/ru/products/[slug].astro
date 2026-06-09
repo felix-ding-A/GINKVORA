@@ -41,8 +41,26 @@ const productSchema = {
   "description": localSeoDesc || localShortDesc,
   "category": product.category.name,
   "image": urlFor(product.heroImage).url(),
+  "sku": product.casNumber || product._id || slug,
+  "mpn": product.casNumber || product._id || slug,
   "brand": { "@type": "Brand", "name": "GINKVORA" },
   "inLanguage": "ru-RU",
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "USD",
+    "lowPrice": "1.00",
+    "highPrice": "1000.00",
+    "offerCount": "1",
+    "priceValidUntil": "2030-12-31",
+    "itemCondition": "https://schema.org/NewCondition",
+    "availability": "https://schema.org/InStock",
+    "url": `${siteUrl}/ru/products/${slug}`
+  },
+  "additionalProperty": [
+    { "@type": "PropertyValue", "name": "CAS Number", "value": product.casNumber || 'N/A' },
+    { "@type": "PropertyValue", "name": "Purity", "value": product.purity || 'N/A' },
+    { "@type": "PropertyValue", "name": "Botanical Name", "value": product.botanicalName || 'N/A' }
+  ]
 };
 
 const breadcrumbSchema = {
