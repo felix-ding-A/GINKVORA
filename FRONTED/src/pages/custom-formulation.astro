@@ -46,15 +46,68 @@ const pageSchema = {
             </div>
           </div>
           <div class="hero-visual-col reveal reveal-delay-2">
-            <div class="image-showcase glass">
-              <img
-                src="/images/ecm-dermal-scaffold-architecture-guide.webp"
-                alt="High-definition scientific microscopic view of oral thin film polymer matrix and encapsulation structure"
-                class="showcase-img"
-                width="600"
-                height="400"
-              />
-              <div class="showcase-caption">Microscopic Polymer Matrix Structure</div>
+            <div class="image-showcase glass hero-carousel">
+              <div class="carousel-slides">
+                <div class="carousel-slide active">
+                  <img
+                    src="/images/ginkvora-cleanroom-manufacturing-machinery.webp"
+                    alt="GINKVORA Class 100,000 cleanroom manufacturing machinery"
+                    class="showcase-img"
+                    width="600"
+                    height="400"
+                  />
+                  <div class="showcase-caption">Class 100,000 Cleanroom Manufacturing</div>
+                </div>
+                <div class="carousel-slide">
+                  <img
+                    src="/images/ginkvora-gmp-capsule-bottle-filling-line.webp"
+                    alt="GINKVORA automated GMP capsule bottle filling line"
+                    class="showcase-img"
+                    width="600"
+                    height="400"
+                  />
+                  <div class="showcase-caption">Automated GMP Capsule Filling Line</div>
+                </div>
+                <div class="carousel-slide">
+                  <img
+                    src="/images/ginkvora-otf-strip-packaging-cleanroom-line.webp"
+                    alt="GINKVORA precision OTF strip packaging cleanroom line"
+                    class="showcase-img"
+                    width="600"
+                    height="400"
+                  />
+                  <div class="showcase-caption">Precision OTF Strip Packaging Line</div>
+                </div>
+                <div class="carousel-slide">
+                  <img
+                    src="/images/ginkvora%20QC%20Laboratory.webp"
+                    alt="GINKVORA state-of-the-art QC laboratory"
+                    class="showcase-img"
+                    width="600"
+                    height="400"
+                  />
+                  <div class="showcase-caption">State-of-the-Art Quality Control Laboratory</div>
+                </div>
+                <div class="carousel-slide">
+                  <img
+                    src="/images/ginkvora-rd-analytical-laboratory.webp"
+                    alt="GINKVORA R&D formulation and analytical laboratory"
+                    class="showcase-img"
+                    width="600"
+                    height="400"
+                  />
+                  <div class="showcase-caption">R&D Formulation & Analytical Center</div>
+                </div>
+              </div>
+              
+              <!-- Carousel Indicators -->
+              <div class="carousel-indicators">
+                <span class="indicator active" data-index="0"></span>
+                <span class="indicator" data-index="1"></span>
+                <span class="indicator" data-index="2"></span>
+                <span class="indicator" data-index="3"></span>
+                <span class="indicator" data-index="4"></span>
+              </div>
             </div>
           </div>
         </div>
@@ -76,8 +129,8 @@ const pageSchema = {
           <div class="visual-panel reveal">
             <div class="image-showcase glass">
               <img
-                src="/images/ginkvora-rd-analytical-laboratory.webp"
-                alt="GINKVORA R&D Analytical Laboratory preparing custom Oral Thin Film (OTF) formulations"
+                src="/images/oral-dissolving-film-benefits.webp"
+                alt="GINKVORA Oral Thin Film (OTF) benefits, including rapid absorption, customizable matrix, and high active ingredient loading capacity"
                 class="showcase-img"
                 width="600"
                 height="400"
@@ -618,9 +671,9 @@ const pageSchema = {
     font-family: var(--font-mono);
     font-size: 2.5rem;
     font-weight: 700;
-    color: rgba(212, 166, 84, 0.15);
+    color: rgba(212, 166, 84, 0.65);
     line-height: 1;
-    border-bottom: 2px solid rgba(212, 166, 84, 0.1);
+    border-bottom: 2px solid rgba(212, 166, 84, 0.35);
     padding-bottom: 0.5rem;
     width: fit-content;
   }
@@ -988,6 +1041,63 @@ const pageSchema = {
       padding: 1.5rem;
     }
   }
+
+  /* --- Hero Carousel --- */
+  .hero-carousel {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .carousel-slides {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/2;
+    overflow: hidden;
+  }
+
+  .carousel-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    z-index: 1;
+  }
+
+  .carousel-slide.active {
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .carousel-slide .showcase-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .carousel-indicators {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 10;
+  }
+
+  .carousel-indicators .indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .carousel-indicators .indicator.active {
+    background: var(--color-primary-light);
+    transform: scale(1.2);
+    box-shadow: 0 0 6px var(--color-primary);
+  }
 </style>
 
 <script>
@@ -1060,4 +1170,59 @@ const pageSchema = {
   // Support SPA navigation loading
   initFormulationForm();
   document.addEventListener('astro:page-load', initFormulationForm);
+
+  function initHeroCarousel() {
+    const carousel = document.querySelector('.hero-carousel');
+    if (!carousel) return;
+
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const indicators = carousel.querySelectorAll('.carousel-indicators .indicator');
+    let currentIndex = 0;
+    let timer: number | null = null;
+
+    function showSlide(index: number) {
+      slides.forEach((slide, i) => {
+        if (i === index) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+      indicators.forEach((indicator, i) => {
+        if (i === index) {
+          indicator.classList.add('active');
+        } else {
+          indicator.classList.remove('active');
+        }
+      });
+      currentIndex = index;
+    }
+
+    function startAutoPlay() {
+      stopAutoPlay();
+      timer = setInterval(() => {
+        let nextIndex = (currentIndex + 1) % slides.length;
+        showSlide(nextIndex);
+      }, 3000) as unknown as number;
+    }
+
+    function stopAutoPlay() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        showSlide(index);
+        startAutoPlay();
+      });
+    });
+
+    startAutoPlay();
+  }
+
+  initHeroCarousel();
+  document.addEventListener('astro:page-load', initHeroCarousel);
 </script>
