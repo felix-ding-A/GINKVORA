@@ -27,15 +27,6 @@ const features = [
           {t('whyus.title_1')}<br/>
           <span class="gradient-text--green">{t('whyus.title_2')}</span>
         </h2>
-        <p class="whyus-desc">
-          {t('whyus.desc')}
-        </p>
-        <a href={lp('/about')} class="btn btn--secondary" id="learn-more-btn">
-          {t('whyus.cta')}
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </a>
 
         <!-- Image collage -->
         <div class="whyus-images" aria-hidden="true">
@@ -74,6 +65,17 @@ const features = [
             </div>
           ))}
         </div>
+        <div class="features-footer reveal">
+          <p class="whyus-desc">
+            {t('whyus.desc')}
+          </p>
+          <a href={lp('/about')} class="btn btn--secondary" id="learn-more-btn">
+            {t('whyus.cta')}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -93,6 +95,32 @@ const features = [
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+  }
+
+  .features-footer {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  @media (min-width: 1101px) {
+    .whyus-inner {
+      align-items: stretch;
+    }
+    .whyus-left {
+      align-self: start;
+    }
+    .whyus-right {
+      display: flex;
+      flex-direction: column;
+    }
+    .features-footer {
+      margin-top: auto;
+    }
   }
 
   .whyus-title {

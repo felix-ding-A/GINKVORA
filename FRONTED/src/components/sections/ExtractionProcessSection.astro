@@ -132,6 +132,15 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
       </div>
       <!-- Right: sticky image stack -->
       <div class="extraction-visual" aria-hidden="true">
+        <div class="vis-img vis-img--hq">
+          <img
+            src="/images/ginkvora-biotechnology-hq-office-workspace.webp"
+            alt="GINKVORA high-end biotechnology headquarters office and workspace"
+            loading="lazy" width="600" height="400"
+          />
+          <div class="vis-overlay"></div>
+          <div class="vis-label">{t('extraction.vis_hq')}</div>
+        </div>
         <div class="vis-img vis-img--top">
           <img
             src="/images/ginkvora GMP Extraction Plant.webp"
@@ -220,6 +229,10 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
     transition: transform 0.5s ease;
   }
 
+  .vis-img--hq img {
+    aspect-ratio: auto;
+    height: auto;
+  }
   .vis-img--top img { aspect-ratio: 3/2; }
   .vis-img--bottom img { aspect-ratio: 16/9; }
 
