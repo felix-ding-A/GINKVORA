@@ -94,6 +94,14 @@ export const postType = defineType({
       },
     }),
     defineField({
+      name: 'featured',
+      title: 'Recommend on Homepage',
+      type: 'boolean',
+      group: 'basic',
+      initialValue: false,
+      description: 'If checked, this post will be featured in the Industry Insights section on the homepage.',
+    }),
+    defineField({
       name: 'body',
       title: 'Body (Markdown)',
       type: 'markdown',

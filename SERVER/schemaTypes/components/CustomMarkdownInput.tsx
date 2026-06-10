@@ -5,6 +5,8 @@ export function CustomMarkdownInput(props: any) {
   const reactMdeProps: MarkdownInputProps['reactMdeProps'] = useMemo(() => {
     return {
       options: {
+        minHeight: '350px',
+        maxHeight: '600px',
         uploadImage: true,
         imageAccept: 'image/png, image/jpeg, image/gif, image/webp, image/svg+xml',
         imageMaxSize: 10 * 1024 * 1024, // 10MB max upload size

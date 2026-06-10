@@ -289,6 +289,7 @@ export const POST_FIELDS = `
   excerpt,
   excerpt_ru,
   coverImage,
+  featured,
   publishedAt,
   updatedAt,
   tags[],
@@ -470,6 +471,7 @@ export type SanityPost = {
   slug: string;
   excerpt?: string;
   coverImage?: any;
+  featured?: boolean;
   publishedAt?: string;
   updatedAt?: string;
   tags?: string[];
@@ -499,4 +501,6 @@ export type SanityAuthor = {
   avatar?: any;
   bio?: string;
 };
+
+export { MOCK_POSTS };
 

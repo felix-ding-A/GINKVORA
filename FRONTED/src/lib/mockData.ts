@@ -202,6 +202,7 @@ export const MOCK_POSTS: SanityPost[] = [
     slug: 'mitochondrial-health-pqq-science',
     excerpt: 'Explore how Pyrroloquinoline Quinone (PQQ) triggers mitochondrial biogenesis and its potential as a cornerstone ingredient for longevity formulas.',
     coverImage: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?w=600&auto=format&fit=crop&q=80' as any,
+    featured: true,
     publishedAt: '2026-05-15T12:00:00Z',
     updatedAt: '2026-05-18T14:30:00Z',
     tags: ['Ingredient Spotlight', 'Research', 'Market Trends'],
@@ -245,6 +246,7 @@ export const MOCK_POSTS: SanityPost[] = [
     slug: 'why-glabridin-leads-natural-skin-brightening',
     excerpt: 'Often called "the gold of whitening", Glabridin has become the preferred active for premium clean cosmetics. Here is why.',
     coverImage: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&auto=format&fit=crop&q=80' as any,
+    featured: true,
     publishedAt: '2026-05-02T12:00:00Z',
     tags: ['Ingredient Spotlight', 'Formulation Tips'],
     readTime: 4
