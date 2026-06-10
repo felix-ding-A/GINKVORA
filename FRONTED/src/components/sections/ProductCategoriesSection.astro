@@ -11,48 +11,64 @@ const categories = [
   {
     id: 'superfood',
     icon: '🍎',
-    title: 'Superfood',
-    description: 'Nutrient-dense natural superfoods, premium herbal powders, and high-purity botanical extracts to support overall vitality, wellness, and functional nutrition.',
+    titleKey: 'categories.health_title',
+    descKey: 'categories.health_desc',
     href: lp('/products?category=superfood'),
     ingredients: ['PQQ', 'EGCG', 'Luteolin', 'Flavone', 'Green Tea Extract'],
-    color: 'var(--color-primary)',
-    colorBg: 'rgba(124, 184, 122, 0.06)',
+    color: '#10B981',
+    colorBg: 'rgba(16, 185, 129, 0.06)',
+    glowColor: '#10B981',
+    glowBgColor: 'rgba(16, 185, 129, 0.08)',
+    glowColorShadow: 'rgba(16, 185, 129, 0.35)',
+    gradientText: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)',
     image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=70',
     imageAlt: 'Health supplement capsules and botanical herbs',
   },
   {
     id: 'liposomal',
     icon: '🧬',
-    title: 'Liposomal Products',
-    description: 'Advanced liposomal-encapsulated nutrients and superfood formulations, engineered for maximum bioavailability and cellular absorption.',
+    titleKey: 'categories.cosmetic_title',
+    descKey: 'categories.cosmetic_desc',
     href: lp('/products?category=liposomal'),
     ingredients: ['Liposomal PQQ', 'Liposomal NMN', 'Liposomal CoQ10', 'Liposomal Vitamin C', 'Bioavailability'],
-    color: 'var(--color-accent)',
-    colorBg: 'rgba(200, 169, 110, 0.06)',
+    color: '#F59E0B',
+    colorBg: 'rgba(245, 158, 11, 0.06)',
+    glowColor: '#F59E0B',
+    glowBgColor: 'rgba(245, 158, 11, 0.08)',
+    glowColorShadow: 'rgba(245, 158, 11, 0.35)',
+    gradientText: 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)',
     image: 'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=600&auto=format&fit=crop&q=70',
     imageAlt: 'Luxury cosmetic serums and botanical extracts',
   },
   {
     id: 'pet-longevity',
     icon: '🐾',
-    title: 'Pet Health Ingredients',
-    description: 'Natural botanical extracts formulated for companion animal supplements. Supporting joint health, cognitive function and immunity.',
+    titleKey: 'categories.pet_title',
+    descKey: 'categories.pet_desc',
     href: lp('/products?category=pet-longevity'),
     ingredients: ['Boswellia', 'Ashwagandha', 'Milk Thistle', 'Fish Oil', 'Glucosamine'],
-    color: '#7aade0',
-    colorBg: 'rgba(122, 173, 224, 0.06)',
-    image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&auto=format&fit=crop&q=70',
-    imageAlt: 'Healthy dog in nature representing pet wellness',
+    color: '#3B82F6',
+    colorBg: 'rgba(59, 130, 246, 0.06)',
+    glowColor: '#3B82F6',
+    glowBgColor: 'rgba(59, 130, 246, 0.08)',
+    glowColorShadow: 'rgba(59, 130, 246, 0.35)',
+    gradientText: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)',
+    image: 'https://i.pinimg.com/1200x/17/81/87/178187d610511aeefea0d91f014e36d2.jpg',
+    imageAlt: 'A group of happy, healthy companion dogs looking down at the camera against a clear blue sky, representing natural botanical ingredients formulated for premium pet supplements.',
   },
   {
     id: 'custom',
     icon: '⚗️',
-    title: 'Custom Formulation',
-    description: 'Tailored OEM/ODM solutions. From ingredient blending to finished product development, we work to your specifications.',
+    titleKey: 'categories.custom_title',
+    descKey: 'categories.custom_desc',
     href: lp('/custom-formulation'),
     ingredients: ['OEM', 'ODM', 'Private Label', 'R&D Support', 'Regulatory'],
-    color: 'var(--color-primary-light)',
-    colorBg: 'rgba(168, 213, 166, 0.06)',
+    color: '#F97316',
+    colorBg: 'rgba(249, 115, 22, 0.06)',
+    glowColor: '#F97316',
+    glowBgColor: 'rgba(249, 115, 22, 0.08)',
+    glowColorShadow: 'rgba(249, 115, 22, 0.35)',
+    gradientText: 'linear-gradient(135deg, #F97316 0%, #FB923C 100%)',
     image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&auto=format&fit=crop&q=70',
     imageAlt: 'Laboratory scientist working on custom formulation',
   },
@@ -79,21 +95,21 @@ const categories = [
         <a
           href={cat.href}
           class={`category-card reveal reveal-delay-${idx + 1}`}
-          style={`--cat-color: ${cat.color}; --cat-bg: ${cat.colorBg};`}
+          style={`--cat-color: ${cat.color}; --cat-bg: ${cat.colorBg}; --glow-color: ${cat.glowColor}; --glow-bg-color: ${cat.glowBgColor}; --glow-color-shadow: ${cat.glowColorShadow}; --gradient-text: ${cat.gradientText};`}
           id={`category-${cat.id}`}
-          aria-label={`View ${cat.title}`}
+          aria-label={`View ${t(cat.titleKey as any)}`}
         >
           <!-- Image -->
           <div class="cat-image">
-            <img src={cat.image} alt={cat.imageAlt} loading="lazy" width="400" height="240" />
+            <img src={cat.image} alt={cat.imageAlt} loading="lazy" width="400" height="240" onerror="this.src='https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=1200'" />
             <div class="cat-image-overlay"></div>
             <span class="cat-icon-badge" role="img" aria-hidden="true">{cat.icon}</span>
           </div>
 
           <!-- Body -->
           <div class="cat-body">
-            <h3 class="cat-title">{cat.title}</h3>
-            <p class="cat-desc">{cat.description}</p>
+            <h3 class="cat-title">{t(cat.titleKey as any)}</h3>
+            <p class="cat-desc">{t(cat.descKey as any)}</p>
             <div class="cat-tags">
               {cat.ingredients.map((ing) => (
                 <span class="cat-tag">{ing}</span>
@@ -156,9 +172,10 @@ const categories = [
     border: 1px solid var(--color-border);
     overflow: hidden;
     background: var(--color-surface);
-    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.35s ease, box-shadow 0.35s ease;
     cursor: pointer;
     position: relative;
+    transform-style: preserve-3d;
   }
 
   .category-card::before {
@@ -166,19 +183,35 @@ const categories = [
     position: absolute;
     inset: 0;
     border-radius: var(--radius-lg);
-    border: 1px solid var(--cat-color);
+    background: radial-gradient(circle at 50% 0%, var(--glow-bg-color), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .category-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--glow-color);
     opacity: 0;
     transition: opacity 0.35s ease;
     pointer-events: none;
     z-index: 2;
   }
 
-  .category-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px var(--cat-color, rgba(124,184,122,0.3));
+  .category-card:hover::before,
+  .category-card:hover::after {
+    opacity: 1;
   }
 
-  .category-card:hover::before { opacity: 1; }
+  .category-card:hover {
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px var(--glow-color-shadow);
+  }
+
+  /* Individual card-specific styles removed because they are passed inline via styles attribute */
 
   /* ── Image ── */
   .cat-image {
@@ -186,6 +219,8 @@ const categories = [
     aspect-ratio: 5/3;
     overflow: hidden;
     flex-shrink: 0;
+    transform: translateZ(20px);
+    transform-style: preserve-3d;
   }
 
   .cat-image img {
@@ -197,7 +232,7 @@ const categories = [
   }
 
   .category-card:hover .cat-image img {
-    transform: scale(1.06);
+    transform: scale(1.06) translateZ(20px);
   }
 
   .cat-image-overlay {
@@ -225,6 +260,12 @@ const categories = [
     justify-content: center;
     font-size: 1.25rem;
     line-height: 1;
+    transform: translateZ(40px);
+    transition: transform 0.25s ease;
+  }
+
+  .category-card:hover .cat-icon-badge {
+    transform: translateZ(50px) scale(1.1);
   }
 
   /* ── Body ── */
@@ -234,6 +275,8 @@ const categories = [
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
+    transform: translateZ(20px);
+    transform-style: preserve-3d;
   }
 
   .cat-title {
@@ -243,6 +286,16 @@ const categories = [
     color: var(--color-text);
     line-height: 1.25;
     margin: 0;
+    transform: translateZ(30px);
+    transition: transform 0.25s ease;
+  }
+
+  .category-card:hover .cat-title {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    transform: translateZ(40px);
   }
 
   .cat-desc {
@@ -300,3 +353,28 @@ const categories = [
     }
   }
 </style>
+
+<script>
+  // 3D Tilt Effect for Category Cards
+  const cards = document.querySelectorAll('.category-card');
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      // Calculate mouse position relative to card [-1, 1]
+      const x = ((e as MouseEvent).clientX - rect.left) / rect.width * 2 - 1;
+      const y = ((e as MouseEvent).clientY - rect.top) / rect.height * 2 - 1;
+
+      // Calculate tilt angles (-8deg to 8deg)
+      const rotateX = -y * 8;
+      const rotateY = x * 8;
+
+      // @ts-ignore
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px) scale3d(1.02, 1.02, 1.02)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      // @ts-ignore
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale3d(1, 1, 1)';
+    });
+  });
+</script>
