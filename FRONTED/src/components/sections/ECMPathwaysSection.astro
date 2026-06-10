@@ -17,21 +17,36 @@ const pathways = [
     title: t('pathways.collagen_title'),
     description: t('pathways.collagen_desc'),
     anchorText: t('pathways.collagen_anchor'),
-    href: lp('/products?mechanism=matrix-rebuilder')
+    href: lp('/products?mechanism=matrix-rebuilder'),
+    marketApp: t('pathways.collagen_market_app'),
+    ingredients: [
+      { name: 'PQQ', href: lp('/products/pqq-disodium-salt') },
+      { name: 'GHK-Cu', href: lp('/products/copper-tripeptide-1-ghk-cu-hydrochloride') }
+    ]
   },
   {
     icon: '🛡️',
     title: t('pathways.mmp_title'),
     description: t('pathways.mmp_desc'),
     anchorText: t('pathways.mmp_anchor'),
-    href: lp('/products?mechanism=matrix-shield')
+    href: lp('/products?mechanism=matrix-shield'),
+    marketApp: t('pathways.mmp_market_app'),
+    ingredients: [
+      { name: 'Glabridin', href: lp('/products/glabridin') },
+      { name: 'Luteolin', href: lp('/products/luteolin') }
+    ]
   },
   {
     icon: '⏳',
     title: t('pathways.glyco_title'),
     description: t('pathways.glyco_desc'),
     anchorText: t('pathways.glyco_anchor'),
-    href: lp('/products?mechanism=glyco-defense')
+    href: lp('/products?mechanism=glyco-defense'),
+    marketApp: t('pathways.glyco_market_app'),
+    ingredients: [
+      { name: 'EGCG', href: lp('/products/egcg-epigallocatechin-gallate') },
+      { name: 'Carnosine', href: lp('/products?q=carnosine') }
+    ]
   }
 ];
 ---
@@ -56,9 +71,25 @@ const pathways = [
           <div class="pathway-icon" aria-hidden="true">{path.icon}</div>
           <h3 class="pathway-title">{path.title}</h3>
           <p class="pathway-desc">{path.description}</p>
+
+          <!-- Market Application -->
+          <div class="pathway-market-app">
+            <strong>{t('pathways.market_app_label')}:</strong> {path.marketApp}
+          </div>
+
+          <!-- Representative Ingredients -->
+          <div class="pathway-ingredients">
+            <span class="ingredients-label">{t('pathways.ingredients_label')}:</span>
+            <div class="ingredients-list">
+              {path.ingredients.map((ing) => (
+                <a href={ing.href} class="ing-pill">{ing.name}</a>
+              ))}
+            </div>
+          </div>
+
           <div class="pathway-link-wrapper">
             <a href={path.href} class="pathway-anchor-link">
-              Browse {path.anchorText}
+              {t('pathways.browse_cta')} {path.anchorText}
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
@@ -138,8 +169,64 @@ const pathways = [
     font-size: 0.9rem;
     line-height: 1.65;
     color: var(--color-text-secondary);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     flex: 1;
+  }
+
+  .pathway-market-app {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+  }
+
+  .pathway-market-app strong {
+    color: var(--color-primary-light);
+    font-weight: 600;
+  }
+
+  .pathway-ingredients {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ingredients-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .ingredients-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .ing-pill {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+
+  .ing-pill:hover {
+    background: rgba(212, 166, 84, 0.08);
+    border-color: rgba(212, 166, 84, 0.35);
+    color: var(--color-accent-light);
+    transform: translateY(-1px);
   }
 
   .pathway-link-wrapper {

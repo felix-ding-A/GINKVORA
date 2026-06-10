@@ -35,6 +35,9 @@ const oralIngredients = [
         {t('routes.title_1')}<br/>
         <span class="gradient-text--gold">{t('routes.title_2')}</span>
       </h2>
+      <p class="section-pain-point">
+        {t('routes.intro')}
+      </p>
       <p class="section-desc">
         {t('routes.desc')}
       </p>
@@ -130,6 +133,14 @@ const oralIngredients = [
     font-size: 1.0625rem;
     color: var(--color-text-secondary);
     line-height: 1.75;
+  }
+
+  .section-pain-point {
+    font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+    color: var(--color-primary-light);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    font-weight: 500;
   }
 
   /* Grid Layout */

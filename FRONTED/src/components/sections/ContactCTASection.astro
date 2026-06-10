@@ -99,6 +99,10 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
                 </svg>
               </button>
 
+              <p class="form-reassurance">
+                {t('cta.reassurance')}
+              </p>
+
               <p class="form-disclaimer">
                 {t('cta.form_disclaimer')} <a href={lp('/privacy')}>{t('cta.form_disclaimer_link')}</a>{t('cta.form_privacy_suffix')}
               </p>
@@ -132,7 +136,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
 
 <style>
   .cta-section {
-    padding: var(--space-5xl) 0;
+    padding: calc(var(--space-5xl) / 2) 0;
     position: relative;
     overflow: hidden;
   }
@@ -297,6 +301,16 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
     color: var(--color-primary);
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+
+  .form-reassurance {
+    font-size: 0.75rem;
+    color: var(--color-primary-light);
+    text-align: center;
+    line-height: 1.4;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
   }
 
   /* Success State Styles */

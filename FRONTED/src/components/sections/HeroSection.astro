@@ -57,29 +57,24 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
         </a>
       </div>
 
-      <!-- Trust indicators -->
-      <div class="hero-trust fade-in-up delay-4">
-        <div class="trust-item">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-          {t('hero.trust_gmp')}
-        </div>
-        <span class="trust-divider" aria-hidden="true"></span>
-        <div class="trust-item">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-          </svg>
-          {t('hero.trust_countries')}
-        </div>
-        <span class="trust-divider" aria-hidden="true"></span>
-        <div class="trust-item">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M9 12l2 2 4-4"/>
-            <circle cx="12" cy="12" r="10"/>
-          </svg>
-          {t('hero.trust_iso')}
+      <!-- Role-based Routing Anchors -->
+      <div class="hero-role-routing fade-in-up delay-4">
+        <span class="role-title">{t('hero.role_title')}</span>
+        <div class="role-links">
+          <a href="#ecm-pathways" class="role-link" id="role-cosmetic">
+            <span class="role-bullet" aria-hidden="true">🧴</span>
+            {t('hero.role_cosmetic')}
+          </a>
+          <span class="role-divider" aria-hidden="true">·</span>
+          <a href="#dual-track-routes" class="role-link" id="role-supplement">
+            <span class="role-bullet" aria-hidden="true">💊</span>
+            {t('hero.role_supplement')}
+          </a>
+          <span class="role-divider" aria-hidden="true">·</span>
+          <a href="#extraction-process" class="role-link" id="role-procurement">
+            <span class="role-bullet" aria-hidden="true">⚙️</span>
+            {t('hero.role_procurement')}
+          </a>
         </div>
       </div>
     </div>
@@ -232,7 +227,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
     gap: 3rem;
     align-items: center;
     padding-top: 1.5rem;
-    padding-bottom: 7rem;
+    padding-bottom: 3.5rem;
   }
 
   .hero-left {
@@ -275,29 +270,79 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
 
   .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
 
-  /* Trust */
-  .hero-trust {
+  /* Role routing */
+  .hero-role-routing {
+    margin-top: 2.25rem;
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    padding-top: 0.5rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
   }
 
-  .trust-item {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.875rem;
+  .role-title {
+    font-size: 0.85rem;
     color: var(--color-text-muted);
-    stroke: var(--color-primary);
+    font-weight: 500;
+    letter-spacing: 0.02em;
   }
-  .trust-item svg { color: var(--color-primary); }
 
-  .trust-divider {
-    width: 1px;
-    height: 14px;
-    background: var(--color-border-strong);
+  .role-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+  }
+
+  .role-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+    text-decoration: none;
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.25s ease;
+    min-height: 44px;
+  }
+
+  .role-link:hover {
+    background: rgba(212, 166, 84, 0.08);
+    border-color: rgba(212, 166, 84, 0.25);
+    color: var(--color-accent-light);
+    transform: translateY(-1px);
+  }
+
+  .role-bullet {
+    font-size: 1rem;
+  }
+
+  .role-divider {
+    color: var(--color-border-strong);
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .hero-role-routing {
+      align-items: stretch;
+      width: 100%;
+    }
+    .role-links {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+    }
+    .role-link {
+      justify-content: center;
+      width: 100%;
+      min-height: 48px;
+    }
+    .role-divider {
+      display: none;
+    }
   }
 
   /* ── Ingredient showcase ── */

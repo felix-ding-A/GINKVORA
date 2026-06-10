@@ -42,12 +42,16 @@ export const ui = {
 
     // ── Hero ──
     'hero.badge':          'ECM Science & Nutricosmetic Specialist',
-    'hero.title_1':        'ECM-Targeted Anti-Aging Ingredients —',
-    'hero.title_2':        'Topical & Nutricosmetic Solutions',
-    'hero.sub_headline':   'Topical & Ingestible Solutions for Premium Formulations.',
-    'hero.subtitle':       'Premium active ingredients for global nutraceutical, cosmetic, and pet health industries. Featuring high-purity PQQ, NMN, EGCG, and Glabridin.',
-    'hero.cta_explore':    'Explore Products',
+    'hero.title_1':        'For Formulators Building',
+    'hero.title_2':        'Serious Anti-Aging Lines.',
+    'hero.sub_headline':   'One supplier. Dual-grade actives—cosmetic and food.',
+    'hero.subtitle':       'ECM-targeted ingredients backed by 100% third-party tested COA and full documentation.',
+    'hero.cta_explore':    'Explore Portfolio',
     'hero.cta_sample':     'Request a Sample',
+    'hero.role_title':     'Tell us who you are and we\'ll show you what matters:',
+    'hero.role_cosmetic':  'I\'m a Cosmetic Formulator',
+    'hero.role_supplement': 'Supplement Brand',
+    'hero.role_procurement': 'Procurement / OEM Buyer',
     'hero.trust_gmp':      'GMP Certified',
     'hero.trust_countries':'50+ Countries Served',
     'hero.trust_iso':      'ISO 9001:2015',
@@ -144,8 +148,8 @@ export const ui = {
 
     // ── WhyUs Section ──
     'whyus.label':              'Why GINKVORA',
-    'whyus.title_1':            'The Standard',
-    'whyus.title_2':            'Others Follow',
+    'whyus.title_1':            'What Every B2B Partner Gets,',
+    'whyus.title_2':            'From Day One',
     'whyus.desc':               'We combine 20+ years of botanical expertise with state-of-the-art extraction technology and rigorous quality systems to deliver ingredients that meet — and exceed — international standards.',
     'whyus.cta':                'Learn More About Us',
     'whyus.feat1_title':        'Strict Quality Control',
@@ -160,12 +164,14 @@ export const ui = {
     'whyus.feat5_desc':         'Free samples dispatched within 24-48 hours. Dedicated account manager for every B2B partner with direct line support.',
     'whyus.feat6_title':        'Regulatory Documentation',
     'whyus.feat6_desc':         'Full regulatory package available: GRAS notices, EFSA dossiers, allergen declarations, country-specific compliance support.',
+    'whyus.quote_text':         '"The COA detail on every shipment made our compliance review process 3× faster."',
+    'whyus.quote_author':       '— Jane K., Formulation Director, Premium UK Nutricosmetic Brand',
 
     // ── Stats Section ──
     'stats.ingredients':        'Active Ingredients',
-    'stats.expertise':          'Years of Expertise',
-    'stats.countries':          'Countries Served',
-    'stats.purity':             'Purity Standard',
+    'stats.expertise':          'Years in Phytochemical Extraction',
+    'stats.countries':          'Countries Supplied',
+    'stats.purity':             'Tested High-Purity Actives',
 
     // ── Extraction Process Section ──
     'extraction.label':         'How We Work',
@@ -203,6 +209,7 @@ export const ui = {
     'cta.btn_email':            'Email Us',
     'cta.form_title':           'Quick Inquiry',
     'cta.form_sub':             'Tell us what you need — we\'ll get back within 24h.',
+    'cta.reassurance':          'No sales calls unless you ask. Just a professional, technical response from an account manager within 24 hours.',
     'cta.form_name':            'Your Name *',
     'cta.form_company':         'Company *',
     'cta.form_email':           'Email *',
@@ -231,14 +238,23 @@ export const ui = {
     'categories.title_2':       'Four Sectors',
     'categories.desc':          'From nutraceuticals to cosmetics and pet health — comprehensive botanical ingredient solutions under one roof with consistent quality and traceability.',
     'categories.cta':           'View All Products',
+    'categories.explore_cta':   'Browse Category',
     'categories.health_title':  'Health Supplement Ingredients',
     'categories.health_desc':   'Longevity actives, antioxidants, and cognitive enhancers for dietary supplement brands and contract manufacturers.',
     'categories.cosmetic_title':'Cosmetic Active Ingredients',
     'categories.cosmetic_desc': 'Skin brighteners, anti-aging peptides, and standardized plant actives for prestige skincare formulators.',
     'categories.pet_title':     'Pet Health Ingredients',
     'categories.pet_desc':      'Veterinary-grade botanicals and functional ingredients for premium pet supplement and functional treat brands.',
-    'categories.custom_title':  'Custom Formulation',
-    'categories.custom_desc':   'Tailored OEM/ODM solutions. From ingredient blending to finished product development, we work to your specifications.',
+    'categories.custom_title':  'Advanced Delivery Formulation',
+    'categories.custom_desc':   'Apply our proprietary liposomal encapsulation and oral thin-film (OTF) technology to your product line. We co-develop formulations where the delivery system is the key differentiator.',
+    'categories.tag_pqq':       'PQQ',
+    'categories.tag_egcg':      'EGCG',
+    'categories.tag_glabridin': 'Glabridin',
+    'categories.tag_ghkcu':     'GHK-Cu',
+    'categories.tag_boswellia': 'Boswellia',
+    'categories.tag_glucosamine': 'Glucosamine',
+    'categories.tag_liposomal': 'Liposomal Encapsulation',
+    'categories.tag_otf':       'Oral Thin-Film (OTF)',
 
     // ── Featured Ingredients Section ──
     'featured.label':           'Featured Ingredients',
@@ -264,6 +280,7 @@ export const ui = {
     'routes.dual_title': 'Dual-Application Shared Ingredients',
     'routes.dual_desc': 'We provide premium ingredients certified for both routes. Procure a single ingredient in dual grades to build complete, synergistic "Inside-Out" product lines.',
     'routes.dual_cta': 'View Dual-Grade Catalog',
+    'routes.intro':             'Most brands source topical and ingestible actives from different suppliers — and lose formulation consistency in the process. We solve that.',
 
     // ── ECM Pathways Section ──
     'pathways.label': 'Scientific Mechanisms',
@@ -278,6 +295,12 @@ export const ui = {
     'pathways.glyco_title': 'Anti-Glycation Defense',
     'pathways.glyco_desc': 'Prevents advanced glycation end-products (AGEs) from cross-linking collagen fibers, maintaining matrix elasticity.',
     'pathways.glyco_anchor': 'anti-glycation active ingredients',
+    'pathways.market_app_label': 'Market Application',
+    'pathways.ingredients_label': 'Representative Ingredients',
+    'pathways.browse_cta':      'Browse',
+    'pathways.collagen_market_app': 'Rebuilds dermal density. Perfect for high-performance oral collagen boosters.',
+    'pathways.mmp_market_app':   'The science behind "firming" and wrinkle-reduction claims in premium skincare.',
+    'pathways.glyco_market_app': 'The ultimate claim for skin-radiance, brightening, and dual-action "beauty-from-within" supplements.',
 
     // ── Common ──
     'common.loading':           'Loading...',
@@ -318,12 +341,16 @@ export const ui = {
 
     // ── Hero ──
     'hero.badge':          'ECM-наука и нутрикосметика',
-    'hero.title_1':        'ECM-таргетные антивозрастные ингредиенты —',
-    'hero.title_2':        'наружные и нутрикосметические решения',
-    'hero.sub_headline':   'Наружные и пероральные решения для премиальных формуляций.',
-    'hero.subtitle':       'Премиальные активные ингредиенты для мировых производителей нутрицевтиков, косметики и продукции для здоровья животных. PQQ, NMN, EGCG и глабридин высокой чистоты.',
-    'hero.cta_explore':    'Каталог продуктов',
+    'hero.title_1':        'Для разработчиков, создающих',
+    'hero.title_2':        'профессиональные антивозрастные линейки',
+    'hero.sub_headline':   'Один поставщик. Активные вещества двойного стандарта — для косметики и пищевых продуктов.',
+    'hero.subtitle':       'Ингредиенты направленного действия на ECM, подтвержденные 100% тестированием COA сторонними лабораториями и полной документацией.',
+    'hero.cta_explore':    'Обзор портфолио',
     'hero.cta_sample':     'Запросить образец',
+    'hero.role_title':     'Расскажите нам, кто вы, и мы покажем то, что важно для вас:',
+    'hero.role_cosmetic':  'Я разработчик косметики',
+    'hero.role_supplement': 'Представитель бренда добавок',
+    'hero.role_procurement': 'Закупщик / OEM-байер',
     'hero.trust_gmp':      'GMP сертификат',
     'hero.trust_countries':'50+ стран',
     'hero.trust_iso':      'ISO 9001:2015',
@@ -420,8 +447,8 @@ export const ui = {
 
     // ── WhyUs Section ──
     'whyus.label':              'Почему GINKVORA',
-    'whyus.title_1':            'Стандарт,',
-    'whyus.title_2':            'которому следуют',
+    'whyus.title_1':            'Что получает каждый B2B-партнер',
+    'whyus.title_2':            'с первого дня',
     'whyus.desc':               'Мы сочетаем более 20 лет опыта в ботанике с передовыми технологиями экстракции и строгими системами контроля качества, поставляя ингредиенты, соответствующие международным стандартам и превышающие их.',
     'whyus.cta':                'Подробнее о компании',
     'whyus.feat1_title':        'Строгий контроль качества',
@@ -436,12 +463,14 @@ export const ui = {
     'whyus.feat5_desc':         'Бесплатные образцы отправляются в течение 24–48 часов. Персональный менеджер для каждого B2B-партнёра.',
     'whyus.feat6_title':        'Регуляторная документация',
     'whyus.feat6_desc':         'Полный пакет нормативной документации: уведомления GRAS, досье EFSA, декларации аллергенов, поддержка соответствия законодательству.',
+    'whyus.quote_text':         '"Детализация COA при каждой поставке ускорила наш процесс проверки соответствия в 3 раза."',
+    'whyus.quote_author':       '— Джейн К., директор по рецептурам, премиальный британский бренд нутрикосметики',
 
     // ── Stats Section ──
     'stats.ingredients':        'Активных ингредиентов',
-    'stats.expertise':          'Лет опыта',
-    'stats.countries':          'Стран поставки',
-    'stats.purity':             'Стандарт чистоты',
+    'stats.expertise':          'Лет опыта фитохимической экстракции',
+    'stats.countries':          'Поставляемых стран',
+    'stats.purity':             'Протестированных высокочистых активов',
 
     // ── Extraction Process Section ──
     'extraction.label':         'Как мы работаем',
@@ -479,6 +508,7 @@ export const ui = {
     'cta.btn_email':            'Написать нам',
     'cta.form_title':           'Быстрый запрос',
     'cta.form_sub':             'Опишите потребность — ответим в течение 24 ч.',
+    'cta.reassurance':          'Никаких навязчивых звонков, если вы сами не попросите. Только профессиональный технический ответ от менеджера в течение 24 часов.',
     'cta.form_name':            'Имя *',
     'cta.form_company':         'Компания *',
     'cta.form_email':           'Email *',
@@ -507,14 +537,23 @@ export const ui = {
     'categories.title_2':       'четыре сектора',
     'categories.desc':          'От нутрицевтиков до косметики и здоровья животных — комплексные решения ботанических ингредиентов под одной крышей с постоянным качеством и прослеживаемостью.',
     'categories.cta':           'Смотреть все продукты',
+    'categories.explore_cta':   'Посмотреть категорию',
     'categories.health_title':  'Ингредиенты для БАД',
     'categories.health_desc':   'Активные вещества долголетия, антиоксиданты и когнитивные усилители для производителей БАД и контрактных изготовителей.',
     'categories.cosmetic_title':'Косметические активные ингредиенты',
     'categories.cosmetic_desc': 'Осветляющие кожу компоненты, антивозрастные пептиды и стандартизированные растительные активы для премиальных косметических формуляторов.',
     'categories.pet_title':     'Ингредиенты для здоровья животных',
     'categories.pet_desc':      'Ботанические ингредиенты ветеринарного качества и функциональные компоненты для премиальных добавок и лакомств для животных.',
-    'categories.custom_title':  'Индивидуальные рецептуры',
-    'categories.custom_desc':   'Индивидуальные решения OEM/ODM. От смешивания ингредиентов до разработки готового продукта в соответствии с вашими спецификациями.',
+    'categories.custom_title':  'Рецептуры с улучшенной системой доставки',
+    'categories.custom_desc':   'Примените наши запатентованные технологии липосомального инкапсулирования и оральных тонких пленок (OTF) в вашей линейке продуктов. Мы разрабатываем индивидуальные рецептуры, где система доставки является ключевым дифференциатором.',
+    'categories.tag_pqq':       'PQQ',
+    'categories.tag_egcg':      'EGCG',
+    'categories.tag_glabridin': 'Глабридин',
+    'categories.tag_ghkcu':     'GHK-Cu',
+    'categories.tag_boswellia': 'Босвеллия',
+    'categories.tag_glucosamine': 'Глюкозамин',
+    'categories.tag_liposomal': 'Липосомальное инкапсулирование',
+    'categories.tag_otf':       'Оральные тонкие пленки (OTF)',
 
     // ── Featured Ingredients Section ──
     'featured.label':           'Ключевые ингредиенты',
@@ -540,6 +579,7 @@ export const ui = {
     'routes.dual_title': 'Ингредиенты двойного применения',
     'routes.dual_desc': 'Мы поставляем премиальное сырье, сертифицированное для обоих путей. Покупайте один компонент в двух спецификациях для создания синергетических линеек.',
     'routes.dual_cta': 'Смотреть каталог двойного применения',
+    'routes.intro':             'Большинство брендов закупают активные вещества для наружного и внутреннего применения у разных поставщиков, теряя при этом стабильность рецептуры. Мы решаем эту проблему.',
 
     // ── ECM Pathways Section ──
     'pathways.label': 'Научные механизмы',
@@ -554,6 +594,12 @@ export const ui = {
     'pathways.glyco_title': 'Защита от гликации',
     'pathways.glyco_desc': 'Предотвращает сшивание коллагеновых волокон конечными продуктами гликации (AGEs), сохраняя эластичность матрикса.',
     'pathways.glyco_anchor': 'активные ингредиенты против гликации',
+    'pathways.market_app_label': 'Рыночное применение',
+    'pathways.ingredients_label': 'Ключевые компоненты',
+    'pathways.browse_cta':      'Посмотреть',
+    'pathways.collagen_market_app': 'Восстанавливает плотность дермы. Идеально подходит для высокоэффективных питьевых бустеров коллагена.',
+    'pathways.mmp_market_app':   'Научное обоснование заявлений об "укреплении" кожи и сокращении морщин в косметике премиум-класса.',
+    'pathways.glyco_market_app': 'Идеальное позиционирование для сияния, осветления кожи и добавок двойного действия "красота изнутри".',
 
     // ── Common ──
     'common.loading':           'Загрузка...',

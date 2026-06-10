@@ -19,6 +19,29 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
           <p class="section-desc">
             {t('extraction.desc')}
           </p>
+          <!-- Relocated Trust Badges (GMP/ISO) -->
+          <div class="extraction-trust-badges">
+            <div class="trust-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span>{t('hero.trust_gmp')}</span>
+            </div>
+            <div class="trust-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M9 12l2 2 4-4"/>
+                <circle cx="12" cy="12" r="10"/>
+              </svg>
+              <span>{t('hero.trust_iso')}</span>
+            </div>
+            <div class="trust-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              <span>{t('hero.trust_countries')}</span>
+            </div>
+          </div>
         </div>
 
     <div class="process-timeline" role="list">
@@ -176,7 +199,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
 
 <style>
   .extraction-section {
-    padding-block: var(--space-4xl);
+    padding-block: calc(var(--space-4xl) / 2);
     border-top: 1px solid var(--color-border);
     position: relative;
     overflow: hidden;
@@ -204,6 +227,28 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
   .extraction-content {
     display: flex;
     flex-direction: column;
+  }
+
+  .extraction-trust-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+  }
+
+  .trust-badge svg {
+    color: var(--color-primary-light);
   }
 
   /* ── Visual panel ── */
