@@ -597,3 +597,28 @@ button { cursor: pointer; font-family: var(--font-body); }
   content-visibility: auto;
   contain-intrinsic-size: auto 600px;
 }
+
+/* ── Section Divider Break ── */
+.section-divider-break {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding-block: 1.5rem;
+  margin-inline: auto;
+}
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 166, 84, 0.2), transparent);
+}
+.divider-text {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  text-align: center;
+  letter-spacing: 0.03em;
+  max-width: 600px;
+  line-height: 1.4;
+  margin: 0;
+}

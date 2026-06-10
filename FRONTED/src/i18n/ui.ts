@@ -231,6 +231,7 @@ export const ui = {
     'cta.form_privacy_suffix':  '. No spam, ever.',
     'cta.form_sending':         'Sending...',
     'cta.form_error':           'Something went wrong. Please email us directly at inquiry@ginkvora.com',
+    'homepage.divider_text':    'Bridging the gap between raw botanical extraction and clinical-grade formulation success.',
 
     // ── Product Categories Section ──
     'categories.label':         'Product Portfolio',
@@ -530,6 +531,7 @@ export const ui = {
     'cta.form_privacy_suffix':  '. Без спама.',
     'cta.form_sending':         'Отправка...',
     'cta.form_error':           'Произошла ошибка. Пожалуйста, напишите нам напрямую на inquiry@ginkvora.com',
+    'homepage.divider_text':    'Соединяя чистоту растительных экстрактов и эффективность клинических рецептур.',
 
     // ── Product Categories Section ──
     'categories.label':         'Продуктовый портфель',

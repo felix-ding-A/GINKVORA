@@ -1,5 +1,5 @@
 ---
-// FeaturedIngredientsSection.astro — Key ingredients spotlight
+// FeaturedIngredientsSection.astro — Key ingredients spotlight with carousel
 import { useTranslations, getLocalePath } from '../../i18n/utils';
 import type { Lang } from '../../i18n/utils';
 interface Props { lang?: string; }
@@ -12,60 +12,84 @@ const ingredients = [
   {
     name: 'PQQ',
     fullName: 'Pyrroloquinoline Quinone',
+    fullName_ru: 'Пирролохинолинхинон',
     category: 'Health Supplement',
+    category_ru: 'Пищевая добавка',
     purity: '≥ 99%',
-    description: 'A potent redox cofactor that supports mitochondrial biogenesis, neurological health, and cellular energy production.',
-    benefits: ['Mitochondrial Health', 'Cognitive Function', 'Antioxidant', 'Longevity'],
+    description: 'Potent redox cofactor supporting mitochondrial biogenesis and cellular energy.',
+    description_ru: 'Мощный кофактор, стимулирующий биогенез митохондрий и выработку клеточной энергии.',
+    benefits: ['Mitochondrial Health', 'Cognitive Function'],
+    benefits_ru: ['Здоровье митохондрий', 'Когнитивные функции'],
     color: '#d4a654',
     slug: 'pqq-disodium-salt',
   },
   {
     name: 'NMN',
     fullName: 'Nicotinamide Mononucleotide',
+    fullName_ru: 'Никотинамидмононуклеотид',
     category: 'Health Supplement',
+    category_ru: 'Пищевая добавка',
     purity: '≥ 99%',
-    description: 'Direct precursor to NAD+, supporting cellular metabolism, DNA repair, and healthy aging pathways.',
-    benefits: ['NAD+ Precursor', 'Anti-Aging', 'Metabolism', 'DNA Repair'],
+    description: 'Direct precursor to NAD+, promoting cellular metabolism and DNA repair.',
+    description_ru: 'Прямой предшественник NAD+, активирующий клеточный метаболизм и восстановление ДНК.',
+    benefits: ['NAD+ Precursor', 'Anti-Aging'],
+    benefits_ru: ['Предшественник NAD+', 'Антивозрастной эффект'],
     color: '#e07830',
     slug: 'nmn-nicotinamide-mononucleotide',
   },
   {
     name: 'Glabridin',
     fullName: 'Licorice Root Extract',
+    fullName_ru: 'Экстракт корня солодки',
     category: 'Cosmetic Active',
+    category_ru: 'Косметический актив',
     purity: '≥ 40%',
-    description: 'Powerful skin-brightening and anti-inflammatory active derived from licorice root, widely used in premium skincare formulations.',
-    benefits: ['Skin Brightening', 'Anti-Inflammatory', 'UV Protection', 'Antioxidant'],
+    description: 'Premium natural skin-brightening active with strong anti-inflammatory properties.',
+    description_ru: 'Высокоэффективный натуральный отбеливающий и противовоспалительный компонент.',
+    benefits: ['Skin Brightening', 'Anti-Inflammatory'],
+    benefits_ru: ['Отбеливание кожи', 'Противовоспалительный'],
     color: '#f0c878',
     slug: 'glabridin',
   },
   {
     name: 'EGCG',
     fullName: 'Epigallocatechin Gallate',
+    fullName_ru: 'Эпигаллокатехин галлат',
     category: 'Dual-Use',
+    category_ru: 'Двойное применение',
     purity: '≥ 98%',
-    description: 'The most bioactive catechin from green tea with exceptional antioxidant capacity, used in both supplements and cosmetics.',
-    benefits: ['Antioxidant', 'Anti-Aging', 'Weight Management', 'Skin Health'],
+    description: 'Bioactive green tea extract with exceptional cellular antioxidant capacity.',
+    description_ru: 'Активный катехин зеленого чая с превосходным антиоксидантным действием.',
+    benefits: ['Antioxidant', 'Anti-Aging'],
+    benefits_ru: ['Антиоксидант', 'Антивозрастной эффект'],
     color: '#c8965a',
     slug: 'egcg-epigallocatechin-gallate',
   },
   {
     name: 'Luteolin',
     fullName: 'Natural Flavonoid',
+    fullName_ru: 'Натуральный флавоноид',
     category: 'Health Supplement',
+    category_ru: 'Пищевая добавка',
     purity: '≥ 98%',
-    description: 'A naturally occurring flavonoid with strong anti-inflammatory, neuroprotective, and immune-modulating properties.',
-    benefits: ['Anti-Inflammatory', 'Neuroprotection', 'Immunity', 'Antioxidant'],
+    description: 'Natural flavonoid providing powerful neuroprotective and immune support.',
+    description_ru: 'Флавоноид с выраженным противовоспалительным и нейропротекторным действием.',
+    benefits: ['Anti-Inflammatory', 'Neuroprotection'],
+    benefits_ru: ['Противовоспалительный', 'Нейропротекция'],
     color: '#e09040',
     slug: 'luteolin',
   },
   {
     name: 'Flavone',
     fullName: '2-Phenyl-4H-chromen-4-one',
+    fullName_ru: '2-Фенил-4H-хромен-4-он',
     category: 'Health Supplement',
+    category_ru: 'Пищевая добавка',
     purity: '≥ 99%',
-    description: 'A parent compound of the flavonoid class with broad biological activities including antimicrobial and anti-cancer properties.',
-    benefits: ['Anticancer Research', 'Antimicrobial', 'Anti-Inflammatory', 'Antioxidant'],
+    description: 'Core flavonoid compound utilized for advanced scientific research.',
+    description_ru: 'Базовый флавоноид для передовых научных и фармацевтических исследований.',
+    benefits: ['Anticancer Research', 'Antimicrobial'],
+    benefits_ru: ['Исследования рака', 'Противомикробный'],
     color: '#b87840',
     slug: 'flavone',
   },
@@ -74,67 +98,99 @@ const ingredients = [
 
 <section class="ingredients-section section" id="key-ingredients">
   <div class="container">
-    <!-- Header -->
-    <div class="section-header reveal">
-      <span class="section-label">{t('featured.label')}</span>
-      <h2 class="section-title">
-        {t('featured.title_1')}<br/>
-        <span class="gradient-text">{t('featured.title_2')}</span>
-      </h2>
-      <p class="section-desc">
-        {t('featured.desc')}
-      </p>
+    <!-- Header with controls -->
+    <div class="section-header-wrap reveal">
+      <div class="section-header">
+        <span class="section-label">{t('featured.label')}</span>
+        <h2 class="section-title">
+          {t('featured.title_1')}<br/>
+          <span class="gradient-text">{t('featured.title_2')}</span>
+        </h2>
+        <p class="section-desc">
+          {t('featured.desc')}
+        </p>
+      </div>
+
+      <!-- Carousel arrows -->
+      <div class="carousel-controls">
+        <button id="ing-prev" class="carousel-control-btn" aria-label="Previous ingredients">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <button id="ing-next" class="carousel-control-btn" aria-label="Next ingredients">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
-    <!-- Ingredients grid -->
-    <div class="ingredients-grid">
-      {ingredients.map((ing, idx) => (
-        <a
-          href={lp(`/products/${ing.slug}`)}
-          class={`ingredient-card glass reveal reveal-delay-${(idx % 4) + 1}`}
-          style={`--ing-color: ${ing.color};`}
-          id={`ingredient-${ing.name.toLowerCase()}`}
-          aria-label={`${ing.name} — ${ing.fullName}`}
-        >
-          <!-- Top accent line -->
-          <div class="card-accent-line"></div>
+    <!-- Carousel track wrap -->
+    <div class="ingredients-carousel-wrapper reveal">
+      <div class="ingredients-carousel-track" id="ingredients-track">
+        {ingredients.map((ing) => {
+          const fullName = lang === 'ru' ? ing.fullName_ru : ing.fullName;
+          const category = lang === 'ru' ? ing.category_ru : ing.category;
+          const description = lang === 'ru' ? ing.description_ru : ing.description;
+          const benefits = lang === 'ru' ? ing.benefits_ru : ing.benefits;
 
-          <!-- Header -->
-          <div class="card-header">
-            <div class="card-name-group">
-              <h3 class="card-name">{ing.name}</h3>
-              <span class="card-full-name">{ing.fullName}</span>
-            </div>
-            <span class="card-category">{ing.category}</span>
-          </div>
+          return (
+            <a
+              href={lp(`/products/${ing.slug}`)}
+              class="ingredient-card glass"
+              style={`--ing-color: ${ing.color};`}
+              id={`ingredient-${ing.name.toLowerCase()}`}
+              aria-label={`${ing.name} — ${fullName}`}
+            >
+              <!-- Top accent line -->
+              <div class="card-accent-line"></div>
 
-          <!-- Purity indicator -->
-          <div class="card-purity">
-            <span class="purity-label">{t('products.purity_label')}</span>
-            <div class="purity-bar-wrap">
-              <div class="purity-bar" style={`--purity: ${parseInt(ing.purity) / 100};`}></div>
-            </div>
-            <span class="purity-number">{ing.purity}</span>
-          </div>
+              <!-- Header -->
+              <div class="card-header">
+                <div class="card-name-group">
+                  <h3 class="card-name">{ing.name}</h3>
+                  <span class="card-full-name">{fullName}</span>
+                </div>
+                <span class="card-category">{category}</span>
+              </div>
 
-          <!-- Description -->
-          <p class="card-desc">{ing.description}</p>
+              <!-- Purity indicator -->
+              <div class="card-purity">
+                <span class="purity-label">{t('products.purity_label')}</span>
+                <div class="purity-bar-wrap">
+                  <div class="purity-bar" style={`--purity: ${parseInt(ing.purity) / 100};`}></div>
+                </div>
+                <span class="purity-number">{ing.purity}</span>
+              </div>
 
-          <!-- Benefits tags -->
-          <div class="card-benefits">
-            {ing.benefits.map((b) => (
-              <span class="benefit-tag">{b}</span>
-            ))}
-          </div>
+              <!-- Description -->
+              <p class="card-desc">{description}</p>
 
-          <!-- Link -->
-          <div class="card-link">
-            {t('products.view_details')}
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </div>
-        </a>
+              <!-- Benefits tags -->
+              <div class="card-benefits">
+                {benefits.map((b) => (
+                  <span class="benefit-tag">{b}</span>
+                ))}
+              </div>
+
+              <!-- Link -->
+              <div class="card-link">
+                {t('products.view_details')}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- Pagination Dots -->
+    <div class="carousel-dots reveal" id="ingredients-dots">
+      {ingredients.map((_, idx) => (
+        <button class={`carousel-dot ${idx === 0 ? 'active' : ''}`} data-index={idx} aria-label={`Go to slide ${idx + 1}`}></button>
       ))}
     </div>
 
@@ -149,12 +205,138 @@ const ingredients = [
   </div>
 </section>
 
+<script>
+  function initCarousel() {
+    const track = document.getElementById('ingredients-track');
+    const prevBtn = document.getElementById('ing-prev');
+    const nextBtn = document.getElementById('ing-next');
+    const dotsContainer = document.getElementById('ingredients-dots');
+    
+    if (!track || !prevBtn || !nextBtn || !dotsContainer) return;
+
+    const dots = Array.from(dotsContainer.querySelectorAll('.carousel-dot'));
+    
+    // Function to update active dot based on scroll position
+    function updateActiveDot() {
+      const scrollPosition = track.scrollLeft;
+      const cardWidth = track.firstElementChild ? track.firstElementChild.getBoundingClientRect().width : 0;
+      if (cardWidth === 0) return;
+
+      const gap = parseFloat(getComputedStyle(track).gap) || 0;
+      const step = cardWidth + gap;
+      
+      // Calculate active index
+      const activeIndex = Math.round(scrollPosition / step);
+      dots.forEach((dot, idx) => {
+        if (idx === activeIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+
+    // Prev / Next button actions
+    prevBtn.addEventListener('click', () => {
+      const cardWidth = track.firstElementChild ? track.firstElementChild.getBoundingClientRect().width : 0;
+      const gap = parseFloat(getComputedStyle(track).gap) || 0;
+      const scrollAmount = window.innerWidth >= 1024 ? (cardWidth + gap) * 3 : (cardWidth + gap);
+      track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const cardWidth = track.firstElementChild ? track.firstElementChild.getBoundingClientRect().width : 0;
+      const gap = parseFloat(getComputedStyle(track).gap) || 0;
+      const scrollAmount = window.innerWidth >= 1024 ? (cardWidth + gap) * 3 : (cardWidth + gap);
+      
+      // Infinite scroll loop back to start if reached end
+      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    });
+
+    // Dot click actions
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const index = parseInt(dot.getAttribute('data-index') || '0');
+        const cardWidth = track.firstElementChild ? track.firstElementChild.getBoundingClientRect().width : 0;
+        const gap = parseFloat(getComputedStyle(track).gap) || 0;
+        const step = cardWidth + gap;
+        track.scrollTo({ left: index * step, behavior: 'smooth' });
+      });
+    });
+
+    // Handle scroll snapping callback to update dots
+    track.addEventListener('scroll', updateActiveDot);
+  }
+
+  // Run on load and after client navigation (Astro ClientRouter compatibility)
+  document.addEventListener('astro:page-load', initCarousel);
+  initCarousel();
+</script>
+
 <style>
-  .ingredients-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
+  .section-header-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
     margin-bottom: 2.5rem;
+  }
+
+  .section-header {
+    max-width: 600px;
+  }
+
+  .carousel-controls {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .carousel-control-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-2);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .carousel-control-btn:hover {
+    border-color: rgba(212, 166, 84, 0.5);
+    color: var(--color-text);
+    background: var(--color-surface);
+    transform: scale(1.05);
+  }
+
+  .ingredients-carousel-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .ingredients-carousel-track {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    padding-block: 0.5rem;
+  }
+
+  .ingredients-carousel-track::-webkit-scrollbar {
+    display: none; /* Safari / Chrome */
   }
 
   .ingredient-card {
@@ -168,6 +350,9 @@ const ingredients = [
     border: 1px solid var(--color-border) !important;
     transition: all 0.3s ease;
     overflow: hidden;
+    flex: 0 0 calc(33.333% - 1rem);
+    scroll-snap-align: start;
+    min-width: 280px;
   }
 
   .ingredient-card::after {
@@ -292,9 +477,13 @@ const ingredients = [
   /* Description */
   .card-desc {
     font-size: 0.9rem;
-    line-height: 1.65;
+    line-height: 1.5;
     color: var(--color-text-secondary);
     flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   /* Benefits */
@@ -334,13 +523,58 @@ const ingredients = [
 
   .ingredients-cta {
     text-align: center;
+    margin-top: 1.5rem;
   }
 
-  @media (max-width: 1024px) {
-    .ingredients-grid { grid-template-columns: repeat(2, 1fr); }
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+
+  .carousel-dot:hover {
+    background: rgba(212, 166, 84, 0.4);
+  }
+
+  .carousel-dot.active {
+    background: var(--color-primary, #d4a654);
+    width: 20px;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 1023px) {
+    .section-header-wrap {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .carousel-controls {
+      align-self: flex-end;
+    }
+    .ingredient-card {
+      flex: 0 0 calc(50% - 0.75rem);
+    }
   }
 
   @media (max-width: 640px) {
-    .ingredients-grid { grid-template-columns: 1fr; }
+    .carousel-controls {
+      display: none;
+    }
+    .ingredient-card {
+      flex: 0 0 100%;
+    }
   }
 </style>
