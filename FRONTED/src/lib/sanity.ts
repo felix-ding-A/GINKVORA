@@ -366,10 +366,10 @@ export async function getPostBySlug(slug: string) {
         ${POST_FIELDS},
         body,
         body_ru,
-        seoTitle,
-        seoTitle_ru,
-        seoDescription,
-        seoDescription_ru,
+        meta_title,
+        meta_title_ru,
+        meta_description,
+        meta_description_ru,
         faqItems,
         relatedProduct->{
           name,
@@ -481,8 +481,8 @@ export type SanityPost = {
     avatar?: any;
     credentials?: string;
   };
-  seoTitle?: string;
-  seoDescription?: string;
+  meta_title?: string;
+  meta_description?: string;
   faqItems?: { question: string; answer: string }[];
   relatedProduct?: {
     name: string;

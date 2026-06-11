@@ -13,8 +13,8 @@ if (!post) {
 
 const siteUrl = 'https://ginkvora.com';
 
-const pageTitle = post.seoTitle || `${post.title} | GINKVORA Insights`;
-const pageDescription = post.seoDescription || post.excerpt;
+const pageTitle = post.meta_title || `${post.title} | GINKVORA Insights`;
+const pageDescription = post.meta_description || post.excerpt;
 
 // Article (BlogPosting) Schema
 const blogSchema = {

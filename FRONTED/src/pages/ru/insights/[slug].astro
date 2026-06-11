@@ -29,8 +29,8 @@ const siteUrl = 'https://ginkvora.com';
 const localTitle      = (getLocalizedField(post, 'title', lang)         ?? post.title)         as string;
 const localExcerpt    = (getLocalizedField(post, 'excerpt', lang)        ?? post.excerpt)        as string | undefined;
 const localBody       = getLocalizedField(post, 'body', lang)            ?? post.body;
-const localSeoTitle   = (getLocalizedField(post, 'seoTitle', lang)       ?? post.seoTitle)       as string | undefined;
-const localSeoDesc    = (getLocalizedField(post, 'seoDescription', lang) ?? post.seoDescription) as string | undefined;
+const localSeoTitle   = (getLocalizedField(post, 'meta_title', lang)       ?? post.meta_title)       as string | undefined;
+const localSeoDesc    = (getLocalizedField(post, 'meta_description', lang) ?? post.meta_description) as string | undefined;
 const localRelatedShort = post.relatedProduct
   ? ((getLocalizedField(post.relatedProduct, 'shortDescription', lang) ?? post.relatedProduct.shortDescription) as string | undefined)
   : undefined;

@@ -211,8 +211,8 @@ export const MOCK_POSTS: SanityPost[] = [
       name: 'Dr. Evelyn Carter',
       credentials: 'PhD (Biochemistry)'
     },
-    seoTitle: 'Mitochondrial Health & PQQ Science | GINKVORA',
-    seoDescription: 'Discover how PQQ promotes mitochondrial biogenesis, enhances cellular energy, and supports healthy longevity pathways.',
+    meta_title: 'Mitochondrial Health & PQQ Science | GINKVORA',
+    meta_description: 'Discover how PQQ promotes mitochondrial biogenesis, enhances cellular energy, and supports healthy longevity pathways.',
     faqItems: [
       {
         question: 'What is PQQ Disodium Salt?',
