@@ -455,6 +455,8 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
         form.reset();
         if (formState) formState.style.display = 'none';
         if (successState) successState.style.display = 'block';
+        const currentLang = window.location.pathname.startsWith('/ru') ? 'ru' : 'en';
+        window.location.href = currentLang === 'ru' ? '/ru/thank-you' : '/thank-you';
       } else {
         throw new Error('Failed');
       }

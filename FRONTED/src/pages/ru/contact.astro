@@ -125,6 +125,7 @@ const t = useTranslations(lang);
       if (res.ok) {
         if (success) success.style.display = 'block';
         form.reset();
+        window.location.href = '/ru/thank-you';
       } else {
         if (error) error.style.display = 'block';
       }

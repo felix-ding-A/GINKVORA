@@ -868,6 +868,7 @@ const faqSchema = {
             rfqForm.reset();
             if (successMsg) successMsg.style.display = 'block';
             if (submitBtn) submitBtn.textContent = 'Submitted ✓';
+            window.location.href = '/thank-you';
           } else {
             alert('Failed to send request. Please try again or contact us directly.');
             if (submitBtn) {

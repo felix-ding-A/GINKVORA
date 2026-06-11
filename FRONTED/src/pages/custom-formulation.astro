@@ -1149,6 +1149,7 @@ const pageSchema = {
             form.reset();
             if (successMsg) successMsg.style.display = 'block';
             if (submitBtn) submitBtn.innerHTML = 'Sent ✓';
+            window.location.href = '/thank-you';
           } else {
             alert('Failed to submit formulation inquiry. Please check detail parameters or email inquiry@ginkvora.com directly.');
             if (submitBtn) {

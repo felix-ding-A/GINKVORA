@@ -1,0 +1,253 @@
+---
+// src/pages/500.astro — Premium B2B 500 Error Page
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Server Error | GINKVORA" description="We are experiencing a temporary server error. Please contact our commercial support desk for assistance.">
+  <main class="error-page bg-noise">
+    <div class="container error-container">
+      <div class="error-card glass">
+        <!-- Logo Mark -->
+        <div class="logo-wrapper">
+          <svg class="logo-svg" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path id="svg-droplet-contour" d="M50 15 C66 36 82 46 82 68 C82 83 68 83 50 83 C32 83 18 83 18 68 C18 46 34 36 50 15 Z" stroke="url(#grad-contour-stroke)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path id="svg-leaf-left" d="M50 78 C50 78 51 55 35 44 C26 38 29 48 38 56 C45 62 47 70 50 78 Z" fill="url(#grad-leaf-main)" opacity="0.95"></path>
+            <path id="svg-leaf-right" d="M50 78 C50 78 49 55 65 44 C74 38 71 48 62 56 C55 62 53 70 50 78 Z" fill="url(#grad-leaf-main)" opacity="0.95"></path>
+            <path id="svg-leaf-stem" d="M50 78 V38" stroke="url(#grad-contour-stroke)" stroke-width="2.2" stroke-linecap="round"></path>
+            <circle id="svg-dewdrop" cx="50" cy="30" r="4" fill="url(#grad-dewdrop-color)"></circle>
+            <defs>
+              <linearGradient id="grad-contour-stroke" x1="50" y1="15" x2="50" y2="83" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#fde68a"></stop>
+                <stop offset="100%" stop-color="#9a3412"></stop>
+              </linearGradient>
+              <linearGradient id="grad-leaf-main" x1="50" y1="38" x2="50" y2="78" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#fbbf24"></stop>
+                <stop offset="100%" stop-color="#b45309"></stop>
+              </linearGradient>
+              <linearGradient id="grad-dewdrop-color" x1="50" y1="26" x2="50" y2="34" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#f59e0b"></stop>
+                <stop offset="100%" stop-color="#fef3c7"></stop>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span class="logo-text">GINKVORA</span>
+        </div>
+
+        <h1 class="error-code">500</h1>
+
+        <!-- Bilingual Messages -->
+        <div class="message-section">
+          <div class="lang-block">
+            <h2>Internal Server Error</h2>
+            <p>We are experiencing a temporary server error. Please try refreshing the page, or get in touch with our commercial support desk directly if the problem persists.</p>
+          </div>
+          <div class="lang-divider"></div>
+          <div class="lang-block" lang="ru">
+            <h2>Внутренняя ошибка сервера</h2>
+            <p>На сервере произошла временная ошибка. Пожалуйста, попробуйте обновить страницу или напрямую свяжитесь с нашей коммерческой службой поддержки, если проблема повторится.</p>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-row">
+          <a href="/" class="btn btn--gold">Back to Home / На главную</a>
+        </div>
+
+        <!-- Contact Coordinates -->
+        <div class="contact-section">
+          <h3>Commercial Support Desk</h3>
+          <div class="contact-grid">
+            <div class="contact-card">
+              <span class="icon">📧</span>
+              <span class="label">Email</span>
+              <a href="mailto:inquiry@ginkvora.com" class="val">inquiry@ginkvora.com</a>
+            </div>
+            <div class="contact-card">
+              <span class="icon">📞</span>
+              <span class="label">Phone / WhatsApp</span>
+              <a href="https://wa.me/16802556637" target="_blank" rel="noopener noreferrer" class="val">+1 6802556637</a>
+            </div>
+            <div class="contact-card wide">
+              <span class="icon">📍</span>
+              <span class="label">HQ Address</span>
+              <span class="val">Xi'an International Trade & Logistics Park, Xi'an, China</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .error-page {
+    padding-block: 8rem 4rem;
+    min-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .error-container {
+    max-width: 800px;
+    width: 100%;
+  }
+
+  .error-card {
+    padding: 3.5rem;
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(212, 166, 84, 0.2) !important;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .logo-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .logo-svg {
+    width: 50px;
+    height: 60px;
+  }
+
+  .logo-text {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+  }
+
+  .error-code {
+    font-size: clamp(4rem, 10vw, 7rem);
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--color-primary-light), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+  }
+
+  .message-section {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    text-align: left;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .message-section {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      text-align: center;
+    }
+    .lang-divider {
+      display: none;
+    }
+  }
+
+  .lang-block h2 {
+    font-size: 1.375rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .lang-block p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .lang-divider {
+    width: 1px;
+    background: var(--color-border);
+    opacity: 0.6;
+  }
+
+  .button-row {
+    margin-bottom: 3.5rem;
+  }
+
+  .contact-section {
+    border-top: 1px solid var(--color-border);
+    padding-top: 2.5rem;
+    text-align: left;
+  }
+
+  .contact-section h3 {
+    font-size: 1.125rem;
+    color: var(--color-primary-light);
+    margin-bottom: 1.25rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: var(--font-mono);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .contact-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--color-border);
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    position: relative;
+    padding-left: 3.25rem;
+  }
+
+  .contact-card.wide {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 640px) {
+    .contact-card.wide {
+      grid-column: span 1;
+    }
+  }
+
+  .contact-card .icon {
+    position: absolute;
+    left: 1.25rem;
+    top: 1.25rem;
+    font-size: 1.5rem;
+  }
+
+  .contact-card .label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-card .val {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  a.contact-card:hover .val,
+  a.contact-card .val:hover {
+    color: var(--color-primary-light);
+  }
+</style>
