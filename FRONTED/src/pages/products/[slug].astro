@@ -18,7 +18,7 @@ const productSchema = {
   "@context": "https://schema.org",
   "@type": "Product",
   "name": product.name,
-  "description": product.seoDescription || product.seo?.description || product.shortDescription,
+  "description": product.meta_description || product.shortDescription,
   "category": product.category.name,
   "image": urlFor(product.heroImage).url(),
   "sku": product.casNumber || product._id || slug,
@@ -104,8 +104,8 @@ const faqSchema = {
 ---
 
 <BaseLayout
-  title={product.seoTitle || product.seo?.title || `${product.name} ${product.purity || ''} Manufacturer & Supplier | GINKVORA`}
-  description={product.seoDescription || product.seo?.description || product.shortDescription || `Purchase high purity ${product.name}. Quality guaranteed under GMP certifications. Request COA, MSDS, or sample.`}
+  title={product.meta_title || `${product.name} ${product.purity || ''} Manufacturer & Supplier | GINKVORA`}
+  description={product.meta_description || product.shortDescription || `Purchase high purity ${product.name}. Quality guaranteed under GMP certifications. Request COA, MSDS, or sample.`}
 >
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />

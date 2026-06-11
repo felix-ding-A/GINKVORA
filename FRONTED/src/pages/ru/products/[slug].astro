@@ -31,8 +31,8 @@ const localName          = product.name; // product name stays English (scientif
 const localShortDesc     = (getLocalizedField(product, 'shortDescription', lang) ?? product.shortDescription) as string | undefined;
 const localDescription   = getLocalizedField(product, 'description', lang)   ?? product.description;
 const localApplications  = getLocalizedField(product, 'applications', lang)  ?? product.applications;
-const localSeoTitle      = product.seoTitle_ru || product.seo_ru?.title || product.seoTitle || product.seo?.title;
-const localSeoDesc       = product.seoDescription_ru || product.seo_ru?.description || product.seoDescription || product.seo?.description;
+const localSeoTitle      = product.meta_title_ru || product.meta_title;
+const localSeoDesc       = product.meta_description_ru || product.meta_description;
 
 const productSchema = {
   "@context": "https://schema.org",

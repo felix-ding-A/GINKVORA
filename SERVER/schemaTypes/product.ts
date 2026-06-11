@@ -206,29 +206,19 @@ export const productType = defineType({
       components: { input: CustomMarkdownInput },
     }),
     defineField({
-      name: 'seoTitle_ru',
+      name: 'meta_title_ru',
       title: '🇷🇺 Meta Title (RU)',
       type: 'string',
       group: 'i18n',
       description: 'Русский заголовок для SEO, не более 60 символов.',
     }),
     defineField({
-      name: 'seoDescription_ru',
+      name: 'meta_description_ru',
       title: '🇷🇺 Meta Description (RU)',
       type: 'text',
       group: 'i18n',
       rows: 3,
       description: 'Русское описание для SEO, не более 160 символов.',
-    }),
-    defineField({
-      name: 'seo_ru',
-      title: '🇷🇺 SEO Settings (RU) [Legacy]',
-      type: 'object',
-      group: 'i18n',
-      fields: [
-        defineField({ name: 'title', type: 'string', title: 'Meta Title (RU)', description: 'Макс. 60 символов' }),
-        defineField({ name: 'description', type: 'text', title: 'Meta Description (RU)', description: 'Макс. 160 символов', rows: 3 }),
-      ],
     }),
 
     defineField({
@@ -336,29 +326,19 @@ export const productType = defineType({
 
     // ── SEO ─────────────────────────────────────────
     defineField({
-      name: 'seoTitle',
+      name: 'meta_title',
       title: 'Meta Title (EN)',
       type: 'string',
       group: 'seo',
       description: 'Custom meta title for SEO optimization (max 60 chars).',
     }),
     defineField({
-      name: 'seoDescription',
+      name: 'meta_description',
       title: 'Meta Description (EN)',
       type: 'text',
       group: 'seo',
       rows: 3,
       description: 'Custom meta description for SEO optimization (max 160 chars).',
-    }),
-    defineField({
-      name: 'seo',
-      title: 'SEO Settings [Legacy]',
-      type: 'object',
-      group: 'seo',
-      fields: [
-        defineField({ name: 'title', type: 'string', title: 'Meta Title', description: 'Max 60 characters' }),
-        defineField({ name: 'description', type: 'text', title: 'Meta Description', description: 'Max 160 characters', rows: 3 }),
-      ],
     }),
   ],
 

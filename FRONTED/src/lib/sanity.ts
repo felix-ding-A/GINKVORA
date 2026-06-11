@@ -176,12 +176,10 @@ export const PRODUCT_DETAIL_FIELDS = `
   msdsFile{asset->{url}},
   complianceNote,
   complianceNote_ru,
-  seo{title, description},
-  seo_ru{title, description},
-  seoTitle,
-  seoDescription,
-  seoTitle_ru,
-  seoDescription_ru
+  meta_title,
+  meta_description,
+  meta_title_ru,
+  meta_description_ru
 `;
 
 export async function getAllProducts(category: string | null = null, mechanism: string | null = null) {
@@ -458,8 +456,10 @@ export type SanityProduct = {
   inciName?: string;
   complianceNote?: string;
   complianceNote_ru?: string;
-  seo?: { title?: string; description?: string };
-  seo_ru?: { title?: string; description?: string };
+  meta_title?: string;
+  meta_description?: string;
+  meta_title_ru?: string;
+  meta_description_ru?: string;
   mainCategories?: string[];
   antiAgingMechanisms?: string[];
   applicationDisplay?: 'topical' | 'oral' | 'dual';
