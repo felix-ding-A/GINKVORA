@@ -14,9 +14,26 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const { name, email, company, interest, message, phone, website, industry, productName, quantity, b_website } = body;
 
+    // --- Extract tracking information ---
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'Unknown';
+    const country = request.headers.get('x-vercel-ip-country') || 'Unknown';
+    const region = request.headers.get('x-vercel-ip-country-region') || 'Unknown';
+    const city = request.headers.get('x-vercel-ip-city') || 'Unknown';
+    const timezone = request.headers.get('x-vercel-ip-timezone') || 'Unknown';
+    const latitude = request.headers.get('x-vercel-ip-latitude') || 'Unknown';
+    const longitude = request.headers.get('x-vercel-ip-longitude') || 'Unknown';
+    const userAgent = request.headers.get('user-agent') || 'Unknown';
+    const referer = request.headers.get('referer') || 'Unknown';
+    const acceptLanguage = request.headers.get('accept-language') || 'Unknown';
+    const submissionId = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 15);
+
+    const mapsLink = (latitude !== 'Unknown' && longitude !== 'Unknown')
+      ? `<a href="https://www.google.com/maps?q=${latitude},${longitude}" target="_blank" style="color:#4a8a48;text-decoration:underline;">View on Google Maps</a>`
+      : 'N/A';
+
     // --- Honeypot check ---
     if (b_website) {
-      console.warn('Spam bot detected via honeypot:', { b_website, ip: request.headers.get('x-forwarded-for') });
+      console.warn('Spam bot detected via honeypot:', { b_website, ip });
       return new Response(
         JSON.stringify({ error: 'Suspicious activity detected.' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
@@ -91,6 +108,21 @@ export const POST: APIRoute = async ({ request }) => {
               ${quantity ? `<div class="field"><div class="label">Required Quantity</div><div class="value">${quantity}</div></div>` : ''}
               ${interest ? `<div class="field"><div class="label">Interested In</div><div class="value"><span class="tag">${interest}</span></div></div>` : ''}
               ${message ? `<div class="field"><div class="label">Message</div><div class="value" style="white-space:pre-wrap;">${message}</div></div>` : ''}
+
+              <!-- Lead Tracking Metadata -->
+              <div style="margin-top: 32px; padding-top: 24px; border-top: 2px dashed #a8d5a6; padding-bottom: 8px;">
+                <div class="label" style="color: #2d7a2d; font-weight: bold; margin-bottom: 12px;">Lead Tracking Metadata</div>
+                <table style="width: 100%; font-size: 13px; color: #444; border-collapse: collapse;">
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600; width: 150px;">Submission ID</td><td style="padding: 6px 0; font-family: monospace; font-size: 11px;">${submissionId}</td></tr>
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Source Page</td><td style="padding: 6px 0; word-break: break-all;">${referer}</td></tr>
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Client IP</td><td style="padding: 6px 0; font-family: monospace;">${ip}</td></tr>
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Location</td><td style="padding: 6px 0;">${city}, ${region}, ${country}</td></tr>
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Timezone</td><td style="padding: 6px 0;">${timezone}</td></tr>
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Coordinates</td><td style="padding: 6px 0;">${latitude}, ${longitude} ${mapsLink !== 'N/A' ? `(${mapsLink})` : ''}</td></tr>
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Browser Lang</td><td style="padding: 6px 0;">${acceptLanguage}</td></tr>
+                  <tr><td style="padding: 6px 0; font-weight: 600; vertical-align: top;">User Agent</td><td style="padding: 6px 0; font-size: 11px; word-break: break-all;">${userAgent}</td></tr>
+                </table>
+              </div>
             </div>
             <div class="footer">
               This inquiry was submitted via ginkvora.com — ${new Date().toUTCString()}
