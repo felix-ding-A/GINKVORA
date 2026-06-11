@@ -18,8 +18,8 @@ const categories = [
     color: '#10B981',
     colorBg: 'rgba(16, 185, 129, 0.06)',
     glowColor: '#10B981',
-    glowBgColor: 'rgba(16, 185, 129, 0.08)',
-    glowColorShadow: 'rgba(16, 185, 129, 0.35)',
+    glowBgColor: 'rgba(16, 185, 129, 0.22)',
+    glowColorShadow: 'rgba(16, 185, 129, 0.45)',
     gradientText: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)',
     image: '/images/natural-botanical-health-supplement-ingredients.webp',
     imageAlt: 'Premium natural botanical raw materials and health supplement ingredients.',
@@ -34,8 +34,8 @@ const categories = [
     color: '#F59E0B',
     colorBg: 'rgba(245, 158, 11, 0.06)',
     glowColor: '#F59E0B',
-    glowBgColor: 'rgba(245, 158, 11, 0.08)',
-    glowColorShadow: 'rgba(245, 158, 11, 0.35)',
+    glowBgColor: 'rgba(245, 158, 11, 0.22)',
+    glowColorShadow: 'rgba(245, 158, 11, 0.45)',
     gradientText: 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)',
     image: '/images/natural-botanical-cosmetic-active-ingredients.webp',
     imageAlt: 'High-end cosmetic active ingredients and botanical serums formulated for premium skincare.',
@@ -50,8 +50,8 @@ const categories = [
     color: '#3B82F6',
     colorBg: 'rgba(59, 130, 246, 0.06)',
     glowColor: '#3B82F6',
-    glowBgColor: 'rgba(59, 130, 246, 0.08)',
-    glowColorShadow: 'rgba(59, 130, 246, 0.35)',
+    glowBgColor: 'rgba(59, 130, 246, 0.22)',
+    glowColorShadow: 'rgba(59, 130, 246, 0.45)',
     gradientText: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)',
     image: '/images/natural-botanical-pet-health-ingredients.webp',
     imageAlt: 'A group of happy, healthy companion dogs representing natural botanical ingredients formulated for premium pet supplements.',
@@ -66,8 +66,8 @@ const categories = [
     color: '#F97316',
     colorBg: 'rgba(249, 115, 22, 0.06)',
     glowColor: '#F97316',
-    glowBgColor: 'rgba(249, 115, 22, 0.08)',
-    glowColorShadow: 'rgba(249, 115, 22, 0.35)',
+    glowBgColor: 'rgba(249, 115, 22, 0.22)',
+    glowColorShadow: 'rgba(249, 115, 22, 0.45)',
     gradientText: 'linear-gradient(135deg, #F97316 0%, #FB923C 100%)',
     image: '/images/advanced-delivery-formulation-liposomal-otf.webp',
     imageAlt: 'Advanced delivery formulation technologies showing liposomal encapsulation and oral thin-film R&D.',
@@ -183,7 +183,7 @@ const categories = [
     position: absolute;
     inset: 0;
     border-radius: var(--radius-lg);
-    background: radial-gradient(circle at 50% 0%, var(--glow-bg-color), transparent 70%);
+    background: radial-gradient(circle at 50% 40%, var(--glow-bg-color), transparent 85%);
     opacity: 0;
     transition: opacity 0.4s ease;
     pointer-events: none;
@@ -208,7 +208,7 @@ const categories = [
   }
 
   .category-card:hover {
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px var(--glow-color-shadow);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.45), 0 0 60px var(--glow-color-shadow);
   }
 
   /* Individual card-specific styles removed because they are passed inline via styles attribute */
@@ -243,6 +243,22 @@ const categories = [
       rgba(6,5,3,0) 30%,
       rgba(6,5,3,0.7) 100%
     );
+    z-index: 1;
+  }
+
+  .cat-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, var(--glow-bg-color), transparent 80%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .category-card:hover .cat-image::after {
+    opacity: 1;
   }
 
   .cat-icon-badge {
