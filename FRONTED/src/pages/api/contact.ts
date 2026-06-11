@@ -15,13 +15,38 @@ export const POST: APIRoute = async ({ request }) => {
     const { name, email, company, interest, message, phone, website, industry, productName, quantity, b_website } = body;
 
     // --- Extract tracking information ---
-    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'Unknown';
-    const country = request.headers.get('x-vercel-ip-country') || 'Unknown';
-    const region = request.headers.get('x-vercel-ip-country-region') || 'Unknown';
-    const city = request.headers.get('x-vercel-ip-city') || 'Unknown';
-    const timezone = request.headers.get('x-vercel-ip-timezone') || 'Unknown';
-    const latitude = request.headers.get('x-vercel-ip-latitude') || 'Unknown';
-    const longitude = request.headers.get('x-vercel-ip-longitude') || 'Unknown';
+    const rawIp = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'Unknown';
+    // If x-forwarded-for contains multiple IPs (e.g. client, proxy1, proxy2), take the first one which is the client
+    const ip = rawIp.split(',')[0].trim();
+
+    // Default to Vercel geo headers as fallback
+    let country = request.headers.get('x-vercel-ip-country') || 'Unknown';
+    let region = request.headers.get('x-vercel-ip-country-region') || 'Unknown';
+    let city = request.headers.get('x-vercel-ip-city') || 'Unknown';
+    let timezone = request.headers.get('x-vercel-ip-timezone') || 'Unknown';
+    let latitude = request.headers.get('x-vercel-ip-latitude') || 'Unknown';
+    let longitude = request.headers.get('x-vercel-ip-longitude') || 'Unknown';
+
+    // Fetch real location from ip-api if it is a public IP
+    if (ip !== 'Unknown' && ip !== '127.0.0.1' && ip !== '::1' && !ip.startsWith('192.168.') && !ip.startsWith('10.')) {
+      try {
+        const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
+        if (geoRes.ok) {
+          const geoData = await geoRes.json();
+          if (geoData.status === 'success') {
+            country = geoData.countryCode || geoData.country || country;
+            region = geoData.regionName || geoData.region || region;
+            city = geoData.city || city;
+            timezone = geoData.timezone || timezone;
+            latitude = geoData.lat ? String(geoData.lat) : latitude;
+            longitude = geoData.lon ? String(geoData.lon) : longitude;
+          }
+        }
+      } catch (geoErr) {
+        console.warn('Failed to fetch user geolocation from ip-api:', geoErr);
+      }
+    }
+
     const userAgent = request.headers.get('user-agent') || 'Unknown';
     const referer = request.headers.get('referer') || 'Unknown';
     const acceptLanguage = request.headers.get('accept-language') || 'Unknown';
