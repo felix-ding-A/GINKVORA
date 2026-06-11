@@ -1,8 +1,42 @@
 User-agent: *
 Allow: /
-
-# Disallow admin or CMS paths if any
 Disallow: /api/
 
+# Global AI & LLM Search/Training Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# Microsoft Bing (AI Copilot)
+User-agent: Bingbot
+Allow: /
+
+User-agent: AdIdxBot
+Allow: /
+
+# Russian Yandex (AI YandexGPT / Alice)
+User-agent: Yandex
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
 # Sitemap
-Sitemap: https://ginkvora.com/sitemap.xml
+Sitemap: https://ginkvora.com/sitemap-index.xml
