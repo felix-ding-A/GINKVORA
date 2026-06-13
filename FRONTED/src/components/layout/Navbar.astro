@@ -188,14 +188,14 @@ const alternatePaths = getAlternatePaths(Astro.url, typedLang);
             <a href={alternatePaths.ru} class:list={['lang-option', { 'lang-option--active': typedLang === 'ru' }]} role="menuitem" lang="ru">
               <span class="lang-flag">🇷🇺</span> Русский
             </a>
-            <a href={alternatePaths.es} class:list={['lang-option', 'lang-option--soon']} role="menuitem" lang="es">
+            <span class:list={['lang-option', 'lang-option--soon']} role="menuitem" lang="es" aria-disabled="true">
               <span class="lang-flag">🇪🇸</span> Español
               <span class="lang-badge">Soon</span>
-            </a>
-            <a href={alternatePaths.ar} class:list={['lang-option', 'lang-option--soon']} role="menuitem" lang="ar">
+            </span>
+            <span class:list={['lang-option', 'lang-option--soon']} role="menuitem" lang="ar" aria-disabled="true">
               <span class="lang-flag">🇸🇦</span> العربية
               <span class="lang-badge">Soon</span>
-            </a>
+            </span>
           </div>
         </div>
 
