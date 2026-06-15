@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /products?category=
+Disallow: /products?mechanism=
 
 # Global AI & LLM Search/Training Crawlers
 User-agent: GPTBot
