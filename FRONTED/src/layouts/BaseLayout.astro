@@ -128,6 +128,9 @@ const organizationSchema = {
       .badge--gold{background:rgba(212,166,84,0.15);color:#f0c878;border:1px solid rgba(212,166,84,0.3)}
       /* Critical: fade-in-up initial state (prevents layout shift) */
       .fade-in-up{opacity:0}
+      /* Critical: skip-link accessibility hiding to prevent FOUC */
+      .skip-link{position:absolute;top:-100px;left:1rem;z-index:9999}
+      .skip-link:focus{top:0}
     </style>
 
     <!-- Open Graph -->
@@ -275,19 +278,11 @@ const organizationSchema = {
 
 <style>
   .skip-link {
-    position: absolute;
-    top: -100%;
-    left: 1rem;
     background: var(--color-primary);
     color: var(--color-text-inverse);
     padding: 0.5rem 1rem;
     border-radius: 0 0 var(--radius-sm) var(--radius-sm);
     font-weight: 600;
-    z-index: 9999;
     transition: top var(--transition-fast);
-  }
-
-  .skip-link:focus {
-    top: 0;
   }
 </style>
