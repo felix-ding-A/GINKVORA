@@ -53,7 +53,7 @@ if (!previewPosts || previewPosts.length === 0) {
     <div class="posts-grid">
       {previewPosts.map((post, i) => (
         <article class={`post-card glass reveal ${i === 0 ? 'post-card--featured' : ''} reveal-delay-${i}`}>
-          <a href={lp(`/insights/${post.slug}`)} class="card-image-link" tabindex="-1" aria-hidden="true">
+          <a href={lp(`/insights/${post.slug}`)} class="card-image-link" aria-label={post.title}>
             <div class="card-image">
               <picture style="display: contents;">
                 <source srcset={urlFor(post.coverImage).width(600).format('webp').url()} type="image/webp" />
@@ -94,8 +94,9 @@ if (!previewPosts || previewPosts.length === 0) {
               <p class="card-excerpt">{post.excerpt}</p>
             )}
 
-            <a href={lp(`/insights/${post.slug}`)} class="card-link" aria-label={`Read ${post.title}`}>
+            <a href={lp(`/insights/${post.slug}`)} class="card-link">
               {t('insights.read_more')}
+              <span class="sr-only"> about {post.title}</span>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                 <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
               </svg>

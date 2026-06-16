@@ -622,3 +622,16 @@ button { cursor: pointer; font-family: var(--font-body); }
   line-height: 1.4;
   margin: 0;
 }
+
+/* ── Screen Reader / SEO Utility ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

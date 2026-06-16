@@ -67,7 +67,9 @@ const totalPages = Math.ceil(total / 9);
                     </div>
                   )}
                   <a href={`/ru/insights/${post.slug}`} class="read-more">
-                    {t('insights.read_more')} →
+                    {t('insights.read_more')}
+                    <span class="sr-only"> о {localTitle}</span>
+                    →
                   </a>
                 </div>
               </article>
