@@ -5,8 +5,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { useTranslations } from '../../i18n/utils';
 const lang = 'ru';
 const t = useTranslations(lang);
+
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Связаться с GINKVORA",
+  "description": "Запросите коммерческое предложение, образец или техническую документацию для растительных экстрактов и биоактивных ингредиентов от GINKVORA.",
+  "url": "https://ginkvora.com/ru/contact"
+};
 ---
 <BaseLayout lang={lang} title="Связаться с нами | GINKVORA" description="Запросите коммерческое предложение, образец или техническую документацию для растительных экстрактов и биоактивных ингредиентов от GINKVORA.">
+  <script type="application/ld+json" set:html={JSON.stringify(contactSchema)} slot="head" />
   <main class="contact-page bg-noise">
     <header class="page-banner">
       <div class="banner-gradient"></div>

@@ -6,8 +6,83 @@ import FormulatorConsole from '../../components/calculators/FormulatorConsole.vu
 import { useTranslations } from '../../i18n/utils';
 const lang = 'ru';
 const t = useTranslations(lang);
+
+const siteUrl = 'https://ginkvora.com';
+
+// WebPage schema
+const formulatorSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Консоль научных рецептур | GINKVORA",
+  "description": "Бесплатные интерактивные калькуляторы B2B для расчета молярности химических веществ, серийных разбавлений, молекулярной массы и построения рецептур косметики/добавок.",
+  "url": `${siteUrl}/ru/calculator`,
+  "isPartOf": { "@type": "WebSite", "url": siteUrl, "name": "GINKVORA" },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Главная", "item": `${siteUrl}/ru` },
+      { "@type": "ListItem", "position": 2, "name": "Калькулятор формуляций", "item": `${siteUrl}/ru/calculator` }
+    ]
+  }
+};
+
+// SoftwareApplication schema (calculator tool)
+const appSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Консоль рецептур GINKVORA",
+  "description": "Профессиональный веб-инструментарий калькуляторов для лабораторных ученых — расчет молярности, серийных разбавлений, молекулярной массы, баланса эмульсий HLB, размеров капсул и рецептур добавок.",
+  "applicationCategory": "ScienceApplication",
+  "operatingSystem": "Web Browser",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": `${siteUrl}/ru/calculator`,
+  "provider": { "@type": "Organization", "name": "GINKVORA", "url": siteUrl }
+};
+
+// FAQPage schema
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Что такое стоковый раствор при лабораторном разведении?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Стоковый раствор — это концентрированный раствор, который будет разбавлен до более низкой концентрации для фактического использования в лаборатории. Использование стоковых растворов экономит время на подготовку, снижает потери материалов и повышает точность работы с микрокомпонентами."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Как гидраты влияют на расчет молекулярной массы?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Гидратированные соединения содержат химически связанные молекулы воды в своей кристаллической структуре (например, CuSO₄·5H₂O). При взвешивании сухого химического вещества вес молекул воды должен быть включен в расчет молекулярной массы для обеспечения точного молярного дозирования."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Что такое HLB в косметических рецептурах?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "HLB расшифровывается как гидрофильно-липофильный баланс. Это значение от 0 до 20, указывающее на сродство эмульгатора к воде (гидрофильный) или маслу (липофильный). Эмульгаторы с низким HLB (3-6) образуют эмульсии вода-в-масле (W/O), тогда как эмульгаторы с высоким HLB (8-16) образуют эмульсии масло-в-воде (O/W)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Как рассчитать массу, необходимую для молярного раствора?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Чтобы приготовить молярный раствор: Масса (г) = Концентрация (М) × Объем (л) × Молекулярная масса (г/моль). Например, чтобы приготовить 10 мл раствора витамина С (ММ=176,12) с концентрацией 50 мМ: 0,05 моль/л × 0,01 л × 176,12 г/моль = 0,08806 г = 88,06 мг."
+      }
+    }
+  ]
+};
 ---
 <BaseLayout lang={lang} title="Консоль научных рецептур | GINKVORA" description="Профессиональные инструменты для расчёта молярности, разбавлений и рецептур. Разработаны для исследователей и специалистов R&D.">
+  <script type="application/ld+json" set:html={JSON.stringify(formulatorSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(appSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <main class="formulator-page bg-noise">
     <header class="page-banner">
       <div class="banner-gradient"></div>

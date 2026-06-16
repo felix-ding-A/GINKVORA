@@ -8,6 +8,14 @@ import { getAllAuthors, urlFor } from '../../lib/sanity';
 const lang = 'ru';
 const t = useTranslations(lang);
 const authors = await getAllAuthors();
+
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "О компании GINKVORA",
+  "description": "Узнайте об истории GINKVORA, технологиях высокочистой экстракции и стандартах качества сырья.",
+  "url": "https://ginkvora.com/ru/about"
+};
 ---
 
 <BaseLayout
@@ -15,6 +23,7 @@ const authors = await getAllAuthors();
   title="Поставщик ботанических экстрактов B2B | О компании GINKVORA"
   description="Узнайте об истории GINKVORA, технологиях высокочистой экстракции и стандартах качества сырья. Поддержка мировых брендов диетических добавок."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(aboutSchema)} slot="head" />
   <main class="about-page bg-noise">
     <header class="page-banner" aria-label="Заголовок страницы">
       <div class="banner-gradient"></div>

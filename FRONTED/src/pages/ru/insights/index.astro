@@ -11,6 +11,47 @@ const page = Number(Astro.url.searchParams.get('page') || '1');
 const category = Astro.url.searchParams.get('category') || null;
 const { posts, total } = await getPostsPaginated({ category, page, pageSize: 9 });
 const totalPages = Math.ceil(total / 9);
+
+const siteUrl = 'https://ginkvora.com';
+
+// Breadcrumb structured data
+const breadcrumbsSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": `${siteUrl}/ru`
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Блог",
+      "item": `${siteUrl}/ru/insights`
+    }
+  ]
+};
+
+// ItemList structured data
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Отраслевой блог GINKVORA",
+  "description": "Исследования по ингредиентам, нормативные обновления и экспертиза рецептур от научной команды GINKVORA.",
+  "url": `${siteUrl}/ru/insights`,
+  "numberOfItems": posts.length,
+  "itemListElement": posts.map((post: any, i: number) => {
+    const localTitle = getLocalizedField(post, 'title', lang) ?? post.title;
+    return {
+      "@type": "ListItem",
+      "position": i + 1,
+      "url": `${siteUrl}/ru/insights/${post.slug}`,
+      "name": localTitle,
+    };
+  })
+};
 ---
 
 <BaseLayout
@@ -18,6 +59,8 @@ const totalPages = Math.ceil(total / 9);
   title="Отраслевой блог — Исследования, Рецептуры, Тренды | GINKVORA"
   description="Исследования по ингредиентам, нормативные обновления и экспертиза рецептур от научной команды GINKVORA."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />
   <main class="insights-page bg-noise">
     <header class="page-banner" aria-label="Заголовок страницы">
       <div class="banner-gradient"></div>
