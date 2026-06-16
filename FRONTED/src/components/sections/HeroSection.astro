@@ -23,7 +23,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
   <div class="container hero-content">
     <!-- Left copy -->
     <div class="hero-left">
-      <div class="hero-label fade-in-up">
+      <div class="hero-label">
         <span class="badge badge--gold">
           <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true">
             <circle cx="4" cy="4" r="4"/>
@@ -32,20 +32,20 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
         </span>
       </div>
 
-      <h1 class="hero-title fade-in-up delay-1">
+      <h1 class="hero-title">
         {t('hero.title_1')}<br/>
         <span class="gradient-text--gold">{t('hero.title_2')}</span>
       </h1>
 
-      <p class="hero-sub-headline fade-in-up delay-2">
+      <p class="hero-sub-headline">
         {t('hero.sub_headline')}
       </p>
 
-      <p class="hero-sub fade-in-up delay-2">
+      <p class="hero-sub">
         {t('hero.subtitle')}
       </p>
 
-      <div class="hero-ctas fade-in-up delay-3">
+      <div class="hero-ctas">
         <a href={lp('/products')} class="btn btn--gold btn--lg" id="hero-explore-btn">
           {t('hero.cta_explore')}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
@@ -58,7 +58,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
       </div>
 
       <!-- Role-based Routing Anchors -->
-      <div class="hero-role-routing fade-in-up delay-4">
+      <div class="hero-role-routing">
         <span class="role-title">{t('hero.role_title')}</span>
         <div class="role-links">
           <a href="#ecm-pathways" class="role-link" id="role-cosmetic">
@@ -80,7 +80,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
     </div>
 
     <!-- Right: ingredient showcase -->
-    <div class="hero-right fade-in-up delay-2">
+    <div class="hero-right">
       <div class="ingredient-card-stack">
         <!-- Main card -->
         <div class="ingredient-showcase glass animate-float">
