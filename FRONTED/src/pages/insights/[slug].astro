@@ -50,14 +50,20 @@ const blogSchema = {
 const faqSchema = post.faqItems && post.faqItems.length > 0 ? {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": post.faqItems.map((item: any) => ({
-    "@type": "Question",
-    "name": item.question,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": item.answer
-    }
-  }))
+  "mainEntity": post.faqItems.map((item: any) => {
+    // Strip any HTML <script> tags or other HTML tags to prevent schema syntax breakage
+    const cleanAnswer = typeof item.answer === 'string'
+      ? item.answer.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').trim()
+      : '';
+    return {
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": cleanAnswer
+      }
+    };
+  })
 } : null;
 
 // BreadcrumbList Schema
