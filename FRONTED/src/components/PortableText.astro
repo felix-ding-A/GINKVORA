@@ -18,6 +18,8 @@ const normalizeText = (text: string): string => {
 
 if (typeof value === 'string') {
   htmlContent = await marked.parse(normalizeText(value));
+  // SEO: page template already provides H1 — downgrade any H1 in markdown body to H2
+  htmlContent = htmlContent.replace(/<h1\b/gi, '<h2').replace(/<\/h1>/gi, '</h2>');
 } else if (Array.isArray(value)) {
   const parsedBlocks = await Promise.all(
     value.map(async (block) => {
@@ -41,7 +43,7 @@ if (typeof value === 'string') {
         // Otherwise parse inline markdown rules (bold, italic, links, etc.)
         const inlineHtml = await marked.parseInline(text);
 
-        if (block.style === 'h1') return `<h1>${inlineHtml}</h1>`;
+        if (block.style === 'h1') return `<h2>${inlineHtml}</h2>`;
         if (block.style === 'h2') return `<h2>${inlineHtml}</h2>`;
         if (block.style === 'h3') return `<h3>${inlineHtml}</h3>`;
         if (block.style === 'h4') return `<h4>${inlineHtml}</h4>`;
