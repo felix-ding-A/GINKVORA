@@ -13,6 +13,10 @@ export default defineConfig({
   output: 'server',
   adapter: vercel(),
 
+  build: {
+    inlineStylesheets: 'always',
+  },
+
   integrations: [
     vue(),
     sitemap({

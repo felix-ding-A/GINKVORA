@@ -79,7 +79,10 @@ const organizationSchema = {
     {gtmId && (
       <script is:inline define:vars={{ gtmId }}>
         (function() {
+          let gtmLoaded = false;
           function loadGTM() {
+            if (gtmLoaded) return;
+            gtmLoaded = true;
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -87,10 +90,34 @@ const organizationSchema = {
             f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer',gtmId);
           }
+
+          function scheduleGTM() {
+            // Load on idle callback after a short delay to keep initial thread completely free
+            if ('requestIdleCallback' in window) {
+              requestIdleCallback(function() {
+                setTimeout(loadGTM, 1500);
+              });
+            } else {
+              setTimeout(loadGTM, 2000);
+            }
+
+            // Also load immediately on first user interaction to ensure no events are lost
+            const triggerEvents = ['click', 'mousedown', 'mousemove', 'touchstart', 'scroll', 'keydown'];
+            function triggerLoad() {
+              loadGTM();
+              triggerEvents.forEach(function(event) {
+                window.removeEventListener(event, triggerLoad);
+              });
+            }
+            triggerEvents.forEach(function(event) {
+              window.addEventListener(event, triggerLoad, { passive: true });
+            });
+          }
+
           if (document.readyState === 'complete') {
-            loadGTM();
+            scheduleGTM();
           } else {
-            window.addEventListener('load', loadGTM, { passive: true });
+            window.addEventListener('load', scheduleGTM, { passive: true });
           }
         })();
       </script>
