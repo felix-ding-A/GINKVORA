@@ -3,6 +3,7 @@ Allow: /
 Disallow: /api/
 Disallow: /products?category=
 Disallow: /products?mechanism=
+Disallow: /cdn-cgi/
 
 # Global AI & LLM Search/Training Crawlers
 User-agent: GPTBot
