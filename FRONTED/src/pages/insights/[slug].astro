@@ -216,7 +216,7 @@ const breadcrumbSchema = {
   }
 
   .article-container {
-    max-width: 800px;
+    max-width: 1100px;
   }
 
   .breadcrumbs {
@@ -226,6 +226,8 @@ const breadcrumbSchema = {
     font-size: 0.875rem;
     color: var(--color-text-muted);
     margin-bottom: 2.5rem;
+    max-width: 800px;
+    margin-inline: auto;
   }
 
   .crumb-separator {
@@ -241,6 +243,8 @@ const breadcrumbSchema = {
   .article-header {
     text-align: center;
     margin-bottom: 3rem;
+    max-width: 800px;
+    margin-inline: auto;
   }
 
   .article-meta {
@@ -291,6 +295,18 @@ const breadcrumbSchema = {
     font-size: 1.0625rem;
     line-height: 1.85;
     color: var(--color-text-secondary);
+  }
+
+  /* Keep text-based elements readable and centered at 800px */
+  .article-body :global(p),
+  .article-body :global(ul),
+  .article-body :global(ol),
+  .article-body :global(h2),
+  .article-body :global(h3),
+  .article-body :global(h4),
+  .article-body :global(blockquote) {
+    max-width: 800px;
+    margin-inline: auto;
   }
 
   .article-body :global(p) {
