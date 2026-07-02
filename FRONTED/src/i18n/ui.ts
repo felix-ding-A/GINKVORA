@@ -123,6 +123,15 @@ export const ui = {
     'insights.no_posts':        'No articles found.',
     'insights.breadcrumb_home': 'Home',
     'insights.breadcrumb_list': 'Insights',
+    'insights.toc_title':       'Table of Contents',
+    'insights.share_title':     'Share Article',
+    'insights.share_copied':    'Copied!',
+    'insights.inquiry_title':   'Request Sample / Quote',
+    'insights.inquiry_subtitle':'Get pricing and specifications in 24h.',
+    'insights.inquiry_submit':  'Send Inquiry',
+    'insights.inquiry_sending': 'Sending...',
+    'insights.trust_title':     'B2B Certified Quality',
+
 
     // ── Contact ──
     'contact.title':            'Get in Touch',
@@ -422,6 +431,15 @@ export const ui = {
     'insights.no_posts':        'Статьи не найдены.',
     'insights.breadcrumb_home': 'Главная',
     'insights.breadcrumb_list': 'Блог',
+    'insights.toc_title':       'Содержание',
+    'insights.share_title':     'Поделиться статьей',
+    'insights.share_copied':    'Скопировано!',
+    'insights.inquiry_title':   'Запросить образец / КП',
+    'insights.inquiry_subtitle':'Цены и спецификации в течение 24 часов.',
+    'insights.inquiry_submit':  'Отправить запрос',
+    'insights.inquiry_sending': 'Отправка...',
+    'insights.trust_title':     'B2B Сертификация',
+
 
     // ── Contact ──
     'contact.title':            'Связаться с нами',
