@@ -67,12 +67,12 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
               <input type="text" name="b_website" class="honeypot-field" autocomplete="off" tabindex="-1" placeholder="Leave this field empty" />
               <div class="form-field">
                 <label for="qi-name" class="form-label">{t('cta.form_name')}</label>
-                <input type="text" id="qi-name" name="name" class="form-input" placeholder="John Smith" required autocomplete="name" />
+                <input type="text" id="qi-name" name="name" class="form-input" placeholder="John Smith / Acme Ltd" required autocomplete="name" />
               </div>
 
               <div class="form-field">
-                <label for="qi-company" class="form-label">{t('cta.form_company')}</label>
-                <input type="text" id="qi-company" name="company" class="form-input" placeholder="Acme Nutraceuticals" required autocomplete="organization" />
+                <label for="qi-phone" class="form-label">{t('cta.form_phone')}</label>
+                <input type="tel" id="qi-phone" name="phone" class="form-input" placeholder="+1 (555) 123-4567" required autocomplete="tel" />
               </div>
 
               <div class="form-field">

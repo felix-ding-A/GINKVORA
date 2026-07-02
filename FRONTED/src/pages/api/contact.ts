@@ -66,9 +66,9 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // --- Basic validation ---
-    if (!name || !email || !company) {
+    if (!name || !email || !phone) {
       return new Response(
-        JSON.stringify({ error: 'Name, email and company are required.' }),
+        JSON.stringify({ error: 'Name, email and phone are required.' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
@@ -87,7 +87,7 @@ export const POST: APIRoute = async ({ request }) => {
       from: FROM_EMAIL,
       to: TO_EMAIL,
       replyTo: email,
-      subject: `New B2B Inquiry from ${company} — GINKVORA`,
+      subject: `New B2B Inquiry from ${name} — GINKVORA`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -115,19 +115,18 @@ export const POST: APIRoute = async ({ request }) => {
             <div class="body">
               <h2>New Inquiry Received 🌿</h2>
               <div class="field">
-                <div class="label">Contact Name</div>
+                <div class="label">Name / Company Name</div>
                 <div class="value">${name}</div>
-              </div>
-              <div class="field">
-                <div class="label">Company</div>
-                <div class="value">${company}</div>
               </div>
               <div class="field">
                 <div class="label">Email</div>
                 <div class="value"><a href="mailto:${email}" style="color:#4a8a48;">${email}</a></div>
               </div>
-              ${phone ? `<div class="field"><div class="label">Phone</div><div class="value">${phone}</div></div>` : ''}
-              ${website ? `<div class="field"><div class="label">Company Website</div><div class="value"><a href="${website.startsWith('http') ? website : 'https://' + website}" target="_blank" style="color:#4a8a48;">${website}</a></div></div>` : ''}
+              <div class="field">
+                <div class="label">Phone / WhatsApp</div>
+                <div class="value">${phone}</div>
+              </div>
+              ${website && website !== 'None' ? `<div class="field"><div class="label">Company Website</div><div class="value"><a href="${website.startsWith('http') ? website : 'https://' + website}" target="_blank" style="color:#4a8a48;">${website}</a></div></div>` : ''}
               ${industry ? `<div class="field"><div class="label">Industry Sector</div><div class="value">${industry}</div></div>` : ''}
               ${productName ? `<div class="field"><div class="label">Target Ingredient</div><div class="value">${productName}</div></div>` : ''}
               ${quantity ? `<div class="field"><div class="label">Required Quantity</div><div class="value">${quantity}</div></div>` : ''}

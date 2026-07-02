@@ -42,8 +42,8 @@ const contactSchema = {
             <input type="text" name="b_website" class="honeypot-field" autocomplete="off" tabindex="-1" placeholder="Leave this field empty" />
             <div class="form-row-2">
               <div class="form-field">
-                <label for="name" class="form-label">Full Name *</label>
-                <input type="text" id="name" name="name" required class="form-input" placeholder="John Doe" />
+                <label for="name" class="form-label">Name/Company Name *</label>
+                <input type="text" id="name" name="name" required class="form-input" placeholder="John Doe / BioTech Ltd" />
               </div>
               <div class="form-field">
                 <label for="email" class="form-label">Work Email *</label>
@@ -53,8 +53,8 @@ const contactSchema = {
 
             <div class="form-row-2">
               <div class="form-field">
-                <label for="company" class="form-label">Company Name *</label>
-                <input type="text" id="company" name="company" required class="form-input" placeholder="BioTech Ltd" />
+                <label for="phone" class="form-label">Phone / WhatsApp *</label>
+                <input type="tel" id="phone" name="phone" required class="form-input" placeholder="+1 (555) 123-4567" />
               </div>
               <div class="form-field">
                 <label for="website" class="form-label">Company Website</label>
@@ -63,10 +63,6 @@ const contactSchema = {
             </div>
 
             <div class="form-row-2">
-              <div class="form-field">
-                <label for="phone" class="form-label">Phone / WhatsApp</label>
-                <input type="tel" id="phone" name="phone" class="form-input" placeholder="+1 (555) 123-4567" />
-              </div>
               <div class="form-field">
                 <label for="industry" class="form-label">Industry Sector *</label>
                 <select id="industry" name="industry" required class="form-input form-select">
@@ -79,13 +75,13 @@ const contactSchema = {
                   <option value="other">Other / Research</option>
                 </select>
               </div>
-            </div>
-
-            <div class="form-row-2">
               <div class="form-field">
                 <label for="productSelect" class="form-label">Target Ingredient *</label>
                 <input type="text" id="productSelect" name="productName" required class="form-input" placeholder="e.g. PQQ, NMN, Glabridin..." />
               </div>
+            </div>
+
+            <div class="form-row-2">
               <div class="form-field">
                 <label for="quantity" class="form-label">Required Quantity *</label>
                 <input type="text" id="quantity" name="quantity" required class="form-input" placeholder="e.g. 25kg, 100kg" />
@@ -93,8 +89,8 @@ const contactSchema = {
             </div>
 
             <div class="form-field">
-              <label for="message" class="form-label">Message & Specification Requirements *</label>
-              <textarea id="message" name="message" required class="form-input" rows="5" placeholder="Specify purity levels, target shipping port, certification requirements, or custom formulation requests..."></textarea>
+              <label for="message" class="form-label">Message & Specification Requirements</label>
+              <textarea id="message" name="message" class="form-input" rows="5" placeholder="Optional. Specify purity levels, target shipping port, certification requirements, or custom formulation requests..."></textarea>
             </div>
 
             <button type="submit" class="btn btn--gold btn--lg" id="submit-btn">
@@ -383,13 +379,12 @@ const contactSchema = {
         const data = {
           name: formData.get('name'),
           email: formData.get('email'),
-          company: formData.get('company'),
           website: formData.get('website') || 'None',
-          phone: formData.get('phone') || 'None',
+          phone: formData.get('phone'),
           industry: formData.get('industry'),
           productName: formData.get('productName'),
           quantity: formData.get('quantity'),
-          message: formData.get('message'),
+          message: formData.get('message') || 'None',
           b_website: formData.get('b_website'),
         };
 

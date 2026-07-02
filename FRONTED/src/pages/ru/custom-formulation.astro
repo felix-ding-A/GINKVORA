@@ -397,8 +397,8 @@ const pageSchema = {
                 <input type="text" name="b_website" class="honeypot-field" autocomplete="off" tabindex="-1" placeholder="Leave this field empty" />
 
                 <div class="form-field">
-                  <label for="name" class="form-label">Полное имя *</label>
-                  <input type="text" id="name" name="name" required class="form-input" placeholder="Ваше имя" />
+                  <label for="name" class="form-label">Имя/Название компании *</label>
+                  <input type="text" id="name" name="name" required class="form-input" placeholder="Иван Иванов / ООО «Компания»" />
                 </div>
 
                 <div class="form-row-2">
@@ -407,8 +407,8 @@ const pageSchema = {
                     <input type="email" id="email" name="email" required class="form-input" placeholder="name@company.com" />
                   </div>
                   <div class="form-field">
-                    <label for="company" class="form-label">Название компании *</label>
-                    <input type="text" id="company" name="company" required class="form-input" placeholder="ООО Компания" />
+                    <label for="phone" class="form-label">Телефон / WhatsApp *</label>
+                    <input type="tel" id="phone" name="phone" required class="form-input" placeholder="+7 (999) 123-45-67" />
                   </div>
                 </div>
 
@@ -429,8 +429,8 @@ const pageSchema = {
                 </div>
 
                 <div class="form-field">
-                  <label for="message" class="form-label">Детальные требования к рецептуре *</label>
-                  <textarea id="message" name="message" required class="form-input" rows="4" placeholder="Опишите активные ингредиенты, дозировки, желаемую скорость растворения и другие предпочтения..."></textarea>
+                  <label for="message" class="form-label">Детальные требования к рецептуре</label>
+                  <textarea id="message" name="message" class="form-input" rows="4" placeholder="Необязательно. Опишите активные ингредиенты, дозировки, желаемую скорость растворения и другие предпочтения..."></textarea>
                 </div>
 
                 <button type="submit" class="btn btn--gold btn--lg btn--block" id="submit-btn">
@@ -1131,11 +1131,11 @@ const pageSchema = {
         const data = {
           name: formData.get('name'),
           email: formData.get('email'),
-          company: formData.get('company'),
+          phone: formData.get('phone'),
           interest: 'Custom Formulation',
           productName: formData.get('productConcept'),
           quantity: formData.get('expectedVolume'),
-          message: formData.get('message'),
+          message: formData.get('message') || 'None',
           b_website: formData.get('b_website')
         };
 

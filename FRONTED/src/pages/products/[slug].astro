@@ -360,8 +360,8 @@ const faqSchema = {
 
           <div class="form-grid">
             <div class="form-field">
-              <label for="rfq-name" class="form-label">Full Name *</label>
-              <input type="text" id="rfq-name" name="name" required class="form-input" placeholder="e.g. John Doe" />
+              <label for="rfq-name" class="form-label">Name/Company Name *</label>
+              <input type="text" id="rfq-name" name="name" required class="form-input" placeholder="e.g. John Doe / BioTech Ltd" />
             </div>
 
             <div class="form-field">
@@ -370,8 +370,8 @@ const faqSchema = {
             </div>
 
             <div class="form-field">
-              <label for="rfq-company" class="form-label">Company Name *</label>
-              <input type="text" id="rfq-company" name="company" required class="form-input" placeholder="e.g. BioTech Ltd" />
+              <label for="rfq-phone" class="form-label">Phone / WhatsApp *</label>
+              <input type="tel" id="rfq-phone" name="phone" required class="form-input" placeholder="e.g. +1 (555) 123-4567" />
             </div>
 
             <div class="form-field">
@@ -381,8 +381,8 @@ const faqSchema = {
           </div>
 
           <div class="form-field mt-4">
-            <label for="rfq-message" class="form-label">Inquiry Message *</label>
-            <textarea id="rfq-message" name="message" required class="form-input" rows="4" placeholder={`Please describe your specification requirements for ${product.name}...`}></textarea>
+            <label for="rfq-message" class="form-label">Inquiry Message</label>
+            <textarea id="rfq-message" name="message" class="form-input" rows="4" placeholder={`Optional. Please describe your specification requirements for ${product.name}...`}></textarea>
           </div>
 
           <div class="submit-wrapper">
@@ -871,9 +871,9 @@ const faqSchema = {
         const data = {
           name: formData.get('name'),
           email: formData.get('email'),
-          company: formData.get('company'),
+          phone: formData.get('phone'),
           quantity: formData.get('quantity') || 'Not specified',
-          message: formData.get('message'),
+          message: formData.get('message') || 'None',
           productName: formData.get('productName'),
           b_website: formData.get('b_website'),
         };
