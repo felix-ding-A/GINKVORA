@@ -9,7 +9,8 @@ const t = useTranslations(lang);
 
 const page = Number(Astro.url.searchParams.get('page') || '1');
 const category = Astro.url.searchParams.get('category') || null;
-const { posts, total } = await getPostsPaginated({ category, page, pageSize: 9 });
+const searchQuery = Astro.url.searchParams.get('q') || '';
+const { posts, total } = await getPostsPaginated({ category, search: searchQuery, page, pageSize: 9 });
 const totalPages = Math.ceil(total / 9);
 
 const siteUrl = 'https://ginkvora.com';
@@ -68,6 +69,35 @@ const itemListSchema = {
         <span class="section-label">{t('insights.title')}</span>
         <h1 class="banner-title">{t('insights.title')}</h1>
         <p class="banner-desc">{t('insights.subtitle')}</p>
+
+        <!-- Search bar inside Banner -->
+        <form action="/ru/insights" method="GET" class="search-form">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input 
+              type="text" 
+              name="q" 
+              value={searchQuery} 
+              placeholder={t('insights.search_placeholder')} 
+              class="search-input"
+            />
+            {searchQuery && (
+              <a href={category ? `/ru/insights?category=${encodeURIComponent(category)}` : "/ru/insights"} class="search-clear-btn" aria-label="Clear search">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </a>
+            )}
+          </div>
+          {category && (
+            <input type="hidden" name="category" value={category} />
+          )}
+          <button type="submit" class="btn btn--primary search-submit-btn">{t('common.search')}</button>
+        </form>
       </div>
     </header>
 
@@ -120,7 +150,22 @@ const itemListSchema = {
           })}
         </div>
       ) : (
-        <p class="no-posts">{t('insights.no_posts')}</p>
+        <div class="no-posts-container glass">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+          <h3>{t('insights.no_posts')}</h3>
+          <p>
+            {searchQuery 
+              ? t('insights.search_no_results').replace('{query}', searchQuery) 
+              : t('insights.no_posts')}
+          </p>
+          <a href="/ru/insights" class="btn btn--secondary">{t('insights.all_posts')}</a>
+        </div>
       )}
     </div>
   </main>
@@ -150,5 +195,146 @@ const itemListSchema = {
   .tag-chip { font-size: 0.72rem; padding: 0.15rem 0.5rem; border-radius: var(--radius-full); border: 1px solid var(--color-border); color: var(--color-text-muted); }
   .read-more { font-size: 0.875rem; color: var(--color-primary-light); text-decoration: none; font-weight: 500; margin-top: auto; transition: color var(--transition-fast); }
   .read-more:hover { color: var(--color-primary); }
-  .no-posts { text-align: center; padding: 4rem 2rem; color: var(--color-text-muted); }
+  .no-posts-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 2rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212,166,84,0.15) !important;
+    max-width: 600px;
+    margin: 2rem auto 0;
+    width: 100%;
+  }
+
+  .no-posts-container svg {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .no-posts-container h3 {
+    font-size: 1.625rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+  }
+
+  .no-posts-container p {
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  /* ── Search Bar ── */
+  .search-form {
+    margin-top: 2rem;
+    display: flex;
+    gap: 0.75rem;
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+  }
+
+  .search-input-wrapper {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 1.25rem;
+    color: var(--color-text-muted, #7c7c7c);
+    pointer-events: none;
+    transition: color var(--transition-fast);
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.875rem 3rem 0.875rem 3rem;
+    border-radius: var(--radius-lg, 8px);
+    border: 1px solid var(--color-border, rgba(255,255,255,0.15));
+    background: rgba(22, 24, 26, 0.75);
+    color: var(--color-text, #ffffff);
+    font-size: 1rem;
+    transition: all var(--transition-base);
+    backdrop-filter: blur(10px);
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--color-primary-light, #f0c878);
+    background: rgba(22, 24, 26, 0.9);
+    box-shadow: 0 0 12px rgba(212, 166, 84, 0.25);
+  }
+
+  .search-input:focus-within + .search-icon {
+    color: var(--color-primary-light, #f0c878);
+  }
+
+  .search-clear-btn {
+    position: absolute;
+    right: 1.25rem;
+    color: var(--color-text-muted, #7c7c7c);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    transition: color var(--transition-fast);
+  }
+
+  .search-clear-btn:hover {
+    color: var(--color-text, #ffffff);
+  }
+
+  .search-submit-btn {
+    padding-inline: 2rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    white-space: nowrap;
+    border-radius: var(--radius-lg, 8px);
+    cursor: pointer;
+  }
+
+  @media (max-width: 576px) {
+    .search-form {
+      gap: 0.5rem;
+    }
+    .search-input {
+      padding: 0.75rem 2.5rem 0.75rem 2.5rem;
+      font-size: 0.875rem;
+    }
+    .search-icon {
+      left: 0.875rem;
+    }
+    .search-clear-btn {
+      right: 0.875rem;
+    }
+    .search-submit-btn {
+      padding-inline: 1.25rem;
+      font-size: 0.875rem;
+    }
+  }
 </style>
+
+<script>
+  // Programmatically handle mobile keyboard enter/go submit to guarantee compatibility
+  document.querySelectorAll('.search-input').forEach(el => {
+    const input = el as HTMLInputElement;
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const form = input.closest('form');
+        if (form) {
+          form.submit();
+        }
+      }
+    });
+  });
+</script>

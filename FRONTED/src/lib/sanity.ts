@@ -312,23 +312,32 @@ export async function getAllPosts(limit = 10) {
 
 export async function getPostsPaginated({
   category = null,
+  search = '',
   page = 1,
   pageSize = 6,
 }: {
   category?: string | null;
+  search?: string;
   page?: number;
   pageSize?: number;
 } = {}) {
   const start = (page - 1) * pageSize;
   const end = page * pageSize;
 
-  let filter = '*[_type == "post"]';
+  const filterConditions = ['_type == "post"'];
   const params: any = { start, end };
 
   if (category) {
-    filter = '*[_type == "post" && $category in tags]';
+    filterConditions.push('$category in tags');
     params.category = category;
   }
+
+  if (search && search.trim() !== '') {
+    filterConditions.push('(title match $search || title_ru match $search || excerpt match $search || excerpt_ru match $search || tags[] match $search)');
+    params.search = search.trim() + '*';
+  }
+
+  const filter = `*[${filterConditions.join(' && ')}]`;
 
   const query = `${filter} | order(publishedAt desc) [$start...$end] {
     ${POST_FIELDS}
@@ -350,6 +359,17 @@ export async function getPostsPaginated({
           tag.toLowerCase().replace(/[^a-z0-9]/g, '') === catSlug
         )
       );
+    }
+    if (search && search.trim() !== '') {
+      const lowerSearch = search.toLowerCase().trim();
+      allMock = allMock.filter(post => {
+        const titleMatch = post.title && post.title.toLowerCase().includes(lowerSearch);
+        const titleRuMatch = post.title_ru && post.title_ru.toLowerCase().includes(lowerSearch);
+        const excerptMatch = post.excerpt && post.excerpt.toLowerCase().includes(lowerSearch);
+        const excerptRuMatch = post.excerpt_ru && post.excerpt_ru.toLowerCase().includes(lowerSearch);
+        const tagsMatch = post.tags && post.tags.some(tag => tag.toLowerCase().includes(lowerSearch));
+        return titleMatch || titleRuMatch || excerptMatch || excerptRuMatch || tagsMatch;
+      });
     }
     const posts = allMock.slice(start, end);
     const total = allMock.length;

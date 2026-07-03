@@ -131,6 +131,8 @@ export const ui = {
     'insights.inquiry_submit':  'Send Inquiry',
     'insights.inquiry_sending': 'Sending...',
     'insights.trust_title':     'B2B Certified Quality',
+    'insights.search_placeholder': 'Search by ingredient, product, or keyword...',
+    'insights.search_no_results': 'We couldn\'t find any articles matching "{query}". Please try adjusting your keywords.',
 
 
     // ── Contact ──
@@ -439,6 +441,8 @@ export const ui = {
     'insights.inquiry_submit':  'Отправить запрос',
     'insights.inquiry_sending': 'Отправка...',
     'insights.trust_title':     'B2B Сертификация',
+    'insights.search_placeholder': 'Поиск по ингредиенту, продукту или ключевому слову...',
+    'insights.search_no_results': 'Не удалось найти статьи по запросу "{query}". Попробуйте изменить ключевые слова.',
 
 
     // ── Contact ──
