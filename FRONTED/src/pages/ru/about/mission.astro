@@ -113,6 +113,24 @@ const missionSchema = {
           <h3>Кастомные инновации</h3>
           <p>От стандартизированных экстрактов до индивидуального синтеза пептидов и OEM-рецептур — мы адаптируем нашу цепочку поставок под ваши требования R&D.</p>
         </article>
+
+        <article class="value-card glass reveal">
+          <div class="value-icon">🌿</div>
+          <h3>Этичный сорсинг</h3>
+          <p>Наши обязательства по этичному выбору поставщиков гарантируют, что каждый ингредиент собирается с уважением к окружающей среде и сообществам, которые их выращивают.</p>
+        </article>
+
+        <article class="value-card glass reveal reveal-delay-1">
+          <div class="value-icon">🔋</div>
+          <h3>Экологичное производство</h3>
+          <p>Мы применяем экологически чистые производственные процессы, чтобы свести к минимуму отходы и снизить углеродный след.</p>
+        </article>
+
+        <article class="value-card glass reveal reveal-delay-2">
+          <div class="value-icon">🤝</div>
+          <h3>Поддержка сообществ</h3>
+          <p>Поддержка местных фермеров и сообществ лежит в основе нашей миссии в области устойчивого развития.</p>
+        </article>
       </div>
     </section>
 
@@ -135,26 +153,7 @@ const missionSchema = {
           </div>
         </div>
 
-        <!-- Sustainability Pillars Grid -->
-        <div class="grid-3">
-          <article class="sustain-card glass reveal">
-            <div class="sustain-icon">🌿</div>
-            <h3>Этичный сорсинг</h3>
-            <p>Наши обязательства по этичному выбору поставщиков гарантируют, что каждый ингредиент собирается с уважением к окружающей среде и сообществам, которые их выращивают.</p>
-          </article>
 
-          <article class="sustain-card glass reveal reveal-delay-1">
-            <div class="sustain-icon">🔋</div>
-            <h3>Экологичное производство</h3>
-            <p>Мы применяем экологически чистые производственные процессы, чтобы свести к минимуму отходы и снизить углеродный след.</p>
-          </article>
-
-          <article class="sustain-card glass reveal reveal-delay-2">
-            <div class="sustain-icon">🤝</div>
-            <h3>Поддержка сообществ</h3>
-            <p>Поддержка местных фермеров и сообществ лежит в основе нашей миссии в области устойчивого развития.</p>
-          </article>
-        </div>
 
         <!-- Slogans/End Quote -->
         <div class="quote-footer reveal">
@@ -444,6 +443,49 @@ const missionSchema = {
   /* ── Sustainability Section ── */
   .sustainability-section {
     position: relative;
+    overflow: hidden;
+    background-color: var(--color-bg-deep, #060708);
+  }
+
+  .sustainability-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(to bottom, #060708 0%, rgba(6, 7, 8, 0.03) 15%, rgba(6, 7, 8, 0.03) 85%, #060708 100%), url('/images/qinling-mountains-traditional-chinese-shanshui-painting.webp');
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    /* High brightness so the Shanshui painting is clearly visible, but slightly softened to protect contrast */
+    filter: brightness(0.78) contrast(1.02) saturate(0.95);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .sustainability-section .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  .sustainability-section .section-label {
+    color: #ffffff !important;
+  }
+
+  .sustainability-section .section-title {
+    color: #000000 !important;
+  }
+
+  .sustainability-section .section-desc {
+    color: #222222 !important;
+  }
+
+  @media (max-width: 768px) {
+    .sustainability-section::before {
+      background-image: linear-gradient(to bottom, #060708 0%, rgba(6, 7, 8, 0.05) 15%, rgba(6, 7, 8, 0.05) 85%, #060708 100%), url('/images/qinling-mountains-traditional-chinese-shanshui-painting.webp');
+      background-position: center 20%;
+    }
   }
 
   .slogan-container {
@@ -451,73 +493,43 @@ const missionSchema = {
     margin: 0 auto 3rem;
     padding: 2rem 2.5rem;
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(212, 166, 84, 0.15) !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
     text-align: center;
-    background: linear-gradient(135deg, rgba(212, 166, 84, 0.03) 0%, rgba(0, 0, 0, 0) 100%);
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(10px);
     transition: all var(--transition-base, 250ms) ease;
   }
 
   .slogan-container:hover {
-    border-color: var(--color-primary-light) !important;
+    border-color: rgba(0, 0, 0, 0.3) !important;
     transform: translateY(-3px);
-    box-shadow: var(--shadow-glow-gold);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
 
   .slogan-quote {
     font-family: var(--font-display);
     font-size: clamp(1.25rem, 2.5vw, 1.75rem);
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-accent-dark, #b05818);
     line-height: 1.4;
     margin-bottom: 0.75rem;
   }
 
   .slogan-source {
     font-size: 0.75rem;
-    color: var(--color-text-secondary);
+    color: #000000 !important;
     display: flex;
     justify-content: center;
     gap: 0.5rem;
     flex-wrap: wrap;
-    opacity: 0.8;
+    opacity: 1 !important;
   }
 
   .source-sep {
-    color: var(--color-accent);
+    color: #000000 !important;
   }
 
-  .sustain-card {
-    padding: 2.25rem 1.75rem;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(212, 166, 84, 0.1) !important;
-    text-align: center;
-    transition: all var(--transition-base);
-    background: rgba(255, 255, 255, 0.01);
-  }
 
-  .sustain-card:hover {
-    border-color: var(--color-primary-light) !important;
-    box-shadow: var(--shadow-glow-gold);
-    transform: translateY(-6px);
-    background: rgba(255, 255, 255, 0.03);
-  }
-
-  .sustain-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .sustain-card h3 {
-    font-size: 1.25rem;
-    color: var(--color-text);
-    margin-bottom: 0.75rem;
-  }
-
-  .sustain-card p {
-    font-size: 0.875rem;
-    line-height: 1.6;
-    color: var(--color-text-secondary);
-  }
 
   .quote-footer {
     max-width: 680px;
