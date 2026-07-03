@@ -49,6 +49,8 @@ const missionSchema = {
               src="/images/qinling-mountains-natural-ingredient-source.webp"
               alt="Qinling Mountain Range - Natural Ingredient Source"
               class="showcase-img"
+              width="800"
+              height="600"
             />
             <div class="floating-caption">
               <strong>Qinling Mountain Range</strong>
@@ -254,12 +256,18 @@ const missionSchema = {
     aspect-ratio: 4/3;
     overflow: hidden;
     border-color: rgba(212,166,84,0.18) !important;
+    cursor: pointer;
   }
 
   .showcase-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform var(--transition-slow, 400ms) ease;
+  }
+
+  .image-showcase:hover .showcase-img {
+    transform: scale(1.05);
   }
 
   .floating-caption {
@@ -314,9 +322,10 @@ const missionSchema = {
   }
 
   .glass-card:hover {
-    border-color: rgba(212, 166, 84, 0.25) !important;
-    transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--color-primary-light) !important;
+    transform: translateY(-6px);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: var(--shadow-glow-gold);
   }
 
   .card-icon-em {
@@ -376,9 +385,9 @@ const missionSchema = {
   }
 
   .value-card:hover {
-    border-color: var(--color-border-strong) !important;
+    border-color: var(--color-primary-light) !important;
     box-shadow: var(--shadow-glow-gold);
-    transform: translateY(-4px);
+    transform: translateY(-6px);
   }
 
   .value-icon {
@@ -442,6 +451,13 @@ const missionSchema = {
     border: 1px solid rgba(212, 166, 84, 0.15) !important;
     text-align: center;
     background: linear-gradient(135deg, rgba(212, 166, 84, 0.03) 0%, rgba(0, 0, 0, 0) 100%);
+    transition: all var(--transition-base, 250ms) ease;
+  }
+
+  .slogan-container:hover {
+    border-color: var(--color-primary-light) !important;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glow-gold);
   }
 
   .slogan-quote {
@@ -477,10 +493,10 @@ const missionSchema = {
   }
 
   .sustain-card:hover {
-    border-color: var(--color-border-strong) !important;
+    border-color: var(--color-primary-light) !important;
     box-shadow: var(--shadow-glow-gold);
-    transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.02);
+    transform: translateY(-6px);
+    background: rgba(255, 255, 255, 0.03);
   }
 
   .sustain-icon {

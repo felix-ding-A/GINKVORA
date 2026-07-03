@@ -14,7 +14,14 @@ const aboutSchema = {
   "@type": "AboutPage",
   "name": "О компании GINKVORA",
   "description": "Узнайте об истории GINKVORA, технологиях высокочистой экстракции и стандартах качества сырья.",
-  "url": "https://ginkvora.com/ru/about"
+  "url": "https://ginkvora.com/ru/about",
+  "mainEntity": authors.map(author => ({
+    "@type": "Person",
+    "name": author.name,
+    "jobTitle": author.title || undefined,
+    "description": author.bio || undefined,
+    "image": author.avatar ? urlFor(author.avatar).url() : undefined
+  }))
 };
 ---
 
@@ -160,7 +167,21 @@ const aboutSchema = {
   .mission-text { font-style: italic; color: var(--color-text-secondary); line-height: 1.75; margin: 0; }
 
   .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .stat-box { padding: 1.75rem; border-radius: var(--radius-lg); text-align: center; display: flex; flex-direction: column; gap: 0.5rem; border: 1px solid rgba(212,166,84,0.15) !important; }
+  .stat-box {
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 1px solid rgba(212,166,84,0.15) !important;
+    transition: all var(--transition-base, 250ms) ease;
+  }
+  .stat-box:hover {
+    border-color: var(--color-primary-light) !important;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow-gold);
+  }
   .stat-num { font-size: 2.5rem; font-weight: 700; font-family: var(--font-display); }
   .stat-label { font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.4; }
 
@@ -168,7 +189,21 @@ const aboutSchema = {
   .section-title { font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-family: var(--font-display); font-weight: 600; }
 
   .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
-  .cert-card { padding: 1.5rem; border-radius: var(--radius-lg); text-align: center; display: flex; flex-direction: column; gap: 0.625rem; border: 1px solid rgba(212,166,84,0.15) !important; }
+  .cert-card {
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    border: 1px solid rgba(212,166,84,0.15) !important;
+    transition: all var(--transition-base, 250ms) ease;
+  }
+  .cert-card:hover {
+    border-color: var(--color-primary-light) !important;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow-gold);
+  }
   .cert-icon { font-size: 1.5rem; color: var(--color-primary); }
   .cert-name { font-family: var(--font-mono); font-size: 0.875rem; font-weight: 600; color: var(--color-text); }
 
@@ -203,7 +238,7 @@ const aboutSchema = {
     border-radius: var(--radius-lg);
     border-color: rgba(212, 166, 84, 0.1) !important;
     align-items: center;
-    transition: border-color var(--transition-base), transform var(--transition-base);
+    transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
   }
 
   @media (max-width: 540px) {
@@ -215,8 +250,9 @@ const aboutSchema = {
   }
 
   .author-card:hover {
-    border-color: rgba(212, 166, 84, 0.25) !important;
-    transform: translateY(-3px);
+    border-color: var(--color-primary-light) !important;
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-glow-gold);
   }
 
   .author-avatar-wrapper {
@@ -233,6 +269,11 @@ const aboutSchema = {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform var(--transition-base, 250ms) ease;
+  }
+
+  .author-card:hover .author-avatar {
+    transform: scale(1.08);
   }
 
   .author-info {
