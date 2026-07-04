@@ -5,7 +5,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 // Pre-fill query param support
 const title = "Contact GINKVORA | B2B Plant Extract Sourcing & RFQ";
-const description = "Request samples, ask for bulk pricing, or inquire about custom active ingredient formulations. Our experts respond within 12 hours.";
+const description = "Contact GINKVORA for B2B plant extract inquiries, bulk pricing, custom formulation specs & free sample requests. Fast global commercial RFQ support.";
 
 const contactSchema = {
   "@context": "https://schema.org",
@@ -14,17 +14,34 @@ const contactSchema = {
   "description": description,
   "url": "https://ginkvora.com/contact"
 };
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "GINKVORA",
+  "image": "https://ginkvora.com/images/logo.svg",
+  "email": "inquiry@ginkvora.com",
+  "telephone": "+1 6802556637",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Xi'an International Trade & Logistics Park",
+    "addressLocality": "Xi'an",
+    "addressCountry": "CN"
+  },
+  "url": "https://ginkvora.com"
+};
 ---
 
 <BaseLayout title={title} description={description}>
   <script type="application/ld+json" set:html={JSON.stringify(contactSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} slot="head" />
   <main class="contact-page bg-noise">
     <!-- Header banner -->
     <header class="page-banner" aria-label="Page Header">
       <div class="banner-gradient"></div>
       <div class="container banner-content">
         <span class="section-label">Get in Touch</span>
-        <h1 class="banner-title">Global Commercial Support</h1>
+        <h1 class="banner-title">Contact GINKVORA — B2B Bulk Ingredient Inquiry & RFQ</h1>
         <p class="banner-desc">
           Ready to source high-purity active ingredients? Contact our commercial team for instant quotations, sample shipping, and compliance documentation.
         </p>
