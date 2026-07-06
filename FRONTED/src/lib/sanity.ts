@@ -460,6 +460,7 @@ export { getLocalizedField } from '../i18n/utils';
 export type SanityProduct = {
   _id: string;
   name: string;
+  name_ru?: string;
   slug: string;
   category: { name: string; slug: string };
   categories?: { name: string; slug: string }[];
@@ -468,10 +469,13 @@ export type SanityProduct = {
   activeIngredient?: string;
   casNumber?: string;
   shortDescription?: string;
+  shortDescription_ru?: string;
   description?: any;
+  description_ru?: any;
   featured?: boolean;
   heroImage?: any;
   applications?: any;
+  applications_ru?: any;
   certifications?: string[];
   updatedAt?: string;
   application?: string[];
@@ -490,8 +494,12 @@ export type SanityProduct = {
 export type SanityPost = {
   _id: string;
   title: string;
+  title_ru?: string;
   slug: string;
   excerpt?: string;
+  excerpt_ru?: string;
+  body?: any;
+  body_ru?: any;
   coverImage?: any;
   featured?: boolean;
   publishedAt?: string;
@@ -504,12 +512,15 @@ export type SanityPost = {
     credentials?: string;
   };
   meta_title?: string;
+  meta_title_ru?: string;
   meta_description?: string;
+  meta_description_ru?: string;
   faqItems?: { question: string; answer: string }[];
   relatedProduct?: {
     name: string;
     slug: string;
     shortDescription?: string;
+    shortDescription_ru?: string;
     purity?: string;
     heroImage?: any;
   };
