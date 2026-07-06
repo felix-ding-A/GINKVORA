@@ -1,9 +1,9 @@
 // src/i18n/utils.ts — i18n helper utilities
 
-import { ui, defaultLang, languages } from './ui';
+import { ui, defaultLang, languages, upcomingLanguages } from './ui';
 import type { Lang, UIKey } from './ui';
 
-export { defaultLang, languages };
+export { defaultLang, languages, upcomingLanguages };
 export type { Lang };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -111,9 +111,9 @@ export function getLocalizedField<T>(
 // RTL Detection
 // ─────────────────────────────────────────────────────────────────────────────
 
-const RTL_LANGS: Lang[] = ['ar'];
+const RTL_LANGS: string[] = ['ar'];
 
-export function isRtl(lang: Lang): boolean {
+export function isRtl(lang: string): boolean {
   return RTL_LANGS.includes(lang);
 }
 

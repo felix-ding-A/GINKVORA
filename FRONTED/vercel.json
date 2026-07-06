@@ -27,23 +27,27 @@
     }
   ],
   "redirects": [
-    { "source": "/blog/:slug", "destination": "/insights/:slug", "permanent": true },
+    { "source": "/blog/:path*", "destination": "/insights/:path*", "permanent": true },
     { "source": "/es/ru/:path*", "destination": "/ru/:path*", "permanent": true },
     { "source": "/ar/ru/:path*", "destination": "/ru/:path*", "permanent": true },
     { "source": "/ru/ru/:path*", "destination": "/ru/:path*", "permanent": true },
+    { "source": "/es/ru", "destination": "/ru", "permanent": true },
+    { "source": "/ar/ru", "destination": "/ru", "permanent": true },
+    { "source": "/ru/ru", "destination": "/ru", "permanent": true },
     { "source": "/es/formulator", "destination": "/calculator", "permanent": true },
     { "source": "/ar/formulator", "destination": "/calculator", "permanent": true },
     { "source": "/ru/formulator", "destination": "/ru/calculator", "permanent": true },
     { "source": "/es/ru/formulator", "destination": "/ru/calculator", "permanent": true },
     { "source": "/ar/ru/formulator", "destination": "/ru/calculator", "permanent": true },
-    { "source": "/(es|ar)/products/egcg-epigallocatechin-gallate", "destination": "/products/egcg", "permanent": true },
-    { "source": "/(es|ar)/products/flavone", "destination": "/products/luteolin", "permanent": true },
-    { "source": "/ru/products/flavone-99", "destination": "/ru/products/luteolin", "permanent": true },
-    { "source": "/ru/products/glabridin-40", "destination": "/ru/products/glabridin", "permanent": true },
-    { "source": "/es/products/glabridin-40", "destination": "/products/glabridin", "permanent": true },
-    { "source": "/es/products/flavone-99", "destination": "/products/luteolin", "permanent": true },
-    { "source": "/(es|ar)/insights/quercetin-senolytic-anti-aging", "destination": "/insights/quercetin-senolytic-aging", "permanent": true },
+    { "source": "/ar/Featured%20Formulas", "destination": "/calculator", "permanent": true },
+    { "source": "/ar/Featured Formulas", "destination": "/calculator", "permanent": true },
+    { "source": "/products/egcg", "destination": "/products/egcg-98", "permanent": true },
+    { "source": "/products/niacinamide", "destination": "/products", "permanent": true },
+    { "source": "/products/nmn-nicotinamide-mononucleotide", "destination": "/products/nmn-beta-nicotinamide-mononucleotide", "permanent": true },
+    { "source": "/insights/quercetin-senolytic-aging", "destination": "/insights", "permanent": true },
     { "source": "/es/:path*", "destination": "/:path*", "permanent": true },
-    { "source": "/ar/:path*", "destination": "/:path*", "permanent": true }
+    { "source": "/ar/:path*", "destination": "/:path*", "permanent": true },
+    { "source": "/es", "destination": "/", "permanent": true },
+    { "source": "/ar", "destination": "/", "permanent": true }
   ]
 }
