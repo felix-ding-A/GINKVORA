@@ -36,6 +36,11 @@ const fullTitle = title.includes('GINKVORA') ? title : `${title} | GINKVORA`;
 const canonical = canonicalUrl || new URL(Astro.url.pathname, siteUrl).toString();
 const basePath = stripLangPrefix(Astro.url.pathname);
 
+// Auto-detect query parameters and force noindex if URL has search parameters
+const hasQueryParams = Boolean(Astro.url.search && Astro.url.search.trim().length > 0);
+const shouldNoindex = noindex || hasQueryParams;
+
+
 // Use dynamic OG image generator if no explicit image is provided
 const ogImageParams = new URLSearchParams({
   title: fullTitle,
@@ -127,8 +132,8 @@ const organizationSchema = {
     <!-- Primary Meta -->
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
-    {!noindex && <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />}
+    {shouldNoindex && <meta name="robots" content="noindex, follow" />}
+    {!shouldNoindex && <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />}
     <link rel="canonical" href={canonical} />
 
     <!--

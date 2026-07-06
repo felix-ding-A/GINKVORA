@@ -1,8 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /products?category=
-Disallow: /products?mechanism=
+Disallow: /*?*
 Disallow: /cdn-cgi/
 
 # Global AI & LLM Search/Training Crawlers
