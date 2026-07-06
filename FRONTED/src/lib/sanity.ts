@@ -433,9 +433,11 @@ export async function getAllAuthors() {
         _id,
         name,
         title,
+        title_ru,
         credentials,
         avatar,
-        bio
+        bio,
+        bio_ru
       }
     `);
     if (data && data.length > 0) return data;
@@ -517,9 +519,11 @@ export type SanityAuthor = {
   _id: string;
   name: string;
   title?: string;
+  title_ru?: string;
   credentials?: string;
   avatar?: any;
   bio?: string;
+  bio_ru?: string;
 };
 
 export { MOCK_POSTS };

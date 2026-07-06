@@ -283,17 +283,21 @@ export const MOCK_AUTHORS = [
     _id: 'author-1',
     name: 'Dr. Evelyn Carter',
     title: 'Chief Scientific Advisor',
+    title_ru: 'Главный научный консультант',
     credentials: 'PhD (Biochemistry)',
     avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80',
-    bio: 'Over 15 years of experience in cellular health, mitochondrial cofactor research, and botanical drug discovery pipelines.'
+    bio: 'Over 15 years of experience in cellular health, mitochondrial cofactor research, and botanical drug discovery pipelines.',
+    bio_ru: 'Более 15 лет опыта в области клеточного здоровья, исследований митохондриальных кофакторов и разработки растительных препаратов.'
   },
   {
     _id: 'author-2',
     name: 'Sarah Lindqvist',
     title: 'Head of Quality Assurance',
+    title_ru: 'Руководитель отдела контроля качества',
     credentials: 'MSc (Pharmacognosy)',
     avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&auto=format&fit=crop&q=80',
-    bio: 'Dedicated to implementing strict global certifications, cGMP audits, and high-precision chromatography testing standards.'
+    bio: 'Dedicated to implementing strict global certifications, cGMP audits, and high-precision chromatography testing standards.',
+    bio_ru: 'Специализируется на внедрении строгих международных сертификаций, аудитов cGMP и стандартов высокоточной хроматографии.'
   }
 ];
 

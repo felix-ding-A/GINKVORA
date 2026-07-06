@@ -22,6 +22,7 @@ const categories = [
     glowColorShadow: 'rgba(16, 185, 129, 0.45)',
     gradientText: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)',
     image: '/images/natural-botanical-health-supplement-ingredients.webp',
+    fallbackImage: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=800',
     imageAlt: 'Premium natural botanical raw materials and health supplement ingredients.',
   },
   {
@@ -38,6 +39,7 @@ const categories = [
     glowColorShadow: 'rgba(245, 158, 11, 0.45)',
     gradientText: 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%)',
     image: '/images/natural-botanical-cosmetic-active-ingredients.webp',
+    fallbackImage: 'https://images.unsplash.com/photo-1608248597461-807e4620f3e6?auto=format&fit=crop&q=80&w=800',
     imageAlt: 'High-end cosmetic active ingredients and botanical serums formulated for premium skincare.',
   },
   {
@@ -54,6 +56,7 @@ const categories = [
     glowColorShadow: 'rgba(59, 130, 246, 0.45)',
     gradientText: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)',
     image: '/images/natural-botanical-pet-health-ingredients.webp',
+    fallbackImage: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=800',
     imageAlt: 'A group of happy, healthy companion dogs representing natural botanical ingredients formulated for premium pet supplements.',
   },
   {
@@ -70,6 +73,7 @@ const categories = [
     glowColorShadow: 'rgba(249, 115, 22, 0.45)',
     gradientText: 'linear-gradient(135deg, #F97316 0%, #FB923C 100%)',
     image: '/images/advanced-delivery-formulation-liposomal-otf.webp',
+    fallbackImage: 'https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&q=80&w=800',
     imageAlt: 'Advanced delivery formulation technologies showing liposomal encapsulation and oral thin-film R&D.',
   },
 ];
@@ -101,7 +105,7 @@ const categories = [
         >
           <!-- Image -->
           <div class="cat-image">
-            <img src={cat.image} alt={cat.imageAlt} loading="lazy" width="400" height="240" onerror="this.src='https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=1200'" />
+            <img src={cat.image} alt={cat.imageAlt} loading="lazy" width="400" height="240" onerror={`this.onerror=null;this.src='${cat.fallbackImage}'`} />
             <div class="cat-image-overlay"></div>
             <span class="cat-icon-badge" role="img" aria-hidden="true">{cat.icon}</span>
           </div>

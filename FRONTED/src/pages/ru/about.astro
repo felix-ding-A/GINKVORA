@@ -18,8 +18,8 @@ const aboutSchema = {
   "mainEntity": authors.map(author => ({
     "@type": "Person",
     "name": author.name,
-    "jobTitle": author.title || undefined,
-    "description": author.bio || undefined,
+    "jobTitle": author.title_ru || author.title || undefined,
+    "description": author.bio_ru || author.bio || undefined,
     "image": author.avatar ? urlFor(author.avatar).url() : undefined
   }))
 };
@@ -32,6 +32,7 @@ const aboutSchema = {
 >
   <script type="application/ld+json" set:html={JSON.stringify(aboutSchema)} slot="head" />
   <main class="about-page bg-noise">
+    <!-- Header banner -->
     <header class="page-banner" aria-label="Заголовок страницы">
       <div class="banner-gradient"></div>
       <div class="container banner-content">
@@ -61,30 +62,106 @@ const aboutSchema = {
             </blockquote>
           </div>
         </div>
-        <div class="intro-right reveal">
-          <div class="stats-grid">
-            <div class="stat-box glass">
-              <span class="stat-num gradient-text--gold">100%</span>
-              <span class="stat-label">Прослеживаемость партий</span>
-            </div>
-            <div class="stat-box glass">
-              <span class="stat-num gradient-text--gold">50+</span>
-              <span class="stat-label">Обслуживаемых стран</span>
-            </div>
-            <div class="stat-box glass">
-              <span class="stat-num gradient-text--gold">99%</span>
-              <span class="stat-label">Гарантированная чистота</span>
-            </div>
-            <div class="stat-box glass">
-              <span class="stat-num gradient-text--gold">15+</span>
-              <span class="stat-label">Лет опыта</span>
+        <div class="intro-right reveal reveal-delay-2">
+          <div class="image-showcase glass">
+            <img
+              src="/images/ginkvora-rd-analytical-laboratory.webp"
+              alt="R&D лаборатория GINKVORA"
+              class="showcase-img"
+              width="800"
+              height="600"
+            />
+            <div class="floating-caption">
+              <strong>R&D Центр в Сиане</strong>
+              <span>ВЭЖХ и Масс-спектрометрический анализ</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Certifications -->
+    <!-- Core Extraction Values -->
+    <section class="section values-section bg-deep" aria-label="Технологические преимущества">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Научный потенциал</span>
+          <h2 class="section-title">Промышленный процесс экстракции</h2>
+          <p class="section-desc">
+            Сочетание традиционной фитотерапии с передовыми аналитическими технологиями выделения.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="value-card glass reveal">
+            <div class="value-icon">🔬</div>
+            <h3>Высокочистое выделение</h3>
+            <p>
+              Мы фокусируемся на выделении активных мономерных компонентов (таких как NMN, PQQ и глабридин) до стандартизированной чистоты ≥98% и ≥99% с использованием современных хроматографических систем.
+            </p>
+          </article>
+
+          <article class="value-card glass reveal reveal-delay-1">
+            <div class="value-icon">⚙️</div>
+            <h3>Экологичные методы экстракции</h3>
+            <p>
+              Использование экстракции сверхкритическим диоксидом углерода (sCO2) и низкотемпературных водных процессов для исключения токсичных остаточных химических растворителей и защиты активных соединений.
+            </p>
+          </article>
+
+          <article class="value-card glass reveal reveal-delay-2">
+            <div class="value-icon">🛡️</div>
+            <h3>Прослеживаемые протоколы качества</h3>
+            <p>
+              Каждая произведённая партия проходит строгие испытания на подлинность, чистоту, тяжелые металлы, микробиологию и остатки пестицидов. Протоколы испытаний независимых лабораторий (SGS/Eurofins) предоставляются по запросу.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline/History Section -->
+    <section class="container section history-section" aria-label="Наша история">
+      <div class="section-header">
+        <span class="section-label">Наш путь</span>
+        <h2>Рост и ключевые этапы</h2>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <div class="timeline-badge">2023</div>
+          <div class="timeline-content glass">
+            <h3>Основание и первые R&D разработки</h3>
+            <p>Основание GINKVORA в Сиане, специализация на исследованиях митохондриальных кофакторов и запуск каналов поставок высокочистого PQQ и NMN.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-1">
+          <div class="timeline-badge">2024</div>
+          <div class="timeline-content glass">
+            <h3>Сертификация GMP и ISO</h3>
+            <p>Завершение строительства партнерского экстракционного завода. Получение сертификатов GMP, ISO 9001:2015, Halal и Kosher для международного пищевого соответствия.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-2">
+          <div class="timeline-badge">2025</div>
+          <div class="timeline-content glass">
+            <h3>Запуск косметической и ветеринарной линейки</h3>
+            <p>Расширение химического каталога отбеливающими активами Глабридина, натуральными флавоноидами и специализированными питательными ингредиентами для сектора здоровья животных.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-3">
+          <div class="timeline-badge">2026</div>
+          <div class="timeline-content glass">
+            <h3>Глобальная логистика и цифровой хаб</h3>
+            <p>Запуск высокопроизводительной международной сети поставок, обслуживающей бренды добавок, косметики и спортивного питания в 50+ странах через оптимизированные логистические узлы.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certifications & Stats -->
     <section class="container section certs-section" aria-label="Сертификаты">
       <div class="section-header">
         <span class="section-label">Качество и соответствие</span>
@@ -101,7 +178,7 @@ const aboutSchema = {
     </section>
 
     <!-- Authors Section -->
-    <section class="container section authors-section" aria-label="Our Scientific Experts">
+    <section class="container section authors-section" aria-label="Эксперты">
       <div class="section-header">
         <span class="section-label">Научный потенциал</span>
         <h2>Наша научно-исследовательская команда</h2>
@@ -123,9 +200,9 @@ const aboutSchema = {
             </div>
             <div class="author-info">
               <h3>{author.name}</h3>
-              {author.title && <p class="author-title">{author.title}</p>}
+              {(author.title_ru || author.title) && <p class="author-title">{author.title_ru || author.title}</p>}
               {author.credentials && <span class="author-creds">{author.credentials}</span>}
-              {author.bio && <p class="author-bio">{author.bio}</p>}
+              {(author.bio_ru || author.bio) && <p class="author-bio">{author.bio_ru || author.bio}</p>}
             </div>
           </div>
         ))}
@@ -155,38 +232,180 @@ const aboutSchema = {
   .banner-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.75; }
 
   .section { padding-block: var(--space-2xl); }
-  .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
-  @media (max-width: 900px) { .intro-grid { grid-template-columns: 1fr; } }
+  .intro-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; }
+  @media (max-width: 900px) { .intro-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
 
   .intro-left { display: flex; flex-direction: column; gap: 1.25rem; }
   .intro-left h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); font-family: var(--font-display); font-weight: 600; color: var(--color-text); }
   .intro-left p { color: var(--color-text-secondary); line-height: 1.8; font-size: 1rem; }
 
-  .mission-box { border-left: 3px solid var(--color-primary); padding-left: 1.25rem; }
+  .mission-box {
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
+    border-left: 3px solid var(--color-primary);
+    background: var(--color-surface);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
   .mission-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-primary-light); font-weight: 600; display: block; margin-bottom: 0.5rem; }
-  .mission-text { font-style: italic; color: var(--color-text-secondary); line-height: 1.75; margin: 0; }
+  .mission-text { font-family: var(--font-display); font-size: 1.125rem; font-style: italic; color: var(--color-text); line-height: 1.6; }
 
-  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .stat-box {
-    padding: 1.75rem;
-    border-radius: var(--radius-lg);
-    text-align: center;
+  .image-showcase {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-color: rgba(212,166,84,0.18) !important;
+    cursor: pointer;
+  }
+
+  .showcase-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow, 400ms) ease;
+  }
+
+  .image-showcase:hover .showcase-img {
+    transform: scale(1.05);
+  }
+
+  .floating-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: rgba(6, 5, 3, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--color-border);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    border: 1px solid rgba(212,166,84,0.15) !important;
+  }
+
+  .floating-caption strong {
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+  }
+
+  .floating-caption span {
+    color: var(--color-text-secondary);
+    font-size: 0.75rem;
+  }
+
+  /* ── Values Section ── */
+  .bg-deep {
+    background-color: var(--color-bg-deep);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .grid-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .value-card {
+    padding: 2.25rem 1.75rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212,166,84,0.1) !important;
+    text-align: center;
     transition: all var(--transition-base, 250ms) ease;
   }
-  .stat-box:hover {
+
+  .value-card:hover {
     border-color: var(--color-primary-light) !important;
-    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow-gold);
+    transform: translateY(-6px);
+  }
+
+  .value-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .value-card h3 {
+    font-size: 1.375rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .value-card p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* ── Timeline ── */
+  .timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 3rem auto 0;
+    padding-left: 2rem;
+    border-left: 2px solid var(--color-border);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+  }
+
+  .timeline-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .timeline-badge {
+    position: absolute;
+    left: calc(-2rem - 13px);
+    top: 0.5rem;
+    width: 26px;
+    height: 26px;
+    background: var(--color-bg);
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--color-primary-light);
+    box-shadow: 0 0 10px rgba(212,166,84,0.3);
+  }
+
+  .timeline-content {
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border-color: rgba(212,166,84,0.12) !important;
+    transition: all var(--transition-base, 250ms) ease;
+  }
+
+  .timeline-content:hover {
+    border-color: var(--color-primary-light) !important;
+    transform: translateY(-3px);
     box-shadow: var(--shadow-glow-gold);
   }
-  .stat-num { font-size: 2.5rem; font-weight: 700; font-family: var(--font-display); }
-  .stat-label { font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.4; }
+
+  .timeline-content h3 {
+    font-size: 1.125rem;
+    color: var(--color-primary-light);
+    margin-bottom: 0.25rem;
+  }
+
+  .timeline-content p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
 
   .section-header { text-align: center; margin-bottom: var(--space-xl); }
   .section-title { font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-family: var(--font-display); font-weight: 600; }
+  .section-desc { color: var(--color-text-secondary); margin-top: 0.5rem; }
 
   .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
   .cert-card {
@@ -320,3 +539,4 @@ const aboutSchema = {
     margin-top: 0.25rem;
   }
 </style>
+

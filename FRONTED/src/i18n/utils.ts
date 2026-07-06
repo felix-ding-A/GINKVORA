@@ -45,17 +45,18 @@ export function useTranslations(lang: Lang) {
 // Path Utilities
 // ─────────────────────────────────────────────────────────────────────────────
 
+const ALL_KNOWN_LANG_PREFIXES = new Set(['en', 'ru', 'es', 'ar', 'zh', 'ja', 'de', 'fr', 'pt', 'it']);
+
 /**
- * Strip the language prefix from a path.
- * e.g. '/ru/products/pqq' → '/products/pqq'
- *      '/products/pqq'    → '/products/pqq'
+ * Strip any language prefix(es) from a path.
+ * Handles single or nested language prefixes (e.g. '/ru/products' -> '/products', '/es/ru/insights' -> '/insights', '/ru/ru/about' -> '/about').
  */
 export function stripLangPrefix(path: string): string {
   const segments = path.split('/').filter(Boolean);
-  if (segments.length > 0 && segments[0] in languages) {
-    return '/' + segments.slice(1).join('/');
+  while (segments.length > 0 && ALL_KNOWN_LANG_PREFIXES.has(segments[0])) {
+    segments.shift();
   }
-  return path || '/';
+  return '/' + segments.join('/');
 }
 
 /**

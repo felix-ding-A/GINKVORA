@@ -7,12 +7,16 @@ const LOCALES = ['en', 'ru'];
 const staticPages = [
   '',
   'about',
+  'about/mission',
+  'custom-formulation',
+  'calculator',
+  'anti-aging-philosophy',
   'contact',
   'quality',
-  'terms',
-  'privacy',
   'products',
-  'insights'
+  'insights',
+  'terms',
+  'privacy'
 ];
 
 function generateUrl(path: string, locale: string) {
@@ -24,7 +28,7 @@ function generateUrl(path: string, locale: string) {
 export const GET: APIRoute = async () => {
   try {
     const products = await getAllProducts();
-    const posts = await getAllPosts(100);
+    const posts = await getAllPosts(500);
 
     const now = new Date().toISOString();
     let urlsXml = '';
@@ -41,6 +45,7 @@ export const GET: APIRoute = async () => {
       staticPages.forEach(page => {
         let priority = 0.8;
         if (page === '') priority = 1.0;
+        else if (page === 'custom-formulation' || page === 'products' || page === 'insights') priority = 0.9;
         else if (page === 'terms' || page === 'privacy') priority = 0.3;
 
         urlsXml += `
@@ -80,7 +85,7 @@ export const GET: APIRoute = async () => {
     <loc>${generateUrl(path, locale)}</loc>
     <lastmod>${post.updatedAt ? new Date(post.updatedAt).toISOString() : (post.publishedAt ? new Date(post.publishedAt).toISOString() : now)}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.85</priority>
     ${getAlternateLinks(path)}
   </url>`;
           }
