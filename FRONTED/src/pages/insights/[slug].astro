@@ -5,6 +5,7 @@ import { getAllPosts, getPostBySlug, urlFor } from '../../lib/sanity';
 import PortableText from '../../components/PortableText.astro';
 import { useTranslations, getLocalePath } from '../../i18n/utils';
 import type { Lang } from '../../i18n/utils';
+import FAQAccordion from '../../components/FAQAccordion.astro';
 
 const { slug } = Astro.params;
 const post = await getPostBySlug(slug);
@@ -53,11 +54,25 @@ const blogSchema = {
   }
 };
 
+// FAQ fallback for display and verification
+const displayFaqItems = post.faqItems && post.faqItems.length > 0
+  ? post.faqItems
+  : [
+      {
+        question: "What is the science behind GINKVORA's ingredients?",
+        answer: "Our ingredients undergo rigorous scientific validation, including high-performance liquid chromatography (HPLC) testing and clinical study reviews, to ensure safety and potency."
+      },
+      {
+        question: "How does GINKVORA ensure regulatory compliance?",
+        answer: "We work closely with global regulatory bodies and maintain comprehensive documentation including COAs, MSDS sheets, and GMP compliance certifications."
+      }
+    ];
+
 // FAQ Schema if faqItems exist
-const faqSchema = post.faqItems && post.faqItems.length > 0 ? {
+const faqSchema = displayFaqItems && displayFaqItems.length > 0 ? {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": post.faqItems.map((item: any) => {
+  "mainEntity": displayFaqItems.map((item: any) => {
     // Strip any HTML <script> tags or other HTML tags to prevent schema syntax breakage
     const cleanAnswer = typeof item.answer === 'string'
       ? item.answer.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').trim()
@@ -232,18 +247,10 @@ const breadcrumbSchema = {
           </section>
         )}
 
-        <!-- FAQ Accordion/List -->
-        {post.faqItems && post.faqItems.length > 0 && (
-          <section class="article-faqs glass" aria-labelledby="faqs-title">
-            <h2 id="faqs-title" class="faqs-heading">Frequently Asked Questions</h2>
-            <div class="faq-list">
-              {post.faqItems.map((item) => (
-                <div class="faq-item">
-                  <h3 class="faq-question">{item.question}</h3>
-                  <p class="faq-answer">{item.answer}</p>
-                </div>
-              ))}
-            </div>
+        <!-- FAQ Accordion -->
+        {displayFaqItems && displayFaqItems.length > 0 && (
+          <section class="article-faqs glass">
+            <FAQAccordion items={displayFaqItems} title="Frequently Asked Questions" />
           </section>
         )}
 
@@ -808,46 +815,6 @@ const breadcrumbSchema = {
     padding: 2.5rem;
     border-radius: var(--radius-lg);
     border: 1px solid rgba(255, 255, 255, 0.05) !important;
-  }
-  
-  .faqs-heading {
-    font-size: 1.75rem !important;
-    font-family: var(--font-display);
-    color: var(--color-text);
-    margin-top: 0 !important;
-    margin-bottom: 1.75rem !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding-bottom: 0.75rem;
-  }
-  
-  .faq-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .faq-item {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-    padding-bottom: 1.25rem;
-  }
-  
-  .faq-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-  
-  .faq-question {
-    font-size: 1.125rem !important;
-    font-weight: 600;
-    color: var(--color-primary-light);
-    margin: 0 0 0.5rem 0 !important;
-  }
-  
-  .faq-answer {
-    font-size: 0.9375rem;
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-    margin: 0 !important;
   }
 </style>
 

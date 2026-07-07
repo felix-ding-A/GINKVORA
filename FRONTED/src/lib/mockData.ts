@@ -42,7 +42,27 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
     complianceNote_ru: 'Зарегистрировано в REACH (косметический класс). FDA NDI одобрено (пищевой класс).',
     mainCategories: ['liposomal', 'superfood'],
     antiAgingMechanisms: ['collagen-stimulant'],
-    applicationDisplay: 'dual'
+    applicationDisplay: 'dual',
+    faqItems: [
+      {
+        question: "Is GINKVORA's PQQ Disodium Salt suitable for vegans?",
+        answer: "Yes, our PQQ Disodium Salt is produced via microbial fermentation and contains no animal-derived raw materials, making it 100% suitable for vegan formulations."
+      },
+      {
+        question: "What is the shelf life of this product?",
+        answer: "The shelf life is 24 months when stored in the original unopened container in a cool, dry place away from direct sunlight."
+      }
+    ],
+    faqItems_ru: [
+      {
+        question: "Подходит ли PQQ двунатриевая соль от GINKVORA для веганов?",
+        answer: "Да, наша двунатриевая соль PQQ производится путем микробной ферментации и не содержит сырья животного происхождения, что делает ее на 100% пригодной для веганских рецептур."
+      },
+      {
+        question: "Каков срок годности этого продукта?",
+        answer: "Срок годности составляет 24 месяца при хранении в оригинальной закрытой упаковке в прохладном, сухом месте, защищенном от прямых солнечных лучей."
+      }
+    ]
   },
   {
     _id: 'prod-2',
@@ -74,7 +94,27 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
     complianceNote_ru: 'Предварительно зарегистрировано в REACH. Безопасно для косметики и пищевых добавок.',
     mainCategories: ['liposomal'],
     antiAgingMechanisms: ['collagen-stimulant'],
-    applicationDisplay: 'dual'
+    applicationDisplay: 'dual',
+    faqItems: [
+      {
+        question: "What is the recommended storage temperature for NMN powder?",
+        answer: "For long-term storage, we recommend keeping NMN powder at 2-8°C (refrigerated) in a tightly sealed container, protected from moisture and light, to ensure maximum stability."
+      },
+      {
+        question: "Can GINKVORA supply NMN in bulk quantities?",
+        answer: "Yes, we support commercial orders from 1kg trials up to multi-ton container shipments. Packaging options include standard 25kg fiber drums."
+      }
+    ],
+    faqItems_ru: [
+      {
+        question: "Какова рекомендуемая температура хранения порошка NMN?",
+        answer: "Для длительного хранения мы рекомендуем хранить порошок NMN при температуре 2-8°C (в холодильнике) в герметично закрытом контейнере, защищенном от влаги и света, для обеспечения максимальной стабильности."
+      },
+      {
+        question: "Может ли GINKVORA поставлять NMN оптом?",
+        answer: "Да, мы поддерживаем коммерческие заказы от пробных партий в 1 кг до контейнерных перевозок весом в несколько тонн. Варианты упаковки включают стандартные фибровые барабаны по 25 кг."
+      }
+    ]
   },
   {
     _id: 'prod-3',

@@ -3,6 +3,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllProducts, getProductBySlug, urlFor } from '../../lib/sanity';
 import PortableText from '../../components/PortableText.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
 
 const { slug } = Astro.params;
 const product = await getProductBySlug(slug);
@@ -77,6 +78,43 @@ const breadcrumbSchema = {
   ]
 };
 
+const displayFaqItems = product.faqItems && product.faqItems.length > 0
+  ? product.faqItems
+  : (product.slug === 'pqq-disodium-salt' || product.slug?.current === 'pqq-disodium-salt')
+    ? [
+        {
+          question: "Is GINKVORA's PQQ Disodium Salt suitable for vegans?",
+          answer: "Yes, our PQQ Disodium Salt is produced via microbial fermentation and contains no animal-derived raw materials, making it 100% suitable for vegan formulations."
+        },
+        {
+          question: "What is the shelf life of this product?",
+          answer: "The shelf life is 24 months when stored in the original unopened container in a cool, dry place away from direct sunlight."
+        }
+      ]
+    : (product.slug === 'nmn-beta-nicotinamide-mononucleotide' || product.slug?.current === 'nmn-beta-nicotinamide-mononucleotide')
+      ? [
+          {
+            question: "What is the recommended storage temperature for NMN powder?",
+            answer: "For long-term storage, we recommend keeping NMN powder at 2-8°C (refrigerated) in a tightly sealed container, protected from moisture and light, to ensure maximum stability."
+          },
+          {
+            question: "Can GINKVORA supply NMN in bulk quantities?",
+            answer: "Yes, we support commercial orders from 1kg trials up to multi-ton container shipments. Packaging options include standard 25kg fiber drums."
+          }
+        ]
+      : undefined;
+
+const customFaqEntities = (displayFaqItems || []).map((item: any) => ({
+  "@type": "Question",
+  "name": item.question,
+  "acceptedAnswer": {
+    "@type": "Answer",
+    "text": typeof item.answer === 'string'
+      ? item.answer.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').trim()
+      : ''
+  }
+}));
+
 // FAQPage structured data — improves SERP snippet space
 const faqSchema = {
   "@context": "https://schema.org",
@@ -119,7 +157,8 @@ const faqSchema = {
           ? `${product.name} is supplied at a purity of ${product.purity}, verified by HPLC analysis. Full COA documentation is available upon request.`
           : `Please contact GINKVORA for the full technical specification sheet and purity documentation for ${product.name}.`
       }
-    }
+    },
+    ...customFaqEntities
   ]
 };
 ---
@@ -345,6 +384,13 @@ const faqSchema = {
           </div>
         </div>
       </section>
+
+      <!-- FAQ Accordion Section -->
+      {displayFaqItems && displayFaqItems.length > 0 && (
+        <section class="product-faqs-section">
+          <FAQAccordion items={displayFaqItems} title="Frequently Asked Questions" />
+        </section>
+      )}
 
       <!-- Inquiry form -->
       <section id="inquiry-form-section" class="inquiry-form-section glass" aria-label="Inquiry Form">
@@ -821,6 +867,11 @@ const faqSchema = {
     border-radius: var(--radius-sm);
     text-align: center;
     font-weight: 500;
+  }
+
+  .product-faqs-section {
+    margin-top: 4.5rem;
+    margin-bottom: 4.5rem;
   }
 </style>
 

@@ -14,6 +14,7 @@ export const productType = defineType({
     { name: 'media',     title: 'Media' },
     { name: 'documents', title: 'Documents' },
     { name: 'seo',       title: 'SEO' },
+    { name: 'faq',       title: 'FAQ' },
   ],
   fields: [
     // ── Basic Info ────────────────────────────────
@@ -339,6 +340,64 @@ export const productType = defineType({
       group: 'seo',
       rows: 3,
       description: 'Custom meta description for SEO optimization (max 160 chars).',
+    }),
+    defineField({
+      name: 'faqItems',
+      title: 'FAQ Items (EN)',
+      type: 'array',
+      group: 'faq',
+      description: 'Frequently Asked Questions for this product in English',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'faqItem',
+          title: 'FAQ Item',
+          fields: [
+            defineField({
+              name: 'question',
+              title: 'Question',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'answer',
+              title: 'Answer',
+              type: 'text',
+              rows: 3,
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'faqItems_ru',
+      title: 'FAQ Items (RU)',
+      type: 'array',
+      group: 'faq',
+      description: 'Frequently Asked Questions for this product in Russian',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'faqItem',
+          title: 'FAQ Item',
+          fields: [
+            defineField({
+              name: 'question',
+              title: 'Вопрос',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'answer',
+              title: 'Ответ',
+              type: 'text',
+              rows: 3,
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+        }),
+      ],
     }),
   ],
 

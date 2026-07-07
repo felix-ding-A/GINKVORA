@@ -5,6 +5,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getAllProducts, getProductBySlug, urlFor, getLocalizedField } from '../../../lib/sanity';
 import PortableText from '../../../components/PortableText.astro';
 import { useTranslations, getLocalePath } from '../../../i18n/utils';
+import FAQAccordion from '../../../components/FAQAccordion.astro';
 
 const lang = 'ru';
 const t = useTranslations(lang);
@@ -33,6 +34,91 @@ const localDescription   = getLocalizedField(product, 'description', lang)   ?? 
 const localApplications  = getLocalizedField(product, 'applications', lang)  ?? product.applications;
 const localSeoTitle      = product.meta_title_ru || product.meta_title;
 const localSeoDesc       = product.meta_description_ru || product.meta_description;
+
+const localFaqItems = (product.faqItems_ru && product.faqItems_ru.length > 0)
+  ? product.faqItems_ru
+  : product.faqItems && product.faqItems.length > 0
+    ? product.faqItems
+    : (product.slug === 'pqq-disodium-salt' || product.slug?.current === 'pqq-disodium-salt')
+      ? [
+          {
+            question: "Подходит ли PQQ двунатриевая соль от GINKVORA для веганов?",
+            answer: "Да, наша двунатриевая соль PQQ производится путем микробной ферментации и не содержит сырья животного происхождения, что делает ее на 100% пригодной для веганских рецептур."
+          },
+          {
+            question: "Каков срок годности этого продукта?",
+            answer: "Срок годности составляет 24 месяца при хранении в оригинальной закрытой упаковке в прохладном, сухом месте, защищенном от прямых солнечных лучей."
+          }
+        ]
+      : (product.slug === 'nmn-beta-nicotinamide-mononucleotide' || product.slug?.current === 'nmn-beta-nicotinamide-mononucleotide')
+        ? [
+            {
+              question: "Какова рекомендуемая температура хранения порошка NMN?",
+              answer: "Для длительного хранения мы рекомендуем хранить порошок NMN при температуре 2-8°C (в холодильнике) в герметично закрытом контейнере, защищенном от влаги и света, для обеспечения максимальной стабильности."
+            },
+            {
+              question: "Может ли GINKVORA поставлять NMN оптом?",
+              answer: "Да, мы поддерживаем коммерческие заказы от пробных партий в 1 кг до контейнерных перевозок весом в несколько тонн. Варианты упаковки включают стандартные фибровые барабаны по 25 кг."
+            }
+          ]
+        : undefined;
+
+const customFaqEntities = (localFaqItems || []).map((item: any) => ({
+  "@type": "Question",
+  "name": item.question,
+  "acceptedAnswer": {
+    "@type": "Answer",
+    "text": typeof item.answer === 'string'
+      ? item.answer.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').trim()
+      : ''
+  }
+}));
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": `Каков минимальный объем заказа для ${localName}?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": product.minimumOrderQuantity
+          ? `Минимальный объем заказа для ${localName} составляет ${product.minimumOrderQuantity}. Свяжитесь с нашей коммерческой службой для получения оптовых цен и вариантов индивидуальной упаковки.`
+          : `Пожалуйста, свяжитесь с GINKVORA напрямую, чтобы обсудить минимальный объем заказа и оптовые цены для ${localName}.`
+      }
+    },
+    {
+      "@type": "Question",
+      "name": `Какие сертификаты имеет ${localName} от GINKVORA?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": product.certifications && product.certifications.length > 0
+          ? `Продукт ${localName} от GINKVORA производится в соответствии со следующими сертификатами: ${product.certifications.join(', ')}.`
+          : `GINKVORA работает по системам менеджмента качества GMP и ISO 9001:2015. Свяжитесь с нами, чтобы получить полную документацию по сертификатам для ${localName}.`
+      }
+    },
+    {
+      "@type": "Question",
+      "name": `Можно ли запросить сертификат анализа (COA) или образец для ${localName}?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": `Да. GINKVORA предоставляет сертификаты анализа (COA), паспорта безопасности (MSDS/SDS) и физические образцы для ${localName} по запросу. Пожалуйста, воспользуйтесь формой запроса на этой странице или свяжитесь с нами по адресу inquiry@ginkvora.com.`
+      }
+    },
+    {
+      "@type": "Question",
+      "name": `Какова спецификация чистоты для ${localName}?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": product.purity
+          ? `Продукт ${localName} поставляется с чистотой ${product.purity}, подтвержденной анализом ВЭЖХ. Полная документация COA доступна по запросу.`
+          : `Пожалуйста, свяжитесь с GINKVORA для получения полной технической спецификации и документации по чистоте для ${localName}.`
+      }
+    },
+    ...customFaqEntities
+  ]
+};
 
 const productSchema = {
   "@context": "https://schema.org",
@@ -102,6 +188,7 @@ const breadcrumbSchema = {
 >
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 
   <main class="product-detail-page bg-noise">
     <div class="container page-content">
@@ -299,6 +386,13 @@ const breadcrumbSchema = {
         </div>
       </section>
 
+      <!-- FAQ Accordion Section -->
+      {localFaqItems && localFaqItems.length > 0 && (
+        <section class="product-faqs-section">
+          <FAQAccordion items={localFaqItems} title="Часто задаваемые вопросы" />
+        </section>
+      )}
+
       <!-- Inquiry form section -->
       <section id="inquiry-form-section" class="inquiry-section glass" aria-label="Форма запроса">
         <h2 class="inquiry-title">Запросить коммерческое предложение или образец</h2>
@@ -458,6 +552,11 @@ const breadcrumbSchema = {
   .inquiry-section { margin-top: var(--space-2xl); padding: 3rem; text-align: center; border-radius: var(--radius-xl); border: 1px solid rgba(212,166,84,0.2) !important; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
   .inquiry-title { font-size: 1.75rem; font-family: var(--font-display); color: var(--color-text); }
   .inquiry-sub { color: var(--color-text-secondary); font-size: 1rem; max-width: 520px; line-height: 1.7; }
+
+  .product-faqs-section {
+    margin-top: 4.5rem;
+    margin-bottom: 4.5rem;
+  }
 </style>
 
 <script>

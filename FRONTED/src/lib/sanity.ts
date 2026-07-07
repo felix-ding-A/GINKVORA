@@ -179,7 +179,9 @@ export const PRODUCT_DETAIL_FIELDS = `
   meta_title,
   meta_description,
   meta_title_ru,
-  meta_description_ru
+  meta_description_ru,
+  faqItems,
+  faqItems_ru
 `;
 
 export async function getAllProducts(category: string | null = null, mechanism: string | null = null) {
@@ -489,6 +491,8 @@ export type SanityProduct = {
   mainCategories?: string[];
   antiAgingMechanisms?: string[];
   applicationDisplay?: 'topical' | 'oral' | 'dual';
+  faqItems?: { question: string; answer: string }[];
+  faqItems_ru?: { question: string; answer: string }[];
 };
 
 export type SanityPost = {

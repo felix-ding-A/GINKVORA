@@ -1,0 +1,204 @@
+---
+// src/components/FAQAccordion.astro — Reusable B2B Accordion Component
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  items: FAQItem[];
+  title?: string;
+}
+
+const { items, title } = Astro.props;
+---
+
+{items && items.length > 0 && (
+  <div class="faq-accordion-wrapper">
+    {title && <h2 class="faq-accordion-title">{title}</h2>}
+    <div class="faq-accordion">
+      {items.map((item, index) => (
+        <div class="faq-accordion-item" data-index={index}>
+          <button class="faq-accordion-trigger" aria-expanded="false" aria-controls={`faq-panel-${index}`}>
+            <span class="faq-accordion-question">{item.question}</span>
+            <span class="faq-accordion-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 7H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M7 1V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="vertical-line"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-accordion-panel" id={`faq-panel-${index}`} aria-hidden="true">
+            <div class="faq-accordion-content">
+              <p>{item.answer}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+<style>
+  .faq-accordion-wrapper {
+    width: 100%;
+  }
+
+  .faq-accordion-title {
+    font-size: 1.75rem;
+    font-family: var(--font-display);
+    color: var(--color-text);
+    margin-bottom: 1.75rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.75rem;
+  }
+
+  .faq-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .faq-accordion-item {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: rgba(22, 24, 26, 0.45);
+    overflow: hidden;
+    transition: border-color var(--transition-base), background-color var(--transition-base);
+  }
+
+  .faq-accordion-item:hover {
+    border-color: rgba(212, 166, 84, 0.4);
+    background: rgba(22, 24, 26, 0.55);
+  }
+
+  .faq-accordion-item.active {
+    border-color: rgba(212, 166, 84, 0.6);
+    background: rgba(22, 24, 26, 0.65);
+    box-shadow: 0 0 15px rgba(212, 166, 84, 0.05);
+  }
+
+  .faq-accordion-trigger {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    padding: 1.25rem 1.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    transition: color var(--transition-fast);
+  }
+
+  .faq-accordion-trigger:hover {
+    color: var(--color-primary-light);
+  }
+
+  .faq-accordion-item.active .faq-accordion-trigger {
+    color: var(--color-primary-light);
+  }
+
+  .faq-accordion-question {
+    padding-right: 1.5rem;
+    line-height: 1.4;
+  }
+
+  .faq-accordion-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    transition: background-color var(--transition-base), color var(--transition-base);
+  }
+
+  .faq-accordion-trigger:hover .faq-accordion-icon {
+    background: rgba(212, 166, 84, 0.1);
+    color: var(--color-primary-light);
+  }
+
+  .faq-accordion-item.active .faq-accordion-icon {
+    background: rgba(212, 166, 84, 0.15);
+    color: var(--color-primary-light);
+  }
+
+  .faq-accordion-icon svg {
+    transition: transform var(--transition-base);
+  }
+
+  .faq-accordion-icon .vertical-line {
+    transform-origin: center;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+  }
+
+  .faq-accordion-item.active .vertical-line {
+    transform: rotate(90deg);
+    opacity: 0;
+  }
+
+  .faq-accordion-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .faq-accordion-content {
+    padding: 0 1.5rem 1.25rem 1.5rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .faq-accordion-content p {
+    margin: 0;
+  }
+</style>
+
+<script>
+  function setupAccordions() {
+    const triggers = document.querySelectorAll('.faq-accordion-trigger');
+    
+    triggers.forEach(trigger => {
+      // Clean up previous event listener to prevent duplicate bindings on page-load
+      trigger.removeEventListener('click', handleTriggerClick);
+      trigger.addEventListener('click', handleTriggerClick);
+    });
+  }
+
+  function handleTriggerClick(e: Event) {
+    const btn = e.currentTarget as HTMLButtonElement;
+    const item = btn.closest('.faq-accordion-item');
+    const panel = btn.nextElementSibling as HTMLElement;
+    
+    if (!item || !panel) return;
+    
+    const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+    
+    if (isExpanded) {
+      btn.setAttribute('aria-expanded', 'false');
+      panel.setAttribute('aria-hidden', 'true');
+      panel.style.maxHeight = '0px';
+      item.classList.remove('active');
+    } else {
+      btn.setAttribute('aria-expanded', 'true');
+      panel.setAttribute('aria-hidden', 'false');
+      panel.style.maxHeight = panel.scrollHeight + 'px';
+      item.classList.add('active');
+    }
+  }
+
+  // Initial setup
+  setupAccordions();
+  
+  // Re-run setup on Astro page transitions
+  document.addEventListener('astro:page-load', setupAccordions);
+</script>
