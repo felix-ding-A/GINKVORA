@@ -576,6 +576,9 @@ const breadcrumbSchema = {
       </div>
     </div>
   </div>
+  
+  <!-- Google reCAPTCHA v3 -->
+  <script is:inline src={`https://www.recaptcha.net/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}></script>
 </BaseLayout>
 
 <style>
@@ -1053,50 +1056,71 @@ const breadcrumbSchema = {
           applications.push((el as HTMLInputElement).value);
         });
 
-        const data = {
-          name: formData.get('name'),
-          company: formData.get('company') || 'None',
-          email: formData.get('email'),
-          phone: formData.get('phone'),
-          role: formData.get('role'),
-          demand: formData.get('demand'),
-          application: applications,
-          productName,
-          coaUrl,
-          b_website: formData.get('b_website'),
-        };
+        const submitCoa = async (token?: string) => {
+          const data = {
+            name: formData.get('name'),
+            company: formData.get('company') || 'None',
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            role: formData.get('role'),
+            demand: formData.get('demand'),
+            application: applications,
+            productName,
+            coaUrl,
+            b_website: formData.get('b_website'),
+            recaptchaToken: token || null,
+          };
 
-        try {
-          const res = await fetch('/api/coa-lead', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-          });
+          try {
+            const res = await fetch('/api/coa-lead', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            });
 
-          if (res.ok) {
-            if (formState) formState.style.display = 'none';
-            if (successState) successState.style.display = 'block';
-            
-            if (fallbackLink) {
-              fallbackLink.href = coaUrl;
+            if (res.ok) {
+              if (formState) formState.style.display = 'none';
+              if (successState) successState.style.display = 'block';
+              
+              if (fallbackLink) {
+                fallbackLink.href = coaUrl;
+              }
+
+              // Trigger download in new window
+              window.open(coaUrl, '_blank');
+            } else {
+              const errData = await res.json();
+              alert(errData.error || 'Ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Отправить и скачать';
+              }
             }
-
-            // Trigger download in new window
-            window.open(coaUrl, '_blank');
-          } else {
-            const errData = await res.json();
-            alert(errData.error || 'Ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
+          } catch (err) {
+            alert('Ошибка сети. Проверьте соединение и повторите попытку.');
             if (submitBtn) {
               submitBtn.disabled = false;
               submitBtn.textContent = 'Отправить и скачать';
             }
           }
-        } catch (err) {
-          alert('Ошибка сети. Проверьте соединение и повторите попытку.');
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Отправить и скачать';
-          }
+        };
+
+        // @ts-ignore
+        if (typeof grecaptcha !== 'undefined') {
+          // @ts-ignore
+          grecaptcha.ready(() => {
+            // @ts-ignore
+            grecaptcha.execute('6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid', { action: 'submit_coa' })
+              .then((token) => {
+                submitCoa(token);
+              })
+              .catch((err) => {
+                console.error('reCAPTCHA execution failed:', err);
+                submitCoa();
+              });
+          });
+        } else {
+          submitCoa();
         }
       });
     }

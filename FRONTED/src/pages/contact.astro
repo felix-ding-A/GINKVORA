@@ -175,6 +175,9 @@ const localBusinessSchema = {
       </div>
     </div>
   </main>
+  
+  <!-- Google reCAPTCHA v3 -->
+  <script is:inline src={`https://www.recaptcha.net/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}></script>
 </BaseLayout>
 
 <style>
@@ -393,43 +396,65 @@ const localBusinessSchema = {
           return;
         }
 
-        const data = {
-          name: formData.get('name'),
-          email: formData.get('email'),
-          website: formData.get('website') || 'None',
-          phone: formData.get('phone'),
-          industry: formData.get('industry'),
-          productName: formData.get('productName'),
-          quantity: formData.get('quantity'),
-          message: formData.get('message') || 'None',
-          b_website: formData.get('b_website'),
-        };
+        const submitData = async (token?: string) => {
+          const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            website: formData.get('website') || 'None',
+            phone: formData.get('phone'),
+            industry: formData.get('industry'),
+            productName: formData.get('productName'),
+            quantity: formData.get('quantity'),
+            message: formData.get('message') || 'None',
+            b_website: formData.get('b_website'),
+            recaptchaToken: token || null,
+          };
 
-        try {
-          const res = await fetch('/api/contact', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-          });
+          try {
+            const res = await fetch('/api/contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            });
 
-          if (res.ok) {
-            form.reset();
-            if (successMsg) successMsg.style.display = 'block';
-            if (submitBtn) submitBtn.textContent = 'Sent ✓';
-            window.location.href = '/thank-you';
-          } else {
-            alert('Failed to submit form. Please check details or email us directly.');
+            if (res.ok) {
+              form.reset();
+              if (successMsg) successMsg.style.display = 'block';
+              if (submitBtn) submitBtn.textContent = 'Sent ✓';
+              window.location.href = '/thank-you';
+            } else {
+              const errData = await res.json();
+              alert(errData.error || 'Failed to submit form. Please check details or email us directly.');
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send RFQ Inquiry';
+              }
+            }
+          } catch (err) {
+            alert('Connection error. Please try again.');
             if (submitBtn) {
               submitBtn.disabled = false;
               submitBtn.textContent = 'Send RFQ Inquiry';
             }
           }
-        } catch (err) {
-          alert('Connection error. Please try again.');
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Send RFQ Inquiry';
-          }
+        };
+
+        // @ts-ignore
+        if (typeof grecaptcha !== 'undefined') {
+          // @ts-ignore
+          grecaptcha.ready(() => {
+            // @ts-ignore
+            grecaptcha.execute('6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid', { action: 'submit_rfq' })
+              .then((token) => {
+                submitData(token);
+              })
+              .catch((err) => {
+                console.error('reCAPTCHA execution failed:', err);
+                submitData();
+              });
+          });
+        } else {
+          submitData();
         }
       });
     }

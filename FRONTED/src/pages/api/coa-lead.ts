@@ -22,7 +22,8 @@ export const POST: APIRoute = async ({ request }) => {
       application, 
       productName, 
       coaUrl, 
-      b_website 
+      b_website,
+      recaptchaToken
     } = body;
 
     // --- Extract tracking information ---
@@ -74,6 +75,50 @@ export const POST: APIRoute = async ({ request }) => {
         JSON.stringify({ error: 'Suspicious activity detected.' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
+    }
+
+    // --- reCAPTCHA Validation ---
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY || import.meta.env.RECAPTCHA_SECRET_KEY;
+    const isDev = import.meta.env.DEV;
+    if (secretKey && country !== 'CN') {
+      if (isDev) {
+        console.info('reCAPTCHA validation bypassed in DEV mode.');
+      } else {
+        if (!recaptchaToken) {
+          console.warn('reCAPTCHA validation failed: Token is missing for non-CN visitor during COA request.');
+          return new Response(
+            JSON.stringify({ error: 'Security verification failed. Please refresh the page and try again.' }),
+            { status: 400, headers: { 'Content-Type': 'application/json' } }
+          );
+        }
+
+        try {
+          const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+              secret: secretKey,
+              response: recaptchaToken,
+              remoteip: ip,
+            }).toString(),
+          });
+          
+          if (verifyRes.ok) {
+            const verifyData = await verifyRes.json();
+            if (!verifyData.success || (verifyData.score !== undefined && verifyData.score < 0.5)) {
+              console.warn('reCAPTCHA validation failed during COA request:', verifyData);
+              return new Response(
+                JSON.stringify({ error: 'Failed security check. Your request was flagged as suspicious.' }),
+                { status: 400, headers: { 'Content-Type': 'application/json' } }
+              );
+            }
+          } else {
+            console.warn('reCAPTCHA server returned non-ok status');
+          }
+        } catch (recaptchaErr) {
+          console.error('reCAPTCHA verification request error:', recaptchaErr);
+        }
+      }
     }
 
     // --- Basic validation ---

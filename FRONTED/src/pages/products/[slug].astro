@@ -615,6 +615,9 @@ const faqSchema = {
       </div>
     </div>
   </div>
+  
+  <!-- Google reCAPTCHA v3 -->
+  <script is:inline src={`https://www.recaptcha.net/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}></script>
 </BaseLayout>
 
 <style>
@@ -1318,41 +1321,63 @@ const faqSchema = {
           return;
         }
 
-        const data = {
-          name: formData.get('name'),
-          email: formData.get('email'),
-          phone: formData.get('phone'),
-          quantity: formData.get('quantity') || 'Not specified',
-          message: formData.get('message') || 'None',
-          productName: formData.get('productName'),
-          b_website: formData.get('b_website'),
-        };
+        const submitRfq = async (token?: string) => {
+          const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            quantity: formData.get('quantity') || 'Not specified',
+            message: formData.get('message') || 'None',
+            productName: formData.get('productName'),
+            b_website: formData.get('b_website'),
+            recaptchaToken: token || null,
+          };
 
-        try {
-          const res = await fetch('/api/contact', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-          });
+          try {
+            const res = await fetch('/api/contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            });
 
-          if (res.ok) {
-            rfqForm.reset();
-            if (successMsg) successMsg.style.display = 'block';
-            if (submitBtn) submitBtn.textContent = 'Submitted ✓';
-            window.location.href = '/thank-you';
-          } else {
-            alert('Failed to send request. Please try again or contact us directly.');
+            if (res.ok) {
+              rfqForm.reset();
+              if (successMsg) successMsg.style.display = 'block';
+              if (submitBtn) submitBtn.textContent = 'Submitted ✓';
+              window.location.href = '/thank-you';
+            } else {
+              const errData = await res.json();
+              alert(errData.error || 'Failed to send request. Please try again or contact us directly.');
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Quotation Request';
+              }
+            }
+          } catch (err) {
+            alert('Network error. Please try again.');
             if (submitBtn) {
               submitBtn.disabled = false;
               submitBtn.textContent = 'Send Quotation Request';
             }
           }
-        } catch (err) {
-          alert('Network error. Please try again.');
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Send Quotation Request';
-          }
+        };
+
+        // @ts-ignore
+        if (typeof grecaptcha !== 'undefined') {
+          // @ts-ignore
+          grecaptcha.ready(() => {
+            // @ts-ignore
+            grecaptcha.execute('6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid', { action: 'submit_rfq' })
+              .then((token) => {
+                submitRfq(token);
+              })
+              .catch((err) => {
+                console.error('reCAPTCHA execution failed:', err);
+                submitRfq();
+              });
+          });
+        } else {
+          submitRfq();
         }
       });
     }
@@ -1439,50 +1464,71 @@ const faqSchema = {
           applications.push((el as HTMLInputElement).value);
         });
 
-        const data = {
-          name: formData.get('name'),
-          company: formData.get('company') || 'None',
-          email: formData.get('email'),
-          phone: formData.get('phone'),
-          role: formData.get('role'),
-          demand: formData.get('demand'),
-          application: applications,
-          productName,
-          coaUrl,
-          b_website: formData.get('b_website'),
-        };
+        const submitCoa = async (token?: string) => {
+          const data = {
+            name: formData.get('name'),
+            company: formData.get('company') || 'None',
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            role: formData.get('role'),
+            demand: formData.get('demand'),
+            application: applications,
+            productName,
+            coaUrl,
+            b_website: formData.get('b_website'),
+            recaptchaToken: token || null,
+          };
 
-        try {
-          const res = await fetch('/api/coa-lead', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-          });
+          try {
+            const res = await fetch('/api/coa-lead', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            });
 
-          if (res.ok) {
-            if (formState) formState.style.display = 'none';
-            if (successState) successState.style.display = 'block';
-            
-            if (fallbackLink) {
-              fallbackLink.href = coaUrl;
+            if (res.ok) {
+              if (formState) formState.style.display = 'none';
+              if (successState) successState.style.display = 'block';
+              
+              if (fallbackLink) {
+                fallbackLink.href = coaUrl;
+              }
+
+              // Trigger the download in a new window
+              window.open(coaUrl, '_blank');
+            } else {
+              const errData = await res.json();
+              alert(errData.error || 'Failed to submit form. Please try again.');
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit & Instant Download';
+              }
             }
-
-            // Trigger the download in a new window
-            window.open(coaUrl, '_blank');
-          } else {
-            const errData = await res.json();
-            alert(errData.error || 'Failed to submit form. Please try again.');
+          } catch (err) {
+            alert('Network error. Please check your connection and try again.');
             if (submitBtn) {
               submitBtn.disabled = false;
               submitBtn.textContent = 'Submit & Instant Download';
             }
           }
-        } catch (err) {
-          alert('Network error. Please check your connection and try again.');
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Submit & Instant Download';
-          }
+        };
+
+        // @ts-ignore
+        if (typeof grecaptcha !== 'undefined') {
+          // @ts-ignore
+          grecaptcha.ready(() => {
+            // @ts-ignore
+            grecaptcha.execute('6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid', { action: 'submit_coa' })
+              .then((token) => {
+                submitCoa(token);
+              })
+              .catch((err) => {
+                console.error('reCAPTCHA execution failed:', err);
+                submitCoa();
+              });
+          });
+        } else {
+          submitCoa();
         }
       });
     }
