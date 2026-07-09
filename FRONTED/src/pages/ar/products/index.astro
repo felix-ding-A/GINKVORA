@@ -2,7 +2,11 @@
 const lang = 'ar';
 // src/pages/products/index.astro — Products listing page with search and category filters
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getAllProducts, urlFor } from '../../../lib/sanity';
+import { getAllProducts, urlFor, getLocalizedField } from '../../../lib/sanity';
+import { useTranslations, getLocalePath } from '../../../i18n/utils';
+
+const t = useTranslations(lang);
+const lp = (path: string) => getLocalePath(lang, path);
 
 const category = Astro.url.searchParams.get('category');
 const mechanism = Astro.url.searchParams.get('mechanism');
@@ -225,12 +229,13 @@ const itemListSchema = {
           {allProducts.map((prod, index) => {
             const pageIndex = Math.floor(index / PRODUCTS_PER_PAGE) + 1;
             const isInitiallyVisible = pageIndex === currentPage;
+            const localShortDesc = (getLocalizedField(prod, 'shortDescription', lang) ?? prod.shortDescription) as string | undefined;
             return (
               <article
                 class="product-card glass reveal"
                 data-name={prod.name.toLowerCase()}
                 data-cas={prod.casNumber ? prod.casNumber.toLowerCase() : ''}
-                data-desc={prod.shortDescription ? prod.shortDescription.toLowerCase() : ''}
+                data-desc={localShortDesc ? localShortDesc.toLowerCase() : ''}
                 data-page-index={pageIndex}
                 style={isInitiallyVisible ? "display: flex;" : "display: none;"}
               >
@@ -278,7 +283,9 @@ const itemListSchema = {
                     <p class="card-botanical">{prod.botanicalName}</p>
                   )}
 
-                  <p class="card-desc">{prod.shortDescription}</p>
+                  {localShortDesc && (
+                    <p class="card-desc">{localShortDesc}</p>
+                  )}
 
                   <div class="card-footer">
                     <a href={`/ar/products/${prod.slug}`} class="btn btn--secondary btn--sm">
