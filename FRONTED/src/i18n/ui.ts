@@ -6,11 +6,11 @@ export const defaultLang = 'en' as const;
 export const languages = {
   en: { label: 'English',   flag: '🇬🇧', locale: 'en-US' },
   ru: { label: 'Русский',   flag: '🇷🇺', locale: 'ru-RU' },
+  ar: { label: 'العربية',  flag: '🇸🇦', locale: 'ar-SA' },
 } as const;
 
 export const upcomingLanguages = {
   es: { label: 'Español',   flag: '🇪🇸', locale: 'es-ES' },
-  ar: { label: 'العربية',  flag: '🇸🇦', locale: 'ar-SA' },
 } as const;
 
 export type Lang = keyof typeof languages;
@@ -950,3 +950,5 @@ export const ui = {
 
   },
 } as const;
+
+export type UIKey = keyof typeof ui[typeof defaultLang];

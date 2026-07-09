@@ -67,7 +67,7 @@ export function stripLangPrefix(path: string): string {
 export function getLocalePath(lang: Lang, path: string): string {
   const cleanPath = stripLangPrefix(path);
   if (lang === defaultLang) return cleanPath || '/';
-  return `/${lang}${cleanPath}`;
+  return cleanPath === '/' ? `/${lang}` : `/${lang}${cleanPath}`;
 }
 
 /**
