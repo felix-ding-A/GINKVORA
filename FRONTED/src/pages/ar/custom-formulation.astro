@@ -1,0 +1,1240 @@
+---
+const lang = 'ar';
+// src/pages/custom-formulation.astro — Premium B2B Custom Formulation & OEM Page
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: 'https://ginkvora.com/ar' },
+    { '@type': 'ListItem', position: 2, name: 'تركيبات مخصصة', item: 'https://ginkvora.com/ar/custom-formulation' },
+  ],
+};
+
+const pageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  'name': 'خدمات التركيبات المخصصة والتصنيع التعاقدي | GINKVORA',
+  'description': 'خدمات التصنيع التعاقدي والتركيبات المخصصة للأفلام الرقيقة الفموية (OTF) والكبسلة الليبوزومية المتقدمة. حلول OEM/ODM مخصصة لقطاع B2B.',
+  'url': 'https://ginkvora.com/ar/custom-formulation',
+};
+
+
+
+
+---
+
+<BaseLayout lang={lang}
+  title="خدمات التركيبات المخصصة والتصنيع التعاقدي | GINKVORA"
+  description="خدمات التصنيع التعاقدي والتركيبات المخصصة للأفلام الرقيقة الفموية (OTF) والكبسلة الليبوزومية المتقدمة. حلول OEM/ODM مخصصة لقطاع B2B."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} slot="head" />
+
+  <main class="formulation-page bg-noise">
+    <!-- Hero Section -->
+    <header class="page-banner" aria-label="ترويسة الصفحة">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <div class="hero-columns">
+          <div class="hero-text-col reveal">
+            <span class="section-label">تصنيع OEM/ODM مخصص لقطاع B2B</span>
+            <h1 class="banner-title">حلول التركيبات المخصصة: <span class="gradient-text--gold">من الابتكار إلى منتجات جاهزة للسوق</span></h1>
+            <p class="banner-desc">
+              تمكين علامتك التجارية بأحدث تقنيات الأفلام الرقيقة الفموية (OTF) وتكنولوجيا الكبسلة. مخصصة لتلبية متمتطلبات المكونات النشطة الخاصة بك ومحسنة لتحقيق أقصى قدر من الفعالية.
+            </p>
+            <div class="hero-actions">
+              <a href="#inquiry-form-section" class="btn btn--gold">طلب عرض سعر تركيبة</a>
+              <a href="#otf-focus" class="btn btn--outline">استكشف التقنيات</a>
+            </div>
+          </div>
+          <div class="hero-visual-col reveal reveal-delay-2">
+            <div class="image-showcase glass hero-carousel">
+              <div class="carousel-slides">
+                <div class="carousel-slide active">
+                  <img
+                    src="/images/ginkvora-cleanroom-manufacturing-machinery.webp"
+                    alt="معدات التصنيع في الغرفة النظيفة فئة 100,000 من GINKVORA"
+                    class="showcase-img"
+                    width="600"
+                    height="400"
+                  />
+                  <div class="showcase-caption">التصنيع في غرفة نظيفة فئة 100,000</div>
+                </div>
+                <div class="carousel-slide">
+                  <img
+                    src="/images/ginkvora-gmp-capsule-bottle-filling-line.webp"
+                    alt="خط تعبئة زجاجات الكبسولات الآلي GMP من GINKVORA"
+                    class="showcase-img"
+                    width="600"
+                    height="400"
+                  />
+                  <div class="showcase-caption">خط تعبئة الكبسولات الآلي GMP</div>
+                </div>
+                <div class="carousel-slide">
+                  <img
+                    src="/images/ginkvora-otf-strip-packaging-cleanroom-line.webp"
+                    alt="خط تغليف أشرطة OTF الدقيقة في الغرفة النظيفة من GINKVORA"
+                    class="showcase-img"
+                    width="600"
+                    height="400"
+                  />
+                  <div class="showcase-caption">خط تغليف أشرطة OTF الدقيقة</div>
+                </div>
+                <div class="carousel-slide">
+                  <img
+                    src="/images/ginkvora%20QC%20Laboratory.webp"
+                    alt="مختبر مراقبة الجودة المتطور من GINKVORA"
+                    class="showcase-img"
+                    width="600"
+                    height="400"
+                  />
+                  <div class="showcase-caption">مختبر مراقبة الجودة المتطور</div>
+                </div>
+                <div class="carousel-slide">
+                  <img
+                    src="/images/ginkvora-rd-analytical-laboratory.webp"
+                    alt="مختبر التحليل والتركيبات للبحث والتطوير من GINKVORA"
+                    class="showcase-img"
+                    width="600"
+                    height="400"
+                  />
+                  <div class="showcase-caption">مركز التحليل والتركيبات للبحث والتطوير</div>
+                </div>
+              </div>
+              
+              <!-- Carousel Indicators -->
+              <div class="carousel-indicators">
+                <span class="indicator active" data-index="0"></span>
+                <span class="indicator" data-index="1"></span>
+                <span class="indicator" data-index="2"></span>
+                <span class="indicator" data-index="3"></span>
+                <span class="indicator" data-index="4"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- The Core Focus: OTF -->
+    <section class="section otf-section bg-deep" id="otf-focus" aria-label="تقنية الأفلام الرقيقة الفموية">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">التخصص الأساسي</span>
+          <h2 class="section-title">أفلام رقيقة فموية (OTF) مصممة بدقة</h2>
+          <p class="section-desc">
+            استفد من تقنية تسليم الأفلام الرقيقة الرائدة في فئتها لتمييز علامتك التجارية عن الكبسولات والأقراص القياسية.
+          </p>
+        </div>
+
+        <div class="grid-2-columns">
+          <div class="visual-panel reveal">
+            <div class="image-showcase glass">
+              <img
+                src="/images/oral-dissolving-film-benefits.webp"
+                alt="مزايا الفيلم الرقيق الفموي (OTF) بما في ذلك الامتصاص السريع والمصفوفة القابلة للتخصيص وقدرة التحميل العالية"
+                class="showcase-img"
+                width="600"
+                height="400"
+              />
+            </div>
+          </div>
+
+          <div class="content-panel">
+            <div class="feature-card glass reveal reveal-delay-1">
+              <div class="feature-icon">⚡</div>
+              <div class="feature-body">
+                <h3>امتصاص سريع وتوافر حيوي عالٍ</h3>
+                <p>
+                  يتجاوز الاستقلاب الكبدي الأول. يذوب فوراً في تجويف الفم لامتصاص سريع عبر الغشاء المخاطي والتوصيل النظامي المباشر.
+                </p>
+              </div>
+            </div>
+
+            <div class="feature-card glass reveal reveal-delay-2">
+              <div class="feature-icon">🧪</div>
+              <div class="feature-body">
+                <h3>مصفوفة بوليمر مخصصة</h3>
+                <p>
+                  تغطية طعم مصممة هندسياً، وملفات ذوبان مخصصة (من فوري إلى خاضع للرقابة)، وسعات تحميل مكونات نشطة مخصصة تصل إلى 150 ملغ لكل فيلم.
+                </p>
+              </div>
+            </div>
+
+            <div class="feature-card glass reveal reveal-delay-3">
+              <div class="feature-icon">💧</div>
+              <div class="feature-body">
+                <h3>لا يتطلب ماء وسهل الحمل</h3>
+                <p>
+                  لا حاجة لاستهلاك الماء. يوفر راحة تامة أثناء التنقل لمنتجات نمط الحياة النشط، مما يزيد من التزام المستهلك والولاء للعلامة التجارية.
+                </p>
+              </div>
+            </div>
+
+            <div class="feature-card glass reveal reveal-delay-4">
+              <div class="feature-icon">🌿</div>
+              <div class="feature-body">
+                <h3>تركيز التطبيق: مكافحة الشيخوخة، المنشطات الذهنية والجمال الداخلي</h3>
+                <p>
+                  مثالي لسلائف NAD+ (مثل NMN)، وPQQ، والغلوتاثيون، والمستخلصات النباتية. تضمن تقنية OTF الخاصة بنا التوصيل الأمثل للمكونات النشطة بيولوجياً لمكافحة الشيخوخة، ودعم الصحة الخلوية من الداخل (ECM).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diversified Solutions: Encapsulation -->
+    <section class="container section encapsulation-section" aria-label="خدمات الكبسلة">
+      <div class="section-header reveal">
+        <span class="section-label">أنظمة توصيل متنوعة</span>
+        <h2 class="section-title">خدمات الكبسلة المتقدمة</h2>
+        <p class="section-desc">
+          بجانب الأفلام الرقيقة، تقدم GINKVORA تنسيقات كبسلة متقدمة متعددة لاستقرار المواد الحساسة والتحكم في حركية الإطلاق.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <div class="cap-card glass reveal">
+          <div class="cap-icon">🧬</div>
+          <h3>التركيبات الليبوزومية</h3>
+          <p>
+            تحمي الكريات المجهرية ذات الطبقة الثنائية الدهنية الجزيئات الهشة (مثل فيتامين C أو الجلابريدين) من أحماض المعدة، مما يعزز الامتصاص المعوي.
+          </p>
+          <div class="cap-tag">الاستقرار والتوافر الحيوي</div>
+        </div>
+
+        <div class="cap-card glass reveal reveal-delay-1">
+          <div class="cap-icon">⏳</div>
+          <h3>مصفوفة الإطلاق المستدام</h3>
+          <p>
+            تقنيات طلاء الكريات والحبيبات المصممة لإطلاق المركبات النشطة ببطء على مدى 8-12 ساعة، للحفاظ على مستويات ثابتة في البلازما.
+          </p>
+          <div class="cap-tag">إطلاق خاضع للرقابة</div>
+        </div>
+
+        <div class="cap-card glass reveal reveal-delay-2">
+          <div class="cap-icon">💊</div>
+          <h3>كبسولات صلبة مخصصة</h3>
+          <p>
+            تعبئة كبسولات HPMC والبولولان النباتية بدقة جرعات ميكروية. قادرة على مزج مساحيق المستخلصات الجافة المعقدة مع الحد الأدنى من استخدام السواغات.
+          </p>
+          <div class="cap-tag">إنتاج قابل للتوسع</div>
+        </div>
+      </div>
+
+      <div class="encap-footer-visual reveal mt-6">
+        <div class="image-showcase glass">
+          <img
+            src="/images/ginkvora Mixing and Blending of Raw Materials_600size.webp"
+            alt="خلط ومزج المواد الخام في بيئة معتمدة من GMP لتوسيع نطاق الإنتاج"
+            class="showcase-img"
+            width="800"
+            height="320"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Capabilities -->
+    <section class="section capabilities-section bg-deep" aria-label="القدرات الفنية">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">لماذا تختار GINKVORA</span>
+          <h2 class="section-title">القدرات التقنية والتميز في البحث والتطوير</h2>
+          <p class="section-desc">
+            نحن نجسّر الفجوة بين الابتكارات على المستوى المختبري والتصنيع التعاقدي التجاري بكميات كبيرة.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <div class="capability-item reveal">
+            <div class="cap-num">01</div>
+            <h3>التميز في البحث والتطوير</h3>
+            <p>
+              يقوم علماؤنا بتخصيص مرونة الفيلم وسمكه وملفات تغطية الطعم ومعايير تحميل المواد النشطة لتتوافق مع متطلبات تركيبتك المخصصة.
+            </p>
+          </div>
+
+          <div class="capability-item reveal reveal-delay-1">
+            <div class="cap-num">02</div>
+            <h3>معايير جودة GMP</h3>
+            <p>
+              تتوافق الغرف النظيفة الخاضعة لرقابة صارمة على درجات الحرارة والرطوبة مع معايير GMP. تخضع جميع تجارب التشغيل والدفعات التجارية للتحقق الصارم باستخدام HPLC/ICP-MS.
+            </p>
+          </div>
+
+          <div class="capability-item reveal reveal-delay-2">
+            <div class="cap-num">03</div>
+            <h3>دعم متكامل من البداية للنهاية</h3>
+            <p>
+              من شراء المواد الخام واختبار المكونات النشطة إلى تصميم التركيبة، والدفعات التجريبية، والتعبئة النهائية في عبوات البثرة للبيع بالتجزئة.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How We Work -->
+    <section class="container section timeline-section" aria-label="آلية العمل">
+      <div class="section-header reveal">
+        <span class="section-label">خطوات متكاملة خطوة بخطوة</span>
+        <h2 class="section-title">آلية التعاون والعمل المشترك</h2>
+        <p class="section-desc">
+          كيف ننقل فكرة منتجك من مناقشات البحث والتطوير المبكرة إلى شحن دفعات جاهزة للبيع.
+        </p>
+      </div>
+
+      <div class="process-timeline" role="list">
+        <!-- Step 1 -->
+        <div class="process-step" role="listitem">
+          <div class="step-connector">
+            <div class="step-node"><span class="step-num">01</span></div>
+            <div class="step-line" aria-hidden="true"></div>
+          </div>
+          <div class="step-content glass reveal">
+            <div class="step-icon-emoji">💬</div>
+            <div class="step-body">
+              <h3>مرحلة الاستشارة وبلورة المفهوم</h3>
+              <p>مناقشة المكونات النشطة المستهدفة (مثل NMN، PQQ)، وأهداف شكل الجرعة، ومواصفات الإطلاق، واللوائح الإقليمية المستهدفة.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="process-step" role="listitem">
+          <div class="step-connector">
+            <div class="step-node"><span class="step-num">02</span></div>
+            <div class="step-line" aria-hidden="true"></div>
+          </div>
+          <div class="step-content glass reveal reveal-delay-1">
+            <div class="step-icon-emoji">🔬</div>
+            <div class="step-body">
+              <h3>تطوير التركيبة</h3>
+              <p>يصمم مختبرنا مصفوفة البوليمر، وتهيئة عامل إخفاء الطعم، ويجهز النماذج الفيزيائية لتقييم الاستقرار والتفتت والسمك.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="process-step" role="listitem">
+          <div class="step-connector">
+            <div class="step-node"><span class="step-num">03</span></div>
+            <div class="step-line" aria-hidden="true"></div>
+          </div>
+          <div class="step-content glass reveal reveal-delay-2">
+            <div class="step-icon-emoji">⚙️</div>
+            <div class="step-body">
+              <h3>توسيع نطاق الإنتاج والتشغيل التجريبي</h3>
+              <p>ننقل تركيبة المختبر إلى خط الإنتاج التجريبي لدينا، ونختبر معايير العملية وحركية التجفيف واتساق التحميل.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="process-step process-step--last" role="listitem">
+          <div class="step-connector">
+            <div class="step-node"><span class="step-num">04</span></div>
+          </div>
+          <div class="step-content glass reveal reveal-delay-3">
+            <div class="step-icon-emoji">📦</div>
+            <div class="step-body">
+              <h3>التصنيع التجاري الكامل بمعايير GMP</h3>
+              <p>عند الموافقة على التشغيل التجريبي، ننفذ إنتاجاً تجارياً بكميات كبيرة تحت ضوابط GMP، ونجمع وثائق شهادة التحليل (COA) الكاملة، ونعبي البراميل أو البثرات الجاهزة للشحن.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA & Form Section -->
+    <section class="section form-section bg-deep" id="inquiry-form-section" aria-label="نموذج استفسار التركيبات">
+      <div class="container">
+        <div class="grid-cta">
+          <!-- Left info -->
+          <div class="cta-info reveal">
+            <span class="section-label">المصادر التجارية</span>
+            <h2>هل أنت مستعد لتحويل فكرتك إلى حقيقة؟</h2>
+            <p class="cta-desc">
+              تواصل مع مكتب التركيبات العلمية لدينا. نحن نقدم خدمات التصنيع التعاقدي المخصصة، وOEM/ODM للعلامات التجارية الخاصة، ودفعات عينات تجريبية لشركاء العلامات التجارية المؤهلين.
+            </p>
+
+            <div class="contact-list">
+              <div class="contact-item">
+                <span class="icon">📧</span>
+                <div>
+                  <strong>البريد الإلكتروني للاستفسار المباشر</strong>
+                  <a href="mailto:inquiry@ginkvora.com">inquiry@ginkvora.com</a>
+                </div>
+              </div>
+              <div class="contact-item">
+                <span class="icon">📞</span>
+                <div>
+                  <strong>الدعم التجاري عبر الواتساب</strong>
+                  <a href="https://wa.me/16802556637" target="_blank" rel="noopener noreferrer">+1 6802556637</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="policy-card glass mt-6">
+              <h3>إرشادات العلامة الخاصة وتصنيع OEM</h3>
+              <ul class="policy-list">
+                <li><strong>دفعات العينات:</strong> تتوفر أفلام اختبار النماذج الأولية لعلامات التجميل والمكملات المؤهلة.</li>
+                <li><strong>امتثال الوثائق:</strong> يتم توفير شهادة التحليل (COA)، واختبار المعادن الثقيلة، ووثائق ورقة العملية مع كل عرض سعر تركيبة.</li>
+                <li><strong>المكونات المخصصة:</strong> يمكننا صياغة المنتجات باستخدام مواد خام مقدمة من العميل أو توفيرها من خلال موردينا الموثوقين.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Right form -->
+          <div class="cta-form-wrapper reveal reveal-delay-1">
+            <div class="form-card glass">
+              <h3>طلب عرض سعر تركيبة</h3>
+              <p class="form-sub">الحقول المميزة بنجمة (*) مطلوبة.</p>
+
+              <form id="formulation-quote-form" class="custom-form">
+                <!-- Honeypot -->
+                <input type="text" name="b_website" class="honeypot-field" autocomplete="off" tabindex="-1" placeholder="اترك هذا الحقل فارغاً" />
+
+                <div class="form-field">
+                  <label for="name" class="form-label">الاسم / اسم الشركة *</label>
+                  <input type="text" id="name" name="name" required class="form-input" placeholder="جون دو / شركة بيوتيك المحدودة" />
+                </div>
+
+                <div class="form-row-2">
+                  <div class="form-field">
+                    <label for="email" class="form-label">البريد الإلكتروني للعمل *</label>
+                    <input type="email" id="email" name="email" required class="form-input" placeholder="name@company.com" />
+                  </div>
+                  <div class="form-field">
+                    <label for="phone" class="form-label">الهاتف / الواتساب *</label>
+                    <input type="tel" id="phone" name="phone" required class="form-input" placeholder="+1 (555) 123-4567" />
+                  </div>
+                </div>
+
+                <div class="form-row-2">
+                  <div class="form-field">
+                    <label for="productConcept" class="form-label">مفهوم المنتج *</label>
+                    <input type="text" id="productConcept" name="productConcept" required class="form-input" placeholder="مثل: فيلم رقيق فموي، ليبوزومات" />
+                  </div>
+                  <div class="form-field">
+                    <label for="expectedVolume" class="form-label">الحجم المتوقع *</label>
+                    <select id="expectedVolume" name="expectedVolume" required class="form-input form-select">
+                      <option value="" disabled selected>اختر نطاق الحجم...</option>
+                      <option value="under-100k">أقل من 100 ألف قطعة</option>
+                      <option value="100k-500k">100 ألف - 500 ألف قطعة</option>
+                      <option value="over-500k">أكثر من 500 ألف قطعة</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-field">
+                  <label for="message" class="form-label">متطلبات التركيبة التفصيلية</label>
+                  <textarea id="message" name="message" class="form-input" rows="4" placeholder="اختياري. صف المكونات النشطة، متطلبات الجرعة، معدل الذوبان المستهدف، وتفضيلات أخرى..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn--gold btn--lg btn--block" id="submit-btn">
+                  إرسال طلب عرض سعر التركيبة
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  </svg>
+                </button>
+
+                <div id="success-msg" class="success-message" style="display: none;" role="alert">
+                  ✓ تم إرسال طلب عرض السعر بنجاح. سيتصل بك فريق البحث والتطوير لدينا في غضون 12 ساعة.
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .formulation-page {
+    padding-bottom: 0;
+  }
+
+  /* --- Hero Banner --- */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 5rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 45% 60% at 85% 20%, rgba(212, 166, 84, 0.09) 0%, transparent 100%);
+  }
+
+  .hero-columns {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-text-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .banner-desc {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .image-showcase {
+    position: relative;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.15) !important;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .showcase-img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 3/2;
+    transition: transform 0.6s ease;
+  }
+
+  .image-showcase:hover .showcase-img {
+    transform: scale(1.03);
+  }
+
+  .showcase-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-primary-light);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* --- Grid layouts --- */
+  .grid-2-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+    margin-top: 3rem;
+  }
+
+  .content-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .grid-cta {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  /* --- Feature Cards --- */
+  .feature-card {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.08) !important;
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .feature-card:hover {
+    border-color: rgba(212, 166, 84, 0.22) !important;
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .feature-icon {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+  }
+
+  .feature-body h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-body p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* --- Encapsulation Cards --- */
+  .cap-card {
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.08) !important;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .cap-card:hover {
+    border-color: rgba(212, 166, 84, 0.22) !important;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .cap-icon {
+    font-size: 2.25rem;
+    line-height: 1;
+  }
+
+  .cap-card h3 {
+    font-size: 1.375rem;
+    color: var(--color-primary-light);
+    margin: 0;
+  }
+
+  .cap-card p {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  .cap-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .encap-footer-visual .showcase-img {
+    aspect-ratio: 5/2;
+  }
+
+  /* --- Capabilities --- */
+  .capability-item {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .cap-num {
+    font-family: var(--font-mono);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: rgba(212, 166, 84, 0.65);
+    line-height: 1;
+    border-bottom: 2px solid rgba(212, 166, 84, 0.35);
+    padding-bottom: 0.5rem;
+    width: fit-content;
+  }
+
+  .capability-item h3 {
+    font-size: 1.375rem;
+    color: var(--color-primary-light);
+    margin: 0;
+  }
+
+  .capability-item p {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* --- Timeline process --- */
+  .process-timeline {
+    max-width: 800px;
+    margin: 3rem auto 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .process-step {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .step-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .step-node {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color-bg-deep);
+    border: 2px solid var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    box-shadow: 0 0 16px rgba(212, 166, 84, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .process-step:hover .step-node {
+    box-shadow: var(--shadow-glow-gold);
+    background: var(--color-accent);
+    border-color: var(--color-accent-light, #e09040);
+  }
+
+  .process-step:hover .step-node .step-num {
+    color: var(--color-bg);
+  }
+
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-primary-light);
+  }
+
+  .step-line {
+    width: 2px;
+    height: 100px;
+    background: linear-gradient(to bottom, var(--color-primary), transparent);
+    opacity: 0.3;
+    margin-top: 4px;
+  }
+
+  .process-step--last .step-line {
+    display: none;
+  }
+
+  .step-content {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.08) !important;
+    align-items: flex-start;
+    transition: all 0.3s ease;
+  }
+
+  .step-content:hover {
+    border-color: rgba(212, 166, 84, 0.22) !important;
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .step-icon-emoji {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .step-body h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .step-body p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* --- Form Section Details --- */
+  .cta-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .cta-info h2 {
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .cta-desc {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .contact-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .contact-item .icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    margin-top: 0.125rem;
+  }
+
+  .contact-item strong {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    margin-bottom: 0.125rem;
+  }
+
+  .contact-item a {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .contact-item a:hover {
+    color: var(--color-primary-light);
+  }
+
+  .policy-card {
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border-color: rgba(212, 166, 84, 0.06) !important;
+  }
+
+  .policy-card h3 {
+    font-size: 1rem;
+    color: var(--color-primary-light);
+    margin-bottom: 1rem;
+  }
+
+  .policy-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .policy-list li {
+    position: relative;
+    padding-inline-start: 1.25rem;
+  }
+
+  .policy-list li::before {
+    content: '✓';
+    position: absolute;
+    inset-inline-start: 0;
+    color: var(--color-primary-light);
+    font-weight: bold;
+  }
+
+  .form-card {
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.15) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .form-card h3 {
+    font-size: 1.625rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .form-sub {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1.75rem;
+  }
+
+  .custom-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.02em;
+  }
+
+  .form-input {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    padding: 0.75rem 1rem;
+    font-size: 0.9375rem;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--color-primary-light);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 10px rgba(212, 166, 84, 0.15);
+  }
+
+  .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23d4a654' stroke-width='3'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+
+  :global([dir="rtl"]) .form-select {
+    background-position: left 1rem center;
+    padding-left: 2.5rem;
+    padding-right: 1rem;
+  }
+
+  .form-select option {
+    background-color: #0c0b08;
+    color: var(--color-text);
+  }
+
+  .form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .honeypot-field {
+    display: none !important;
+  }
+
+  .btn--block {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .success-message {
+    padding: 1rem;
+    background: rgba(124, 184, 122, 0.12);
+    border: 1px solid var(--color-success);
+    color: var(--color-success);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    font-weight: 500;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 1024px) {
+    .hero-columns {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .grid-2-columns {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .grid-3 {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .grid-cta {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .encap-footer-visual .showcase-img {
+      aspect-ratio: 3/2;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .form-row-2 {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+    }
+
+    .hero-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .process-step {
+      grid-template-columns: 40px 1fr;
+      gap: 1rem;
+    }
+
+    .step-node {
+      width: 36px;
+      height: 36px;
+    }
+
+    .step-content {
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1.25rem;
+    }
+
+    .form-card {
+      padding: 1.5rem;
+    }
+  }
+
+  /* --- Hero Carousel --- */
+  .hero-carousel {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .carousel-slides {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/2;
+    overflow: hidden;
+  }
+
+  .carousel-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    z-index: 1;
+  }
+
+  .carousel-slide.active {
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .carousel-slide .showcase-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .carousel-indicators {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 10;
+  }
+
+  .carousel-indicators .indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .carousel-indicators .indicator.active {
+    background: var(--color-primary-light);
+    transform: scale(1.2);
+    box-shadow: 0 0 6px var(--color-primary);
+  }
+</style>
+
+<script>
+  function initFormulationForm() {
+    const form = document.getElementById('formulation-quote-form') as HTMLFormElement;
+    const successMsg = document.getElementById('success-msg');
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = 'جاري الإرسال...';
+        }
+
+        const formData = new FormData(form);
+        
+        // Anti-spam honey pot check
+        if (formData.get('b_website')) {
+          console.warn('Honeypot trigger.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'إرسال طلب عرض سعر التركيبة';
+          }
+          return;
+        }
+
+        const data = {
+          name: formData.get('name'),
+          email: formData.get('email'),
+          phone: formData.get('phone'),
+          interest: 'Custom Formulation',
+          productName: formData.get('productConcept'),
+          quantity: formData.get('expectedVolume'),
+          message: formData.get('message') || 'None',
+          b_website: formData.get('b_website')
+        };
+
+        try {
+          const res = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+
+          if (res.ok) {
+            form.reset();
+            if (successMsg) successMsg.style.display = 'block';
+            if (submitBtn) submitBtn.innerHTML = 'تم الإرسال ✓';
+            window.location.href = '/ar/thank-you';
+          } else {
+            alert('فشل إرسال طلب صياغة التركيبة. يرجى التحقق من التفاصيل أو مراسلتنا عبر البريد الإلكتروني مباشرة.');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = 'إرسال طلب عرض سعر التركيبة';
+            }
+          }
+        } catch (err) {
+          alert('خطأ في الاتصال بالشبكة. يرجى المحاولة مرة أخرى.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'إرسال طلب عرض سعر التركيبة';
+          }
+        }
+      });
+    }
+  }
+
+  // Support SPA navigation loading
+  initFormulationForm();
+  document.addEventListener('astro:page-load', initFormulationForm);
+
+  function initHeroCarousel() {
+    const carousel = document.querySelector('.hero-carousel');
+    if (!carousel) return;
+
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const indicators = carousel.querySelectorAll('.carousel-indicators .indicator');
+    let currentIndex = 0;
+    let timer: number | null = null;
+
+    function showSlide(index: number) {
+      slides.forEach((slide, i) => {
+        if (i === index) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+      indicators.forEach((indicator, i) => {
+        if (i === index) {
+          indicator.classList.add('active');
+        } else {
+          indicator.classList.remove('active');
+        }
+      });
+      currentIndex = index;
+    }
+
+    function startAutoPlay() {
+      stopAutoPlay();
+      timer = setInterval(() => {
+        let nextIndex = (currentIndex + 1) % slides.length;
+        showSlide(nextIndex);
+      }, 3000) as unknown as number;
+    }
+
+    function stopAutoPlay() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        showSlide(index);
+        startAutoPlay();
+      });
+    });
+
+    startAutoPlay();
+  }
+
+  initHeroCarousel();
+  document.addEventListener('astro:page-load', initHeroCarousel);
+</script>

@@ -192,17 +192,16 @@ const alternatePaths = getAlternatePaths(Astro.url, typedLang);
               <span class="lang-flag">🇪🇸</span> Español
               <span class="lang-badge">Soon</span>
             </span>
-            <span class:list={['lang-option', 'lang-option--soon']} role="menuitem" lang="ar" aria-disabled="true">
+            <a href={alternatePaths.ar} class:list={['lang-option', { 'lang-option--active': typedLang === 'ar' }]} role="menuitem" lang="ar">
               <span class="lang-flag">🇸🇦</span> العربية
-              <span class="lang-badge">Soon</span>
-            </span>
+            </a>
           </div>
         </div>
 
         <!-- CTA Button -->
         <a href={lp('/contact')} class="btn btn--primary btn--sm nav-cta" id="nav-cta-btn">
           {t('nav.cta')}
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <svg class="rtl-mirror" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </a>

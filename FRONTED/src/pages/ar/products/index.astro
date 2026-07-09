@@ -1,0 +1,868 @@
+---
+const lang = 'ar';
+// src/pages/products/index.astro — Products listing page with search and category filters
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getAllProducts, urlFor } from '../../../lib/sanity';
+
+const category = Astro.url.searchParams.get('category');
+const mechanism = Astro.url.searchParams.get('mechanism');
+const pageParam = Astro.url.searchParams.get('page');
+
+// Fetch products based on filters
+const allProducts = await getAllProducts(category, mechanism);
+
+// Pagination config
+const PRODUCTS_PER_PAGE = 12;
+const totalProducts = allProducts.length;
+const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE));
+const currentPage = Math.min(Math.max(1, parseInt(pageParam ?? '1') || 1), totalPages);
+const pageStart = (currentPage - 1) * PRODUCTS_PER_PAGE;
+const products = allProducts.slice(pageStart, pageStart + PRODUCTS_PER_PAGE);
+
+const siteUrl = 'https://ginkvora.com/ar';
+
+const categoriesList = [
+  { slug: 'liposomal', name: 'ليبوستومال', icon: '🧬' },
+  { slug: 'pet-longevity', name: 'صحة الحيوانات الأليفة', icon: '🐾' },
+  { slug: 'superfood', name: 'الأغذية الفائقة', icon: '🍎' },
+  { slug: 'cosmetic-ingredients', name: 'مكونات مستحضرات التجميل', icon: '🌿' }
+];
+
+const mechanismsList = [
+  { slug: 'collagen-stimulant', name: 'مصفوفة الكولاجين', icon: '🧬' },
+  { slug: 'mmp-inhibitor', name: 'درع MMP', icon: '🛡️' },
+  { slug: 'anti-glycation', name: 'الدفاع ضد السكر', icon: '⏳' }
+];
+
+function getFilterUrl(cat: string | null, mech: string | null) {
+  const params = new URLSearchParams();
+  if (cat) params.set('category', cat);
+  if (mech) params.set('mechanism', mech);
+  const q = params.toString();
+  return `/ar/products${q ? '?' + q : ''}`;
+}
+
+function getPageUrl(page: number) {
+  const params = new URLSearchParams();
+  if (category) params.set('category', category);
+  if (mechanism) params.set('mechanism', mechanism);
+  if (page > 1) params.set('page', String(page));
+  const q = params.toString();
+  return `/ar/products${q ? '?' + q : ''}`;
+}
+
+// Pre-compute pagination items to avoid Astro JSX parsing issues with > in templates
+type PageItem = { type: 'page'; page: number; url: string; active: boolean } | { type: 'ellipsis' };
+const pageItems: PageItem[] = [];
+if (totalPages > 1) {
+  const visiblePages = Array.from({ length: totalPages }, (_, i) => i + 1).filter(p =>
+    p === 1 || p === totalPages ||
+    (p >= currentPage - 1 && p <= currentPage + 1) ||
+    (p === currentPage - 2 && currentPage > 3) ||
+    (p === currentPage + 2 && currentPage < totalPages - 2)
+  );
+  visiblePages.forEach((p, idx) => {
+    if (idx > 0 && p - visiblePages[idx - 1] > 1) pageItems.push({ type: 'ellipsis' });
+    pageItems.push({ type: 'page', page: p, url: getPageUrl(p), active: p === currentPage });
+  });
+}
+
+let pageTitle = "كتالوج مكونات مكافحة الشيخوخة ومصفوفة الجلد | مواد نشطة موضعية وتجميلية — PDRN, NMN, Glabridin | GINKVORA";
+if (mechanism === 'collagen-stimulant') {
+  pageTitle = "شراء محفزات تخليق الكولاجين بالجملة | GINKVORA";
+} else if (mechanism === 'mmp-inhibitor') {
+  pageTitle = "شراء مثبطات MMP بالجملة | درجة تجميلية | GINKVORA";
+} else if (mechanism === 'anti-glycation') {
+  pageTitle = "شراء مكونات نشطة لمكافحة السكر بالجملة | GINKVORA";
+}
+
+let pageDescription = "استكشف كتالوج GINKVORA لمكونات مكافحة الشيخوخة التي تستهدف المصفوفة خارج الخلية (ECM). تصفية حسب آلية العمل أو طريقة التطبيق (درجة تجميلية موضعية، درجة غذائية فموية، تطبيق ثنائي). متوافق مع REACH وعينات مجانية متاحة.";
+if (category === 'pet-longevity') {
+  pageDescription = "مواد خام نباتية عالية النقاء تستهدف الشيخوخة الخلوية للكلاب والقطط. منشطات سيرتوين ممتازة وواقيات ميتوكوندريا لطول عمر الحيوانات الأليفة.";
+}
+
+let academicIntro = "";
+if (category === 'pet-longevity') {
+  academicIntro = "استهداف الشيخوخة الخلوية للكلاب والقطط عبر منشطات سيرتوين عالية النقاء وواقيات الميتوكوندريا.";
+}
+
+// Breadcrumb structured data
+const breadcrumbsSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "الرئيسية",
+      "item": siteUrl
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "المكونات",
+      "item": `${siteUrl}/products`
+    }
+  ]
+};
+
+// ItemList structured data — enables rich product list results in Google
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "كتالوج منتجات مستخلصات النباتات من GINKVORA",
+  "description": pageDescription,
+  "url": `${siteUrl}/products`,
+  "numberOfItems": totalProducts,
+  "itemListElement": allProducts.map((prod, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "url": `${siteUrl}/products/${prod.slug}`,
+    "name": prod.name,
+  }))
+};
+
+
+
+
+---
+
+<BaseLayout lang={lang}
+  title={pageTitle}
+  description={pageDescription}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />
+
+  <main class="products-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="ترويسة الصفحة">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">كتالوج منتجات B2B</span>
+        <h1 class="banner-title">
+          {mechanism === 'collagen-stimulant' && "شراء محفزات تخليق الكولاجين بالجملة"}
+          {mechanism === 'mmp-inhibitor' && "شراء مثبطات MMP بالجملة (درجة تجميلية)"}
+          {mechanism === 'anti-glycation' && "شراء المكونات النشطة لمكافحة السكر بالجملة"}
+          {!mechanism && "مكونات مكافحة الشيخوخة التي تستهدف المصفوفة خارج الخلية (ECM): حلول موضعية ومكملات تجميلية"}
+        </h1>
+        <p class="banner-desc">
+          {academicIntro ? (
+            <span class="academic-highlight">{academicIntro}</span>
+          ) : (
+            "مواد خام ممتازة مختبرة بموجب معايير جودة دستور الأدوية الأمريكي والأوروبي الصارمة لمصنعي المكملات ومستحضرات التجميل والأغذية الوظيفية."
+          )}
+        </p>
+      </div>
+    </header>
+
+    <div class="container catalog-container">
+      <!-- Filter and search bar -->
+      <section class="controls-section glass" aria-label="الفلاتر والبحث">
+        <div class="search-box">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input
+            type="search"
+            id="product-search"
+            placeholder="البحث عن المكونات بالاسم، أو رقم CAS، أو الوصف..."
+            aria-label="البحث عن المكونات"
+          />
+        </div>
+
+        <div class="filter-row">
+          <span class="filter-label">تصفية حسب الفئة:</span>
+          <nav class="category-tabs" aria-label="فئات المنتجات">
+            <a 
+              href={getFilterUrl(null, mechanism)} 
+              class={`category-tab ${!category ? 'active' : ''}`}
+            >
+              جميع الفئات
+            </a>
+            {categoriesList.map((cat) => (
+              <a 
+                href={getFilterUrl(cat.slug, mechanism)} 
+                class={`category-tab ${category === cat.slug ? 'active' : ''}`}
+              >
+                <span class="tab-icon">{cat.icon}</span>
+                {cat.name}
+              </a>
+            ))}
+          </nav>
+        </div>
+
+        <div class="filter-row">
+          <span class="filter-label">تصفية حسب مسار مكافحة الشيخوخة:</span>
+          <nav class="category-tabs" aria-label="مسارات مكافحة الشيخوخة">
+            <a 
+              href={getFilterUrl(category, null)} 
+              class={`category-tab ${!mechanism ? 'active' : ''}`}
+            >
+              جميع المسارات
+            </a>
+            {mechanismsList.map((mech) => (
+              <a 
+                href={getFilterUrl(category, mech.slug)} 
+                class={`category-tab ${mechanism === mech.slug ? 'active' : ''}`}
+              >
+                <span class="tab-icon">{mech.icon}</span>
+                {mech.name}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </section>
+
+      <!-- Products Grid -->
+      <section class="products-section" aria-label="Product List">
+        <div class="products-count" id="products-count-label">
+          عرض {pageStart + 1}–{Math.min(pageStart + PRODUCTS_PER_PAGE, totalProducts)} من أصل {totalProducts} منتجاً
+        </div>
+
+        <div class="products-grid" id="products-grid" data-current-page={currentPage}>
+          {allProducts.map((prod, index) => {
+            const pageIndex = Math.floor(index / PRODUCTS_PER_PAGE) + 1;
+            const isInitiallyVisible = pageIndex === currentPage;
+            return (
+              <article
+                class="product-card glass reveal"
+                data-name={prod.name.toLowerCase()}
+                data-cas={prod.casNumber ? prod.casNumber.toLowerCase() : ''}
+                data-desc={prod.shortDescription ? prod.shortDescription.toLowerCase() : ''}
+                data-page-index={pageIndex}
+                style={isInitiallyVisible ? "display: flex;" : "display: none;"}
+              >
+                <div class="card-image-wrapper">
+                  <a href={`/ar/products/${prod.slug}`} class="card-image-link" aria-label={`عرض تفاصيل ${prod.name}`}>
+                    <picture style="display: contents;">
+                      <source srcset={urlFor(prod.heroImage).width(800).format('webp').url()} type="image/webp" />
+                      <img
+                        src={urlFor(prod.heroImage).width(800).url()}
+                        alt={prod.name}
+                        loading="lazy"
+                        class="card-image"
+                      />
+                    </picture>
+                  </a>
+                  <span class="card-category-badge">
+                    {prod.categories && prod.categories.length > 0
+                      ? prod.categories.map(c => c.name).join(' · ')
+                      : prod.category?.name}
+                  </span>
+                </div>
+
+                <div class="card-content">
+                  <div class="card-specs">
+                    {prod.purity && (
+                      <span class="card-purity">{prod.purity}</span>
+                    )}
+                    {prod.casNumber && (
+                      <span class="card-cas">CAS: {prod.casNumber}</span>
+                    )}
+                    {prod.applicationDisplay && (
+                      <span class={`card-app-badge app--${prod.applicationDisplay}`}>
+                        {prod.applicationDisplay === 'dual' && '● تطبيق ثنائي'}
+                        {prod.applicationDisplay === 'topical' && '● استخدام موضعي'}
+                        {prod.applicationDisplay === 'oral' && '● استخدام فموي'}
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 class="card-title">
+                    <a href={`/ar/products/${prod.slug}`}>{prod.name}</a>
+                  </h3>
+
+                  {prod.botanicalName && (
+                    <p class="card-botanical">{prod.botanicalName}</p>
+                  )}
+
+                  <p class="card-desc">{prod.shortDescription}</p>
+
+                  <div class="card-footer">
+                    <a href={`/ar/products/${prod.slug}`} class="btn btn--secondary btn--sm">
+                      المواصفات
+                    </a>
+                    <a href={`${lp('/contact')}?product=${encodeURIComponent(prod.name)}`} class="btn btn--primary btn--sm">
+                      استفسار
+                    </a>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        <!-- Empty state -->
+        <div class="empty-state" id="empty-state" style="display: none;" role="alert">
+          <div class="empty-icon">🔍</div>
+          <h3>لا توجد منتجات تطابق بحثك</h3>
+          <p>حاول التحقق من التهجئة، أو اختيار فئة أخرى، أو اتصل بنا لتوفير المكونات بشكل مخصص.</p>
+          <button class="btn btn--gold" id="reset-filters">إعادة تعيين الفلاتر</button>
+        </div>
+
+        <!-- Pagination -->
+        {totalPages > 1 && (
+          <nav class="pagination" aria-label="صفحات المنتجات" id="pagination-nav">
+            <a
+              href={getPageUrl(currentPage - 1)}
+              class={`page-btn page-prev ${currentPage === 1 ? 'disabled' : ''}`}
+              aria-disabled={currentPage === 1}
+              aria-label="الصفحة السابقة"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+            </a>
+
+            {pageItems.map((item) =>
+              item.type === 'ellipsis'
+                ? <span class="page-ellipsis">…</span>
+                : <a
+                    href={item.url}
+                    class={`page-btn page-num ${item.active ? 'active' : ''}`}
+                    aria-current={item.active ? 'page' : undefined}
+                  >{item.page}</a>
+            )}
+
+            <a
+              href={getPageUrl(currentPage + 1)}
+              class={`page-btn page-next ${currentPage === totalPages ? 'disabled' : ''}`}
+              aria-disabled={currentPage === totalPages}
+              aria-label="الصفحة التالية"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </a>
+          </nav>
+        )}
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .products-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-content {
+    position: relative;
+    z-index: var(--z-base);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  .academic-highlight {
+    display: block;
+    font-style: italic;
+    color: var(--color-primary-light);
+    border-inline-start: 2px solid var(--color-primary);
+    padding-inline-start: 1rem;
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
+
+  /* ── Controls Section ── */
+  .catalog-container {
+    margin-top: -2rem;
+    position: relative;
+    z-index: var(--z-float);
+  }
+
+  .controls-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.18) !important;
+  }
+
+  .search-box {
+    position: relative;
+    width: 100%;
+  }
+
+  .search-icon {
+    position: absolute;
+    inset-inline-start: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    pointer-events: none;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding-block: 0.875rem;
+    padding-inline: 3rem 1rem;
+    background: var(--color-bg-deep);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+  }
+
+  .search-box input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(212, 166, 84, 0.15);
+  }
+
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.25rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .filter-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+
+  .filter-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    min-width: 180px;
+    flex-shrink: 0;
+  }
+
+  .category-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .category-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-full);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .category-tab:hover {
+    color: var(--color-primary-light);
+    border-color: var(--color-border-strong);
+    background: rgba(212, 166, 84, 0.05);
+  }
+
+  .category-tab.active {
+    color: var(--color-bg);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(212, 166, 84, 0.2);
+  }
+
+  /* ── Products List ── */
+  .products-section {
+    margin-top: 2.5rem;
+  }
+
+  .products-count {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+    font-family: var(--font-mono);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+
+  @media (max-width: 1024px) {
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    .products-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── Product Card ── */
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+    border-color: rgba(212, 166, 84, 0.1) !important;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-border-strong) !important;
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .card-image-wrapper {
+    position: relative;
+    height: 180px;
+    background: var(--color-surface-2);
+    overflow: hidden;
+  }
+
+  .card-image-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+  }
+
+  .product-card:hover .card-image {
+    transform: scale(1.05);
+  }
+
+  .card-category-badge {
+    position: absolute;
+    bottom: 0.75rem;
+    inset-inline-start: 0.75rem;
+    background: rgba(6, 5, 3, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--color-border);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    color: var(--color-primary-light);
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    flex-grow: 1;
+  }
+
+  .card-specs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-purity {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-primary-light);
+    background: rgba(212, 166, 84, 0.15);
+    border: 1px solid rgba(212, 166, 84, 0.25);
+    padding: 0.1rem 0.5rem;
+    border-radius: var(--radius-full);
+  }
+
+  .card-cas {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    background: var(--color-bg-deep);
+    padding: 0.1rem 0.5rem;
+    border-radius: var(--radius-full);
+  }
+
+  .card-title {
+    font-size: 1.375rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    line-height: 1.2;
+  }
+
+  .card-title a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .card-title a:hover {
+    color: var(--color-primary-light);
+  }
+
+  .card-botanical {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--color-text-muted);
+    font-family: var(--font-display);
+    margin-bottom: 0.75rem;
+  }
+
+  .card-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    gap: 0.5rem;
+  }
+
+  .card-footer .btn {
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  /* ── Empty State ── */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    max-width: 500px;
+    margin: 3rem auto;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state p {
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── Pagination ── */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    flex-wrap: wrap;
+  }
+
+  .page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.625rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .page-btn:hover:not(.disabled):not(.active) {
+    color: var(--color-primary-light);
+    border-color: var(--color-primary);
+    background: rgba(212, 166, 84, 0.07);
+  }
+
+  .page-btn.active {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    border-color: var(--color-primary);
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(212, 166, 84, 0.25);
+    pointer-events: none;
+  }
+
+  .page-btn.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .page-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    user-select: none;
+  }
+
+  /* ── Card Application Badges ── */
+  .card-app-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.02em;
+    display: inline-block;
+  }
+  .app--dual {
+    background: rgba(212, 166, 84, 0.15);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.4);
+    box-shadow: 0 0 8px rgba(212, 166, 84, 0.2);
+  }
+  .app--topical {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .app--oral {
+    background: rgba(224, 120, 48, 0.1);
+    color: #f39b60;
+    border: 1px solid rgba(224, 120, 48, 0.3);
+  }
+</style>
+
+<script>
+  function initFilters() {
+    const searchInput = document.getElementById('product-search') as HTMLInputElement;
+    const productCards = document.querySelectorAll('.product-card');
+    const emptyState = document.getElementById('empty-state');
+    const grid = document.getElementById('products-grid');
+    const countLabel = document.getElementById('products-count-label');
+    const paginationNav = document.getElementById('pagination-nav');
+
+    let currentSearch = '';
+    const currentPage = parseInt(grid?.getAttribute('data-current-page') || '1');
+
+    function filterProducts() {
+      let visibleCount = 0;
+
+      productCards.forEach((card) => {
+        const name = card.getAttribute('data-name') || '';
+        const cas = card.getAttribute('data-cas') || '';
+        const desc = card.getAttribute('data-desc') || '';
+        const pageIndex = parseInt(card.getAttribute('data-page-index') || '1');
+
+        let matches = false;
+        if (currentSearch) {
+          matches =
+            name.includes(currentSearch) ||
+            cas.includes(currentSearch) ||
+            desc.includes(currentSearch);
+        } else {
+          matches = pageIndex === currentPage;
+        }
+
+        if (matches) {
+          (card as HTMLElement).style.display = 'flex';
+          visibleCount++;
+        } else {
+          (card as HTMLElement).style.display = 'none';
+        }
+      });
+
+      // Update count label
+      if (countLabel) {
+        if (currentSearch) {
+          countLabel.textContent = `Showing ${visibleCount} product${visibleCount === 1 ? '' : 's'} matching "${currentSearch}"`;
+        } else {
+          // Restore original server-rendered text
+          const original = countLabel.getAttribute('data-original') || countLabel.textContent || '';
+          if (!countLabel.getAttribute('data-original')) countLabel.setAttribute('data-original', original);
+          countLabel.textContent = countLabel.getAttribute('data-original') || '';
+        }
+      }
+
+      // Handle empty state and pagination visibility
+      if (visibleCount === 0) {
+        if (grid) grid.style.display = 'none';
+        if (emptyState) emptyState.style.display = 'block';
+        if (paginationNav) paginationNav.style.display = 'none';
+      } else {
+        if (grid) grid.style.display = 'grid';
+        if (emptyState) emptyState.style.display = 'none';
+        if (paginationNav) paginationNav.style.display = currentSearch ? 'none' : '';
+      }
+    }
+
+    // Cache original count text
+    if (countLabel) countLabel.setAttribute('data-original', countLabel.textContent || '');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        currentSearch = (e.target as HTMLInputElement).value.toLowerCase().trim();
+        filterProducts();
+      });
+    }
+
+    // Reset button inside empty state
+    const resetButton = document.getElementById('reset-filters');
+    if (resetButton) {
+      resetButton.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        currentSearch = '';
+        filterProducts();
+      });
+    }
+
+    filterProducts();
+  }
+
+  initFilters();
+  document.addEventListener('astro:page-load', initFilters);
+</script>

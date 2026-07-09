@@ -648,3 +648,46 @@ button { cursor: pointer; font-family: var(--font-body); }
   white-space: nowrap;
   border-width: 0;
 }
+
+/* ==========================================================================
+   Arabic (ar) Typography & RTL (Right-to-Left) Overrides
+   ========================================================================== */
+
+/* Apply Cairo font dynamically when lang="ar" is active */
+html[lang="ar"],
+html[lang="ar"] body,
+html[lang="ar"] input,
+html[lang="ar"] textarea,
+html[lang="ar"] button,
+html[lang="ar"] select {
+  font-family: 'Cairo', 'DM Sans', sans-serif !important;
+}
+
+/* Adjust heading styles for Arabic Cairo font */
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3,
+html[lang="ar"] h4,
+html[lang="ar"] h5,
+html[lang="ar"] h6 {
+  font-family: 'Cairo', 'Cormorant Garamond', Georgia, serif !important;
+  font-weight: 700;
+  letter-spacing: normal !important; /* Letter spacing is not applicable in Arabic script */
+}
+
+/* General RTL alignments */
+html[dir="rtl"] {
+  text-align: right;
+}
+
+/* Icon / Graphic Mirroring for RTL direction */
+html[dir="rtl"] .rtl-mirror {
+  transform: scaleX(-1);
+  display: inline-block;
+}
+
+/* Adjust letter-spacing for upper badges/labels under RTL */
+html[lang="ar"] .section-label,
+html[lang="ar"] .badge {
+  letter-spacing: normal !important;
+}

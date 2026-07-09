@@ -1,0 +1,265 @@
+---
+const lang = 'ar';
+// src/pages/terms.astro — Premium B2B Terms of Service Page
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const termsSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "شروط الخدمة",
+  "description": "راجع الشروط التجارية، وضمانات مواصفات المكونات، ومتطلبات الدفع، وحدود مسؤولية التسليم التي تحكم عمليات مورد B2B العالمي لـ GINKVORA.",
+  "url": "https://ginkvora.com/ar/terms",
+  "additionalType": [
+    "https://en.wikipedia.org/wiki/Terms_of_service"
+  ]
+};
+
+
+
+
+---
+
+<BaseLayout lang={lang}
+  title="شروط الخدمة | الشروط التجارية بالجملة لـ GINKVORA"
+  description="راجع شروط خدمة B2B لـ GINKVORA: ضمانات توريد المكونات بالجملة، والتحقق من شهادة التحليل COA، وشروط الدفع، وقواعد مسؤولية الشحن بالجملة."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(termsSchema)} slot="head" />
+  <main class="terms-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="ترويسة الصفحة">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">المعايير التجارية</span>
+        <h1 class="banner-title">شروط الخدمة</h1>
+        <p class="banner-desc">
+          الشروط التجارية، وضمانات مطابقة الجودة، وسياسات الشحن، ومعايير المسؤولية التي تحكم مصادر المواد الخام بالجملة عالمياً مع GINKVORA.
+        </p>
+      </div>
+    </header>
+
+    <!-- Policy Content Section -->
+    <section class="container section policy-section" aria-label="محتوى الشروط">
+      <div class="policy-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="policy-sidebar" aria-label="جدول المحتويات">
+          <div class="sidebar-box glass">
+            <h3>الأقسام</h3>
+            <ul class="sidebar-links">
+              <li><a href="#b2b-scope" class="sidebar-link">1. نطاق علاقات B2B</a></li>
+              <li><a href="#product-quality" class="sidebar-link">2. النقاء والمواصفات</a></li>
+              <li><a href="#samples-custom" class="sidebar-link">3. العينات والتركيبات</a></li>
+              <li><a href="#pricing-payments" class="sidebar-link">4. المدفوعات والتمويل</a></li>
+              <li><a href="#shipping-risk" class="sidebar-link">5. الخدمات اللوجستية ونقل المخاطر</a></li>
+              <li><a href="#liability-limits" class="sidebar-link">6. المسؤولية والتحكيم</a></li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- Main Content Text -->
+        <article class="policy-text reveal">
+          <section id="b2b-scope" class="policy-block">
+            <h2>1. نطاق علاقات B2B</h2>
+            <p>
+              تعمل GINKVORA حصرياً كمورد بالجملة للمستخلصات النباتية السائبة، والمونومرات النشطة، والتركيبات المخصصة. باستخدامك لهذا الموقع، أو طلب عروض الأسعار، أو طلب العينات، فإنك تقر وتضمن ما يلي:
+            </p>
+            <ul>
+              <li>أنك تمثل كياناً تجارياً مسجلاً قانونياً أو مؤسسة بحثية.</li>
+              <li>أنه سيتم معالجة المواد المطلوبة، أو تركيبها، أو توزيعها تحت إشراف مختبري مهني أو ضوابط تصنيع تجارية.</li>
+              <li>أنك لا تطلب هذه المواد كمستهلك تجزئة للاستهلاك الغذائي الشخصي أو المنزلي أو الفردي. نحتفظ بالحق في إلغاء أي طلبات أو طلبات عينات لا تستوفي شروط التأهيل التجاري هذه.</li>
+            </ul>
+          </section>
+
+          <section id="product-quality" class="policy-block">
+            <h2>2. النقاء والمواصفات</h2>
+            <p>
+              كل شحنة بالجملة من مكونات GINKVORA (بما في ذلك PDRN، NMN، EGCG، جلابريدين وغيرها) تكون مصحوبة بشهادة تحليل (COA) خاصة بكل دفعة توضح بالتفصيل معايير النقاء المختبرة بواسطة HPLC/GC-MS/ICP-MS، وحدود المعادن الثقيلة، والعد الميكروبيولوجي.
+            </p>
+            <p>
+              <strong>فترة التحقق من الجودة:</strong> يجب على العملاء فحص والتحقق من المواد الخام الواردة في غضون خمسة عشر (15) يوماً تقويمياً من وصولها إلى الميناء أو المستودع المحدد. يجب تقديم أي مطالبات جودة أو نزاعات حول المواصفات خطياً خلال هذه الفترة، مصحوبة بتقارير اختبار تحليلي من مختبر مستقل معتمد بشهادة ISO-17025.
+            </p>
+          </section>
+
+          <section id="samples-custom" class="policy-block">
+            <h2>3. العينات والتركيبات</h2>
+            <p>
+              نحن نقدم عينات من المواد الخام (عادةً من 10 إلى 50 جراماً) للمشترين من الشركات المؤهلين والمحتملين لأغراض التأهيل المسبق التحليلي والتجارب المختبرية.
+            </p>
+            <p>
+              بالنسبة للتركيبات المخصصة، والتحكم في حجم الجسيمات (مثل التغليف الدقيق أو الحبيبات المتخصصة)، ونقاء المكونات النشطة المصممة خصيصاً: يجب تحديد المواصفات والموافقة عليها بشكل متبادل في اتفاقية مواصفات المنتج الموقعة قبل جدولة الإنتاج.
+            </p>
+          </section>
+
+          <section id="pricing-payments" class="policy-block">
+            <h2>4. المدفوعات والتمويل</h2>
+            <p>
+              ما لم يتم الاتفاق على خلاف ذلك صراحةً في عقد توريد موقع:
+            </p>
+            <ul>
+              <li>يتم تسعير جميع العروض بالدولار الأمريكي (USD) وتكون صالحة للمدة المحددة في الفاتورة الأولية الرسمية (PI).</li>
+              <li>شروط الدفع هي الحوالة البرقية المصرفية (T/T). وتبدأ جداول التصنيع وحجوزات الخدمات اللوجستية عند استلام والتحقق من العربون المتفق عليه أو القيمة الكاملة للفاتورة.</li>
+              <li>العميل مسؤول عن جميع الرسوم الجمركية المحلية الخاصة بالاستيراد، والضرائب، ورسوم مخلص الجمارك، والضرائب المحلية داخل بلد الوجهة.</li>
+            </ul>
+          </section>
+
+          <section id="shipping-risk" class="policy-block">
+            <h2>5. الخدمات اللوجستية ونقل المخاطر</h2>
+            <p>
+              تخضع شحنات البضائع ونقل المخاطر لشروط التجارة الدولية المحددة (Incoterms 2020) المتفق عليها أثناء إتمام الطلب والمحددة في الفاتورة (على سبيل المثال، FOB Shanghai، أو CIF Hamburg، أو FCA Xi'an).
+            </p>
+            <p>
+              تقوم GINKVORA بإعداد وتقديم جميع مستندات الشحن القياسية، بما في ذلك بوليصة الشحن (B/L) أو بوليصة الشحن الجوي، والفاتورة التجارية، وقائمة التعبئة، وشهادة المنشأ، والشهادة الصحية النباتية عند الاقتضاء. العميل مسؤول عن ضمان أن تراخيص الاستيراد الخاصة به نشطة ومتوافقة مع الجهات المحلية المسؤولة عن الأغذية أو الأدوية أو مكونات مستحضرات التجميل.
+            </p>
+          </section>
+
+          <section id="liability-limits" class="policy-block">
+            <h2>6. المسؤولية والتحكيم</h2>
+            <p>
+              إلى أقصى حد يسمح به القانون المعمول به:
+            </p>
+            <ul>
+              <li>لا تتجاوز المسؤولية الإجمالية التراكمية لشركة GINKVORA عن أي شحنة، سواء كانت ناشئة عن خرق الضمان، أو العقد، أو الإهمال، سعر الفاتورة المدفوع للدفعة المحددة من السلع التي نشأت عنها المطالبة.</li>
+              <li>لا تتحمل GINKVORA بأي حال من الأحوال المسؤولية عن أي أضرار غير مباشرة، أو عرضية، أو خاصة، أو تبعية، بما في ذلك خسارة الأرباح، أو توقف الأعمال، أو نفقات استدعاء المنتجات التي يتكبدها العميل.</li>
+              <li>أي نزاع غير تسوية ينشأ عن معاملاتنا يتم تسويته من خلال المشاورات الودية. وفي حال فشل المشاورات، يتم إحالة النزاع إلى التحكيم في شيان وفقاً لقواعد التحكيم التجاري المحلية.</li>
+            </ul>
+          </section>
+        </article>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .terms-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Layout ── */
+  .policy-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .policy-layout {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    
+    .policy-sidebar {
+      position: sticky;
+      top: 80px;
+      z-index: 10;
+    }
+  }
+
+  /* ── Sidebar Navigation ── */
+  .sidebar-box {
+    padding: 1.5rem;
+    border-color: rgba(212, 166, 84, 0.15) !important;
+  }
+
+  .sidebar-box h3 {
+    font-size: 1rem;
+    color: var(--color-primary-light);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .sidebar-link {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    display: block;
+  }
+
+  .sidebar-link:hover {
+    color: var(--color-primary-light);
+  }
+
+  /* ── Content Text ── */
+  .policy-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  .policy-block h2 {
+    font-size: 1.75rem;
+    color: var(--color-primary-light);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.5rem;
+  }
+
+  .policy-block p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.25rem;
+  }
+
+  .policy-block ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .policy-block li {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    position: relative;
+    padding-right: 1.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .policy-block li::before {
+    content: "•";
+    position: absolute;
+    right: 0.25rem;
+    color: var(--color-accent);
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1;
+    top: 0.1rem;
+  }
+</style>

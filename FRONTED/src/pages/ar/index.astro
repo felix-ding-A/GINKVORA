@@ -1,0 +1,60 @@
+---
+const lang = 'ar';
+// src/pages/ar/index.astro — Arabic Homepage
+export const prerender = true;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroSection from '../../components/sections/HeroSection.astro';
+import CertificationsMarquee from '../../components/sections/CertificationsMarquee.astro';
+import TwoRoutesSection from '../../components/sections/TwoRoutesSection.astro';
+import ECMPathwaysSection from '../../components/sections/ECMPathwaysSection.astro';
+import ProductCategoriesSection from '../../components/sections/ProductCategoriesSection.astro';
+import StatsSection from '../../components/sections/StatsSection.astro';
+import FeaturedIngredientsSection from '../../components/sections/FeaturedIngredientsSection.astro';
+import WhyUsSection from '../../components/sections/WhyUsSection.astro';
+import ExtractionProcessSection from '../../components/sections/ExtractionProcessSection.astro';
+import InsightsPreviewSection from '../../components/sections/InsightsPreviewSection.astro';
+import ContactCTASection from '../../components/sections/ContactCTASection.astro';
+
+
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'GINKVORA',
+  url: 'https://ginkvora.com/ar',
+  description: 'مورد مستخلصات نباتية B2B متميز لصناعات المكملات الغذائية، مستحضرات التجميل، وصحة الحيوانات الأليفة.',
+  inLanguage: 'ar-SA',
+};
+
+
+---
+
+<BaseLayout
+  lang={lang}
+  title="مورد مستخلصات نباتية B2B | مكونات نشطة ممتازة لمكافحة الشيخوخة | GINKVORA"
+  description="توفر جينكفورا (GINKVORA) مكونات مكافحة الشيخوخة المستهدفة للمصفوفة خارج الخلوية (ECM) مع خيارات تطبيق مزدوجة: موضعية (درجة تجميلية) وغذائية تجميلية (درجة غذائية). PDRN وNMN وجلابريدين والمزيد. متوافقة مع REACH، عينات مجانية متوفرة."
+  structuredData={websiteSchema}
+>
+  <HeroSection lang={lang} />
+  <CertificationsMarquee />
+  <ProductCategoriesSection lang={lang} />
+
+  <!-- Visual Divider Break -->
+  <div class="section-divider-break container reveal">
+    <div class="divider-line"></div>
+    <p class="divider-text">
+      الربط بين نقاء المستخلصات النباتية وفعالية التركيبات السريرية.
+    </p>
+    <div class="divider-line"></div>
+  </div>
+
+  <TwoRoutesSection lang={lang} />
+  <ECMPathwaysSection lang={lang} />
+  <StatsSection lang={lang} />
+  <WhyUsSection lang={lang} />
+  <FeaturedIngredientsSection lang={lang} />
+  <ExtractionProcessSection lang={lang} />
+  <InsightsPreviewSection lang={lang} />
+  <ContactCTASection lang={lang} />
+</BaseLayout>

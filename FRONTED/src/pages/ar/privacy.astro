@@ -1,0 +1,294 @@
+---
+const lang = 'ar';
+// src/pages/privacy.astro — Premium B2B Privacy Policy Page
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const privacySchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "سياسة الخصوصية",
+  "description": "كيف تقوم GINKVORA بجمع ومعالجة وحماية معلومات الشركات وبيانات المعاملات وسجلات طلبات العينات في عمليات استخلاص النباتات الدولية لقطاع B2B.",
+  "url": "https://ginkvora.com/ar/privacy",
+  "additionalType": [
+    "https://en.wikipedia.org/wiki/Privacy_policy"
+  ]
+};
+
+
+
+
+---
+
+<BaseLayout lang={lang}
+  title="سياسة الخصوصية | امتثال التوريد لـ GINKVORA"
+  description="توفر سياسة خصوصية GINKVORA تفاصيل حول كيفية جمع وحماية والتعامل مع بيانات العملاء، وسجلات استفسارات B2B، والتحليلات بموجب معايير أمن البيانات العالمية."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(privacySchema)} slot="head" />
+  <main class="privacy-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="ترويسة الصفحة">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">الامتثال والتنظيم</span>
+        <h1 class="banner-title">سياسة الخصوصية</h1>
+        <p class="banner-desc">
+          كيف تقوم GINKVORA بجمع ومعالجة وحماية معلومات الشركات وبيانات المعاملات وسجلات طلبات العينات في عمليات استخلاص النباتات الدولية لقطاع B2B.
+        </p>
+      </div>
+    </header>
+
+    <!-- Policy Content Section -->
+    <section class="container section policy-section" aria-label="محتوى السياسة">
+      <div class="policy-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="policy-sidebar" aria-label="جدول المحتويات">
+          <div class="sidebar-box glass">
+            <h3>الأقسام</h3>
+            <ul class="sidebar-links">
+              <li><a href="#info-collection" class="sidebar-link">1. جمع المعلومات</a></li>
+              <li><a href="#data-usage" class="sidebar-link">2. التوريد واستخدام البيانات</a></li>
+              <li><a href="#data-security" class="sidebar-link">3. الأمن والتخزين</a></li>
+              <li><a href="#cookies-analytics" class="sidebar-link">4. ملفات تعريف الارتباط والتحليلات</a></li>
+              <li><a href="#client-rights" class="sidebar-link">5. حقوقك القانونية</a></li>
+              <li><a href="#contact-compliance" class="sidebar-link">6. الاتصال بمكتب الامتثال</a></li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- Main Content Text -->
+        <article class="policy-text reveal">
+          <section id="info-collection" class="policy-block">
+            <h2>1. جمع المعلومات</h2>
+            <p>
+              بصفتنا مورداً مخصصاً للمستخلصات النباتية لقطاع الأعمال B2B، تقوم GINKVORA فقط بجمع المعلومات ذات الصلة بالاستفسارات التجارية، وطلبات الجملة، والعلاقات التجارية. نحن لا نستهدف أو نجمع بيانات من المستهلكين الأفراد.
+            </p>
+            <p>
+              تشمل فئات المعلومات التي نجمعها ما يلي:
+            </p>
+            <ul>
+              <li><strong>تفاصيل الشركة:</strong> الاسم التجاري القانوني للشركة، ورقم تسجيل الشركة، والرقم الضريبي، ونوع العمل.</li>
+              <li><strong>معلومات الاتصال:</strong> الاسم المهني، والبريد الإلكتروني للعمل، ورقم هاتف العمل، والعنوان البريدي الفعلي.</li>
+              <li><strong>المعاملات وتوريد العينات:</strong> تعليمات التسليم، متطلبات التركيبة المخصصة، مواصفات المكونات النشطة، وسجل طلبات العينات.</li>
+            </ul>
+          </section>
+
+          <section id="data-usage" class="policy-block">
+            <h2>2. التوريد واستخدام البيانات</h2>
+            <p>
+              يتم استخدام البيانات التي يتم جمعها فقط لتسهيل المعاملات المهنية وضمان رضا العملاء. وبشكل مخصص، نستخدم معلوماتك من أجل:
+            </p>
+            <ul>
+              <li>معالجة طلبات المكونات بالجملة، وترتيب الخدمات اللوجستية والشحن، وإتمام إجراءات التخليص الجمركي.</li>
+              <li>التحقق من الشرعية التجارية لطلبات العينات (على سبيل المثال، التحقق من إرسال عينة PQQ أو NMN إلى مختبر أبحاث مسجل أو علامة تجارية للمكملات الغذائية).</li>
+              <li>التنسيق مع مركز البحث والتطوير التابع لنا في شيان لتخصيص مواصفات المستخلصات النباتية أو تركيزات المونومرات النشطة.</li>
+              <li>إرسال تحديثات تنظيمية دورية، وسجلات شهادة التحليل (COA)، وإشعارات توفر المنتجات.</li>
+            </ul>
+          </section>
+
+          <section id="data-security" class="policy-block">
+            <h2>3. الأمن والتخزين</h2>
+            <p>
+              نحن نطبق إجراءات رقمية وإدارية صناعية لتأمين سجلات اتصالات الشركة وبيانات العقود. تتم جميع عمليات نقل البيانات بين متصفح العميل وخوادمنا الرقمية عبر قنوات HTTPS المشفرة.
+            </p>
+            <p>
+              يتم تخزين السجلات التشغيلية وملفات تعريف العملاء في نظام إدارة علاقات العملاء (CRM) على خدمات سحابية آمنة ومحمية ببروتوكولات وصول صارمة. لا نطلب ولا نقوم بمعالجة أو تخزين أي تفاصيل مالية لبطاقات الائتمان على خوادمنا؛ ويتم إتمام مدفوعات المعاملات بالجملة من خلال الحوالات البرقية المصرفية الرسمية (T/T) الآمنة.
+            </p>
+          </section>
+
+          <section id="cookies-analytics" class="policy-block">
+            <h2>4. ملفات تعريف الارتباط والتحليلات</h2>
+            <p>
+              لتحسين أداء الموقع وتجربة المستخدم، نستخدم نصوص تتبع قياسية:
+            </p>
+            <ul>
+              <li><strong>أداة إدارة العلامات والتحليلات من جوجل (GTM & GA):</strong> لجمع تحليلات مجهولة المصدر حول تدفق المستخدمين، مثل صفحات المكونات (مثل جلابريدين أو EGCG) التي تحظى بأعلى اهتمام من قطاع B2B.</li>
+              <li><strong>ملفات تعريف الارتباط الفنية:</strong> ملفات تعريف ارتباط مؤقتة للجلسات لتذكر تفضيلات المستخدم وحالته أثناء التصفح.</li>
+            </ul>
+            <p>
+              يمكن للمستخدمين تهيئة متصفحاتهم المحلية لتعطيل ملفات تعريف الارتباط. ومع ذلك، قد يؤدي ذلك إلى تراجع طفيف في أداء بعض الميزات المخصصة في الواجهة.
+            </p>
+          </section>
+
+          <section id="client-rights" class="policy-block">
+            <h2>5. حقوقك القانونية</h2>
+            <p>
+              اعتماداً على بلد تسجيل شركتك (مثل اللوائح الخاصة باللائحة العامة لحماية البيانات GDPR في الاتحاد الأوروبي)، يحق لممثل شركتك:
+            </p>
+            <ul>
+              <li>طلب نسخة تدقيق من جميع بيانات الاتصال الشخصية والتجارية المحفوظة في أنظمة إدارة علاقات العملاء لدينا.</li>
+              <li>توجيه طلب لتصحيح تفاصيل الاتصال التجارية أو المواصفات القديمة.</li>
+              <li>طلب الحذف الكامل لحسابات الشركة أو سجلات طلبات العينات من قواعد بياناتنا النشطة.</li>
+            </ul>
+          </section>
+
+          <section id="contact-compliance" class="policy-block">
+            <h2>6. الاتصال بمكتب الامتثال</h2>
+            <p>
+              لعمليات تدقيق الخصوصية، أو استفسارات الامتثال، أو طلبات إزالة البيانات، يرجى تقديم طلب رسمي إلى مكتب إدارة بيانات الشركة لدينا:
+            </p>
+            <div class="contact-box glass">
+              <strong>مكتب الامتثال GINKVORA</strong><br/>
+              البريد الإلكتروني: <a href="mailto:inquiry@ginkvora.com">inquiry@ginkvora.com</a><br/>
+              الموضوع: [طلب تدقيق الامتثال للخصوصية]
+            </div>
+          </section>
+        </article>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .privacy-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Layout ── */
+  .policy-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .policy-layout {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    
+    .policy-sidebar {
+      position: sticky;
+      top: 80px;
+      z-index: 10;
+    }
+  }
+
+  /* ── Sidebar Navigation ── */
+  .sidebar-box {
+    padding: 1.5rem;
+    border-color: rgba(212, 166, 84, 0.15) !important;
+  }
+
+  .sidebar-box h3 {
+    font-size: 1rem;
+    color: var(--color-primary-light);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .sidebar-link {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    display: block;
+  }
+
+  .sidebar-link:hover {
+    color: var(--color-primary-light);
+  }
+
+  /* ── Content Text ── */
+  .policy-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  .policy-block h2 {
+    font-size: 1.75rem;
+    color: var(--color-primary-light);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.5rem;
+  }
+
+  .policy-block p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.25rem;
+  }
+
+  .policy-block ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .policy-block li {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    position: relative;
+    padding-right: 1.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .policy-block li::before {
+    content: "•";
+    position: absolute;
+    right: 0.25rem;
+    color: var(--color-accent);
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1;
+    top: 0.1rem;
+  }
+
+  .contact-box {
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    border-color: rgba(224, 120, 48, 0.15) !important;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    margin-top: 1rem;
+    line-height: 1.8;
+  }
+
+  .contact-box a {
+    color: var(--color-accent-light);
+  }
+
+  .contact-box a:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+</style>

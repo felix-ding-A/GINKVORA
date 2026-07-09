@@ -1,0 +1,373 @@
+---
+const lang = 'ar';
+// src/pages/quality.astro — Quality Control & Certification detail page
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: 'https://ginkvora.com/ar' },
+    { '@type': 'ListItem', position: 2, name: 'الجودة والشهادات', item: 'https://ginkvora.com/ar/quality' },
+  ],
+};
+
+
+
+
+---
+
+<BaseLayout lang={lang}
+  title="رقابة الجودة وشهادات GMP | GINKVORA"
+  description="استكشف معايير مراقبة الجودة في GINKVORA: تحليل نقاء HPLC، واختبار USP/EP، وشهادات ISO 9001:2015 وGMP وحلال وكوشر، وشهادات التحليل COA/MSDS المتوافقة مع REACH."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <main class="quality-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="ترويسة الصفحة">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">مكتب الامتثال</span>
+        <h1 class="banner-title">معايير جودة لا تهاون فيها</h1>
+        <p class="banner-desc">
+          نحافظ على الشفافية التحليلية المطلقة. استكشف أدواتنا المخبرية، ومعايير الاختبار، والشهادات العالمية لدينا.
+        </p>
+      </div>
+    </header>
+
+    <!-- Lab Testing Section -->
+    <section class="container section lab-section" aria-label="أجهزة التحليل">
+      <div class="intro-grid">
+        <div class="intro-left reveal">
+          <h2>تحليلات واختبارات مخبرية متطورة</h2>
+          <p>
+            في GINKVORA، نؤمن بأن الاختبارات الكيميائية هي الأساس الحقيقي للثقة. يضم مركز البحث والتطوير الشريك لنا في شيان أجهزة تحليلية عالية الأداء لتحليل نقاء المكونات النشطة وتحديد الشوائب.
+          </p>
+          
+          <div class="instrument-list">
+            <div class="instrument-item">
+              <span class="inst-icon">⚗️</span>
+              <div>
+                <strong>HPLC (كروماتوغرافيا سائلة عالية الأداء)</strong>
+                <p>يضمن التحديد الدقيق للمكونات النشطة كمياً (مثل التحقق من نسبة جلابريدين ≥40.0% أو لوتولين ≥98.0%).</p>
+              </div>
+            </div>
+
+            <div class="instrument-item">
+              <span class="inst-icon">🧬</span>
+              <div>
+                <strong>ICP-MS (مطياف الكتلة لبلازما المقترنة بالحث)</strong>
+                <p>يتحقق من الامتثال للحدود الدولية الصارمة للمعادن الثقيلة (الرصاص، الزرنيخ، الكادميوم، الزئبق).</p>
+              </div>
+            </div>
+
+            <div class="instrument-item">
+              <span class="inst-icon">🧪</span>
+              <div>
+                <strong>GC-MS (كروماتوغرافيا الغاز - مطياف الكتلة)</strong>
+                <p>يقيّم المركبات المتطايرة وبقايا المبيدات الحشرية لضمان خلو المنتجات تماماً من أي تلوث زراعي.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="intro-right reveal reveal-delay-2">
+          <div class="image-showcase glass">
+            <img
+              src="/images/ginkvora QC Laboratory.webp"
+              alt="مختبر رقابة الجودة جينكفورا"
+              class="showcase-img"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certifications Grid -->
+    <section class="section certs-grid-section bg-deep" aria-label="كتالوج الشهادات">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">الامتثال التنظيمي</span>
+          <h2 class="section-title">الشهادات الدولية</h2>
+          <p class="section-desc">تتطابق مرافق التصنيع الشريكة لـ GINKVORA مع اللوائح العالمية لمكونات الأغذية ومستحضرات التجميل.</p>
+        </div>
+
+        <div class="grid-4">
+          <div class="cert-box glass reveal">
+            <div class="cert-badge-icon">🛡️</div>
+            <h3>الامتثال لممارسات التصنيع الجيد (GMP)</h3>
+            <p>يتم تصنيع مكوناتنا في منشآت متوافقة مع ممارسات التصنيع الجيد (GMP)، مما يضمن الرقابة الكاملة على التلوث المتبادل.</p>
+          </div>
+
+          <div class="cert-box glass reveal reveal-delay-1">
+            <div class="cert-badge-icon">📜</div>
+            <h3>ISO 9001:2015</h3>
+            <p>تغطي أنظمة إدارة الجودة المعتمدة لدينا كل مرحلة بدءاً من جمع المواد الخام وحتى التعبئة والتغليف والشحن.</p>
+          </div>
+
+          <div class="cert-box glass reveal reveal-delay-2">
+            <div class="cert-badge-icon">🕌</div>
+            <h3>شهادة حلال</h3>
+            <p>معتمدة من قبل مجالس إسلامية معترف بها، مما يلبي المتطلبات الغذائية الشرعية للأسواق العالمية.</p>
+          </div>
+
+          <div class="cert-box glass reveal reveal-delay-3">
+            <div class="cert-badge-icon">✡️</div>
+            <h3>شهادة كوشر</h3>
+            <p>تتم معالجة المنتجات تحت إشراف كوشر، للتحقق من نظافة التصنيع والامتثال للقوانين الغذائية التقليدية.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testing Specs Parameters Table -->
+    <section class="container section specs-limits-section" aria-label="الحدود القياسية">
+      <div class="section-header">
+        <span class="section-label">معايير التحقق</span>
+        <h2>معايير الاختبار القياسية</h2>
+        <p class="section-desc">ما لم ينص على خلاف ذلك، يتم التحقق من كل دفعة مقابل الحدود والمعايير التالية.</p>
+      </div>
+
+      <div class="specs-limit-box glass reveal">
+        <table class="limits-table">
+          <thead>
+            <tr>
+              <th>فئة الاختبار</th>
+              <th>معيار الاختبار القياسي</th>
+              <th>الحد المستهدف للمواصفات</th>
+              <th>مرجع الطريقة</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>معادن ثقيلة</strong></td>
+              <td>الرصاص (Pb)</td>
+              <td>≤ 0.5 ppm</td>
+              <td>USP &lt;233&gt; ICP-MS</td>
+            </tr>
+            <tr>
+              <td><strong>معادن ثقيلة</strong></td>
+              <td>الزرنيخ (As)</td>
+              <td>≤ 1.0 ppm</td>
+              <td>USP &lt;233&gt; ICP-MS</td>
+            </tr>
+            <tr>
+              <td><strong>معادن ثقيلة</strong></td>
+              <td>الزئبق (Hg)</td>
+              <td>≤ 0.1 ppm</td>
+              <td>USP &lt;233&gt; ICP-MS</td>
+            </tr>
+            <tr>
+              <td><strong>علم الأحياء الدقيقة</strong></td>
+              <td>العدد الإجمالي للبكتيريا</td>
+              <td>≤ 1,000 cfu/g</td>
+              <td>USP &lt;2021&gt;</td>
+            </tr>
+            <tr>
+              <td><strong>علم الأحياء الدقيقة</strong></td>
+              <td>الخمائر والفطريات</td>
+              <td>≤ 100 cfu/g</td>
+              <td>USP &lt;2021&gt;</td>
+            </tr>
+            <tr>
+              <td><strong>علم الأحياء الدقيقة</strong></td>
+              <td>إيشيريشيا كولاي / السالمونيلا</td>
+              <td>سالب</td>
+              <td>USP &lt;2022&gt;</td>
+            </tr>
+            <tr>
+              <td><strong>كيميائي</strong></td>
+              <td>بقايا المبيدات الحشرية</td>
+              <td>متوافق مع حدود الدستور الأوروبي/الأمريكي (EP/USP)</td>
+              <td>GC-MS / LC-MS</td>
+            </tr>
+            <tr>
+              <td><strong>كيميائي</strong></td>
+              <td>بقايا المذيبات</td>
+              <td>≤ 500 جزء في المليون (إيثانول)</td>
+              <td>GC-Headspace</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .quality-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Lab Section ── */
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .intro-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+
+  .intro-left h2 {
+    font-size: 2.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .intro-left p {
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .instrument-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .instrument-item {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .inst-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+    background: rgba(212,166,84,0.1);
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-primary);
+  }
+
+  .instrument-item strong {
+    color: var(--color-primary-light);
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  .instrument-item p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .image-showcase {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-color: rgba(212,166,84,0.18) !important;
+  }
+
+  .showcase-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ── Certifications Section ── */
+  .bg-deep {
+    background-color: var(--color-bg-deep);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cert-box {
+    padding: 2rem 1.5rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212,166,84,0.1) !important;
+    text-align: center;
+  }
+
+  .cert-box:hover {
+    border-color: var(--color-border-strong) !important;
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .cert-badge-icon {
+    font-size: 2.25rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .cert-box h3 {
+    font-size: 1.25rem;
+    color: var(--color-primary-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .cert-box p {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  /* ── Limits Table ── */
+  .specs-limit-box {
+    padding: 1.5rem;
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212,166,84,0.15) !important;
+  }
+
+  .limits-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+
+  .limits-table th, .limits-table td {
+    padding: 0.875rem 1rem;
+    text-align: start;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .limits-table th {
+    background: var(--color-surface);
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .limits-table td {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .limits-table tbody tr:hover td {
+    color: var(--color-text);
+  }
+</style>

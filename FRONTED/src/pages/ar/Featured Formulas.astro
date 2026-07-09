@@ -1,0 +1,544 @@
+---
+const lang = 'ar';
+// src/pages/Featured Formulas.astro — Scientific Formulation Showcase Page
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const siteUrl = 'https://ginkvora.com/ar';
+
+// WebPage schema
+const featuredFormulasSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "التركيبات المميزة ومكتبة التركيبات | GINKVORA",
+  "description": "وصفات ونماذج تركيبات علمية جاهزة للاستخدام في صناعات المكملات الغذائية، ومستحضرات التجميل، وصحة الحيوانات الأليفة. باستخدام NMN، وPQQ، والجلابريدين، وEGCG عالية النقاء.",
+  "url": `${siteUrl}/Featured%20Formulas`,
+  "isPartOf": { "@type": "WebSite", "url": siteUrl, "name": "GINKVORA" },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": siteUrl },
+      { "@type": "ListItem", "position": 2, "name": "التركيبات المميزة", "item": `${siteUrl}/Featured%20Formulas` }
+    ]
+  }
+};
+
+const formulas = [
+  {
+    id: "mitochondria-energy",
+    title: "مجموعة الميتوكوندريا والطاقة الخلوية",
+    category: "المكملات الصحية",
+    icon: "⚡",
+    form: "كبسولة صلبة (حجم #0)",
+    targetWeight: "500 ملغ",
+    description: "تركيبة تآزرية لقطاع B2B تستهدف إطالة العمر الخلوي، واستعادة مستويات +NAD، وتعزيز إنتاج ATP في الميتوكوندريا.",
+    actives: [
+      { name: "NMN (أحادية نيوكليوتيد النيكوتيناميد)", dose: "250 ملغ", purity: "≥99.5% (HPLC)", overage: "5%" },
+      { name: "ملح ثنائي صوديوم PQQ", dose: "20 ملغ", purity: "≥99.0% (HPLC)", overage: "3%" },
+      { name: "الإنزيم المساعد Q10 (يوبيكوينون)", dose: "100 ملغ", purity: "≥98.0% (HPLC)", overage: "2%" }
+    ],
+    excipients: [
+      { name: "السليلوز الجريء البلوري (MCC 102)", role: "مادة مالئة / رابطة", ratio: "115 ملغ" },
+      { name: "ستيرات المغنيسيوم", role: "مادة مزلقة (مساعد تدفق)", ratio: "5 ملغ" },
+      { name: "ثاني أكسيد السيليكون", role: "مادة مسهلة للتدفق (مضاد للتكتل)", ratio: "10 ملغ" }
+    ],
+    sop: [
+      "زن كلاً من NMN وPQQ وCoQ10 بشكل فردي وفقاً لحجم الدفعة، مع تضمين الهوامش المحددة لتعويض الفقد.",
+      "انخل جميع المكونات النشطة الخام وMCC من خلال غربال من الفولاذ المقاوم للصدأ مقاس 40 مش لتفتيت التكتلات.",
+      "امزج مسبقاً جرعة PQQ الدقيقة (20 ملغ/وحدة) مع MCC باستخدام التخفيف الهندسي لضمان التوزيع الموحد.",
+      "قم بتحميل خليط NMN وCoQ10 وPQQ/MCC الممزوج مسبقاً في خلاط على شكل V. واخلط لمدة 15 دقيقة بسرعة 20 دورة في الدقيقة.",
+      "أضف ثاني أكسيد السيليكون وستيرات المغنيسيوم إلى الخلاط وقم بإجراء خلط مزلق نهائي لمدة 3 دقائق.",
+      "عبئ مسحوق المزيج المتجانس في قشور كبسولات HPMC النباتية مقاس #0 بوزن مستهدف 500 ملغ."
+    ],
+    notes: "يُحفظ في ظروف جافة ومغلقة بإحكام تحت تفريغ الهواء دون 25 درجة مئوية. تجنب التعرض للضوء، حيث أن NMN وCoQ10 حساسان للحرارة والأكسدة الضوئية."
+  },
+  {
+    id: "skin-brightening-serum",
+    title: "مستحلب تبييض نباتي كيميائي متطور",
+    category: "المكونات النشطة للتجميل",
+    icon: "✨",
+    form: "كريم / سيروم زيت في ماء (O/W)",
+    targetWeight: "100 جرام قاعدة",
+    description: "كريم تفتيح عالي الأداء يستخدم الجلابريدين وEGCG لتثبيط تخليق الميلانين، وتقليل بقع الشيخوخة، وتوفير حماية قوية مضادة للأكسدة.",
+    actives: [
+      { name: "جلابريدين (مستخلص عرق السوس القياسي)", dose: "0.5 جرام (0.5%)", purity: "40.0% (HPLC)", overage: "2%" },
+      { name: "EGCG (إبيغالوكاتشين غالات)", dose: "1.0 جرام (1.0%)", purity: "≥98.0% (HPLC)", overage: "4%" },
+      { name: "حمض الفيروليك", dose: "0.5 جرام (0.5%)", purity: "≥99.0% (HPLC)", overage: "2%" }
+    ],
+    excipients: [
+      { name: "المرحلة أ: ماء منزوع الأيونات، جلسرين، كاربومير", role: "قاعدة المرحلة المائية", ratio: "82.0 جرام" },
+      { name: "المرحلة ب: الدهون الثلاثية الكابريليك، زيت الجوجوبا، ستيرات الغليسيريل", role: "المرحلة الزيتية والمستحلب", ratio: "15.0 جرام" },
+      { name: "المرحلة د: فينوكسي إيثانول، إيثيل هكسيل الجلسرين", role: "نظام المواد الحافظة", ratio: "1.0 جرام" }
+    ],
+    sop: [
+      "حضّر المرحلة أ (المرحلة المائية) عن طريق تشتيت الكاربومير في الماء منزوع الأيونات والجلسرين. سخن إلى 75-80 درجة مئوية تحت تحريك معتدل.",
+      "حضّر المرحلة ب (المرحلة الزيتية) عن طريق دمج الدهون وستيرات الغليسيريل. سخن إلى 75-80 درجة مئوية حتى تذوب تماماً وتصبح متجانسة.",
+      "أضف المرحلة ب ببطء إلى المرحلة أ تحت تجانس عالي القص (3000-3500 دورة في الدقيقة) لمدة 8 دقائق لتشكيل المستحلب الأساسي.",
+      "برد المستحلب ببطء تحت تحريك مرساتي (50-60 دورة في الدقيقة). عندما تنخفض درجة الحرارة إلى ما دون 40 درجة مئوية، حضر المرحلة ج.",
+      "المرحلة ج (المكونات النشطة): ذوّب حمض الفيروليك وEGCG في جزء صغير من الماء/البروبانيديول. ذوّب الجلابريدين في الدهون الثلاثية الكابريليك. امزج كلاهما في المستحلب.",
+      "أضف المرحلة د (المواد الحافظة) عند 35 درجة مئوية، وقس درجة الحموضة واضبطها باستخدام ثلاثي إيثانول أمين للوصول إلى الهدف النهائي المتوافق مع الجلد وهو 5.5 - 6.0."
+    ],
+    notes: "قيمة HLB المطلوبة للمستحلب الموصى به هي حوالي 10.5. يجب إذابة الجلابريدين في المرحلة الدهنية تحت 40 درجة مئوية لتجنب التحلل الحراري."
+  },
+  {
+    id: "pet-joint-mobility",
+    title: "مضغات حركة المفاصل والإدراك للحيوانات الأليفة",
+    category: "صحة الحيوانات الأليفة",
+    icon: "🐕",
+    form: "مضغات لينة مبثوقة على البارد",
+    targetWeight: "4.0 جرام",
+    description: "مضغة وظيفية ذات درجة بيطرية عالية المستساغية مصممة لتقليل التهاب المفاصل ودعم صحة الدماغ لدى الكلاب الكبيرة في السن.",
+    actives: [
+      { name: "مستخلص الكركمين (كركمينويدات قياسية)", dose: "150 ملغ", purity: "95.0% (HPLC)", overage: "5%" },
+      { name: "مستخلص بوسويليا سيراتا (أحماض البوسويليك)", dose: "100 ملغ", purity: "65.0% (معايرة)", overage: "3%" },
+      { name: "مستخلص أوراق الجنكة بيلوبا", dose: "40 ملغ", purity: "24% فلافونات / 6% لاكتونات", overage: "2%" }
+    ],
+    excipients: [
+      { name: "جلسرين وزيت نباتي", role: "مرطبات / مطريات", ratio: "800 ملغ" },
+      { name: "خميرة البيرة ونكهة الدجاج الطبيعية", role: "محسنات المستساغية", ratio: "1400 ملغ" },
+      { name: "نشا البطاطس ودقيق الحمص", role: "روابط الهيكل", ratio: "1510 ملغ" }
+    ],
+    sop: [
+      "امزج جميع المكونات الجافة، بما في ذلك الكركمين، والبوسويليا، ومستخلص الجنكة، والنشا، والدقيق، ونكهة الدجاج في خلاط مجداف أفقي.",
+      "انخل المزيج الجاف من خلال غربال مقاس 30 مش لضمان التوزيع الموحد لحجم الجسيمات.",
+      "ضخ المرطبات السائلة ببطء (جلسرين، زيت نباتي، ماء) في خليط المسحوق الجاف مع الخلط المستمر.",
+      "عالج الكتلة في درجة حرارة الغرفة (تحت 35 درجة مئوية) لتشكيل عجينة متماسكة وشبه صلبة. لا تستخدم الحرارة للحفاظ على الكركمينويدات النشطة.",
+      "لقّم العجينة في آلة البثق على البارد المجهزة بقالب على شكل عظم أو دائري. اقطع المادة المبثوقة بوزن مستهدف قدره 4.0 جرام.",
+      "مرر المضغات المبثوقة عبر نفق تجفيف بدرجة حرارة منخفضة للوصول إلى مستوى نشاط مائي (Aw) أقل من 0.65 لمنع العفن."
+    ],
+    notes: "يحتوي الكركمين على صبغة صفراء طبيعية قوية. استخدم معدات من الفولاذ المقاوم للصدأ ونظفها على الفور لمنع تلطيخ الدفعات الأخرى."
+  },
+  {
+    id: "neuro-cognitive-protection",
+    title: "مزيج التركيز والحماية الإدراكية العصبية",
+    category: "المكملات الصحية",
+    icon: "🧠",
+    form: "قرص مضغوط قياسي",
+    targetWeight: "650 ملغ",
+    description: "تركيبة إدراكية متقدمة تربط بين اللوتيلين ومستخلص الجنكة بيلوبا لدعم تدفق الدم الدماغي، والتركيز، ومحاربة ضباب الدماغ.",
+    actives: [
+      { name: "لوتيلين (مستخلص قشر قياسي)", dose: "100 ملغ", purity: "≥98.0% (HPLC)", overage: "4%" },
+      { name: "مستخلص أوراق الجنكة بيلوبا", dose: "120 ملغ", purity: "24/6 قياسي (HPLC)", overage: "2%" },
+      { name: "ألفا-GPC (L-ألفا غليسيريل فوسفوريل كولين)", dose: "150 ملغ", purity: "مسحوق 50.0% (HPLC)", overage: "5%" }
+    ],
+    excipients: [
+      { name: "ثنائي هيدرات فوسفات ثنائي الكالسيوم (Emcompress)", role: "حشو الضغط المباشر", ratio: "250 ملغ" },
+      { name: "كروscarmellose الصوديوم (Ac-Di-Sol)", role: "عامل تفتت فائق", ratio: "20 ملغ" },
+      { name: "حمض الستياريك وثاني أكسيد السيليكون", role: "مواد مزلقة ومسهلة للتدفق", ratio: "10 ملغ" }
+    ],
+    sop: [
+      "زن اللوتيلين، والجنكة بيلوبا، وألفا-GPC، وEmcompress، وكروscarmellose الصوديوم وفقاً لإرشادات الدفعة.",
+      "مادة ألفا-GPC شديدة الامتصاص للرطوبة؛ تأكد من الحفاظ على الرطوبة النسبية (RH) في غرفة الخلط بدقة دون 35%.",
+      "امزج المكونات النشطة وفوسفات ثنائي الكالسيوم في خلاط بهلواني لمدة 12 دقيقة لتوزيع مساحيق الأعشاب الكثيفة.",
+      "أضف كروscarmellose الصوديوم (عامل تفتت فائق) واخلط لمدة 3 دقائق أخرى.",
+      "أضف حمض الستياريك وثاني أكسيد السيليكون. واخلط لمدة دقيقتين أخيرتين. تجنب الإفراط في التشحيم لمنع تليين القرص.",
+      "لقّم المزيج الجاف مباشرة في مكبس أقراص دوار مجهز بثاقبات بيضاوية مقاس 11 ملغ. واضغط إلى صلابة 10-12 kp."
+    ],
+    notes: "يمتص ألفا-GPC الرطوبة بسرعة من الهواء. يجب تعبئة الأقراص في عبوات بثرية Alu-Alu عالية الحاجز أو زجاجات HDPE محكمة الإغلاق مع مجفف مباشرة بعد الضغط."
+  }
+];
+
+
+
+
+---
+
+<BaseLayout lang={lang}
+  title="التركيبات والوصفات العلمية المميزة"
+  description="استكشف نماذج التركيبات الاحترافية للمكملات الصحية لقطاع B2B، ومستحضرات التجميل النشطة، وصحة الحيوانات الأليفة. احصل على نسب دقيقة للمكونات وبروتوكولات تحضير خطوة بخطوة."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(featuredFormulasSchema)} slot="head" />
+
+  <main class="formulas-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="ترويسة الصفحة">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">مكتبة التركيبات</span>
+        <h1 class="banner-title">التركيبات العلمية المميزة</h1>
+        <p class="banner-desc">
+          مخططات تركيبات جاهزة للتوسيع تجمع بين المستخلصات النباتية عالية النقاء، والعوامل المساعدة النشطة، والسواغات الصيدلانية القياسية.
+        </p>
+      </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <section class="container section">
+      <div class="formulas-intro">
+        <p class="intro-text">
+          قام فريق البحث والتطوير العلمي لدينا بتطوير هذه التركيبات المرجعية لمساعدة مطوري المنتجات ومسؤولي المشتريات وعلماء المختبرات. جميع المكونات النشطة الموضحة أدناه متاحة للطلب بالجملة والعينات المخصصة. استخدم <a href="/ar/calculator" class="highlight-link">منصة التركيبات العلمية</a> لتوسيع أوزان الدفعات أو ضبط الهوامش أو حساب التخفيفات المعقدة.
+        </p>
+      </div>
+
+      <div class="formulas-grid">
+        {formulas.map((formula) => (
+          <article class="formula-card glass" id={formula.id}>
+            <!-- Card Header -->
+            <div class="card-header-bar">
+              <span class="category-badge">{formula.category}</span>
+              <span class="form-badge">{formula.form}</span>
+            </div>
+
+            <div class="card-main-title">
+              <span class="card-icon">{formula.icon}</span>
+              <div>
+                <h2>{formula.title}</h2>
+                <span class="target-weight">الوزن المستهدف للوحدة: <strong>{formula.targetWeight}</strong></span>
+              </div>
+            </div>
+
+            <p class="formula-desc">{formula.description}</p>
+
+            <details class="formula-details">
+              <summary class="details-toggle">
+                <span>عرض التركيبة الكاملة وإجراءات التشغيل القياسية</span>
+                <svg class="toggle-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </summary>
+
+              <div class="details-content">
+                <!-- Actives Table -->
+                <div class="table-wrapper">
+                  <h3>المكونات النشطة (مكونات GINKVORA النشطة)</h3>
+                  <table class="recipe-table">
+                    <thead>
+                      <tr>
+                        <th>المكون النشط</th>
+                        <th>الجرعة / الوحدة</th>
+                        <th>الحد الأدنى للنقاء</th>
+                        <th>عامل الهامش</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {formula.actives.map(active => (
+                        <tr>
+                          <td class="font-bold text-white">{active.name}</td>
+                          <td class="font-mono font-bold text-primary">{active.dose}</td>
+                          <td class="font-mono">{active.purity}</td>
+                          <td class="font-mono text-muted">{active.overage}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Excipients Table -->
+                <div class="table-wrapper mt-4">
+                  <h3>السواغات والمواد الحاملة الموصى بها</h3>
+                  <table class="recipe-table">
+                    <thead>
+                      <tr>
+                        <th>مكون السواغ</th>
+                        <th>الدور الوظيفي</th>
+                        <th>النسبة المقترحة</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {formula.excipients.map(exc => (
+                        <tr>
+                          <td class="font-bold text-white">{exc.name}</td>
+                          <td>{exc.role}</td>
+                          <td class="font-mono font-bold text-accent">{exc.ratio}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Step-by-Step SOP -->
+                <div class="sop-section mt-4">
+                  <h3>إجراءات التشغيل القياسية للتحضير والخلط</h3>
+                  <ol class="sop-list">
+                    {formula.sop.map(step => (
+                      <li>{step}</li>
+                    ))}
+                  </ol>
+                </div>
+
+                <!-- Technical Notes -->
+                <div class="notes-block mt-4">
+                  <strong>💡 ملاحظات التركيبة والاستقرار:</strong>
+                  <p>{formula.notes}</p>
+                </div>
+              </div>
+            </details>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .formulas-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 5rem 2.5rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Intro Section ── */
+  .formulas-intro {
+    max-width: 800px;
+    margin: 0 auto var(--space-2xl) auto;
+    text-align: center;
+  }
+
+  .intro-text {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .highlight-link {
+    color: var(--color-primary-light);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color var(--transition-base);
+  }
+
+  .highlight-link:hover {
+    color: var(--color-primary);
+  }
+
+  /* ── Formulas Grid & Cards ── */
+  .formulas-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .formula-card {
+    padding: var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .formula-card:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .card-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-sm);
+  }
+
+  .category-badge {
+    background: var(--color-primary-glow);
+    color: var(--color-primary-light);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(212, 166, 84, 0.2);
+  }
+
+  .form-badge {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .card-main-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xs);
+  }
+
+  .card-icon {
+    font-size: 2.25rem;
+    line-height: 1;
+  }
+
+  .card-main-title h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .target-weight {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    display: block;
+    margin-top: 0.125rem;
+  }
+
+  .target-weight strong {
+    color: var(--color-text-secondary);
+  }
+
+  .formula-desc {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-md);
+  }
+
+  /* ── Expandable Details ── */
+  .formula-details {
+    border-top: 1px dashed var(--color-border);
+    padding-top: var(--space-md);
+  }
+
+  .details-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary-light);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    transition: color var(--transition-base);
+  }
+
+  .details-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .details-toggle:hover {
+    color: var(--color-primary);
+  }
+
+  .toggle-arrow {
+    transition: transform 0.25s ease;
+  }
+
+  .formula-details[open] .toggle-arrow {
+    transform: rotate(180deg);
+  }
+
+  .details-content {
+    margin-top: var(--space-md);
+    animation: slideDown 0.3s ease-out;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Recipe Tables ── */
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .table-wrapper h3, .sop-section h3 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-sm);
+  }
+
+  .recipe-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: start;
+  }
+
+  .recipe-table th {
+    border-bottom: 1px solid var(--color-border-strong);
+    padding: 0.5rem 0.75rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .recipe-table td {
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.625rem 0.75rem;
+    color: var(--color-text-secondary);
+  }
+
+  .recipe-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Utility classes inside CSS */
+  .text-white { color: var(--color-text) !important; }
+  .text-primary { color: var(--color-primary-light) !important; }
+  .text-accent { color: var(--color-accent-light) !important; }
+  .text-muted { color: var(--color-text-muted) !important; }
+  .font-bold { font-weight: 600; }
+  .font-mono { font-family: var(--font-mono); }
+  .mt-4 { margin-top: var(--space-md); }
+
+  /* ── SOP List ── */
+  .sop-list {
+    padding-left: 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .sop-list li::marker {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  /* ── Notes Block ── */
+  .notes-block {
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 2px solid var(--color-primary);
+    padding: var(--space-md);
+    border-radius: var(--radius-sm);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .notes-block strong {
+    color: var(--color-primary-light);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .notes-block p {
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+</style>

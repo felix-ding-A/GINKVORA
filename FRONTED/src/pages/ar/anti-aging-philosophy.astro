@@ -1,0 +1,830 @@
+---
+// src/pages/ar/anti-aging-philosophy.astro — ECM-Targeted Anti-Aging Philosophy Page
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations, getLocalePath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+
+const lang = 'ar';
+const t = useTranslations(lang as Lang);
+const lp = (path: string) => getLocalePath(lang as Lang, path);
+
+const philosophySchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "فلسفة مكافحة الشيخوخة التي تستهدف المصفوفة خارج الخلية (ECM) | GINKVORA",
+  "description": "تعرف على الإطار العلمي لـ GINKVORA لمكافحة الشيخوخة المستهدف للمصفوفة خارج الخلية (ECM)، ومساراتها الخلوية الثلاثة، والتآزر بين طريقي التطبيق الموضعي والداخلي.",
+  "url": "https://ginkvora.com/ar/anti-aging-philosophy"
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title="الفلسفة العلمية لمكافحة الشيخوخة التي تستهدف المصفوفة خارج الخلية (ECM) | GINKVORA"
+  description="اكتشف علم استهداف المصفوفة خارج الخلية (ECM). يجمع نهجنا ثنائي المسار بين الحماية الموضعية والتنشيط الخلوي الداخلي لإعادة تشكيل مصفوفة الجلد بالكامل."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(philosophySchema)} slot="head" />
+  
+  <main class="philosophy-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="ترويسة الصفحة">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">الفلسفة العلمية</span>
+        <h1 class="banner-title">منصة مكافحة الشيخوخة التي تستهدف المصفوفة خارج الخلية (ECM)</h1>
+        <p class="banner-desc">
+          إعادة تعريف طول العمر من الخارج إلى الداخل ومن الداخل إلى الخارج. نحن نستهدف المصفوفة خارج الخلية (ECM) كوجهة وحيدة ونهائية لتجديد بنية البشرة.
+        </p>
+      </div>
+    </header>
+
+    <!-- Section 1: What is ECM -->
+    <section class="container section intro-section" id="what-is-ecm" aria-label="علم المصفوفة خارج الخلية">
+      <div class="intro-grid">
+        <div class="intro-left reveal">
+          <span class="accent-title">الدعامة الجلدية</span>
+          <h2>ما هي المصفوفة خارج الخلية (ECM)؟</h2>
+          <p>
+            المصفوفة خارج الخلية (ECM) هي شبكة هيكلية معقدة وديناميكية تحيط بخلايا الجلد وتدعمها. تتكون الـ ECM من البروتينات الهيكلية (الكولاجين والإيلاستين) والبروتيوغليكان/الجليكوزامينوجليكان المتخصصة (حمض الهيالورونيك)، وتعمل كدعامة فيزيائية مسؤولة عن سمك الجلد ومرونته وشبابه.
+          </p>
+          <p>
+            مع تقدم السن والعوامل البيئية الضارة (مثل الأشعة فوق البنفسجية والسكريات)، تخضع مصفوفة الجلد لتدهور شديد. يتباطأ تخليق الكولاجين، وتدمر البروتينات المعدنية للمصفوفة (MMPs) الألياف الموجودة، وترتبط جزيئات السكر بالبروتينات، مما يؤدي إلى ترهل مرئي وتجاعيد عميقة وفقدان الترطيب.
+          </p>
+        </div>
+        <div class="intro-right reveal">
+          <div class="image-showcase glass">
+            <img
+              src="/images/ecm-dermal-scaffold-architecture-guide.webp"
+              alt="دليل هندسة الدعامة الجلدية للمصفوفة خارج الخلية (ECM)"
+              class="showcase-img"
+              loading="lazy"
+            />
+          </div>
+          <div class="image-caption">
+            <strong>المصفوفة خارج الخلية (ECM)</strong>
+            <span>هندسة الدعامة الجلدية</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Three Mechanism Pathways -->
+    <section class="section pathways-section bg-deep" id="three-pathways" aria-label="ثلاثة مسارات خلوية">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">مسارات التجديد</span>
+          <h2>كيف نستهدف المصفوفة خارج الخلية (ECM): ثلاث آليات علمية</h2>
+          <p class="section-desc">
+            تقوم GINKVORA باختيار مكونات مكافحة الشيخوخة التي تستهدف بدقة المسارات البيولوجية التي تنظم تكسير وتركيب مصفوفة الجلد.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <div class="glass-card reveal">
+            <span class="card-icon-em">🧬</span>
+            <h3>دعم مصفوفة الكولاجين</h3>
+            <p class="card-subtitle">مكونات نشطة لإعادة بناء المصفوفة</p>
+            <p class="card-body-text">
+              تعزيز التخليق المباشر للبروتينات الهيكلية. من خلال تحفيز نشاط الخلايا الليفية، تسرّع هذه المكونات إنتاج الكولاجين من الأنواع الأول والثالث والرابع، مما يزيد من كثافة طبقة الجلد.
+            </p>
+            <a href={lp('/products?mechanism=collagen-stimulant')} class="card-anchor-link">
+              شراء <span>محفزات تخليق الكولاجين</span> &larr;
+            </a>
+          </div>
+
+          <div class="glass-card reveal reveal-delay-1">
+            <span class="card-icon-em">🛡️</span>
+            <h3>تثبيط وحماية MMP</h3>
+            <p class="card-subtitle">حماية مصفوفة الجلد من التدهور</p>
+            <p class="card-body-text">
+              تثبيط بروتينات المصفوفة المعدنية (MMPs) - وهي الإنزيمات التي تنشطها الأشعة فوق البنفسجية والتلوث لتفكيك ألياف الكولاجين والإيلاستين. يعمل هذا المسار كدرع بيولوجي.
+            </p>
+            <a href={lp('/products?mechanism=mmp-inhibitor')} class="card-anchor-link">
+              شراء <span>مسبطات MMP درجة تجميلية</span> &larr;
+            </a>
+          </div>
+
+          <div class="glass-card reveal reveal-delay-2">
+            <span class="card-icon-em">⏳</span>
+            <h3>الدفاع ضد السكر (مكافحة الجليكيشن)</h3>
+            <p class="card-subtitle">منع الترابط المتبادل للمصفوفة</p>
+            <p class="card-body-text">
+              تثبيط عملية السكر (الارتباط الغليكوزيلي) حيث ترتبط السكريات الزائدة بألياف الكولاجين، مما يجعلها صلبة وهشة. إن منع المنتجات النهائية المتقدمة للسكريات (AGEs) يحافظ على مرونة الجلد ونضارته.
+            </p>
+            <a href={lp('/products?mechanism=anti-glycation')} class="card-anchor-link">
+              شراء <span>مكونات نشطة لمكافحة السكر</span> &larr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Dual Routes -->
+    <section class="container section synergy-section" id="dual-routes-synergy" aria-label="التآزر بين الموضعي والداخلي">
+      <div class="section-header reveal">
+        <span class="section-label">التكامل من الداخل والخارج</span>
+        <h2>طريقان، هدف واحد: التآزر بين الموضعي والداخلي</h2>
+        <p class="section-desc">
+          إعادة تشكيل مصفوفة الجلد هي حلقة مغلقة. تتطلب الفعالية الحقيقية الجمع بين حماية الحاجز الخارجي وتنشيط الطاقة الخلوية الداخلية.
+        </p>
+      </div>
+
+      <div class="synergy-grid">
+        <div class="synergy-left glass reveal">
+          <div class="synergy-header">
+            <span class="synergy-number">01</span>
+            <h3>المسار الموضعي: الدرع الخارجي والإصلاح</h3>
+          </div>
+          <p>
+            تقدم التركيبات الموضعية حماية فورية وموضعية. المكونات النشطة المطبقة على سطح الجلد (مثل الجلابريدين، ببتيدات النحاس، واللوتيولين) تستهدف مباشرة تدهور الـ MMP الموضعي الناجم عن الأشعة فوق البنفسجية، وتحد من الجذور الحرة للبشرة، وتحفز تخليق الكولايجين الموضعي الفوري داخل الوصلة الجلدية البشرة.
+          </p>
+          <div class="badge-label">الدرجة المطلوبة: درجة تجميلية (مسجلة في INCI)</div>
+        </div>
+
+        <div class="synergy-right glass reveal reveal-delay-1">
+          <div class="synergy-header">
+            <span class="synergy-number">02</span>
+            <h3>المسار الداخلي (المأكول): التنشيط الخلوي الداخلي</h3>
+          </div>
+          <p>
+            تغذي التركيبات المأكولة محرك التخليق الحيوي من الداخل. يتطلب التخليق داخل الخلايا لبروتينات المصفوفة طاقة خلوية هائلة (ATP). إن تناول السلائف المباشرة ومنشطات الخلايا عن طريق الفم (مثل NMN وPQQ) يحفز التخليق الحيوي للميتوكوندريا داخل الخلايا الليفية، مما يمنحها القوة الأيضية لتغذية التخليق الحيوي المستمر للـ ECM.
+          </p>
+          <div class="badge-label">الدرجة المطلوبة: درجة غذائية / مكملات تجميلية خام</div>
+        </div>
+      </div>
+
+      <!-- Shared Ingredients Showcase -->
+      <div class="shared-ingredients reveal reveal-delay-1">
+        <div class="shared-header">
+          <span class="shared-label">مكونات مشتركة ثنائية التطبيق</span>
+          <p class="shared-desc">نفس المادة الخام. درجتان معتمدتان. خط إنتاج متكامل لمكافحة الشيخوخة.</p>
+        </div>
+        <div class="shared-grid">
+          <div class="shared-card glass">
+            <div class="shared-card-name">PQQ</div>
+            <div class="shared-card-full">بيرولوكينولين كينون (Pyrroloquinoline Quinone)</div>
+            <div class="shared-grades">
+              <span class="grade-badge grade-badge--cosmetic">درجة تجميلية &middot; مسجل في INCI</span>
+              <span class="grade-badge grade-badge--food">درجة غذائية &middot; معتمد من GMP</span>
+            </div>
+            <p class="shared-card-desc">موضعياً: يثبط MMP-1 ويحمي كولاجين الجلد. فموياً: ينشط التخليق الحيوي للميتوكوندريا في الخلايا الليفية لتغذية تخليق الـ ECM.</p>
+          </div>
+          <div class="shared-card glass">
+            <div class="shared-card-name">NMN</div>
+            <div class="shared-card-full">أحادي نيوكليوتيد النيكوتيناميد (Nicotinamide Mononucleotide)</div>
+            <div class="shared-grades">
+              <span class="grade-badge grade-badge--cosmetic">درجة تجميلية &middot; مسجل في INCI</span>
+              <span class="grade-badge grade-badge--food">درجة غذائية &middot; مقبول لدى FDA NDI</span>
+            </div>
+            <p class="shared-card-desc">موضعياً: يجدد NAD+ في خلايا الجلد لدعم تخليق الكولاجين. فموياً: يرفع مستويات NAD+ في الجسم لتمكين الخلايا الليفية من إعادة تشكيل الـ ECM.</p>
+          </div>
+          <div class="shared-card glass">
+            <div class="shared-card-name">Glabridin</div>
+            <div class="shared-card-full">مستخلص جذور عرق السوس (الجلابريدين)</div>
+            <div class="shared-grades">
+              <span class="grade-badge grade-badge--cosmetic">درجة تجميلية &middot; متوافق مع REACH</span>
+              <span class="grade-badge grade-badge--food">درجة غذائية &middot; مدرج لدى EFSA</span>
+            </div>
+            <p class="shared-card-desc">موضعياً: مثبط قوي لـ MMP ومكون فعال للتفتيح. فموياً: دفاع ضد السكر لمنع الترابط المتبادل للـ ECM الناتج عن السكريات (AGEs).</p>
+          </div>
+        </div>
+        <div class="shared-cta">
+          <a href={lp('/products')} class="btn btn--primary">تصفح كتالوج المكونات ثنائية الدرجة</a>
+          <a href={lp('/contact')} class="btn btn--gold">طلب عينات للتطبيقات الثنائية</a>
+        </div>
+      </div>
+
+      <div class="slogan-container glass reveal reveal-delay-2">
+        <div class="slogan-quote">“تحمي التركيبات الموضعية المصفوفة من الخارج، بينما تعمل المغذيات المأكولة على تحسين الطاقة الخلوية لتغذية التخليق الحيوي للـ ECM من الداخل.”</div>
+        <p class="slogan-sub">
+          توفر GINKVORA مواد خام ثنائية الاستخدام لمكافحة الشيخوخة (PQQ، NMN) مصنعة ومعتمدة لكل من الدرجتين التجميلية والغذائية، مما يسمح للعلامات التجارية بإطلاق خطوط منتجات متكاملة ومتجانسة لمكافحة الشيخوخة.
+        </p>
+        <div class="slogan-cta">
+          <a href={lp('/products')} class="btn btn--gold">استكشاف المواد الخام ثنائية الاستخدام</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Quality & Compliance -->
+    <section class="section compliance-section bg-deep" id="compliance" aria-label="معايير الجودة والامتثال">
+      <div class="container">
+        <div class="grid-2">
+          <div class="reveal">
+            <span class="accent-title">الثقة والتحقق</span>
+            <h2>جودة وامتثال صارم</h2>
+            <p>
+              يتطلب العمل في سوق B2B العالمي امتثالاً تاماً وخالياً من العيوب. مكونات GINKVORA مدعومة بمختبرات مراقبة جودة معتمدة وتحقق تنظيمي صارم.
+            </p>
+            <p>
+              إن خط منتجاتنا التجميلية مسجل بالكامل في INCI ومتوافق مع REACH للتوزيع في الاتحاد الأوروبي. يتم تصنيع مكوناتنا المخصصة للأغذية والتجميل بموجب لوائح GMP الصارمة وتحمل تسجيلات إدارة الغذاء والدواء (FDA) اللازمة وشهادات الدرجة الغذائية، مما يضمن النقاء والسلامة والتتبع الكامل للمكملات الغذائية.
+            </p>
+          </div>
+          <div class="compliance-features reveal reveal-delay-1">
+            <div class="comp-item glass">
+              <span class="comp-icon">✓</span>
+              <div>
+                <h4>متوافق مع REACH</h4>
+                <p>متوافق تماماً مع لوائح الاتحاد الأوروبي للتوزيع التجميلي.</p>
+              </div>
+            </div>
+            <div class="comp-item glass">
+              <span class="comp-icon">✓</span>
+              <div>
+                <h4>منشآت مسجلة لدى الـ FDA</h4>
+                <p>ضمان الامتثال ومعايير سلامة الأغذية والاستيراد الأمريكية.</p>
+              </div>
+            </div>
+            <div class="comp-item glass">
+              <span class="comp-icon">✓</span>
+              <div>
+                <h4>مكونات نشطة خالية من القسوة</h4>
+                <p>تصنيع أخلاقي دون أي اختبارات على الحيوانات للمواد الخام التجميلية.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="container section cta-section">
+      <div class="cta-box glass">
+        <h2>ارتقِ بعملية تطوير منتجاتك</h2>
+        <p>احصل على مكونات متميزة مصنفة حسب مسارات آلية الـ ECM الدقيقة. عينات مجانية متاحة للتحقق من التركيبات.</p>
+        <div class="cta-btns">
+          <a href={lp('/contact')} class="btn btn--gold btn--lg">طلب عرض سعر وعينات</a>
+          <a href={lp('/products')} class="btn btn--primary btn--lg">تصفح كتالوج المكونات</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .philosophy-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 700px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  /* Intro Section */
+  .section {
+    padding-block: var(--space-2xl);
+  }
+
+  .accent-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .intro-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  .intro-left h2 {
+    font-size: 2.25rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.25;
+  }
+
+  .intro-left p {
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+
+  .image-showcase {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-color: rgba(212,166,84,0.18) !important;
+  }
+
+  .showcase-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+  }
+  
+  .image-showcase:hover .showcase-img {
+    transform: scale(1.05);
+  }
+
+  /* Custom ECM Diagram */
+  .ecm-diagram {
+    width: 100%;
+    height: 100%;
+    background: #080705;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .matrix-grid-line {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: rgba(212, 166, 84, 0.05);
+    top: 30%;
+  }
+  .matrix-grid-line:nth-child(2) { top: 60%; }
+  .matrix-grid-line:nth-child(3) {
+    width: 1px;
+    height: 100%;
+    inset-inline-start: 50%;
+    top: 0;
+  }
+
+  .fibroblast-node {
+    position: absolute;
+    top: 40%;
+    inset-inline-start: 35%;
+    background: rgba(212, 166, 84, 0.15);
+    border: 1px solid var(--color-primary);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    color: var(--color-primary-light);
+    z-index: 2;
+  }
+
+  .collagen-fiber {
+    position: absolute;
+    height: 2px;
+    width: 80%;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    top: 45%;
+    inset-inline-start: 10%;
+    opacity: 0.4;
+  }
+
+  .image-caption {
+    margin-top: 1rem;
+    padding: 0.5rem 0.75rem;
+    border-inline-start: 2px solid var(--color-primary);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .image-caption strong {
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+  }
+
+  .image-caption span {
+    color: var(--color-text-secondary);
+    font-size: 0.75rem;
+  }
+
+  /* Pathways cards */
+  .bg-deep {
+    background-color: var(--color-bg-deep);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .section-header h2 {
+    font-size: 2.25rem;
+    line-height: 1.25;
+  }
+
+  .section-desc {
+    color: var(--color-text-secondary);
+    margin-top: 0.75rem;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .grid-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .glass-card {
+    padding: 2.5rem 2rem;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(212, 166, 84, 0.1) !important;
+    transition: all var(--transition-base);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .glass-card:hover {
+    border-color: rgba(212, 166, 84, 0.25) !important;
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .card-icon-em {
+    font-size: 2.25rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .glass-card h3 {
+    font-size: 1.375rem;
+    color: var(--color-text);
+    margin-bottom: 0.25rem;
+  }
+
+  .card-subtitle {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--color-primary-light);
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .card-body-text {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    flex: 1;
+  }
+
+  .card-anchor-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+
+  .card-anchor-link span {
+    text-decoration: underline;
+  }
+
+  .card-anchor-link:hover {
+    color: var(--color-accent-light);
+  }
+
+  /* Synergy Section */
+  .synergy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 900px) {
+    .synergy-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .synergy-left, .synergy-right {
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.1) !important;
+  }
+
+  .synergy-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .synergy-number {
+    font-family: var(--font-mono);
+    font-size: 1.75rem;
+    color: var(--color-primary);
+    font-weight: 700;
+    opacity: 0.8;
+  }
+
+  .synergy-header h3 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--color-text);
+  }
+
+  .synergy-left p, .synergy-right p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .badge-label {
+    font-size: 0.75rem;
+    background: rgba(212, 166, 84, 0.08);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.2);
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+    font-weight: 600;
+  }
+
+  .synergy-right .badge-label {
+    background: rgba(124, 184, 122, 0.08);
+    color: #a8d5a6;
+    border-color: rgba(124, 184, 122, 0.2);
+  }
+
+  /* ── Shared Ingredients Showcase ── */
+  .shared-ingredients {
+    margin: 3rem 0;
+  }
+
+  .shared-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .shared-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-primary);
+    background: rgba(212,166,84,0.1);
+    border: 1px solid rgba(212,166,84,0.25);
+    padding: 0.3rem 0.85rem;
+    border-radius: var(--radius-full);
+    margin-bottom: 0.75rem;
+  }
+
+  .shared-desc {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    margin: 0;
+  }
+
+  .shared-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .shared-grid { grid-template-columns: 1fr; }
+  }
+
+  .shared-card {
+    padding: 1.75rem 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212,166,84,0.15) !important;
+    transition: border-color var(--transition-base), transform var(--transition-base);
+  }
+
+  .shared-card:hover {
+    border-color: rgba(212,166,84,0.35) !important;
+    transform: translateY(-3px);
+  }
+
+  .shared-card-name {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #f0c878, #d4a654);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.2rem;
+  }
+
+  .shared-card-full {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .shared-grades {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .grade-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+  }
+
+  .grade-badge--cosmetic {
+    background: rgba(212,166,84,0.1);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212,166,84,0.25);
+  }
+
+  .grade-badge--food {
+    background: rgba(124,184,122,0.08);
+    color: #a8d5a6;
+    border: 1px solid rgba(124,184,122,0.2);
+  }
+
+  .shared-card-desc {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .shared-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .slogan-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.15) !important;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(212, 166, 84, 0.03) 0%, rgba(0, 0, 0, 0) 100%);
+  }
+
+  .slogan-quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    color: var(--color-accent);
+    line-height: 1.45;
+    margin-bottom: 1rem;
+  }
+
+  .slogan-sub {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    max-width: 760px;
+    margin: 0 auto 2rem;
+  }
+
+  .slogan-cta {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Compliance Section */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .grid-2 {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  .grid-2 h2 {
+    font-size: 2.25rem;
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
+  }
+
+  .grid-2 p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.25rem;
+  }
+
+  .compliance-features {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .comp-item {
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(212, 166, 84, 0.1) !important;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .comp-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(124, 184, 122, 0.15);
+    color: #a8d5a6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .comp-item h4 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--color-text);
+    margin-bottom: 0.25rem;
+  }
+
+  .comp-item p {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* CTA Box */
+  .cta-box {
+    padding: 3.5rem;
+    border-radius: var(--radius-xl);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    border: 1px solid rgba(212, 166, 84, 0.2) !important;
+  }
+
+  .cta-box h2 {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-family: var(--font-display);
+    color: var(--color-text);
+  }
+
+  .cta-box p {
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    line-height: 1.75;
+  }
+
+  .cta-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+</style>

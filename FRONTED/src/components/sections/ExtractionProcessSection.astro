@@ -6,6 +6,36 @@ interface Props { lang?: string; }
 const { lang = 'en' } = Astro.props;
 const t = useTranslations(lang as Lang);
 const lp = (path: string) => getLocalePath(lang as Lang, path);
+
+const step1_tags = lang === 'ar' 
+  ? ['مزارع معتمدة من GAP', 'توثيق الأصناف النباتية', 'الفحص المسبق للمعادن الثقيلة'] 
+  : (lang === 'ru' 
+    ? ['Фермы с сертификатом GAP', 'Аутентификация видов', 'Скрининг тяжелых металлов'] 
+    : ['GAP Certified Farms', 'Species Authentication', 'Heavy Metal Pre-screen']);
+
+const step2_tags = lang === 'ar' 
+  ? ['استخلاص بثاني أكسيد الكربون sCO₂', 'مراقبة بقايا المذيبات', 'مراقبة مستمرة للعملية'] 
+  : (lang === 'ru' 
+    ? ['Экстракция sCO₂', 'Контроль остатков растворителей', 'Мониторинг процесса'] 
+    : ['sCO₂ Extraction', 'Solvent Residue Control', 'Continuous Process Monitoring']);
+
+const step3_tags = lang === 'ar' 
+  ? ['كروماتوغرافيا تحضيرية HPLC', 'الفصل بأعمدة الراتنج', 'درجة نقاء ≥98%'] 
+  : (lang === 'ru' 
+    ? ['Препаративная ВЭЖХ', 'Колоночное разделение', 'Чистота ≥98%'] 
+    : ['Preparative HPLC', 'Resin Column Separation', 'Purity ≥98%']);
+
+const step4_tags = lang === 'ar' 
+  ? ['اختبار النقاء بالـ HPLC', 'المعادن الثقيلة بالـ ICP-MS', 'الامتثال لمنهجيات دستور الأدوية USP/EP'] 
+  : (lang === 'ru' 
+    ? ['Анализ чистоты ВЭЖХ', 'Тяжелые металлы ICP-MS', 'Соответствие методам USP/EP'] 
+    : ['HPLC Purity Testing', 'ICP-MS Heavy Metals', 'USP/EP Method Compliance']);
+
+const step5_tags = lang === 'ar' 
+  ? ['تعبئة بغاز النيتروجين الخامل', 'شهادة التحليل COA مرفقة', 'شروط الشحن DDP / ExW / FOB متاحة'] 
+  : (lang === 'ru' 
+    ? ['Упаковка в среде азота', 'Сертификат анализа COA', 'Доставка DDP / ExW / FOB'] 
+    : ['Nitrogen-flush Packaging', 'COA Included', 'DDP / ExW / FOB Available']);
 ---
 
 <section class="extraction-section bg-noise" id="extraction-process" aria-label="Extraction Process">
@@ -58,9 +88,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
             <h3>{t('extraction.step1_title')}</h3>
             <p>{t('extraction.step1_desc')}</p>
             <ul class="step-tags">
-              <li>GAP Certified Farms</li>
-              <li>Species Authentication</li>
-              <li>Heavy Metal Pre-screen</li>
+              {step1_tags.map(tag => <li>{tag}</li>)}
             </ul>
           </div>
         </div>
@@ -78,9 +106,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
             <h3>{t('extraction.step2_title')}</h3>
             <p>{t('extraction.step2_desc')}</p>
             <ul class="step-tags">
-              <li>sCO₂ Extraction</li>
-              <li>Solvent Residue Control</li>
-              <li>Continuous Process Monitoring</li>
+              {step2_tags.map(tag => <li>{tag}</li>)}
             </ul>
           </div>
         </div>
@@ -98,9 +124,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
             <h3>{t('extraction.step3_title')}</h3>
             <p>{t('extraction.step3_desc')}</p>
             <ul class="step-tags">
-              <li>Preparative HPLC</li>
-              <li>Resin Column Separation</li>
-              <li>Purity ≥98%</li>
+              {step3_tags.map(tag => <li>{tag}</li>)}
             </ul>
           </div>
         </div>
@@ -118,9 +142,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
             <h3>{t('extraction.step4_title')}</h3>
             <p>{t('extraction.step4_desc')}</p>
             <ul class="step-tags">
-              <li>HPLC Purity Testing</li>
-              <li>ICP-MS Heavy Metals</li>
-              <li>USP/EP Method Compliance</li>
+              {step4_tags.map(tag => <li>{tag}</li>)}
             </ul>
           </div>
         </div>
@@ -137,9 +159,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
             <h3>{t('extraction.step5_title')}</h3>
             <p>{t('extraction.step5_desc')}</p>
             <ul class="step-tags">
-              <li>Nitrogen-flush Packaging</li>
-              <li>COA Included</li>
-              <li>DDP / ExW / FOB Available</li>
+              {step5_tags.map(tag => <li>{tag}</li>)}
             </ul>
           </div>
         </div>

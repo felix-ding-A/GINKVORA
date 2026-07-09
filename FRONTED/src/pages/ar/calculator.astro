@@ -1,0 +1,347 @@
+---
+const lang = 'ar';
+// src/pages/calculator.astro — Scientific Formulation Solver Page
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FormulatorConsole from '../../components/calculators/FormulatorConsole.vue';
+
+const siteUrl = 'https://ginkvora.com/ar';
+
+// WebPage schema
+const formulatorSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "حاسبة التركيبات العلمية | GINKVORA",
+  "description": "حاسبات تفاعلية مجانية لقطاع B2B للمختبرات: حل الموولارية، وتخطيط التخفيف المتسلسل، وتحليل الوزن الجزيئي، وحساب مستحلبات HLB، ومخطط تركيب المكملات الغذائية ومستحضرات التجميل.",
+  "url": `${siteUrl}/calculator`,
+  "isPartOf": { "@type": "WebSite", "url": siteUrl, "name": "GINKVORA" },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": siteUrl },
+      { "@type": "ListItem", "position": 2, "name": "حاسبة التركيبات", "item": `${siteUrl}/calculator` }
+    ]
+  }
+};
+
+// SoftwareApplication schema (calculator tool)
+const appSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "منصة التركيبات GINKVORA",
+  "description": "مجموعة أدوات حاسبة احترافية قائمة على الويب للعلماء في المختبرات — تغطي الموولارية، والتخفيف المتسلسل، وتحليل الوزن الجزيئي، وموازنة مستحلبات HLB، وتحديد حجم الكبسولات، وتركيب المكملات الغذائية.",
+  "applicationCategory": "ScienceApplication",
+  "operatingSystem": "Web Browser",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": `${siteUrl}/calculator`,
+  "provider": { "@type": "Organization", "name": "GINKVORA", "url": siteUrl }
+};
+
+// FAQPage schema (for rich results in Google)
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "ما هو المحلول القياسي في التخفيف المختبري؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "المحلول القياسي (المحلول الأم) هو محلول مركز يتم تخفيفه إلى تركيز أقل للاستخدام الفعلي في المختبر. يوفر استخدام المحاليل القياسية وقت التحضير، ويقلل من هدر المواد، ويحسن الدقة بالنسبة للمكونات النزرة."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "كيف تؤثر الهيدرات على حسابات الوزن الجزيئي؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "تحتوي المركبات المهدرجة على جزيئات ماء مرتبطة كيميائياً داخل بنيتها البلورية (مثل كبريتات النحاس خماسية الماء CuSO₄·5H₂O). عند وزن المادة الكيميائية الجافة، يجب تضمين وزن جزيئات الماء في حساب الوزن الجزيئي لضمان دقة الجرعات المولية."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "ما هو HLB في تركيبات مستحضرات التجميل؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "يرمز HLB إلى التوازن المحب للماء والمحب للدهن. وهي قيمة تتراوح بين 0 و20 تشير إلى ألفة المستحلب للماء (محب للماء) أو الزيت (محب للدهن). تنتج المستحلبات ذات قيمة HLB المنخفضة (3-6) مستحلبات ماء في زيت (W/O)، بينما تنتج قيم HLB العالية (8-16) مستحلبات زيت في ماء (O/W)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "كيف يمكنني حساب الكتلة اللازمة لتحضير محلول مولي؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "لتحضير محلول مولي: الكتلة (جرام) = التركيز (M) × الحجم (لتر) × الوزن الجزيئي (جرام/مول). على سبيل المثال، لتحضير 10 مل من محلول فيتامين سي بتركيز 50 ملي مولار (الوزن الجزيئي = 176.12): 0.05 مول/لتر × 0.01 لتر × 176.12 جرام/مول = 0.08806 جرام = 88.06 ملي جرام."
+      }
+    }
+  ]
+};
+
+
+
+
+---
+
+<BaseLayout lang={lang}
+  title="حاسبة التركيبات العلمية"
+  description="حاسبات تفاعلية مجانية لقطاع B2B للمختبرات: حل الموولارية، وتخطيط التخفيف المتسلسل، وتحليل الوزن الجزيئي، وحساب مستحلبات HLB، ومخطط تركيب المكملات الغذائية ومستحضرات التجميل."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(formulatorSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(appSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
+  <main class="formulator-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="ترويسة الصفحة">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">أدوات المختبر الرقمية</span>
+        <h1 class="banner-title">منصة التركيبات النقية</h1>
+        <p class="banner-desc">
+          منصة مخبرية احترافية لحساب مخاليط المذيبات، والتخفيفات المتسلسلة، وسعات كبسولات المسحوق، ونسب HLB لمستحلبات مستحضرات التجميل.
+        </p>
+      </div>
+    </header>
+
+    <!-- Main interactive formulator wrapper -->
+    <section class="container section--sm">
+      <FormulatorConsole client:load />
+    </section>
+
+    <!-- Static Reference Guide & FAQ Section for SEO and user documentation -->
+    <section class="container section reference-section" aria-labelledby="reference-title">
+      <div class="divider"></div>
+      
+      <div class="reference-header">
+        <span class="section-label">الوثائق والمراجع</span>
+        <h2 id="reference-title" class="section-title">دليل مراجع التركيبات</h2>
+        <p class="section-desc">
+          المواصفات الفنية، والمعادلات الرياضية، وإجراءات التشغيل القياسية (SOP) المستخدمة في حاسباتنا.
+        </p>
+      </div>
+
+      <div class="grid grid-2">
+        <!-- Card 1: Molarity & Percentages -->
+        <div class="reference-card glass">
+          <div class="card-icon">🧪</div>
+          <h3 class="card-title">حسابات المولارية والنسبة المئوية وزناً/وزناً</h3>
+          <p class="card-text">
+            تحدد المولارية (M) تركيز المذاب في المحلول بعدد مولات المذاب لكل لتر من المحلول (مول/لتر).
+          </p>
+          <div class="equation-block font-mono text-sm">
+            الكتلة (جرام) = التركيز (M) × الحجم (لتر) × الوزن الجزيئي (جرام/مول)
+          </div>
+          <p class="card-text mt-3">
+            تمثل النسبة المئوية للوزن (% w/w) كتلة المذاب مقسومة على الكتلة الإجمالية للتركيبة، مضروبة في 100.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            النسبة المئوية وزناً/وزناً = (كتلة المذاب / الكتلة الإجمالية للتركيبة) × 100%
+          </div>
+        </div>
+
+        <!-- Card 2: Dilution & Scaling -->
+        <div class="reference-card glass">
+          <div class="card-icon">💧</div>
+          <h3 class="card-title">التخفيف والقياس (C₁V₁ = C₂V₂)</h3>
+          <p class="card-text">
+            تربط معادلة التخفيف بين تركيز وحجم المحلول القياسي والتركيز والحجم النهائيين المطلوبين.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            C₁ × V₁ = C₂ × V₂
+          </div>
+          <p class="card-text mt-3">
+            لتحضير التخفيف، احسب حجم المحلول القياسي المطلوب (V₁ = (C₂ × V₂) / C₁)، وانقل هذا الحجم إلى الحاوية الخاصة بك، ثم أضف المذيب حتى تصل إلى الحجم النهائي (V₂).
+          </p>
+        </div>
+
+        <!-- Card 3: Molecular Weight Parser -->
+        <div class="reference-card glass">
+          <div class="card-icon">🧬</div>
+          <h3 class="card-title">الوزن الجزيئي والصيغ الكيميائية</h3>
+          <p class="card-text">
+            يتم حساب الوزن الجزيئي (MW) عن طريق جمع الأوزان الذرية لجميع الذرات المكونة في الصيغة الكيميائية. يحلل نظامنا الرموز الكيميائية القياسية، والأقواس المتداخلة، والهيدرات.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            مثال: CuSO₄·5H₂O (كبريتات النحاس خماسية الماء)
+          </div>
+          <p class="card-text mt-3">
+            يطابق المحلل رموز العناصر مع قيم IUPAC القياسية (مثل Ca = 40.078، O = 15.999، H = 1.008) ويحل حساب النسب المتكافئة ديناميكياً.
+          </p>
+        </div>
+
+        <!-- Card 4: HLB Emulsion & SOP Systems -->
+        <div class="reference-card glass">
+          <div class="card-icon">⚖️</div>
+          <h3 class="card-title">توازن HLB وحركية التفتت</h3>
+          <p class="card-text">
+            يعد التوازن المحب للماء والمحب للدهن (HLB) مقياساً لمدى كون العامل الخافض للتوتر السطحي محباً للماء أو محباً للدهن. تتطلب المستحلبات المثالية موازنة HLB للعامل الخافض للتوتر السطحي مع HLB المطلوب (rHLB) للطور الزيتي.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            نسبة المستحلب أ المطلوبة % = (rHLB - HLB_B) / (HLB_A - HLB_B) × 100%
+          </div>
+          <p class="card-text mt-3">
+            تقيم نماذج صياغة الأقراص أوقات التفتت بناءً على نسبة عوامل التفتت الفائقة (مثل كروscarmellose الصوديوم) وملفات تعريف رابط الضغط.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <div class="faq-container mt-5">
+        <h3 class="faq-section-title">الأسئلة الشائعة</h3>
+        
+        <div class="faq-item">
+          <h4 class="faq-question">ما هو المحلول القياسي في التخفيف المختبري؟</h4>
+          <p class="faq-answer">
+            المحلول القياسي (المحلول الأم) هو محلول مركز يتم تخفيفه إلى تركيز أقل للاستخدام الفعلي في المختبر. يوفر استخدام المحاليل القياسية وقت التحضير، ويقلل من هدر المواد، ويحسن الدقة بالنسبة للمكونات النزرة.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4 class="faq-question">كيف تؤثر الهيدرات على حسابات الوزن الجزيئي؟</h4>
+          <p class="faq-answer">
+            تحتوي المركبات المهدرجة على جزيئات ماء مرتبطة كيميائياً داخل بنيتها البلورية (مثل كبريتات النحاس خماسية الماء CuSO₄·5H₂O). عند وزن المادة الكيميائية الجافة، يجب تضمين وزن جزيئات الماء في حساب الوزن الجزيئي لضمان دقة الجرعات المولية.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4 class="faq-question">ما هو HLB في تركيبات مستحضرات التجميل؟</h4>
+          <p class="faq-answer">
+            يرمز HLB إلى التوازن المحب للماء والمحب للدهن. وهي قيمة تتراوح بين 0 و20 تشير إلى ألفة المستحلب للماء (محب للماء) أو الزيت (محب للدهن). تنتج المستحلبات ذات قيمة HLB المنخفضة (3-6) مستحلبات ماء في زيت (W/O)، بينما تنتج قيم HLB العالية (8-16) مستحلبات زيت في ماء (O/W).
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .formulator-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 5rem 2.5rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Reference Section ── */
+  .reference-section {
+    margin-top: var(--space-4xl);
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border-strong), transparent);
+    margin-bottom: var(--space-4xl);
+  }
+
+  .reference-header {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .reference-card {
+    padding: var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    transition: transform var(--transition-base), border-color var(--transition-base);
+  }
+
+  .reference-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-border-strong);
+  }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+  }
+
+  .card-text {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .equation-block {
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 2px solid var(--color-primary);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+    overflow-x: auto;
+  }
+
+  /* ── FAQ Section ── */
+  .faq-container {
+    margin-top: var(--space-3xl);
+    max-width: 800px;
+    margin-inline: auto;
+  }
+
+  .faq-section-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: var(--space-xl);
+    color: var(--color-text);
+  }
+
+  .faq-item {
+    padding-block: var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-item:last-child {
+    border-bottom: none;
+  }
+
+  .faq-question {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+    margin-bottom: var(--space-sm);
+  }
+
+  .faq-answer {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+</style>

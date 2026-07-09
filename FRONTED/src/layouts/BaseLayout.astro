@@ -3,7 +3,8 @@
 import '../styles/global.css';
 import Navbar from '../components/layout/Navbar.astro';
 import Footer from '../components/layout/Footer.astro';
-import { stripLangPrefix } from '../i18n/utils';
+import { stripLangPrefix, getDir } from '../i18n/utils';
+import type { Lang } from '../i18n/ui';
 
 const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
 
@@ -24,12 +25,14 @@ const {
   description = 'GINKVORA — Premium B2B plant extract supplier. PQQ, NMN, EGCG, Glabridin, Luteolin and specialized high-purity botanical ingredients for nutraceutical, cosmetic and pet health industries.',
   image,
   lang = 'en',
-  dir = 'ltr',
+  dir,
   type = 'website',
   canonicalUrl,
   noindex = false,
   structuredData,
 } = Astro.props;
+
+const resolvedDir = dir || getDir(lang as Lang);
 
 const siteUrl = 'https://ginkvora.com';
 const fullTitle = title.includes('GINKVORA') ? title : `${title} | GINKVORA`;
@@ -74,7 +77,7 @@ const organizationSchema = {
 ---
 
 <!doctype html>
-<html lang={lang} dir={dir}>
+<html lang={lang} dir={resolvedDir}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -192,8 +195,16 @@ const organizationSchema = {
     <link rel="alternate" hreflang="en" href={`${siteUrl}${basePath === '/' ? '' : basePath}`} />
     <link rel="alternate" hreflang="ru" href={`${siteUrl}/ru${basePath === '/' ? '' : basePath}`} />
     <!-- <link rel="alternate" hreflang="es" href={`${siteUrl}/es${basePath === '/' ? '' : basePath}`} /> -->
-    <!-- <link rel="alternate" hreflang="ar" href={`${siteUrl}/ar${basePath === '/' ? '' : basePath}`} /> -->
+    <link rel="alternate" hreflang="ar" href={`${siteUrl}/ar${basePath === '/' ? '' : basePath}`} />
     <link rel="alternate" hreflang="x-default" href={`${siteUrl}${basePath === '/' ? '' : basePath}`} />
+
+    {lang === 'ar' && (
+      <>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+      </>
+    )}
 
     <!-- Keywords (B2B SEO) -->
     <meta name="keywords" content="plant extract supplier, botanical ingredients, PQQ supplier, NMN bulk, EGCG extract, Glabridin, Luteolin, Flavone, nutraceutical ingredients, cosmetic actives, pet supplement ingredients, B2B botanical extracts" />

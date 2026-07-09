@@ -10,7 +10,7 @@ export const productType = defineType({
   groups: [
     { name: 'basic',     title: 'Basic Info',           default: true },
     { name: 'technical', title: 'Technical Specs' },
-    { name: 'i18n',      title: '🌍 Translations (RU)' },
+    { name: 'i18n',      title: '🌍 Translations (RU & AR)' },
     { name: 'media',     title: 'Media' },
     { name: 'documents', title: 'Documents' },
     { name: 'seo',       title: 'SEO' },
@@ -222,6 +222,47 @@ export const productType = defineType({
       description: 'Русское описание для SEO, не более 160 символов.',
     }),
 
+    // ── 🌍 Translations (Arabic) ─────────────────
+    defineField({
+      name: 'shortDescription_ar',
+      title: '🇸🇦 الوصف القصير (AR)',
+      type: 'text',
+      group: 'i18n',
+      rows: 3,
+      description: 'الوصف القصير للمنتج باللغة العربية (لبطاقات المنتج)',
+    }),
+    defineField({
+      name: 'description_ar',
+      title: '🇸🇦 الوصف الكامل (AR, Markdown)',
+      type: 'markdown',
+      group: 'i18n',
+      description: 'الوصف الكامل للمنتج باللغة العربية بصيغة Markdown.',
+      components: { input: CustomMarkdownInput },
+    }),
+    defineField({
+      name: 'applications_ar',
+      title: '🇸🇦 التطبيقات (AR, Markdown)',
+      type: 'markdown',
+      group: 'i18n',
+      description: 'تطبيقات المنتج باللغة العربية.',
+      components: { input: CustomMarkdownInput },
+    }),
+    defineField({
+      name: 'meta_title_ar',
+      title: '🇸🇦 Meta Title (AR)',
+      type: 'string',
+      group: 'i18n',
+      description: 'العنوان التعريفي المخصص للـ SEO باللغة العربية (بحد أقصى 60 حرفاً).',
+    }),
+    defineField({
+      name: 'meta_description_ar',
+      title: '🇸🇦 Meta Description (AR)',
+      type: 'text',
+      group: 'i18n',
+      rows: 3,
+      description: 'الوصف التعريفي المخصص للـ SEO باللغة العربية (بحد أقصى 160 حرفاً).',
+    }),
+
     defineField({
       name: 'certifications',
       title: 'Certifications',
@@ -391,6 +432,35 @@ export const productType = defineType({
             defineField({
               name: 'answer',
               title: 'Ответ',
+              type: 'text',
+              rows: 3,
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'faqItems_ar',
+      title: 'FAQ Items (AR)',
+      type: 'array',
+      group: 'faq',
+      description: 'Frequently Asked Questions for this product in Arabic',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'faqItem',
+          title: 'FAQ Item',
+          fields: [
+            defineField({
+              name: 'question',
+              title: 'السؤال',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'answer',
+              title: 'الإجابة',
               type: 'text',
               rows: 3,
               validation: (Rule) => Rule.required(),

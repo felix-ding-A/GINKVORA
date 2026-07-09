@@ -9,7 +9,7 @@ export const postType = defineType({
   icon: () => '📝',
   groups: [
     { name: 'basic', title: 'Basic Info', default: true },
-    { name: 'i18n', title: '🌍 Translations (RU)' },
+    { name: 'i18n', title: '🌍 Translations (RU & AR)' },
     { name: 'seo', title: 'SEO Settings' },
     { name: 'faq', title: 'FAQ' },
   ],
@@ -155,6 +155,50 @@ export const postType = defineType({
       validation: (Rule) => Rule.max(160),
     }),
 
+    // ── 🌍 Translations (Arabic) ─────────────────
+    defineField({
+      name: 'title_ar',
+      title: '🇸🇦 العنوان (AR)',
+      type: 'string',
+      group: 'i18n',
+      description: 'عنوان المقال باللغة العربية',
+      validation: (Rule) => Rule.max(100),
+    }),
+    defineField({
+      name: 'excerpt_ar',
+      title: '🇸🇦 المقتطف (AR)',
+      type: 'text',
+      group: 'i18n',
+      rows: 3,
+      description: 'ملخص قصير للمقال باللغة العربية (لبطاقات المقالات)',
+      validation: (Rule) => Rule.max(250),
+    }),
+    defineField({
+      name: 'body_ar',
+      title: '🇸🇦 نص المقال (AR, Markdown)',
+      type: 'markdown',
+      group: 'i18n',
+      description: 'النص الكامل للمقال باللغة العربية.',
+      components: { input: CustomMarkdownInput },
+    }),
+    defineField({
+      name: 'meta_title_ar',
+      title: '🇸🇦 Meta Title (AR)',
+      type: 'string',
+      group: 'i18n',
+      description: 'عنوان الصفحة لمحركات البحث باللغة العربية (حتى 60 حرفاً).',
+      validation: (Rule) => Rule.max(70),
+    }),
+    defineField({
+      name: 'meta_description_ar',
+      title: '🇸🇦 Meta Description (AR)',
+      type: 'text',
+      group: 'i18n',
+      rows: 3,
+      description: 'الوصف التعريفي لمحركات البحث باللغة العربية (حتى 160 حرفاً).',
+      validation: (Rule) => Rule.max(160),
+    }),
+
     defineField({
       name: 'meta_title',
       title: 'Meta Title (Title Tag)',
@@ -193,6 +237,64 @@ export const postType = defineType({
             defineField({
               name: 'answer',
               title: 'Answer',
+              type: 'text',
+              rows: 3,
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'faqItems_ru',
+      title: 'FAQ Items (RU)',
+      type: 'array',
+      group: 'faq',
+      description: 'Frequently Asked Questions for this post in Russian',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'faqItem',
+          title: 'FAQ Item',
+          fields: [
+            defineField({
+              name: 'question',
+              title: 'Вопрос',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'answer',
+              title: 'Ответ',
+              type: 'text',
+              rows: 3,
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'faqItems_ar',
+      title: 'FAQ Items (AR)',
+      type: 'array',
+      group: 'faq',
+      description: 'Frequently Asked Questions for this post in Arabic',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'faqItem',
+          title: 'FAQ Item',
+          fields: [
+            defineField({
+              name: 'question',
+              title: 'السؤال',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'answer',
+              title: 'الإجابة',
               type: 'text',
               rows: 3,
               validation: (Rule) => Rule.required(),

@@ -1,0 +1,1000 @@
+---
+const lang = 'ar';
+// src/pages/insights/[slug].astro — Detailed Blog Post View
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getAllPosts, getPostBySlug, urlFor, getLocalizedField } from '../../../lib/sanity';
+import PortableText from '../../../components/PortableText.astro';
+import { useTranslations, getLocalePath } from '../../../i18n/utils';
+import type { Lang } from '../../../i18n/utils';
+import FAQAccordion from '../../../components/FAQAccordion.astro';
+
+const { slug } = Astro.params;
+const post = await getPostBySlug(slug);
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+const localTitle         = getLocalizedField(post, 'title', lang) ?? post.title;
+const localExcerpt       = getLocalizedField(post, 'excerpt', lang) ?? post.excerpt;
+const localSeoTitle      = post.meta_title_ar || post.meta_title;
+const localSeoDesc       = post.meta_description_ar || post.meta_description;
+const localFaqItems      = post.faqItems_ar && post.faqItems_ar.length > 0 ? post.faqItems_ar : post.faqItems;
+
+
+const t = useTranslations(lang as Lang);
+const lp = (path: string) => getLocalePath(lang as Lang, path);
+
+
+const siteUrl = 'https://ginkvora.com/ar';
+
+const pageTitle = localSeoTitle || `${localTitle} | GINKVORA Insights`;
+const pageDescription = localSeoDesc || localExcerpt;
+
+// Article (BlogPosting) Schema
+const blogSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": localTitle,
+  "description": pageDescription,
+  "image": urlFor(post.coverImage).url(),
+  "datePublished": post.publishedAt || new Date().toISOString(),
+  "dateModified": post.updatedAt || post.publishedAt || new Date().toISOString(),
+  "url": `${siteUrl}/insights/${slug}`,
+  "inLanguage": "ar-SA",
+  "author": {
+    "@type": post.author ? "Person" : "Organization",
+    "name": post.author?.name || "GINKVORA",
+    "url": siteUrl
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GINKVORA",
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${siteUrl}/images/logo.svg`
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `${siteUrl}/insights/${slug}`
+  }
+};
+
+// FAQ fallback for display and verification
+const displayFaqItems = localFaqItems && localFaqItems.length > 0
+  ? localFaqItems
+  : [
+      {
+        question: "What is the science behind GINKVORA's ingredients?",
+        answer: "Our ingredients undergo rigorous scientific validation, including high-performance liquid chromatography (HPLC) testing and clinical study reviews, to ensure safety and potency."
+      },
+      {
+        question: "How does GINKVORA ensure regulatory compliance?",
+        answer: "We work closely with global regulatory bodies and maintain comprehensive documentation including COAs, MSDS sheets, and GMP compliance certifications."
+      }
+    ];
+
+// FAQ Schema if faqItems exist
+const faqSchema = displayFaqItems && displayFaqItems.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": displayFaqItems.map((item: any) => {
+    // Strip any HTML <script> tags or other HTML tags to prevent schema syntax breakage
+    const cleanAnswer = typeof item.answer === 'string'
+      ? item.answer.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').trim()
+      : '';
+    return {
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": cleanAnswer
+      }
+    };
+  })
+} : null;
+
+// BreadcrumbList Schema
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": siteUrl },
+    { "@type": "ListItem", "position": 2, "name": "Insights", "item": `${siteUrl}/insights` },
+    { "@type": "ListItem", "position": 3, "name": localTitle, "item": `${siteUrl}/insights/${slug}` }
+  ]
+};
+
+
+
+
+---
+
+<BaseLayout lang={lang}
+  title={pageTitle}
+  description={pageDescription}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} slot="head" />
+  {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />}
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <link
+    rel="preload"
+    as="image"
+    href={urlFor(post.coverImage).width(1200).format('webp').url()}
+    type="image/webp"
+    slot="head"
+  />
+
+  <main class="insight-detail bg-noise">
+    <div class="container article-layout-wrapper">
+      <!-- Left Sidebar: TOC & Share -->
+      <aside class="article-sidebar article-sidebar--left" aria-label="Article navigation">
+        <div class="sidebar-sticky">
+          <!-- Table of Contents -->
+          <div class="sidebar-widget widget-toc glass">
+            <h4 class="widget-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              {t('insights.toc_title')}
+            </h4>
+            <nav id="dynamic-toc" class="toc-nav">
+              <!-- JS-generated list -->
+            </nav>
+          </div>
+          
+          <!-- Share Widget -->
+          <div class="sidebar-widget widget-share glass">
+            <h4 class="widget-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              {t('insights.share_title')}
+            </h4>
+            <div class="share-actions">
+              <button class="share-btn share-btn--facebook" id="share-facebook" aria-label="Share on Facebook">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              </button>
+              <button class="share-btn share-btn--linkedin" id="share-linkedin" aria-label="Share on LinkedIn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </button>
+              <button class="share-btn share-btn--twitter" id="share-twitter" aria-label="Share on Twitter/X">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </button>
+              <button class="share-btn share-btn--copy" id="share-copy" aria-label="Copy Link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span class="share-tooltip" id="share-copy-tooltip">{t('insights.share_copied')}</span>
+              </button>
+              <button class="share-btn share-btn--email" id="share-email" aria-label="Share via Email">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Article Container -->
+      <div class="article-container">
+        <!-- Breadcrumbs -->
+        <nav class="breadcrumbs" aria-label="مسار التنقل">
+          <a href="/ar">الرئيسية</a>
+          <span class="crumb-separator">/</span>
+          <a href="/ar/insights">الأبحاث والتقارير</a>
+          <span class="crumb-separator">/</span>
+          <span class="crumb-active">المقال</span>
+        </nav>
+
+        <!-- Article Header -->
+        <header class="article-header">
+          <div class="article-meta">
+            <time datetime={post.publishedAt}>
+              {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('ar-EG', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              }) : '21 مايو 2026'}
+            </time>
+            {post.readTime && (
+              <>
+                <span class="meta-dot">·</span>
+                <span>قراءة {post.readTime} دقيقة</span>
+              </>
+            )}
+            {post.author && (
+              <>
+                <span class="meta-dot">·</span>
+                <span>بقلم {post.author.name}{post.author.credentials ? ` (${post.author.credentials})` : ''}</span>
+              </>
+            )}
+          </div>
+
+          <h1 class="article-title">{localTitle}</h1>
+
+          {post.tags && post.tags.length > 0 && (
+            <div class="article-tags">
+              {post.tags.map((tag) => (
+                <span class="badge badge--gold">{tag}</span>
+              ))}
+            </div>
+          )}
+        </header>
+
+        <!-- Cover Image -->
+        <div class="article-cover glass">
+          <picture style="display: contents;">
+            <source srcset={urlFor(post.coverImage).width(1200).format('webp').url()} type="image/webp" />
+            <img
+              src={urlFor(post.coverImage).width(1200).url()}
+              alt={localTitle}
+              class="cover-img"
+              fetchpriority="high"
+              loading="eager"
+            />
+          </picture>
+        </div>
+
+        <!-- Article Body -->
+        <article class="article-body">
+          {post.body ? (
+            <PortableText value={post.body} />
+          ) : (
+            <p>{localExcerpt}</p>
+          )}
+        </article>
+
+        <!-- Related Product Callout -->
+        {post.relatedProduct && (
+          <section class="related-product-callout glass" aria-label="المكون ذو الصلة">
+            <div class="related-product-header">
+              <span class="purity-badge">مكون ذو صلة</span>
+            </div>
+            <div class="related-product-body">
+              <div class="related-product-info">
+                <h3 class="related-product-name">{post.relatedProduct.name}</h3>
+                {post.relatedProduct.purity && <span class="purity-badge" style="margin-inline-start: 0.5rem;">{post.relatedProduct.purity}</span>}
+                <p class="related-product-desc">{post.relatedProduct.shortDescription}</p>
+              </div>
+              <a href={`/ar/products/${post.relatedProduct.slug}`} class="btn btn--gold btn--sm">
+                عرض المواصفات وطلب شهادة التحليل (COA)
+              </a>
+            </div>
+          </section>
+        )}
+
+        <!-- FAQ Accordion -->
+        {displayFaqItems && displayFaqItems.length > 0 && (
+          <section class="article-faqs glass">
+            <FAQAccordion items={displayFaqItems} title="الأسئلة الشائعة" />
+          </section>
+        )}
+
+        <!-- Bottom CTAs -->
+        <section class="post-cta glass" aria-label="طلب تسعير">
+          <div class="cta-content">
+            <h3>هل تحتاج إلى مكونات عالية الجودة؟</h3>
+            <p>اطلب الوثائق الفنية أو شهادات التحليل (COA) أو شحنات العينات لأي مكون نباتي نشط مباشرة من قسمنا التجاري.</p>
+          </div>
+          <a href="/ar/contact" class="btn btn--gold">
+            طلب تسعير / عينة
+          </a>
+        </section>
+      </div>
+
+      <!-- Right Sidebar: Quick Inquiry & Related Product -->
+      <aside class="article-sidebar article-sidebar--right" aria-label="Article actions">
+        <div class="sidebar-sticky">
+          <!-- B2B Quick Inquiry Form Widget -->
+          <div class="sidebar-widget widget-inquiry glass">
+            <h4 class="widget-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              {t('insights.inquiry_title')}
+            </h4>
+            <p class="widget-subtitle">{t('insights.inquiry_subtitle')}</p>
+            
+            <form class="sidebar-form" id="sidebar-inquiry-form" novalidate>
+              <input type="text" name="b_website" class="honeypot-field" autocomplete="off" tabindex="-1" placeholder="اترك هذا الحقل فارغاً" />
+              <div class="form-field">
+                <label for="sb-name" class="form-label">{t('cta.form_name')}</label>
+                <input type="text" id="sb-name" name="name" class="form-input" placeholder="Name / Company Name" required autocomplete="name" />
+              </div>
+              <div class="form-field">
+                <label for="sb-phone" class="form-label">{t('cta.form_phone')}</label>
+                <input type="tel" id="sb-phone" name="phone" class="form-input" placeholder="+1 (555) 123-4567" required autocomplete="tel" />
+              </div>
+              <div class="form-field">
+                <label for="sb-email" class="form-label">{t('cta.form_email')}</label>
+                <input type="email" id="sb-email" name="email" class="form-input" placeholder="email@company.com" required autocomplete="email" />
+              </div>
+              
+              <!-- Hidden interest category default to "insights" or corresponding related product -->
+              <input type="hidden" name="interest" value={post.relatedProduct ? post.relatedProduct.name : "insights"} />
+              
+              <button type="submit" class="btn btn--primary btn--sm" style="width: 100%; justify-content: center; margin-top: 0.5rem;" id="sb-form-submit">
+                {t('insights.inquiry_submit')}
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+              </button>
+            </form>
+          </div>
+
+          <!-- Related Product Widget -->
+          {post.relatedProduct ? (
+            <div class="sidebar-widget widget-related-product glass">
+              <h4 class="widget-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                {t('hero.featured')}
+              </h4>
+              <div class="sb-product-card">
+                <span class="purity-badge">{post.relatedProduct.purity || 'High Purity'}</span>
+                <h5 class="sb-product-name">{post.relatedProduct.name}</h5>
+                <p class="sb-product-desc">{post.relatedProduct.shortDescription}</p>
+                <a href={lp(`/products/${post.relatedProduct.slug}`)} class="btn btn--gold btn--sm" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+                  {t('products.view_details')}
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div class="sidebar-widget widget-certifications glass">
+              <h4 class="widget-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                {t('insights.trust_title')}
+              </h4>
+              <div class="sb-certs-list">
+                <div class="sb-cert-item">
+                  <span class="cert-dot"></span>
+                  <span>GMP Certified Production</span>
+                </div>
+                <div class="sb-cert-item">
+                  <span class="cert-dot"></span>
+                  <span>ISO 9001:2015 Standards</span>
+                </div>
+                <div class="sb-cert-item">
+                  <span class="cert-dot"></span>
+                  <span>Halal & Kosher Audited</span>
+                </div>
+                <div class="sb-cert-item">
+                  <span class="cert-dot"></span>
+                  <span>100% Third-Party Lab Tested</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </aside>
+    </div>
+  </main>
+
+</BaseLayout>
+
+<style>
+  .insight-detail {
+    padding-block: 7rem var(--space-4xl);
+  }
+
+  .article-container {
+    flex: 1;
+    max-width: 800px;
+    min-width: 0;
+  }
+
+  /* ── Sidebar Layout ── */
+  .article-layout-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    position: relative;
+    max-width: 1360px;
+    margin-inline: auto;
+  }
+
+  .article-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    display: none; /* Hidden on mobile/tablet */
+  }
+
+  .sidebar-sticky {
+    position: sticky;
+    top: 7.5rem; /* Below fixed Navbar */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-height: calc(100vh - 10rem);
+    overflow-y: auto;
+    padding-bottom: 2rem;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+  }
+  
+  .sidebar-sticky::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
+  }
+
+  @media (min-width: 1360px) {
+    .article-sidebar {
+      display: block;
+    }
+  }
+
+  /* ── Sidebar Widgets ── */
+  .sidebar-widget {
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    background: rgba(22, 24, 26, 0.45);
+    border: 1px solid var(--color-border);
+  }
+
+  .widget-title {
+    font-size: 1.1rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.5rem;
+  }
+
+  .widget-subtitle {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+    margin-top: -0.5rem;
+    line-height: 1.4;
+  }
+
+  /* Table of Contents */
+  .toc-nav {
+    max-height: 350px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+  }
+
+  .toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-left: 0;
+    list-style: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    margin-left: 0.5rem;
+  }
+
+  .toc-item {
+    line-height: 1.3;
+    position: relative;
+  }
+
+  .toc-link {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    transition: all var(--transition-fast);
+    display: block;
+    padding: 0.25rem 0 0.25rem 0.75rem;
+    margin-left: -1px;
+    border-left: 2px solid transparent;
+  }
+
+  .toc-item--h3 .toc-link {
+    padding-left: 1.5rem;
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+
+  .toc-link:hover {
+    color: var(--color-primary-light);
+    border-left-color: rgba(212, 166, 84, 0.3);
+  }
+
+  .toc-link--active {
+    color: var(--color-primary);
+    font-weight: 600;
+    border-left-color: var(--color-primary);
+    background: linear-gradient(90deg, rgba(212, 166, 84, 0.12) 0%, transparent 100%);
+  }
+
+  /* Share Widget */
+  .share-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+  }
+
+  .share-btn:hover {
+    color: var(--color-primary-light);
+    border-color: var(--color-primary);
+    background: var(--color-primary-glow);
+    transform: translateY(-2px);
+  }
+
+  .share-tooltip {
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary-light);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .share-tooltip--visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Quick Inquiry Form */
+  .sidebar-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .sidebar-form .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .sidebar-form .form-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .sidebar-form .form-input {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    background: rgba(30, 33, 36, 0.6);
+  }
+
+  /* Product widget */
+  .sb-product-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .sb-product-name {
+    font-size: 1.1rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .sb-product-desc {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  /* Certifications list */
+  .sb-certs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .sb-cert-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+  }
+
+  .cert-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+  }
+
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-bottom: 2.5rem;
+    max-width: 800px;
+    margin-inline: auto;
+  }
+
+  .crumb-separator {
+    color: var(--color-text-muted);
+  }
+
+  .crumb-active {
+    color: var(--color-primary-light);
+    font-weight: 500;
+  }
+
+  /* ── Header ── */
+  .article-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-inline: auto;
+  }
+
+  .article-meta {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .meta-dot {
+    margin-inline: 0.5rem;
+  }
+
+  .article-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+    color: var(--color-text);
+  }
+
+  .article-tags {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Cover Image ── */
+  .article-cover {
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    margin-bottom: 3.5rem;
+    border-color: rgba(212, 166, 84, 0.15) !important;
+  }
+
+  .cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ── Body Content ── */
+  .article-body {
+    font-size: 1.0625rem;
+    line-height: 1.85;
+    color: var(--color-text-secondary);
+  }
+
+  /* Keep text-based elements readable and centered at 800px */
+  .article-body :global(p),
+  .article-body :global(ul),
+  .article-body :global(ol),
+  .article-body :global(h2),
+  .article-body :global(h3),
+  .article-body :global(h4),
+  .article-body :global(blockquote) {
+    max-width: 800px;
+    margin-inline: auto;
+  }
+
+  .article-body :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .article-body :global(h2), .article-body :global(h3) {
+    color: var(--color-text);
+    margin-block: 2.5rem 1rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    scroll-margin-top: 8rem;
+  }
+
+  .article-body :global(h2) { font-size: 1.75rem; }
+  .article-body :global(h3) { font-size: 1.375rem; }
+
+  .article-body :global(ul) {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    list-style: disc;
+  }
+
+  .article-body :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── Bottom CTA ── */
+  .post-cta {
+    margin-top: 4.5rem;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.2) !important;
+  }
+
+  @media (max-width: 640px) {
+    .post-cta {
+      flex-direction: column;
+      text-align: center;
+      gap: 1.25rem;
+    }
+  }
+
+  .cta-content h3 {
+    font-size: 1.375rem;
+    color: var(--color-primary-light);
+    margin-bottom: 0.25rem;
+  }
+
+  .cta-content p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .post-cta .btn {
+    flex-shrink: 0;
+  }
+
+  /* ── Related Product Callout ── */
+  .related-product-callout {
+    margin-top: 4rem;
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.15) !important;
+    background: rgba(212, 166, 84, 0.02);
+  }
+  
+  .related-product-header {
+    margin-bottom: 1rem;
+  }
+  
+  .related-product-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  
+  @media (max-width: 640px) {
+    .related-product-body {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+  }
+  
+  .related-product-info {
+    flex: 1;
+  }
+  
+  .related-product-name {
+    font-size: 1.5rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .purity-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.3);
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .related-product-desc {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+  
+  /* ── FAQs ── */
+  .article-faqs {
+    margin-top: 4rem;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  }
+</style>
+
+<script>
+  // ── Dynamic Table of Contents Generator ──
+  document.addEventListener('DOMContentLoaded', () => {
+    const headings = document.querySelectorAll('.article-body h2, .article-body h3');
+    const tocContainer = document.getElementById('dynamic-toc');
+    const tocWidget = document.querySelector('.widget-toc') as HTMLElement;
+
+    if (!tocContainer || headings.length === 0) {
+      if (tocWidget) tocWidget.style.display = 'none';
+      return;
+    }
+
+    const ul = document.createElement('ul');
+    ul.className = 'toc-list';
+
+    headings.forEach((heading, index) => {
+      // Ensure heading has an ID
+      if (!heading.id) {
+        // Create slug from text
+        const text = heading.textContent || '';
+        heading.id = text
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/\s+/g, '-') || `section-${index}`;
+      }
+
+      const li = document.createElement('li');
+      li.className = `toc-item toc-item--${heading.tagName.toLowerCase()}`;
+      
+      const a = document.createElement('a');
+      a.href = `#${heading.id}`;
+      a.textContent = heading.textContent;
+      a.className = 'toc-link';
+
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+
+    tocContainer.appendChild(ul);
+
+    // Robust Map-based Scrollspy behavior
+    const visibleHeadings = new Map();
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          visibleHeadings.set(entry.target, entry.target.id);
+        } else {
+          visibleHeadings.delete(entry.target);
+        }
+      });
+
+      let activeId = '';
+      if (visibleHeadings.size > 0) {
+        const sorted = Array.from(visibleHeadings.keys()).sort((a, b) => {
+          return a.getBoundingClientRect().top - b.getBoundingClientRect().top;
+        });
+        activeId = sorted[0].id;
+      } else if (window.scrollY < 200) {
+        const firstLink = document.querySelector('.toc-link');
+        if (firstLink) {
+          const href = firstLink.getAttribute('href');
+          if (href) activeId = href.substring(1);
+        }
+      }
+
+      if (activeId) {
+        document.querySelectorAll('.toc-link').forEach(link => {
+          if (link.getAttribute('href') === `#${activeId}`) {
+            link.classList.add('toc-link--active');
+          } else {
+            link.classList.remove('toc-link--active');
+          }
+        });
+      }
+    }, {
+      root: null,
+      rootMargin: '-80px 0px -50% 0px',
+      threshold: 0
+    });
+
+    headings.forEach(heading => observer.observe(heading));
+  });
+
+  // ── Social Sharing Handlers ──
+  const shareFacebook = document.getElementById('share-facebook');
+  const shareLinkedin = document.getElementById('share-linkedin');
+  const shareTwitter = document.getElementById('share-twitter');
+  const shareCopy = document.getElementById('share-copy');
+  const shareEmail = document.getElementById('share-email');
+
+  const pageUrl = window.location.href;
+  const pageTitle = document.title;
+
+  shareFacebook?.addEventListener('click', () => {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`, '_blank', 'width=600,height=600');
+  });
+
+  shareLinkedin?.addEventListener('click', () => {
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`, '_blank', 'width=600,height=600');
+  });
+
+  shareTwitter?.addEventListener('click', () => {
+    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(pageTitle)}`, '_blank', 'width=600,height=400');
+  });
+
+  shareEmail?.addEventListener('click', () => {
+    window.location.href = `mailto:?subject=${encodeURIComponent(pageTitle)}&body=${encodeURIComponent(pageUrl)}`;
+  });
+
+  shareCopy?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(pageUrl);
+      const tooltip = document.getElementById('share-copy-tooltip');
+      if (tooltip) {
+        tooltip.classList.add('share-tooltip--visible');
+        setTimeout(() => {
+          tooltip.classList.remove('share-tooltip--visible');
+        }, 2000);
+      }
+    } catch (err) {
+      console.error('Failed to copy link: ', err);
+    }
+  });
+
+  // ── Sidebar Inquiry Form Submission ──
+  const sbForm = document.getElementById('sidebar-inquiry-form') as HTMLFormElement;
+  const sbSubmitBtn = document.getElementById('sb-form-submit') as HTMLButtonElement;
+
+  sbForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!sbForm.checkValidity()) {
+      sbForm.reportValidity();
+      return;
+    }
+
+    const initialHtml = sbSubmitBtn.innerHTML;
+    sbSubmitBtn.disabled = true;
+    sbSubmitBtn.textContent = 'Sending...';
+
+    const formData = new FormData(sbForm);
+    if (formData.get('b_website')) {
+      console.warn('Bot submission detected via honeypot field.');
+      return;
+    }
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        sbForm.reset();
+        const currentLang = window.location.pathname.startsWith('/ru') ? 'ru' : 'en';
+        window.location.href = currentLang === 'ru' ? '/ru/thank-you' : '/thank-you';
+      } else {
+        throw new Error('Failed');
+      }
+    } catch {
+      sbSubmitBtn.disabled = false;
+      sbSubmitBtn.innerHTML = initialHtml;
+      alert('Something went wrong. Please email us directly at inquiry@ginkvora.com');
+    }
+  });
+</script>
+

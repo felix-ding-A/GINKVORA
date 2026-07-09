@@ -153,10 +153,12 @@ export const PRODUCT_FIELDS = `
   casNumber,
   shortDescription,
   shortDescription_ru,
+  shortDescription_ar,
   featured,
   heroImage,
   applications,
   applications_ru,
+  applications_ar,
   application,
   inciName,
   certifications[],
@@ -170,18 +172,23 @@ export const PRODUCT_DETAIL_FIELDS = `
   ${PRODUCT_FIELDS},
   description,
   description_ru,
+  description_ar,
   specifications[]{label, value},
   gallery[],
   coaFile{asset->{url}},
   msdsFile{asset->{url}},
   complianceNote,
   complianceNote_ru,
+  complianceNote_ar,
   meta_title,
   meta_description,
   meta_title_ru,
   meta_description_ru,
+  meta_title_ar,
+  meta_description_ar,
   faqItems,
-  faqItems_ru
+  faqItems_ru,
+  faqItems_ar
 `;
 
 export async function getAllProducts(category: string | null = null, mechanism: string | null = null) {
@@ -285,9 +292,11 @@ export const POST_FIELDS = `
   _id,
   title,
   title_ru,
+  title_ar,
   "slug": slug.current,
   excerpt,
   excerpt_ru,
+  excerpt_ar,
   coverImage,
   featured,
   publishedAt,
@@ -386,16 +395,22 @@ export async function getPostBySlug(slug: string) {
         ${POST_FIELDS},
         body,
         body_ru,
+        body_ar,
         meta_title,
         meta_title_ru,
+        meta_title_ar,
         meta_description,
         meta_description_ru,
+        meta_description_ar,
         faqItems,
+        faqItems_ru,
+        faqItems_ar,
         relatedProduct->{
           name,
           "slug": slug.current,
           shortDescription,
           shortDescription_ru,
+          shortDescription_ar,
           purity,
           heroImage
         }
@@ -436,10 +451,12 @@ export async function getAllAuthors() {
         name,
         title,
         title_ru,
+        title_ar,
         credentials,
         avatar,
         bio,
-        bio_ru
+        bio_ru,
+        bio_ar
       }
     `);
     if (data && data.length > 0) return data;
@@ -463,6 +480,7 @@ export type SanityProduct = {
   _id: string;
   name: string;
   name_ru?: string;
+  name_ar?: string;
   slug: string;
   category: { name: string; slug: string };
   categories?: { name: string; slug: string }[];
@@ -472,38 +490,48 @@ export type SanityProduct = {
   casNumber?: string;
   shortDescription?: string;
   shortDescription_ru?: string;
+  shortDescription_ar?: string;
   description?: any;
   description_ru?: any;
+  description_ar?: any;
   featured?: boolean;
   heroImage?: any;
   applications?: any;
   applications_ru?: any;
+  applications_ar?: any;
   certifications?: string[];
   updatedAt?: string;
   application?: string[];
   inciName?: string;
   complianceNote?: string;
   complianceNote_ru?: string;
+  complianceNote_ar?: string;
   meta_title?: string;
   meta_description?: string;
   meta_title_ru?: string;
   meta_description_ru?: string;
+  meta_title_ar?: string;
+  meta_description_ar?: string;
   mainCategories?: string[];
   antiAgingMechanisms?: string[];
   applicationDisplay?: 'topical' | 'oral' | 'dual';
   faqItems?: { question: string; answer: string }[];
   faqItems_ru?: { question: string; answer: string }[];
+  faqItems_ar?: { question: string; answer: string }[];
 };
 
 export type SanityPost = {
   _id: string;
   title: string;
   title_ru?: string;
+  title_ar?: string;
   slug: string;
   excerpt?: string;
   excerpt_ru?: string;
+  excerpt_ar?: string;
   body?: any;
   body_ru?: any;
+  body_ar?: any;
   coverImage?: any;
   featured?: boolean;
   publishedAt?: string;
@@ -517,14 +545,19 @@ export type SanityPost = {
   };
   meta_title?: string;
   meta_title_ru?: string;
+  meta_title_ar?: string;
   meta_description?: string;
   meta_description_ru?: string;
+  meta_description_ar?: string;
   faqItems?: { question: string; answer: string }[];
+  faqItems_ru?: { question: string; answer: string }[];
+  faqItems_ar?: { question: string; answer: string }[];
   relatedProduct?: {
     name: string;
     slug: string;
     shortDescription?: string;
     shortDescription_ru?: string;
+    shortDescription_ar?: string;
     purity?: string;
     heroImage?: any;
   };
@@ -535,10 +568,12 @@ export type SanityAuthor = {
   name: string;
   title?: string;
   title_ru?: string;
+  title_ar?: string;
   credentials?: string;
   avatar?: any;
   bio?: string;
   bio_ru?: string;
+  bio_ar?: string;
 };
 
 export { MOCK_POSTS };

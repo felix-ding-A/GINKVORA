@@ -1,0 +1,714 @@
+---
+const lang = 'ar';
+// src/pages/insights/index.astro — B2B Industry Insights & Ingredient Research Blog
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getPostsPaginated, urlFor } from '../../../lib/sanity';
+
+const siteUrl = 'https://ginkvora.com/ar';
+const selectedCategory = Astro.url.searchParams.get('category');
+const searchQuery = Astro.url.searchParams.get('q') || '';
+const pageParam = Astro.url.searchParams.get('page');
+const currentPage = Math.max(1, pageParam ? parseInt(pageParam, 10) : 1);
+const pageSize = 6;
+
+const categoryTranslations: Record<string, string> = {
+  'Ingredient Spotlight': 'سلسلة المكونات',
+  'Formulation Tips': 'نصائح الصياغة',
+  'Research': 'البحوث العلمية',
+  'Quality & Testing': 'الجودة والاختبار',
+  'Regulatory': 'التنظيمات',
+  'Market Trends': 'اتجاهات السوق',
+  'Industry News': 'أخبار الصناعة'
+};
+
+const { posts, total } = await getPostsPaginated({
+  category: selectedCategory,
+  search: searchQuery,
+  page: currentPage,
+  pageSize,
+});
+
+const totalPages = Math.ceil(total / pageSize);
+
+// Helper function to build page URLs while preserving category query params
+function getPageHref(pageNum: number) {
+  const url = new URL(Astro.url.href);
+  url.searchParams.set('page', pageNum.toString());
+  return url.pathname + url.search;
+}
+
+// Breadcrumb structured data
+const breadcrumbsSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "الرئيسية",
+      "item": siteUrl
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "الأبحاث والتقارير",
+      "item": `${siteUrl}/insights`
+    }
+  ]
+};
+
+// ItemList structured data
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "أبحاث وتقارير صناعة GINKVORA",
+  "description": "تحديثات البحوث العلمية، واتجاهات السوق، والتحديثات التنظيمية للمكونات النباتية النشطة.",
+  "url": `${siteUrl}/insights`,
+  "numberOfItems": posts.length,
+  "itemListElement": posts.map((post, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "url": `${siteUrl}/insights/${post.slug}`,
+    "name": post.title,
+  }))
+};
+
+
+
+
+---
+
+<BaseLayout lang={lang}
+  title={selectedCategory ? `${categoryTranslations[selectedCategory] || selectedCategory} أبحاث وتقارير | GINKVORA` : "أبحاث مستخلصات النباتات B2B والبحوث العلمية | GINKVORA"}
+  description={selectedCategory ? `تصفح أبحاث خبرائنا، واتجاهات السوق، وتقارير الجودة حول ${categoryTranslations[selectedCategory] || selectedCategory}.` : "اقرأ أبحاث GINKVORA للمقالات البحثية، ودراسات الجرعات السريرية وأدلة الصياغة حول PDRN، NMN، Glabridin ومكونات مكافحة الشيخوخة النشطة لـ ECM."}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />
+  <main class="insights-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="ترويسة الصفحة">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">أبحاث وتقارير الصناعة</span>
+        <h1 class="banner-title">أبحاث مكافحة الشيخوخة الموجهة لـ ECM ومعلومات المكونات</h1>
+        <p class="banner-desc">
+          تحليلات فنية متعمقة، وأوراق علمية بيضاء، وتحديثات تنظيمية لخبراء الصياغة ومسؤولي المشتريات للعلامات التجارية الصحية.
+        </p>
+
+        <!-- Search bar inside Banner -->
+        <form action="/ar/insights" method="GET" class="search-form">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input 
+              type="text" 
+              name="q" 
+              value={searchQuery} 
+              placeholder="البحث عن طريق المكون أو المنتج أو الكلمة الرئيسية..." 
+              class="search-input"
+            />
+            {searchQuery && (
+              <a href={selectedCategory ? `/ar/insights?category=${encodeURIComponent(selectedCategory)}` : "/ar/insights"} class="search-clear-btn" aria-label="مسح البحث">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </a>
+            )}
+          </div>
+          {selectedCategory && (
+            <input type="hidden" name="category" value={selectedCategory} />
+          )}
+          <button type="submit" class="btn btn--primary search-submit-btn">بحث</button>
+        </form>
+      </div>
+    </header>
+
+    <!-- Filter bar -->
+    <div class="container filter-container">
+      <nav class="category-tabs" aria-label="تصفية الفئات">
+        <a 
+          href={searchQuery ? `/ar/insights?q=${encodeURIComponent(searchQuery)}` : "/ar/insights"} 
+          class:list={['category-tab', { 'category-tab--active': !selectedCategory }]}
+        >
+          الكل
+        </a>
+        {['Ingredient Spotlight', 'Formulation Tips', 'Research', 'Quality & Testing', 'Regulatory', 'Market Trends', 'Industry News'].map(cat => {
+          const catSlug = cat.toLowerCase().replace(/[^a-z0-9]/g, '');
+          const isActive = selectedCategory && selectedCategory.toLowerCase().replace(/[^a-z0-9]/g, '') === catSlug;
+          const href = searchQuery 
+            ? `/ar/insights?category=${encodeURIComponent(cat)}&q=${encodeURIComponent(searchQuery)}`
+            : `/ar/insights?category=${encodeURIComponent(cat)}`;
+          return (
+            <a 
+              href={href} 
+              class:list={['category-tab', { 'category-tab--active': isActive }]}
+            >
+              {categoryTranslations[cat] || cat}
+            </a>
+          );
+        })}
+      </nav>
+    </div>
+
+    <!-- Blog Grid -->
+    <div class="container insights-container">
+      {posts.length > 0 ? (
+        <section class="insights-grid" aria-label="قائمة مقالات المدونة">
+          {posts.map((post) => (
+            <article class="blog-card glass reveal">
+              <div class="card-image-box">
+                <a href={`/ar/insights/${post.slug}`} class="card-image-link" aria-label={`اقرأ ${post.title}`}>
+                  <picture style="display: contents;">
+                    <source srcset={urlFor(post.coverImage).width(800).format('webp').url()} type="image/webp" />
+                    <img
+                      src={urlFor(post.coverImage).width(800).url()}
+                      alt={post.title}
+                      loading="lazy"
+                      class="card-img"
+                    />
+                  </picture>
+                </a>
+                {post.tags && post.tags.length > 0 && (
+                  <span class="card-tag">{post.tags[0]}</span>
+                )}
+              </div>
+
+              <div class="card-body">
+                <div class="card-meta">
+                  <time datetime={post.publishedAt}>
+                    {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('ar-EG', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    }) : 'مايو 2026'}
+                  </time>
+                  {post.readTime && (
+                    <>
+                      <span class="meta-dot">·</span>
+                      <span>قراءة {post.readTime} دقيقة</span>
+                    </>
+                  )}
+                </div>
+
+                <h2 class="card-title">
+                  <a href={`/ar/insights/${post.slug}`}>{post.title}</a>
+                </h2>
+
+                <p class="card-excerpt">{post.excerpt}</p>
+
+                <div class="card-footer">
+                  <a href={`/ar/insights/${post.slug}`} class="read-more">
+                    اقرأ المقال
+                    <span class="sr-only"> عن {post.title}</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                      <polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </section>
+
+        <!-- Pagination Component -->
+        {totalPages > 1 && (
+          <nav class="pagination" aria-label="تصفح الصفحات">
+            {currentPage > 1 ? (
+              <a href={getPageHref(currentPage - 1)} class="page-btn page-arrow" aria-label="الذهاب إلى الصفحة السابقة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                السابق
+              </a>
+            ) : (
+              <span class="page-btn page-btn--disabled page-arrow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                السابق
+              </span>
+            )}
+
+            <div class="page-numbers">
+              {Array.from({ length: totalPages }).map((_, idx) => {
+                const pageNum = idx + 1;
+                const isCurrent = pageNum === currentPage;
+                return isCurrent ? (
+                  <span class="page-btn page-btn--active" aria-current="page">
+                    {pageNum}
+                  </span>
+                ) : (
+                  <a href={getPageHref(pageNum)} class="page-btn" aria-label={`الذهاب إلى الصفحة ${pageNum}`}>
+                    {pageNum}
+                  </a>
+                );
+              })}
+            </div>
+
+            {currentPage < totalPages ? (
+              <a href={getPageHref(currentPage + 1)} class="page-btn page-arrow" aria-label="الذهاب إلى الصفحة التالية">
+                التالي
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </a>
+            ) : (
+              <span class="page-btn page-btn--disabled page-arrow">
+                التالي
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </span>
+            )}
+          </nav>
+        )}
+      ) : (
+        <div class="no-posts glass">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+          <h3>لم يتم العثور على مقالات</h3>
+          <p>
+            {searchQuery 
+              ? `لم نتمكن من العثور على أي مقالات تطابق "${searchQuery}". يرجى محاولة تعديل الكلمات الرئيسية.` 
+              : "لم ننشر أي أبحاث في هذه الفئة بعد. يرجى التحقق مرة أخرى قريبًا أو تصفح مقالاتنا البحثية الأخرى."}
+          </p>
+          <a href="/ar/insights" class="btn btn--secondary">عرض جميع الأبحاث</a>
+        </div>
+      )}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .insights-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Filter Tabs ── */
+  .filter-container {
+    margin-top: -1.75rem;
+    position: relative;
+    z-index: var(--z-float);
+    display: flex;
+    justify-content: center;
+  }
+
+  .category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    background: rgba(8, 13, 8, 0.6);
+    border: 1px solid var(--color-border);
+    padding: 0.375rem;
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    max-width: 90%;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .category-tab {
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    font-weight: 500;
+  }
+
+  .category-tab:hover {
+    color: var(--color-text);
+    background: var(--color-surface);
+  }
+
+  .category-tab--active {
+    background: var(--color-primary) !important;
+    color: var(--color-surface-bg) !important;
+  }
+
+  /* ── Empty State ── */
+  .no-posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 2rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212,166,84,0.15) !important;
+    max-width: 600px;
+    margin: 2rem auto 0;
+    width: 100%;
+  }
+
+  .no-posts svg {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .no-posts h3 {
+    font-size: 1.625rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+  }
+
+  .no-posts p {
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  /* ── Grid ── */
+  .insights-container {
+    margin-top: 3rem;
+    position: relative;
+  }
+
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 1024px) {
+    .insights-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    .insights-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── Card ── */
+  .blog-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+    border-color: rgba(212,166,84,0.1) !important;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-border-strong) !important;
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .card-image-box {
+    position: relative;
+    height: 200px;
+    background: var(--color-surface-2);
+    overflow: hidden;
+  }
+
+  .card-image-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+  }
+
+  .blog-card:hover .card-img {
+    transform: scale(1.04);
+  }
+
+  .card-tag {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.15rem 0.55rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .meta-dot {
+    margin-inline: 0.35rem;
+  }
+
+  .card-title {
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-title a {
+    color: var(--color-text);
+  }
+
+  .card-title a:hover {
+    color: var(--color-primary-light);
+  }
+
+  .card-excerpt {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer {
+    margin-top: auto;
+  }
+
+  .read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-primary-light);
+    transition: color var(--transition-fast);
+  }
+
+  .read-more:hover {
+    color: var(--color-accent-light);
+  }
+
+  .read-more svg {
+    transition: transform var(--transition-fast);
+  }
+
+  .read-more:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* ── Pagination ── */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 4rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 2.5rem;
+  }
+
+  .page-numbers {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.5rem;
+    min-width: 2.5rem;
+    padding-inline: 0.75rem;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all var(--transition-base);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .page-btn:hover:not(.page-btn--disabled):not(.page-btn--active) {
+    color: var(--color-primary-light);
+    border-color: var(--color-primary-light);
+    background: rgba(212, 166, 84, 0.05);
+  }
+
+  .page-btn--active {
+    background: var(--color-primary);
+    color: var(--color-bg);
+    border-color: var(--color-primary);
+    cursor: default;
+  }
+
+  .page-btn--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .page-arrow {
+    gap: 0.25rem;
+    padding-inline: 1rem;
+  }
+
+  /* ── Search Bar ── */
+  .search-form {
+    margin-top: 2rem;
+    display: flex;
+    gap: 0.75rem;
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+  }
+
+  .search-input-wrapper {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 1.25rem;
+    color: var(--color-text-muted, #7c7c7c);
+    pointer-events: none;
+    transition: color var(--transition-fast);
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.875rem 3rem 0.875rem 3rem;
+    border-radius: var(--radius-lg, 8px);
+    border: 1px solid var(--color-border, rgba(255,255,255,0.15));
+    background: rgba(22, 24, 26, 0.75);
+    color: var(--color-text, #ffffff);
+    font-size: 1rem;
+    transition: all var(--transition-base);
+    backdrop-filter: blur(10px);
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--color-primary-light, #f0c878);
+    background: rgba(22, 24, 26, 0.9);
+    box-shadow: 0 0 12px rgba(212, 166, 84, 0.25);
+  }
+
+  .search-input:focus-within + .search-icon {
+    color: var(--color-primary-light, #f0c878);
+  }
+
+  .search-clear-btn {
+    position: absolute;
+    right: 1.25rem;
+    color: var(--color-text-muted, #7c7c7c);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    transition: color var(--transition-fast);
+  }
+
+  .search-clear-btn:hover {
+    color: var(--color-text, #ffffff);
+  }
+
+  .search-submit-btn {
+    padding-inline: 2rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    white-space: nowrap;
+    border-radius: var(--radius-lg, 8px);
+    cursor: pointer;
+  }
+
+  @media (max-width: 576px) {
+    .search-form {
+      gap: 0.5rem;
+    }
+    .search-input {
+      padding: 0.75rem 2.5rem 0.75rem 2.5rem;
+      font-size: 0.875rem;
+    }
+    .search-icon {
+      left: 0.875rem;
+    }
+    .search-clear-btn {
+      right: 0.875rem;
+    }
+    .search-submit-btn {
+      padding-inline: 1.25rem;
+      font-size: 0.875rem;
+    }
+  }
+</style>
+
+<script>
+  // Programmatically handle mobile keyboard enter/go submit to guarantee compatibility
+  document.querySelectorAll('.search-input').forEach(el => {
+    const input = el as HTMLInputElement;
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const form = input.closest('form');
+        if (form) {
+          form.submit();
+        }
+      }
+    });
+  });
+</script>
