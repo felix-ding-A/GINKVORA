@@ -1,0 +1,543 @@
+---
+// src/pages/ar/about/mission.astro — Our Mission B2B Page (Arabic)
+export const prerender = true;
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+const lang = 'ar';
+
+const missionSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "مهمتنا | GINKVORA",
+  "description": "تعرف على مهمة GINKVORA، والتوريد الجغرافي الأصيل من بؤر التنوع البيولوجي، ومعاييرنا الصارمة لتدقيق جودة المكونات.",
+  "url": "https://ginkvora.com/ar/about/mission"
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title="مهمتنا وقيم التوريد لدينا | GINKVORA"
+  description="تعرف على مهمة GINKVORA، والتوريد الجغرافي الأصيل من بؤر التنوع البيولوجي، ومعاييرنا الصارمة لتدقيق جودة المكونات."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(missionSchema)} slot="head" />
+  <main class="mission-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="Page Header">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">مهمتنا</span>
+        <h1 class="banner-title">الربط بين نقاء الطبيعة والابتكار العلمي</h1>
+        <p class="banner-desc">
+          حيث تلتقي الحكمة القديمة للنباتات الأصيلة مع الدقة المختبرية الحديثة.
+        </p>
+      </div>
+    </header>
+
+    <!-- Section 1: From the Heart of Qinling -->
+    <section class="container section intro-section" aria-label="Our Sourcing Origins">
+      <div class="intro-grid">
+        <div class="intro-left reveal">
+          <span class="accent-title">مصادر الجودة</span>
+          <h2>من قلب موائل التنوع البيولوجي</h2>
+          <p>
+            منذ عام 2023، تلتزم GINKVORA بسد الفجوة بين الموارد النباتية الممتازة وسوق B2B العالمي. تبدأ رحلتنا في الأنظمة البيئية الرئيسية الغنية بالتنوع البيولوجي - بما في ذلك جبال تشينلينغ (Qinling)، التي يُحتفى بها باعتبارها 'بنك الجينات' للنباتات البرية، وقواعد الزراعة الإقليمية في شيآن (Xi'an).
+          </p>
+          <p>
+            لقد أنشأنا شبكة توريد صارمة، تضمن استفادة كل مستخلص نباتي نوفره من المناخ والارتفاع وظروف التربة المثالية والأساسية لزيادة فعالية المكونات النشطة.
+          </p>
+        </div>
+        <div class="intro-right reveal">
+          <div class="image-showcase glass">
+            <img
+              src="/images/qinling-mountains-natural-ingredient-source.webp"
+              alt="سلسلة جبال تشينلينغ - مصدر المكونات الطبيعية"
+              class="showcase-img"
+              width="800"
+              height="600"
+            />
+            <div class="floating-caption">
+              <strong>سلسلة جبال تشينلينغ</strong>
+              <span>منطقة التوريد الجغرافي الأصيل</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Curators & Scientific Fusion -->
+    <section class="section curation-section bg-deep" aria-label="Curators & Technical Fusion">
+      <div class="container">
+        <div class="grid-2">
+          <div class="glass-card reveal">
+            <span class="card-icon-em">🔍</span>
+            <h3>أكثر من مجرد مورد: نحن أمناء جودة</h3>
+            <p>
+              نعرف أنفسنا كشريك مدفوع بالابتكار، وليس مجرد تاجر. نحن ندرك أن الجودة تبدأ من المصدر. لهذا السبب لا نكتفي بالشراء والبيع؛ بل نقوم بالفحص والتدقيق والدمج. لقد قمنا بتصفية مئات المصنعين لنشارك حصرياً أولئك الذين يستوفون أعلى معايير cGMP وISO، مطبقين عملية تدقيق صارمة من 4 خطوات.
+            </p>
+          </div>
+          
+          <div class="glass-card reveal reveal-delay-1">
+            <span class="card-icon-em">🧪</span>
+            <h3>الاندماج بين علم الأحياء والطبيعة</h3>
+            <p>
+              يعكس الاسم GINKVORA فلسفتنا الأساسية: حيث يمثل جينكو (Ginkgo) المرونة الطبيعية، ويمثل فورا (Vora) الابتكار العلمي الحيوي. إلى جانب جذورنا النباتية، نوفر مونوميرات نشطة بيولوجياً عالية النقاء. من خلال الجمع بين الطب العشبي التقليدي والبيولوجيا التخليقية الحديثة، نقدم حلولاً شاملة للمكونات.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Core Values -->
+    <section class="container section values-section" aria-label="Core Values">
+      <div class="section-header">
+        <span class="section-label">القيم الأساسية</span>
+        <h2 class="section-title">ركائز التزامنا</h2>
+        <p class="section-desc">نبني الثقة من خلال الشفافية، والتحقق الصارم، وحلول الإمداد المصممة خصيصاً.</p>
+      </div>
+
+      <div class="grid-3">
+        <article class="value-card glass reveal">
+          <div class="value-icon">🌍</div>
+          <h3>التوريد الجغرافي الأصيل</h3>
+          <p>الاستفادة من موقعنا الاستراتيجي لتأمين المواد الخام التي تحتوي على أعلى محتوى من المكونات النشطة من الموائل النباتية المعتمدة.</p>
+        </article>
+
+        <article class="value-card glass reveal reveal-delay-1">
+          <div class="value-icon">🛡️</div>
+          <h3>عملية تدقيق صارمة</h3>
+          <p>نحن نطبق عملية تدقيق صارمة مكونة من 4 خطوات لشركائنا، للتحقق من الامتثال للمعايير العالمية (GMP/ISO) وضمان نقاء المواد الخام.</p>
+        </article>
+
+        <article class="value-card glass reveal reveal-delay-2">
+          <div class="value-icon">⚙️</div>
+          <h3>الابتكار المخصص</h3>
+          <p>من المستخلصات القياسية إلى تخليق الببتيد المخصص وصياغة OEM، نقوم بتكييف سلسلة التوريد الخاصة بنا لتلبية احتياجات البحث والتطوير لديك.</p>
+        </article>
+
+        <article class="value-card glass reveal">
+          <div class="value-icon">🌿</div>
+          <h3>التوريد الأخلاقي</h3>
+          <p>يضمن التزامنا بالتوريد الأخلاقي حصاد كل مكون مع احترام البيئة والمجتمعات التي تزرعها.</p>
+        </article>
+
+        <article class="value-card glass reveal reveal-delay-1">
+          <div class="value-icon">🔋</div>
+          <h3>التصنيع الأخضر</h3>
+          <p>نحن نستخدم عمليات تصنيع صديقة للبيئة لتقليل النفايات وبصمتنا الكربونية.</p>
+        </article>
+
+        <article class="value-card glass reveal reveal-delay-2">
+          <div class="value-icon">🤝</div>
+          <h3>دعم المجتمع</h3>
+          <p>إن دعم المزارعين والمجتمعات المحلية هو في صميم مهمتنا للاستدامة.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Section 4: Sustainability & Stewardship -->
+    <section class="section sustainability-section bg-deep" aria-label="Sustainability & Stewardship">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">الاستدامة</span>
+          <h2 class="section-title">الحفاظ على الطبيعة للأجيال القادمة</h2>
+          <p class="section-desc">أفعالنا اليوم تشكل مشهد الغد. نحن ملتزمون بترك بصمة تحترم الأرض.</p>
+        </div>
+
+        <!-- Lucid Waters Quote -->
+        <div class="slogan-container glass reveal">
+          <div class="slogan-quote">«المياه الصافية والجبال الخضراء هي أصول لا تقدر بثمن.»</div>
+          <div class="slogan-source">
+            <span>جهة الترجمة: المكتب المركزي للترجمة والتحرير</span>
+            <span class="source-sep">|</span>
+            <span>المصدر: صحيفة غوانغمينغ اليومية (19 نوفمبر 2015)</span>
+          </div>
+        </div>
+
+        <!-- Slogans/End Quote -->
+        <div class="quote-footer reveal">
+          <p>
+            «الاستدامة ليست مجرد هدف، بل هي مسؤولية ندين بها للأجداد الذين حافظوا على هذه الجبال وللأطفال الذين سيرثونها.»
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="container section cta-section">
+      <div class="cta-box glass">
+        <h2>الشراكة مع GINKVORA</h2>
+        <p>اطلب الوثائق الفنية، أو شهادات التحليل (COA)، أو عينات الشحن لأي مكون نباتي نشط مباشرة من قسمنا التجاري.</p>
+        <div class="cta-btns">
+          <a href="/ar/contact" class="btn btn--gold btn--lg">طلب تسعير / عينة</a>
+          <a href="/ar/products" class="btn btn--primary btn--lg">تصفح الكتالوج</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .mission-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Intro Section ── */
+  .section {
+    padding-block: var(--space-2xl);
+  }
+
+  .accent-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .intro-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  .intro-left h2 {
+    font-size: 2.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .intro-left p {
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+
+  .image-showcase {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-color: rgba(212,166,84,0.18) !important;
+    cursor: pointer;
+  }
+
+  .showcase-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow, 400ms) ease;
+  }
+
+  .image-showcase:hover .showcase-img {
+    transform: scale(1.05);
+  }
+
+  .floating-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: rgba(6, 5, 3, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--color-border);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .floating-caption strong {
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+  }
+
+  .floating-caption span {
+    color: var(--color-text-secondary);
+    font-size: 0.75rem;
+  }
+
+  /* ── Curation Section ── */
+  .bg-deep {
+    background-color: var(--color-bg-deep);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .glass-card {
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(212, 166, 84, 0.1) !important;
+    transition: all var(--transition-base);
+  }
+
+  .glass-card:hover {
+    border-color: var(--color-primary-light) !important;
+    transform: translateY(-6px);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .card-icon-em {
+    font-size: 2.25rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .glass-card h3 {
+    font-size: 1.375rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .glass-card p {
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+
+  /* ── Values Section ── */
+  .section-header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+  }
+
+  .section-title {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  .section-desc {
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0.75rem auto 0;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .grid-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .value-card {
+    padding: 2.25rem 1.75rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.1) !important;
+    text-align: center;
+    transition: all var(--transition-base);
+  }
+
+  .value-card:hover {
+    border-color: var(--color-primary-light) !important;
+    box-shadow: var(--shadow-glow-gold);
+    transform: translateY(-6px);
+  }
+
+  .value-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .value-card h3 {
+    font-size: 1.375rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .value-card p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* ── CTA Box ── */
+  .cta-box {
+    padding: 3.5rem;
+    border-radius: var(--radius-xl);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    border: 1px solid rgba(212, 166, 84, 0.2) !important;
+  }
+
+  .cta-box h2 {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-family: var(--font-display);
+    color: var(--color-text);
+  }
+
+  .cta-box p {
+    color: var(--color-text-secondary);
+    max-width: 520px;
+    line-height: 1.75;
+  }
+
+  .cta-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* ── Sustainability Section ── */
+  .sustainability-section {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-bg-deep, #060708);
+  }
+
+  .sustainability-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(to bottom, #060708 0%, rgba(6, 7, 8, 0.03) 15%, rgba(6, 7, 8, 0.03) 85%, #060708 100%), url('/images/qinling-mountains-traditional-chinese-shanshui-painting.webp');
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    filter: brightness(0.78) contrast(1.02) saturate(0.95);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .sustainability-section .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  .sustainability-section .section-label {
+    color: #ffffff !important;
+  }
+
+  .sustainability-section .section-title {
+    color: #000000 !important;
+  }
+
+  .sustainability-section .section-desc {
+    color: #222222 !important;
+  }
+
+  @media (max-width: 768px) {
+    .sustainability-section::before {
+      background-image: linear-gradient(to bottom, #060708 0%, rgba(6, 7, 8, 0.05) 15%, rgba(6, 7, 8, 0.05) 85%, #060708 100%), url('/images/qinling-mountains-traditional-chinese-shanshui-painting.webp');
+      background-position: center 20%;
+    }
+  }
+
+  .slogan-container {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    padding: 2rem 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(10px);
+    transition: all var(--transition-base, 250ms) ease;
+  }
+
+  .slogan-container:hover {
+    border-color: rgba(0, 0, 0, 0.3) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .slogan-quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    color: var(--color-accent-dark, #b05818);
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+
+  .slogan-source {
+    font-size: 0.75rem;
+    color: #000000 !important;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    opacity: 1 !important;
+  }
+
+  .source-sep {
+    color: #000000 !important;
+  }
+
+  .quote-footer {
+    max-width: 680px;
+    margin: 3.5rem auto 0;
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+    padding-top: 2rem;
+  }
+
+  .quote-footer p {
+    font-size: 1.125rem;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+</style>

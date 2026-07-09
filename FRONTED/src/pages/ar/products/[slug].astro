@@ -1359,7 +1359,7 @@ const faqSchema = {
               rfqForm.reset();
               if (successMsg) successMsg.style.display = 'block';
               if (submitBtn) submitBtn.textContent = 'Submitted ✓';
-              window.location.href = '/thank-you';
+              window.location.href = '/ar/thank-you';
             } else {
               const errData = await res.json();
               alert(errData.error || 'Failed to send request. Please try again or contact us directly.');

@@ -975,8 +975,14 @@ const breadcrumbSchema = {
 
       if (res.ok) {
         sbForm.reset();
-        const currentLang = window.location.pathname.startsWith('/ru') ? 'ru' : 'en';
-        window.location.href = currentLang === 'ru' ? '/ru/thank-you' : '/thank-you';
+        const pathname = window.location.pathname;
+        let redirectUrl = '/thank-you';
+        if (pathname.startsWith('/ru')) {
+          redirectUrl = '/ru/thank-you';
+        } else if (pathname.startsWith('/ar')) {
+          redirectUrl = '/ar/thank-you';
+        }
+        window.location.href = redirectUrl;
       } else {
         throw new Error('Failed');
       }
