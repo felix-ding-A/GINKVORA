@@ -1,0 +1,543 @@
+---
+// src/pages/es/about/mission.astro — Our Mission B2B Page (Spanish)
+export const prerender = true;
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+const lang = 'es';
+
+const missionSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "Nuestra misión | GINKVORA",
+  "description": "Conozca la misión de GINKVORA, las fuentes de materias primas ecológicas, los estrictos estándares de auditoría de calidad y la fusión de la naturaleza y la ciencia.",
+  "url": "https://ginkvora.com/es/about/mission"
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title="Nuestra Misión y Valores de Suministro | GINKVORA"
+  description="Conozca la misión de GINKVORA, las fuentes de materias primas ecológicas de regiones con gran biodiversidad y los estrictos estándares de auditoría de calidad."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(missionSchema)} slot="head" />
+  <main class="mission-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="Page Header">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">Nuestra Misión</span>
+        <h1 class="banner-title">Combinando la Pureza de la Naturaleza con la Innovación Científica</h1>
+        <p class="banner-desc">
+          Donde la sabiduría milenaria de las plantas auténticas se encuentra con la precisión moderna del laboratorio.
+        </p>
+      </div>
+    </header>
+
+    <!-- Section 1: From the Heart of Qinling -->
+    <section class="container section intro-section" aria-label="Our Sourcing Origins">
+      <div class="intro-grid">
+        <div class="intro-left reveal">
+          <span class="accent-title">Orígenes de Calidad</span>
+          <h2>Desde el Corazón de Regiones Megadiversas</h2>
+          <p>
+            Desde 2023, GINKVORA se ha dedicado a cerrar la brecha entre las materias primas vegetales premium y el mercado global B2B. Nuestro viaje comienza en ecosistemas clave de gran biodiversidad, incluidas las montañas Qinling, conocidas como el "Banco de genes" de la flora silvestre, y bases de cultivo regionales en Xi'an.
+          </p>
+          <p>
+            Hemos establecido una red de suministro rigurosa, asegurando que cada extracto botánico que suministramos se beneficie del clima, la altitud y las condiciones del suelo ideales necesarias para maximizar la eficacia de los componentes activos.
+          </p>
+        </div>
+        <div class="intro-right reveal">
+          <div class="image-showcase glass">
+            <img
+              src="/images/qinling-mountains-natural-ingredient-source.webp"
+              alt="Montañas Qinling - Fuente de Ingredientes Naturales"
+              class="showcase-img"
+              width="800"
+              height="600"
+            />
+            <div class="floating-caption">
+              <strong>Cadena Montañosa Qinling</strong>
+              <span>Zona de Suministro Geográfico Auténtico</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Curators & Scientific Fusion -->
+    <section class="section curation-section bg-deep" aria-label="Curators & Technical Fusion">
+      <div class="container">
+        <div class="grid-2">
+          <div class="glass-card reveal">
+            <span class="card-icon-em">🔍</span>
+            <h3>Más que un Proveedor: Somos Curadores</h3>
+            <p>
+              Nos posicionamos como un socio centrado en la innovación, no simplemente como un comercializador. Entendemos que la calidad comienza en la fuente. Por eso no solo compramos y vendemos; verificamos, auditamos e integramos. Nos asociamos exclusivamente con fabricantes que cumplen con los estándares más estrictos de cGMP e ISO, aplicando una rigurosa auditoría de 4 etapas.
+            </p>
+          </div>
+          
+          <div class="glass-card reveal reveal-delay-1">
+            <span class="card-icon-em">🧪</span>
+            <h3>Fusión de la Biología y la Naturaleza</h3>
+            <p>
+              El nombre GINKVORA refleja nuestra filosofía: Ginkgo simboliza la vitalidad de la naturaleza, mientras que Vora representa la innovación científica vibrante. Más allá de nuestras raíces botánicas, suministramos monómeros bioactivos de alta pureza. Al combinar la fitoterapia tradicional con la biología sintética moderna, ofrecemos soluciones integrales en el campo de los ingredientes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Core Values -->
+    <section class="container section values-section" aria-label="Core Values">
+      <div class="section-header">
+        <span class="section-label">Nuestros Valores</span>
+        <h2 class="section-title">Pilares de Nuestro Compromiso</h2>
+        <p class="section-desc">Construimos confianza a través de la transparencia, la verificación estricta y soluciones de suministro personalizadas.</p>
+      </div>
+
+      <div class="grid-3">
+        <article class="value-card glass reveal">
+          <div class="value-icon">🌍</div>
+          <h3>Origen Auténtico de Materias Primas</h3>
+          <p>Aprovechamos nuestra ubicación estratégica para asegurar materias primas con el mayor contenido de sustancias activas de hábitats naturales verificados.</p>
+        </article>
+
+        <article class="value-card glass reveal reveal-delay-1">
+          <div class="value-icon">🛡️</div>
+          <h3>Auditoría Rigurosa</h3>
+          <p>Aseguramos un proceso estricto de auditoría de 4 etapas para nuestros socios, confirmando el cumplimiento de los estándares globales (GMP/ISO) y la pureza de las materias primas.</p>
+        </article>
+
+        <article class="value-card glass reveal reveal-delay-2">
+          <div class="value-icon">⚙️</div>
+          <h3>Innovación Personalizada</h3>
+          <p>Desde extractos estandarizados hasta la síntesis personalizada de péptidos y formulaciones OEM, adaptamos nuestra cadena de suministro a sus requisitos de I+D.</p>
+        </article>
+
+        <article class="value-card glass reveal">
+          <div class="value-icon">🌿</div>
+          <h3>Abastecimiento Ético</h3>
+          <p>Nuestro compromiso con el abastecimiento ético garantiza que cada ingrediente se recolecte respetando el medio ambiente y las comunidades que los cultivan.</p>
+        </article>
+
+        <article class="value-card glass reveal reveal-delay-1">
+          <div class="value-icon">🔋</div>
+          <h3>Producción Ecológica</h3>
+          <p>Aplicamos procesos de producción respetuosos con el medio ambiente para minimizar los residuos y reducir la huella de carbono.</p>
+        </article>
+
+        <article class="value-card glass reveal reveal-delay-2">
+          <div class="value-icon">🤝</div>
+          <h3>Soporte a las Comunidades</h3>
+          <p>El apoyo a los agricultores y comunidades locales está en el centro de nuestra misión de sostenibilidad.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Section 4: Ecología y Responsabilidad Social -->
+    <section class="section sustainability-section bg-deep" aria-label="Sostenibilidad">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Ecología</span>
+          <h2 class="section-title">Preservar la Naturaleza para las Generaciones Futuras</h2>
+          <p class="section-desc">Nuestras acciones de hoy dan forma al paisaje del mañana. Nos comprometemos a garantizar que nuestras operaciones no dañen el medio ambiente.</p>
+        </div>
+
+        <!-- Lucid Waters Quote -->
+        <div class="slogan-container glass reveal">
+          <div class="slogan-quote">«Las aguas cristalinas y las montañas verdes son activos inestimables.»</div>
+          <div class="slogan-source">
+            <span>Autoridad de traducción: Oficina Central de Compilación y Traducción</span>
+            <span class="source-sep">|</span>
+            <span>Fuente: Periódico Guangming Daily (19 de noviembre de 2015)</span>
+          </div>
+        </div>
+
+        <!-- Slogans/End Quote -->
+        <div class="quote-footer reveal">
+          <p>
+            «La sostenibilidad no es solo un objetivo, sino una responsabilidad que debemos a los antepasados que preservaron estas montañas y a los niños que las heredarán.»
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="container section cta-section">
+      <div class="cta-box glass">
+        <h2>Alianza con GINKVORA</h2>
+        <p>Solicite documentación, certificados de análisis (COA) o muestras para cualquier componente activo vegetal directamente a nuestro departamento comercial.</p>
+        <div class="cta-btns">
+          <a href="/es/contact" class="btn btn--gold btn--lg">Solicitar Muestra / Cotización</a>
+          <a href="/es/products" class="btn btn--primary btn--lg">Catálogo de Productos</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .mission-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 8rem 4rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Intro Section ── */
+  .section {
+    padding-block: var(--space-2xl);
+  }
+
+  .accent-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .intro-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  .intro-left h2 {
+    font-size: 2.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .intro-left p {
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+
+  .image-showcase {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-color: rgba(212,166,84,0.18) !important;
+    cursor: pointer;
+  }
+
+  .showcase-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow, 400ms) ease;
+  }
+
+  .image-showcase:hover .showcase-img {
+    transform: scale(1.05);
+  }
+
+  .floating-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: rgba(6, 5, 3, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--color-border);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .floating-caption strong {
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+  }
+
+  .floating-caption span {
+    color: var(--color-text-secondary);
+    font-size: 0.75rem;
+  }
+
+  /* ── Curation Section ── */
+  .bg-deep {
+    background-color: var(--color-bg-deep);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .glass-card {
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(212, 166, 84, 0.1) !important;
+    transition: all var(--transition-base);
+  }
+
+  .glass-card:hover {
+    border-color: var(--color-primary-light) !important;
+    transform: translateY(-6px);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .card-icon-em {
+    font-size: 2.25rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .glass-card h3 {
+    font-size: 1.375rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .glass-card p {
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+
+  /* ── Values Section ── */
+  .section-header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+  }
+
+  .section-title {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  .section-desc {
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0.75rem auto 0;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .grid-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .value-card {
+    padding: 2.25rem 1.75rem;
+    border-radius: var(--radius-lg);
+    border-color: rgba(212, 166, 84, 0.1) !important;
+    text-align: center;
+    transition: all var(--transition-base);
+  }
+
+  .value-card:hover {
+    border-color: var(--color-primary-light) !important;
+    box-shadow: var(--shadow-glow-gold);
+    transform: translateY(-6px);
+  }
+
+  .value-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .value-card h3 {
+    font-size: 1.375rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+  }
+
+  .value-card p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* ── CTA Box ── */
+  .cta-box {
+    padding: 3.5rem;
+    border-radius: var(--radius-xl);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    border: 1px solid rgba(212, 166, 84, 0.2) !important;
+  }
+
+  .cta-box h2 {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-family: var(--font-display);
+    color: var(--color-text);
+  }
+
+  .cta-box p {
+    color: var(--color-text-secondary);
+    max-width: 520px;
+    line-height: 1.75;
+  }
+
+  .cta-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* ── Sustainability Section ── */
+  .sustainability-section {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-bg-deep, #060708);
+  }
+
+  .sustainability-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(to bottom, #060708 0%, rgba(6, 7, 8, 0.03) 15%, rgba(6, 7, 8, 0.03) 85%, #060708 100%), url('/images/qinling-mountains-traditional-chinese-shanshui-painting.webp');
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    filter: brightness(0.78) contrast(1.02) saturate(0.95);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .sustainability-section .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  .sustainability-section .section-label {
+    color: #ffffff !important;
+  }
+
+  .sustainability-section .section-title {
+    color: #000000 !important;
+  }
+
+  .sustainability-section .section-desc {
+    color: #222222 !important;
+  }
+
+  @media (max-width: 768px) {
+    .sustainability-section::before {
+      background-image: linear-gradient(to bottom, #060708 0%, rgba(6, 7, 8, 0.05) 15%, rgba(6, 7, 8, 0.05) 85%, #060708 100%), url('/images/qinling-mountains-traditional-chinese-shanshui-painting.webp');
+      background-position: center 20%;
+    }
+  }
+
+  .slogan-container {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    padding: 2rem 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(10px);
+    transition: all var(--transition-base, 250ms) ease;
+  }
+
+  .slogan-container:hover {
+    border-color: rgba(0, 0, 0, 0.3) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .slogan-quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    color: var(--color-accent-dark, #b05818);
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+
+  .slogan-source {
+    font-size: 0.75rem;
+    color: #000000 !important;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    opacity: 1 !important;
+  }
+
+  .source-sep {
+    color: #000000 !important;
+  }
+
+  .quote-footer {
+    max-width: 680px;
+    margin: 3.5rem auto 0;
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+    padding-top: 2rem;
+  }
+
+  .quote-footer p {
+    font-size: 1.125rem;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+</style>

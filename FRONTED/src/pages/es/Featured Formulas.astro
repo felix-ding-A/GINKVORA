@@ -1,0 +1,543 @@
+---
+// src/pages/es/Featured Formulas.astro — Spanish Scientific Formulation Showcase Page
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const lang = 'es';
+const t = useTranslations(lang);
+const siteUrl = 'https://ginkvora.com';
+
+// WebPage schema
+const featuredFormulasSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Fórmulas Científicas Recomendadas y Biblioteca de Recetas | GINKVORA",
+  "description": "Recetas listas para usar de fórmulas científicas para nutracéuticos, cosméticos y salud animal. Uso de NMN, PQQ, glabridina y EGCG de alta pureza.",
+  "url": `${siteUrl}/es/Featured%20Formulas`,
+  "isPartOf": { "@type": "WebSite", "url": siteUrl, "name": "GINKVORA" },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Inicio", "item": `${siteUrl}/es` },
+      { "@type": "ListItem", "position": 2, "name": "Fórmulas recomendadas", "item": `${siteUrl}/es/Featured%20Formulas` }
+    ]
+  }
+};
+
+const formulas = [
+  {
+    id: "mitochondria-energy",
+    title: "Complejo para Mitocondrias y Energía Celular",
+    category: "Suplementos Alimenticios",
+    icon: "⚡",
+    form: "Cápsula Dura (Tamaño #0)",
+    targetWeight: "500 mg",
+    description: "Formulación B2B sinérgica orientada a la longevidad celular, restauración de niveles de NAD+ y optimización de la producción de ATP mitocondrial.",
+    actives: [
+      { name: "NMN (Nicotinamida mononucleótido)", dose: "250 mg", purity: "≥99.5% (HPLC)", overage: "5%" },
+      { name: "Sal disódica de PQQ (Pirroloquinolina quinona)", dose: "20 mg", purity: "≥99.0% (HPLC)", overage: "3%" },
+      { name: "Coenzima Q10 (Ubiquinona)", dose: "100 mg", purity: "≥98.0% (HPLC)", overage: "2%" }
+    ],
+    excipients: [
+      { name: "Celulosa microcristalina (MCC 102)", role: "Relleno / Aglutinante", ratio: "115 mg" },
+      { name: "Estearato de magnesio", role: "Lubricante (deslizamiento)", ratio: "5 mg" },
+      { name: "Dióxido de silicio", role: "Antiaglomerante", ratio: "10 mg" }
+    ],
+    sop: [
+      "Pese el NMN, PQQ y CoQ10 por separado según el tamaño del lote, considerando el coeficiente de pérdida tecnológica.",
+      "Tamice todos los componentes activos y la MCC a través de un tamiz de acero inoxidable (malla 40) para eliminar grumos.",
+      "Premezcle el PQQ microdosificado (20 mg/unidad) con la MCC mediante el método de dilución geométrica para asegurar una distribución uniforme.",
+      "Cargue el NMN, CoQ10 y la mezcla de PQQ/MCC en un mezclador en V. Mezcle durante 15 minutos a 20 rpm.",
+      "Añada el dióxido de silicio y el estearato de magnesio al mezclador y realice un mezclado final durante 3 minutos.",
+      "Dosifique el polvo homogéneo en cápsulas vegetales de HPMC de tamaño #0 con un peso objetivo de llenado de 500 mg."
+    ],
+    notes: "Almacenar en un recipiente al vacío seco a menos de 25°C. Evitar la exposición a la luz, ya que el NMN y la CoQ10 son sensibles al calor y a la fotooxidación."
+  },
+  {
+    id: "skin-brightening-serum",
+    title: "Emulsión Blanqueadora Fitoquímica Avanzada",
+    category: "Activos Cosméticos",
+    icon: "✨",
+    form: "Emulsión aceite en agua (O/W) / Crema",
+    targetWeight: "100 g de Base",
+    description: "Crema aclarante de alta eficacia que utiliza glabridina y EGCG para inhibir la síntesis de melanina, reducir las manchas de la edad y proporcionar protección antioxidante.",
+    actives: [
+      { name: "Glabridina (extracto estandarizado de regaliz)", dose: "0.5 g (0.5%)", purity: "40.0% (HPLC)", overage: "2%" },
+      { name: "EGCG (galato de epigalocatequina)", dose: "1.0 g (1.0%)", purity: "≥98.0% (HPLC)", overage: "4%" },
+      { name: "Ácido ferúlico", dose: "0.5 g (0.5%)", purity: "≥99.0% (HPLC)", overage: "2%" }
+    ],
+    excipients: [
+      { name: "Fase A: Agua desionizada, Glicerina, Carbómero", role: "Fase acuosa de la base", ratio: "82.0 g" },
+      { name: "Fase B: Triglicérido caprílico, Aceite de jojoba, Estearato de glicerilo", role: "Fase grasa y emulsionante", ratio: "15.0 g" },
+      { name: "Fase D: Fenoxietanol, Etilhexilglicerina", role: "Sistema conservante", ratio: "1.0 g" }
+    ],
+    sop: [
+      "Prepare la Fase A (fase acuosa) dispersando el carbómero en agua desionizada y glicerina. Caliente a 75-80°C bajo agitación moderada.",
+      "Prepare la Fase B (fase grasa) combinando los lípidos y el estearato de glicerilo. Caliente a 75-80°C hasta que se derrita por completo y quede homogéneo.",
+      "Incorpore lentamente la Fase B en la Fase A mediante homogeneización de alto cizallamiento (3000-3500 rpm) durante 8 minutos para formar la emulsión.",
+      "Enfríe lentamente la emulsión con agitación de tipo ancla (50-60 rpm). Cuando la temperatura descienda por debajo de 40°C, prepare la Fase C.",
+      "Fase C (activos): disuelva el ácido ferúlico y el EGCG en una pequeña parte de agua/propanodiol. Disuelva la glabridina en el triglicérido caprílico. Incorpore ambas mezclas a la emulsión.",
+      "Añada la Fase D (conservantes) a 35°C, mida el pH y ajústelo con trietanolamina hasta el valor objetivo de 5.5 - 6.0."
+    ],
+    notes: "El valor recomendado del equilibrio hidrófilo-lipófilo (HLB) del emulsionante es de aproximadamente 10.5. Disuelva la glabridina en la fase lipídica por debajo de 40°C para evitar la degradación térmica."
+  },
+  {
+    id: "pet-joint-mobility",
+    title: "Tableta Masticable para Articulaciones y Movilidad de Mascotas",
+    category: "Salud de Mascotas",
+    icon: "🐕",
+    form: "Tableta masticable blanda prensada en frío",
+    targetWeight: "4.0 g",
+    description: "Tableta masticable funcional y sabrosa de grado veterinario, formulada para reducir la inflamación articular y apoyar la función cognitiva de perros mayores.",
+    actives: [
+      { name: "Extracto de curcumina (curcuminoides estandarizados)", dose: "150 mg", purity: "95.0% (HPLC)", overage: "5%" },
+      { name: "Extracto de Boswellia serrata (ácidos boswélicos)", dose: "100 mg", purity: "65.0% (Ensayo)", overage: "3%" },
+      { name: "Extracto de hoja de Ginkgo biloba", dose: "40 mg", purity: "24% flavonas / 6% lactonas", overage: "2%" }
+    ],
+    excipients: [
+      { name: "Glicerina y aceite vegetal", role: "Humectantes / Ablandadores", ratio: "800 mg" },
+      { name: "Levadura de cerveza y saborizante natural de pollo", role: "Potenciadores de la palatabilidad", ratio: "1400 mg" },
+      { name: "Almidón de patata y harina de garbanzo", role: "Agentes estructurantes", ratio: "1510 mg" }
+    ],
+    sop: [
+      "Mezcle todos los ingredientes secos, incluidos los extractos de cúrcuma, boswellia y ginkgo, el almidón, la harina y el saborizante de pollo en un mezclador de paletas horizontal.",
+      "Tamice la mezcla seca a través de un tamiz (malla 30) para asegurar una distribución uniforme de las partículas.",
+      "Incorpore lentamente los humectantes líquidos (glicerina, aceite vegetal, agua) a la mezcla de polvo seco bajo agitación continua.",
+      "Procese la masa a temperatura ambiente (por debajo de 35°C) hasta formar una masa plástica. No aplique calor para preservar los curcuminoides.",
+      "Alimente la masa en una extrusora de conformado en frío. Corte las unidades con un peso objetivo de 4.0 g.",
+      "Pase las tabletas extruidas a través de un túnel de secado a baja temperatura hasta alcanzar una actividad de agua (Aw) < 0.65 para prevenir el moho."
+    ],
+    notes: "La curcumina posee un fuerte pigmento amarillo natural. Utilice equipos de acero inoxidable y límpielos inmediatamente después del trabajo para evitar manchas."
+  },
+  {
+    id: "neuro-cognitive-protection",
+    title: "Complejo para Protección Neurocognitiva y Enfoque",
+    category: "Suplementos Alimenticios",
+    icon: "🧠",
+    form: "Tableta prensada estándar",
+    targetWeight: "650 mg",
+    description: "Conexión moderna de luteolina y extracto de ginkgo biloba para apoyar la circulación cerebral, la atención y combatir la fatiga cerebral.",
+    actives: [
+      { name: "Luteolina (extracto estandarizado de cáscara)", dose: "100 mg", purity: "≥98.0% (HPLC)", overage: "4%" },
+      { name: "Extracto de hoja de Ginkgo biloba", dose: "120 mg", purity: "24/6 estandarizado (HPLC)", overage: "2%" },
+      { name: "Alfa-GPC (L-alfa-glicerilfosforilcolina)", dose: "150 mg", purity: "Polvo al 50.0% (HPLC)", overage: "5%" }
+    ],
+    excipients: [
+      { name: "Fosfato dicálcico dihidratado (Emcompress)", role: "Relleno para compresión directa", ratio: "250 mg" },
+      { name: "Croscarmelosa sódica (Ac-Di-Sol)", role: "Superdesintegrante", ratio: "20 mg" },
+      { name: "Ácido esteárico y dióxido de silicio", role: "Lubricantes y deslizantes", ratio: "10 mg" }
+    ],
+    sop: [
+      "Pese la luteolina, ginkgo biloba, Alfa-GPC, Emcompress y croscarmelosa sódica según las proporciones.",
+      "El Alfa-GPC es extremadamente higroscópico; mantenga estrictamente la humedad relativa (HR) del ambiente por debajo del 35%.",
+      "Mezcle los ingredientes activos y el fosfato dicálcico en un mezclador de tambor durante 12 minutos para distribuir los polvos densos.",
+      "Añada la croscarmelosa sódica (superdesintegrante) y mezcle por 3 minutos más.",
+      "Añada el ácido esteárico y el dióxido de silicio. Mezcle los 2 minutos finales. Evite el exceso de lubricación para mantener la dureza de las tabletas.",
+      "Alimente la mezcla seca directamente a una prensa de tabletas rotatoria con punzones ovalados de 11 mm. Compima hasta una dureza de 10-12 kp."
+    ],
+    notes: "El Alfa-GPC absorbe rápidamente la humedad del aire. Las tabletas deben envasarse en blísteres Alu-Alu de alta barrera o en frascos herméticos de HDPE con desecante inmediatamente después del prensado."
+  }
+];
+---
+
+<BaseLayout
+  lang={lang}
+  title="Fórmulas Científicas Recomendadas y Recetas"
+  description="Explore fórmulas profesionales para suplementos alimenticios B2B, activos cosméticos y salud animal. Proporciones precisas de ingredientes e instrucciones SOP."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(featuredFormulasSchema)} slot="head" />
+
+  <main class="formulas-page bg-noise">
+    <!-- Header banner -->
+    <header class="page-banner" aria-label="Page Header">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">Biblioteca de recetas</span>
+        <h1 class="banner-title">Fórmulas Científicas Recomendadas</h1>
+        <p class="banner-desc">
+          Diseños de fórmulas listos para usar que integran extractos botánicos de alta pureza, cofactores activos y excipientes farmacéuticos estandarizados.
+        </p>
+      </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <section class="container section">
+      <div class="formulas-intro">
+        <p class="intro-text">
+          Nuestro equipo científico de I+D ha desarrollado estas fórmulas de referencia para ayudar a los desarrolladores de productos, especialistas en compras y científicos. Todos los ingredientes activos presentados a continuación están disponibles para pedidos al por mayor y muestras personalizadas. Utilice nuestra <a href="/es/calculator" class="highlight-link">Consola de formulación científica</a> para escalar el peso del lote, ajustar las pérdidas del proceso o calcular diluciones complejas.
+        </p>
+      </div>
+
+      <div class="formulas-grid">
+        {formulas.map((formula) => (
+          <article class="formula-card glass" id={formula.id}>
+            <!-- Card Header -->
+            <div class="card-header-bar">
+              <span class="category-badge">{formula.category}</span>
+              <span class="form-badge">{formula.form}</span>
+            </div>
+
+            <div class="card-main-title">
+              <span class="card-icon">{formula.icon}</span>
+              <div>
+                <h2>{formula.title}</h2>
+                <span class="target-weight">Peso unitario objetivo: <strong>{formula.targetWeight}</strong></span>
+              </div>
+            </div>
+
+            <p class="formula-desc">{formula.description}</p>
+
+            <details class="formula-details">
+              <summary class="details-toggle">
+                <span>Ver fórmula y SOP</span>
+                <svg class="toggle-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </summary>
+
+              <div class="details-content">
+                <!-- Actives Table -->
+                <div class="table-wrapper">
+                  <h3>Ingredientes Activos (Activos GINKVORA)</h3>
+                  <table class="recipe-table">
+                    <thead>
+                      <tr>
+                        <th>Ingrediente activo</th>
+                        <th>Dosis / Unidad</th>
+                        <th>Pureza mín.</th>
+                        <th>Coef. de pérdida</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {formula.actives.map(active => (
+                        <tr>
+                          <td class="font-bold text-white">{active.name}</td>
+                          <td class="font-mono font-bold text-primary">{active.dose}</td>
+                          <td class="font-mono">{active.purity}</td>
+                          <td class="font-mono text-muted">{active.overage}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Excipients Table -->
+                <div class="table-wrapper mt-4">
+                  <h3>Excipientes recomendados</h3>
+                  <table class="recipe-table">
+                    <thead>
+                      <tr>
+                        <th>Componente</th>
+                        <th>Rol funcional</th>
+                        <th>Dosis sugerida</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {formula.excipients.map(exc => (
+                        <tr>
+                          <td class="font-bold text-white">{exc.name}</td>
+                          <td>{exc.role}</td>
+                          <td class="font-mono font-bold text-accent">{exc.ratio}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Step-by-Step SOP -->
+                <div class="sop-section mt-4">
+                  <h3>Instrucciones de preparación y mezclado SOP</h3>
+                  <ol class="sop-list">
+                    {formula.sop.map(step => (
+                      <li>{step}</li>
+                    ))}
+                  </ol>
+                </div>
+
+                <!-- Technical Notes -->
+                <div class="notes-block mt-4">
+                  <strong>💡 Notas de formulación y estabilidad:</strong>
+                  <p>{formula.notes}</p>
+                </div>
+              </div>
+            </details>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .formulas-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  /* ── Banner ── */
+  .page-banner {
+    position: relative;
+    padding-block: 5rem 2.5rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
+  }
+
+  .banner-title {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .banner-desc {
+    max-width: 600px;
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  /* ── Intro Section ── */
+  .formulas-intro {
+    max-width: 800px;
+    margin: 0 auto var(--space-2xl) auto;
+    text-align: center;
+  }
+
+  .intro-text {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .highlight-link {
+    color: var(--color-primary-light);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color var(--transition-base);
+  }
+
+  .highlight-link:hover {
+    color: var(--color-primary);
+  }
+
+  /* ── Formulas Grid & Cards ── */
+  .formulas-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .formula-card {
+    padding: var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .formula-card:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .card-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-sm);
+  }
+
+  .category-badge {
+    background: var(--color-primary-glow);
+    color: var(--color-primary-light);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(212, 166, 84, 0.2);
+  }
+
+  .form-badge {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .card-main-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xs);
+  }
+
+  .card-icon {
+    font-size: 2.25rem;
+    line-height: 1;
+  }
+
+  .card-main-title h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .target-weight {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    display: block;
+    margin-top: 0.125rem;
+  }
+
+  .target-weight strong {
+    color: var(--color-text-secondary);
+  }
+
+  .formula-desc {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-md);
+  }
+
+  /* ── Expandable Details ── */
+  .formula-details {
+    border-top: 1px dashed var(--color-border);
+    padding-top: var(--space-md);
+  }
+
+  .details-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary-light);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    transition: color var(--transition-base);
+  }
+
+  .details-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .details-toggle:hover {
+    color: var(--color-primary);
+  }
+
+  .toggle-arrow {
+    transition: transform 0.25s ease;
+  }
+
+  .formula-details[open] .toggle-arrow {
+    transform: rotate(180deg);
+  }
+
+  .details-content {
+    margin-top: var(--space-md);
+    animation: slideDown 0.3s ease-out;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Recipe Tables ── */
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .table-wrapper h3, .sop-section h3 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-sm);
+  }
+
+  .recipe-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: left;
+  }
+
+  .recipe-table th {
+    border-bottom: 1px solid var(--color-border-strong);
+    padding: 0.5rem 0.75rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .recipe-table td {
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.625rem 0.75rem;
+    color: var(--color-text-secondary);
+  }
+
+  .recipe-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Utility classes inside CSS */
+  .text-white { color: var(--color-text) !important; }
+  .text-primary { color: var(--color-primary-light) !important; }
+  .text-accent { color: var(--color-accent-light) !important; }
+  .text-muted { color: var(--color-text-muted) !important; }
+  .font-bold { font-weight: 600; }
+  .font-mono { font-family: var(--font-mono); }
+  .mt-4 { margin-top: var(--space-md); }
+
+  /* ── SOP List ── */
+  .sop-list {
+    padding-left: 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .sop-list li::marker {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  /* ── Notes Block ── */
+  .notes-block {
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 2px solid var(--color-primary);
+    padding: var(--space-md);
+    border-radius: var(--radius-sm);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .notes-block strong {
+    color: var(--color-primary-light);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .notes-block p {
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+</style>

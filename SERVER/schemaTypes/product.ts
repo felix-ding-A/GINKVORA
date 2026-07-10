@@ -10,7 +10,7 @@ export const productType = defineType({
   groups: [
     { name: 'basic',     title: 'Basic Info',           default: true },
     { name: 'technical', title: 'Technical Specs' },
-    { name: 'i18n',      title: '🌍 Translations (RU & AR)' },
+    { name: 'i18n',      title: '🌍 Translations (RU & AR & ES)' },
     { name: 'media',     title: 'Media' },
     { name: 'documents', title: 'Documents' },
     { name: 'seo',       title: 'SEO' },
@@ -263,6 +263,47 @@ export const productType = defineType({
       description: 'الوصف التعريفي المخصص للـ SEO باللغة العربية (بحد أقصى 160 حرفاً).',
     }),
 
+    // ── 🌍 Translations (Spanish) ────────────────
+    defineField({
+      name: 'shortDescription_es',
+      title: '🇪🇸 Descripción Corta (ES)',
+      type: 'text',
+      group: 'i18n',
+      rows: 3,
+      description: 'Breve descripción del producto en español (para tarjetas de producto)',
+    }),
+    defineField({
+      name: 'description_es',
+      title: '🇪🇸 Descripción Completa (ES, Markdown)',
+      type: 'markdown',
+      group: 'i18n',
+      description: 'Descripción completa del producto en español en formato Markdown.',
+      components: { input: CustomMarkdownInput },
+    }),
+    defineField({
+      name: 'applications_es',
+      title: '🇪🇸 Aplicaciones (ES, Markdown)',
+      type: 'markdown',
+      group: 'i18n',
+      description: 'Aplicaciones y casos de uso del producto en español.',
+      components: { input: CustomMarkdownInput },
+    }),
+    defineField({
+      name: 'meta_title_es',
+      title: '🇪🇸 Meta Title (ES)',
+      type: 'string',
+      group: 'i18n',
+      description: 'Título meta personalizado para SEO en español (máx 60 caracteres).',
+    }),
+    defineField({
+      name: 'meta_description_es',
+      title: '🇪🇸 Meta Description (ES)',
+      type: 'text',
+      group: 'i18n',
+      rows: 3,
+      description: 'Descripción meta personalizada para SEO en español (máx 160 caracteres).',
+    }),
+
     defineField({
       name: 'certifications',
       title: 'Certifications',
@@ -461,6 +502,35 @@ export const productType = defineType({
             defineField({
               name: 'answer',
               title: 'الإجابة',
+              type: 'text',
+              rows: 3,
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'faqItems_es',
+      title: 'FAQ Items (ES)',
+      type: 'array',
+      group: 'faq',
+      description: 'Frequently Asked Questions for this product in Spanish',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'faqItem',
+          title: 'FAQ Item',
+          fields: [
+            defineField({
+              name: 'question',
+              title: 'Pregunta',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'answer',
+              title: 'Respuesta',
               type: 'text',
               rows: 3,
               validation: (Rule) => Rule.required(),

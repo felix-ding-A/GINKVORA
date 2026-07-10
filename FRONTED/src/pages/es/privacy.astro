@@ -1,0 +1,39 @@
+---
+// src/pages/es/privacy.astro — Spanish Privacy Policy (simplified)
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const privacySchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Política de Privacidad",
+  "description": "Política de privacidad de GINKVORA — cómo recopilamos, utilizamos y protegemos sus datos.",
+  "url": "https://ginkvora.com/es/privacy",
+  "additionalType": [
+    "https://en.wikipedia.org/wiki/Privacy_policy"
+  ]
+};
+---
+<BaseLayout lang="es" title="Política de Privacidad | GINKVORA" description="Política de privacidad de GINKVORA: información sobre la recopilación, protección y tratamiento de datos de clientes B2B de acuerdo con los estándares internacionales.">
+  <script type="application/ld+json" set:html={JSON.stringify(privacySchema)} slot="head" />
+  <main class="legal-page bg-noise">
+    <div class="container legal-content">
+      <h1>Política de Privacidad</h1>
+      <p class="last-updated">Última actualización: Enero de 2025</p>
+      <section><h2>1. Recopilación de Información</h2><p>Recopilamos la información que usted nos proporciona directamente al completar formularios de consulta, comunicarse por correo electrónico o solicitar muestras y documentación.</p></section>
+      <section><h2>2. Uso de la Información</h2><p>La información recopilada se utiliza para procesar sus solicitudes de presupuestos y muestras, responder a consultas técnicas y mantener relaciones comerciales.</p></section>
+      <section><h2>3. Protección de Datos</h2><p>Aplicamos estándares de seguridad de la industria para proteger su información personal y comercial contra el acceso no autorizado.</p></section>
+      <section><h2>4. Contacto</h2><p>Para consultas relacionadas con la privacidad, contáctenos en: <a href="mailto:inquiry@ginkvora.com">inquiry@ginkvora.com</a></p></section>
+    </div>
+  </main>
+</BaseLayout>
+<style>
+  .legal-page { padding-block: 9rem var(--space-4xl); }
+  .legal-content { max-width: 800px; }
+  .legal-content h1 { font-size: clamp(2rem, 4vw, 3rem); font-family: var(--font-display); margin-bottom: 0.5rem; }
+  .last-updated { color: var(--color-text-muted); font-size: 0.875rem; margin-bottom: 3rem; }
+  .legal-content section { margin-bottom: 2.5rem; }
+  .legal-content h2 { font-size: 1.375rem; font-family: var(--font-display); color: var(--color-primary-light); margin-bottom: 0.75rem; }
+  .legal-content p { color: var(--color-text-secondary); line-height: 1.8; }
+  .legal-content a { color: var(--color-primary-light); }
+</style>

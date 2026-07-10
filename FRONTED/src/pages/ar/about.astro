@@ -3,7 +3,7 @@ const lang = 'ar';
 // src/pages/about.astro — Premium B2B About page
 export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getAllAuthors, urlFor } from '../../lib/sanity';
+import { getAllAuthors, urlFor, getLocalizedField } from '../../lib/sanity';
 
 const authors = await getAllAuthors();
 
@@ -15,9 +15,9 @@ const aboutSchema = {
   "url": "https://ginkvora.com/ar/about",
   "mainEntity": authors.map(author => ({
     "@type": "Person",
-    "name": author.name,
-    "jobTitle": author.title_ar || author.title || undefined,
-    "description": author.bio_ar || author.bio || undefined,
+    "name": getLocalizedField(author, 'name', lang) || author.name,
+    "jobTitle": getLocalizedField(author, 'title', lang) || author.title || undefined,
+    "description": getLocalizedField(author, 'bio', lang) || author.bio || undefined,
     "image": author.avatar ? urlFor(author.avatar).url() : undefined
   }))
 };
@@ -184,10 +184,10 @@ const aboutSchema = {
               />
             </div>
             <div class="author-info">
-              <h3>{author.name}</h3>
-              {(author.title_ar || author.title) && <p class="author-title">{author.title_ar || author.title}</p>}
-              {author.credentials && <span class="author-creds">{author.credentials}</span>}
-              {(author.bio_ar || author.bio) && <p class="author-bio">{author.bio_ar || author.bio}</p>}
+              <h3>{getLocalizedField(author, 'name', lang) || author.name}</h3>
+              {(getLocalizedField(author, 'title', lang) || author.title) && <p class="author-title">{getLocalizedField(author, 'title', lang) || author.title}</p>}
+              {(getLocalizedField(author, 'credentials', lang) || author.credentials) && <span class="author-creds">{getLocalizedField(author, 'credentials', lang) || author.credentials}</span>}
+              {(getLocalizedField(author, 'bio', lang) || author.bio) && <p class="author-bio">{getLocalizedField(author, 'bio', lang) || author.bio}</p>}
             </div>
           </div>
         ))}

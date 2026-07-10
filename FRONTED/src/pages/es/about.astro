@@ -1,19 +1,20 @@
 ---
-// src/pages/about.astro — Premium B2B About page
+// src/pages/es/about.astro — Spanish About page
 export const prerender = true;
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { getAllAuthors, urlFor, getLocalizedField } from '../lib/sanity';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+import { getAllAuthors, urlFor, getLocalizedField } from '../../lib/sanity';
 
-const lang = 'en';
-
+const lang = 'es';
+const t = useTranslations(lang);
 const authors = await getAllAuthors();
 
 const aboutSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
-  "name": "About GINKVORA",
-  "description": "Learn about GINKVORA's history, high-purity extraction technologies, and raw material sourcing standards.",
-  "url": "https://ginkvora.com/about",
+  "name": "Sobre GINKVORA",
+  "description": "Conozca la historia de GINKVORA, las tecnologías de extracción de alta pureza y los estándares de calidad de las materias primas.",
+  "url": "https://ginkvora.com/es/about",
   "mainEntity": authors.map(author => ({
     "@type": "Person",
     "name": getLocalizedField(author, 'name', lang) || author.name,
@@ -25,38 +26,39 @@ const aboutSchema = {
 ---
 
 <BaseLayout
-  title="B2B Botanical Extract Supplier | About GINKVORA"
-  description="Learn about GINKVORA's history, high-purity extraction technologies, and raw material sourcing standards. Supporting global dietary supplement brands."
+  lang={lang}
+  title="Proveedor de Extractos Botánicos B2B | Sobre GINKVORA"
+  description="Conozca la historia de GINKVORA, las tecnologías de extracción de alta pureza y los estándares de calidad de las materias primas. Soporte para marcas globales de suplementos dietéticos."
 >
   <script type="application/ld+json" set:html={JSON.stringify(aboutSchema)} slot="head" />
   <main class="about-page bg-noise">
     <!-- Header banner -->
-    <header class="page-banner" aria-label="Page Header">
+    <header class="page-banner" aria-label="Encabezado de página">
       <div class="banner-gradient"></div>
       <div class="container banner-content">
-        <span class="section-label">Our Company</span>
-        <h1 class="banner-title">Pioneering Pure Plant Bioactives</h1>
+        <span class="section-label">{t('about.label')}</span>
+        <h1 class="banner-title">{t('about.title')}</h1>
         <p class="banner-desc">
-          Connecting pristine botanical sources with advanced laboratory isolation to supply pharmaceutical-grade active ingredients to global industries.
+          Conectando fuentes botánicas puras con métodos avanzados de aislamiento de laboratorio para suministrar ingredientes activos de grado farmacéutico a fabricantes globales.
         </p>
       </div>
     </header>
 
     <!-- Company Intro -->
-    <section class="container section intro-section" aria-label="Company Overview">
+    <section class="container section intro-section" aria-label="Descripción de la empresa">
       <div class="intro-grid">
         <div class="intro-left reveal">
-          <h2>Pure Nature, Proven Science</h2>
+          <h2>Naturaleza Pura, Ciencia Probada</h2>
           <p>
-            Founded with a commitment to chemical purity and botanical integrity, GINKVORA has evolved into a premier B2B manufacturer and custom formulator of high-value natural plant extracts and isolated compounds.
+            Fundada con un compromiso con la pureza química y la integridad botánica, GINKVORA se ha convertido en un fabricante B2B y formulador personalizado líder de extractos botánicos naturales y compuestos aislados de alto valor.
           </p>
           <p>
-            We manage a comprehensive supply chain that spans certified local botanical sourcing regions, state-of-the-art supercritical CO2 and solvent extraction facilities, and an advanced R&D validation laboratory in Xi'an.
+            Gestionamos una cadena de suministro integral que abarca regiones de cultivo botánico certificadas, instalaciones de extracción con solventes y CO2 supercrítico de última generación, y un laboratorio de validación de I+D avanzado en Xi'an.
           </p>
           <div class="mission-box">
-            <span class="mission-title">Our Core Mission</span>
+            <span class="mission-title">Nuestra Misión Principal</span>
             <blockquote class="mission-text">
-              "To empower human health brands by delivering absolute active constituent purity, verifiable quality control records, and reliable bulk supply solutions."
+              «Empoderar a las marcas de salud humana mediante la entrega de una pureza absoluta de los componentes activos, registros de control de calidad verificables y soluciones de suministro a granel confiables.»
             </blockquote>
           </div>
         </div>
@@ -64,14 +66,14 @@ const aboutSchema = {
           <div class="image-showcase glass">
             <img
               src="/images/ginkvora-rd-analytical-laboratory.webp"
-              alt="GINKVORA Lab R&D Facility"
+              alt="Instalaciones del laboratorio de I+D de GINKVORA"
               class="showcase-img"
               width="800"
               height="600"
             />
             <div class="floating-caption">
-              <strong>Xi'an R&D Center</strong>
-              <span>HPLC & Mass Spectrometry Testing</span>
+              <strong>Centro de I+D en Xi'an</strong>
+              <span>Análisis por HPLC y Espectrometría de Masas</span>
             </div>
           </div>
         </div>
@@ -79,38 +81,38 @@ const aboutSchema = {
     </section>
 
     <!-- Core Extraction Values -->
-    <section class="section values-section bg-deep" aria-label="Our Technological Advantages">
+    <section class="section values-section bg-deep" aria-label="Ventajas tecnológicas">
       <div class="container">
         <div class="section-header">
-          <span class="section-label">Scientific Competence</span>
-          <h2 class="section-title">Our Industrial Extraction Process</h2>
+          <span class="section-label">Competencia Científica</span>
+          <h2 class="section-title">Nuestro Proceso de Extracción Industrial</h2>
           <p class="section-desc">
-            Combining traditional herbal wisdom with cutting-edge analytical isolation technologies.
+            Combinando la sabiduría herbal tradicional con tecnologías de aislamiento analítico de vanguardia.
           </p>
         </div>
 
         <div class="grid-3">
           <article class="value-card glass reveal">
             <div class="value-icon">🔬</div>
-            <h3>Purity-Driven Isolation</h3>
+            <h3>Aislamiento Impulsado por la Pureza</h3>
             <p>
-              We focus on isolating active monomer constituents (such as NMN, PQQ, and Glabridin) to standardized purities of ≥98% and ≥99% using advanced chromatography systems.
+              Nos enfocamos en aislar constituyentes monómeros activos (como NMN, PQQ y Glabridina) a purezas estandarizadas de ≥98% y ≥99% utilizando sistemas avanzados de cromatografía.
             </p>
           </article>
 
           <article class="value-card glass reveal reveal-delay-1">
             <div class="value-icon">⚙️</div>
-            <h3>Green Extraction Methods</h3>
+            <h3>Métodos de Extracción Ecológicos</h3>
             <p>
-              Utilizing supercritical carbon dioxide (sCO2) extraction and low-temperature water-based solvent processes to eliminate toxic residual chemical solvents and protect active compounds.
+              Utilizando la extracción con dióxido de carbono supercrítico (sCO2) y procesos de solventes a base de agua a baja temperatura para eliminar los solventes químicos residuales tóxicos y proteger los compuestos activos.
             </p>
           </article>
 
           <article class="value-card glass reveal reveal-delay-2">
             <div class="value-icon">🛡️</div>
-            <h3>Traceable Quality Records</h3>
+            <h3>Registros de Calidad Trazables</h3>
             <p>
-              Every manufactured batch undergoes rigorous identity, purity, heavy metal, microbial, and pesticide residue testing. Third-party lab validation reports (SGS/Eurofins) are available on demand.
+              Cada lote fabricado se somete a rigurosas pruebas de identidad, pureza, metales pesados, microbios y residuos de pesticidas. Los informes de validación de laboratorios externos (SGS/Eurofins) están disponibles bajo solicitud.
             </p>
           </article>
         </div>
@@ -118,54 +120,70 @@ const aboutSchema = {
     </section>
 
     <!-- Timeline/History Section -->
-    <section class="container section history-section" aria-label="Our History">
+    <section class="container section history-section" aria-label="Nuestra historia">
       <div class="section-header">
-        <span class="section-label">Our Journey</span>
-        <h2>Growth & Milestones</h2>
+        <span class="section-label">Nuestro Viaje</span>
+        <h2>Crecimiento e Hitos</h2>
       </div>
 
       <div class="timeline">
         <div class="timeline-item reveal">
           <div class="timeline-badge">2023</div>
           <div class="timeline-content glass">
-            <h3>Establishment & Initial R&D</h3>
-            <p>GINKVORA founded in Xi'an, specializing in mitochondrial cofactor research and launching high-purity PQQ and NMN sourcing channels.</p>
+            <h3>Establecimiento e I+D Inicial</h3>
+            <p>GINKVORA fundada en Xi'an, especializándose en investigación de cofactores mitocondriales y lanzamiento de canales de suministro de PQQ y NMN de alta pureza.</p>
           </div>
         </div>
 
         <div class="timeline-item reveal reveal-delay-1">
           <div class="timeline-badge">2024</div>
           <div class="timeline-content glass">
-            <h3>GMP & ISO Certification</h3>
-            <p>Completed construction of our partner extraction plant. Attained GMP, ISO 9001:2015, Halal, and Kosher certifications for global food compliance.</p>
+            <h3>Certificación GMP e ISO</h3>
+            <p>Finalización de la construcción de nuestra planta de extracción asociada. Obtención de certificaciones GMP, ISO 9001:2015, Halal y Kosher para el cumplimiento alimentario global.</p>
           </div>
         </div>
 
         <div class="timeline-item reveal reveal-delay-2">
           <div class="timeline-badge">2025</div>
           <div class="timeline-content glass">
-            <h3>Cosmetic & Pet Line Launch</h3>
-            <p>Expanded our chemical catalog to include Glabridin whitening actives, natural flavonoids, and specialized nutritional ingredients for the pet wellness sector.</p>
+            <h3>Lanzamiento de Línea Cosmética y de Mascotas</h3>
+            <p>Ampliación de nuestro catálogo químico para incluir activos blanqueadores de Glabridina, flavonoides naturales e ingredientes nutricionales especializados para el sector del bienestar de las mascotas.</p>
           </div>
         </div>
 
         <div class="timeline-item reveal reveal-delay-3">
           <div class="timeline-badge">2026</div>
           <div class="timeline-content glass">
-            <h3>Global Logistics & Vercel Digital Hub</h3>
-            <p>Launched high-performance international supply network serving supplement, skincare, and sports brands in 50+ countries with optimized logistics hubs.</p>
+            <h3>Logística Global y Centro Digital</h3>
+            <p>Lanzamiento de una red de suministro internacional de alto rendimiento que atiende a marcas de suplementos, cuidado de la piel y nutrición deportiva en más de 50 países a través de centros logísticos optimizados.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Authors Section -->
-    <section class="container section authors-section" aria-label="Our Scientific Experts">
+    <!-- Certifications & Stats -->
+    <section class="container section certs-section" aria-label="Certificaciones">
       <div class="section-header">
-        <span class="section-label">Expertise & Quality</span>
-        <h2>Our Scientific & Regulatory Team</h2>
+        <span class="section-label">Calidad y Cumplimiento</span>
+        <h2 class="section-title">Certificaciones Reconocidas Internacionalmente</h2>
+      </div>
+      <div class="certs-grid">
+        {['ISO 9001:2015', 'GMP', 'FSSC 22000', 'Kosher', 'Halal', 'Non-GMO'].map(cert => (
+          <div class="cert-card glass reveal">
+            <span class="cert-icon">✓</span>
+            <span class="cert-name">{cert}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Authors Section -->
+    <section class="container section authors-section" aria-label="Expertos">
+      <div class="section-header">
+        <span class="section-label">Capacidad Científica</span>
+        <h2>Nuestro Equipo Científico y Regulatorio</h2>
         <p class="section-desc">
-          Meet the researchers, developers, and quality control experts behind GINKVORA's pure plant bioactives.
+          Conozca a los investigadores, desarrolladores y expertos en control de calidad detrás de los bioactivos vegetales puros de GINKVORA.
         </p>
       </div>
 
@@ -190,64 +208,36 @@ const aboutSchema = {
         ))}
       </div>
     </section>
+
+    <!-- CTA -->
+    <section class="container section cta-section">
+      <div class="cta-box glass">
+        <h2>¿Listo para una Alianza?</h2>
+        <p>Póngase en contacto con nuestro departamento comercial para obtener la lista de precios, hojas de especificaciones y muestras.</p>
+        <div class="cta-btns">
+          <a href="/es/contact" class="btn btn--gold btn--lg">Contáctenos</a>
+          <a href="/es/products" class="btn btn--primary btn--lg">Catálogo de Productos</a>
+        </div>
+      </div>
+    </section>
   </main>
 </BaseLayout>
 
 <style>
-  .about-page {
-    padding-bottom: var(--space-4xl);
-  }
+  .about-page { padding-block: 0 var(--space-4xl); }
+  .page-banner { position: relative; padding-block: 8rem 5rem; background: linear-gradient(135deg, #030201 0%, #0e1007 60%, #0a0703 100%); overflow: hidden; margin-bottom: var(--space-2xl); }
+  .banner-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,166,84,0.07) 0%, transparent 70%); }
+  .banner-content { position: relative; z-index: 1; text-align: center; max-width: 700px; margin-inline: auto; }
+  .banner-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
+  .banner-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.75; }
 
-  /* ── Banner ── */
-  .page-banner {
-    position: relative;
-    padding-block: 8rem 4rem;
-    overflow: hidden;
-    background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
-    border-bottom: 1px solid var(--color-border);
-  }
+  .section { padding-block: var(--space-2xl); }
+  .intro-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; }
+  @media (max-width: 900px) { .intro-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
 
-  .banner-gradient {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%);
-  }
-
-  .banner-title {
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
-    font-weight: 700;
-    margin-top: 0.5rem;
-    color: var(--color-text);
-  }
-
-  .banner-desc {
-    max-width: 600px;
-    margin-top: 1rem;
-    color: var(--color-text-secondary);
-    font-size: 1.0625rem;
-  }
-
-  /* ── Intro Section ── */
-  .intro-grid {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 4rem;
-    align-items: center;
-  }
-
-  @media (max-width: 900px) {
-    .intro-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  }
-
-  .intro-left h2 {
-    font-size: 2.25rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .intro-left p {
-    margin-bottom: 1.25rem;
-    font-size: 1rem;
-  }
+  .intro-left { display: flex; flex-direction: column; gap: 1.25rem; }
+  .intro-left h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); font-family: var(--font-display); font-weight: 600; color: var(--color-text); }
+  .intro-left p { color: var(--color-text-secondary); line-height: 1.8; font-size: 1rem; }
 
   .mission-box {
     margin-top: 2rem;
@@ -256,24 +246,8 @@ const aboutSchema = {
     background: var(--color-surface);
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
   }
-
-  .mission-title {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    color: var(--color-accent);
-    letter-spacing: 0.08em;
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-
-  .mission-text {
-    font-family: var(--font-display);
-    font-size: 1.125rem;
-    font-style: italic;
-    color: var(--color-text);
-    line-height: 1.6;
-  }
+  .mission-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-primary-light); font-weight: 600; display: block; margin-bottom: 0.5rem; }
+  .mission-text { font-family: var(--font-display); font-size: 1.125rem; font-style: italic; color: var(--color-text); line-height: 1.6; }
 
   .image-showcase {
     position: relative;
@@ -325,6 +299,18 @@ const aboutSchema = {
     border-bottom: 1px solid var(--color-border);
   }
 
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .grid-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .value-card {
     padding: 2.25rem 1.75rem;
     border-radius: var(--radius-lg);
@@ -353,6 +339,7 @@ const aboutSchema = {
   .value-card p {
     font-size: 0.875rem;
     line-height: 1.6;
+    color: var(--color-text-secondary);
   }
 
   /* ── Timeline ── */
@@ -413,7 +400,36 @@ const aboutSchema = {
   .timeline-content p {
     font-size: 0.875rem;
     line-height: 1.6;
+    color: var(--color-text-secondary);
   }
+
+  .section-header { text-align: center; margin-bottom: var(--space-xl); }
+  .section-title { font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-family: var(--font-display); font-weight: 600; }
+  .section-desc { color: var(--color-text-secondary); margin-top: 0.5rem; }
+
+  .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+  .cert-card {
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    border: 1px solid rgba(212,166,84,0.15) !important;
+    transition: all var(--transition-base, 250ms) ease;
+  }
+  .cert-card:hover {
+    border-color: var(--color-primary-light) !important;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow-gold);
+  }
+  .cert-icon { font-size: 1.5rem; color: var(--color-primary); }
+  .cert-name { font-family: var(--font-mono); font-size: 0.875rem; font-weight: 600; color: var(--color-text); }
+
+  .cta-box { padding: 3.5rem; border-radius: var(--radius-xl); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; border: 1px solid rgba(212,166,84,0.2) !important; }
+  .cta-box h2 { font-size: clamp(1.75rem, 3vw, 2.25rem); font-family: var(--font-display); }
+  .cta-box p { color: var(--color-text-secondary); max-width: 520px; line-height: 1.75; }
+  .cta-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 
   /* ── Authors Section ── */
   .authors-section {

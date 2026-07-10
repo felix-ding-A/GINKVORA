@@ -1,0 +1,622 @@
+---
+// src/pages/es/products/index.astro — Spanish products listing page
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getAllProducts, urlFor, getLocalizedField } from '../../../lib/sanity';
+import { useTranslations } from '../../../i18n/utils';
+
+const lang = 'es';
+const t = useTranslations(lang);
+
+const category = Astro.url.searchParams.get('category');
+const mechanism = Astro.url.searchParams.get('mechanism');
+const pageParam = Astro.url.searchParams.get('page');
+
+// Fetch products based on filters
+const allProducts = await getAllProducts(category, mechanism);
+
+// Pagination config
+const PRODUCTS_PER_PAGE = 12;
+const totalProducts = allProducts.length;
+const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE));
+const currentPage = Math.min(Math.max(1, parseInt(pageParam ?? '1') || 1), totalPages);
+const pageStart = (currentPage - 1) * PRODUCTS_PER_PAGE;
+const products = allProducts.slice(pageStart, pageStart + PRODUCTS_PER_PAGE);
+
+const siteUrl = 'https://ginkvora.com';
+
+const categoriesList = [
+  { slug: 'liposomal', name: 'Liposomales', icon: '🧬' },
+  { slug: 'pet-longevity', name: 'Longevidad de mascotas', icon: '🐾' },
+  { slug: 'superfood', name: 'Superalimentos', icon: '🍎' },
+  { slug: 'cosmetic-ingredients', name: 'Materias primas cosméticas', icon: '🌿' }
+];
+
+const mechanismsList = [
+  { slug: 'collagen-stimulant', name: 'Matriz de colágeno', icon: '🧬' },
+  { slug: 'mmp-inhibitor', name: 'Protección contra MMP', icon: '🛡️' },
+  { slug: 'anti-glycation', name: 'Glico-protección', icon: '⏳' }
+];
+
+function getFilterUrl(cat: string | null, mech: string | null) {
+  const params = new URLSearchParams();
+  if (cat) params.set('category', cat);
+  if (mech) params.set('mechanism', mech);
+  const q = params.toString();
+  return `/es/products${q ? '?' + q : ''}`;
+}
+
+function getPageUrl(page: number) {
+  const params = new URLSearchParams();
+  if (category) params.set('category', category);
+  if (mechanism) params.set('mechanism', mechanism);
+  if (page > 1) params.set('page', String(page));
+  const q = params.toString();
+  return `/es/products${q ? '?' + q : ''}`;
+}
+
+// Pre-compute pagination items to avoid Astro JSX parsing issues with > in templates
+type PageItem = { type: 'page'; page: number; url: string; active: boolean } | { type: 'ellipsis' };
+const pageItems: PageItem[] = [];
+if (totalPages > 1) {
+  const visiblePages = Array.from({ length: totalPages }, (_, i) => i + 1).filter(p =>
+    p === 1 || p === totalPages ||
+    (p >= currentPage - 1 && p <= currentPage + 1) ||
+    (p === currentPage - 2 && currentPage > 3) ||
+    (p === currentPage + 2 && currentPage < totalPages - 2)
+  );
+  visiblePages.forEach((p, idx) => {
+    if (idx > 0 && p - visiblePages[idx - 1] > 1) pageItems.push({ type: 'ellipsis' });
+    pageItems.push({ type: 'page', page: p, url: getPageUrl(p), active: p === currentPage });
+  });
+}
+
+let pageTitle = "Catálogo de ingredientes antienvejecimiento ECM | Activos cosméticos y nutracéuticos — PDRN, NMN | GINKVORA";
+if (mechanism === 'collagen-stimulant') {
+  pageTitle = "Estimuladores de la síntesis de colágeno al por mayor | GINKVORA";
+} else if (mechanism === 'mmp-inhibitor') {
+  pageTitle = "Inhibidores de MMP al por mayor | Grado cosmético | GINKVORA";
+} else if (mechanism === 'anti-glycation') {
+  pageTitle = "Ingredientes antiglicación al por mayor | GINKVORA";
+}
+
+let pageDescription = "Catálogo de ingredientes antienvejecimiento dirigidos a la ECM de GINKVORA. Filtrado por mecanismo (síntesis de colágeno, inhibidores de MMP, antiglicación) y tipo de aplicación (cosmética tópica, oral nutricional). Cumplimiento de REACH, muestras gratuitas.";
+if (category === 'pet-longevity') {
+  pageDescription = "Materias primas botánicas de alta pureza dirigidas a ralentizar el envejecimiento celular en perros y gatos. Activadores de sirtuinas premium y protectores mitocondriales para la longevidad de las mascotas.";
+}
+
+let academicIntro = "";
+if (category === 'pet-longevity') {
+  academicIntro = "Combate el envejecimiento celular de perros y gatos utilizando activadores de sirtuinas de alta pureza y protectores mitocondriales.";
+}
+
+// Breadcrumbs Schema
+const breadcrumbsSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Inicio",   "item": `${siteUrl}/es` },
+    { "@type": "ListItem", "position": 2, "name": "Productos", "item": `${siteUrl}/es/products` },
+  ],
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={pageTitle}
+  description={pageDescription}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
+
+  <main class="products-page bg-noise">
+    <!-- Page Banner -->
+    <header class="page-banner" aria-label="Cabecera de página">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">Catálogo B2B de materias primas</span>
+        <h1 class="banner-title">
+          {mechanism === 'collagen-stimulant' && "Estimuladores de la síntesis de colágeno al por mayor"}
+          {mechanism === 'mmp-inhibitor' && "Inhibidores de MMP al por mayor (Grado cosmético)"}
+          {mechanism === 'anti-glycation' && "Ingredientes antiglicación al por mayor"}
+          {!mechanism && "Ingredientes antienvejecimiento dirigidos a la ECM: soluciones para cosmética y nutracéutica"}
+        </h1>
+        <p class="banner-desc">
+          {academicIntro ? (
+            <span class="academic-highlight">{academicIntro}</span>
+          ) : (
+            "Materias primas botánicas de alta pureza, probadas bajo estándares de la USP/EP para fabricantes de cosméticos, suplementos y nutrición funcional."
+          )}
+        </p>
+      </div>
+    </header>
+
+    <div class="container products-layout">
+      <!-- Search & Filter bar -->
+      <section class="filter-bar glass" aria-label="Filtros y búsqueda">
+        <div class="search-wrap">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input
+            type="search"
+            id="product-search"
+            class="search-input"
+            placeholder={t('products.search')}
+            aria-label={t('products.search')}
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="filter-row">
+          <span class="filter-label">Categoría:</span>
+          <nav class="category-pills" aria-label="Categorías de productos">
+            <a 
+              href={getFilterUrl(null, mechanism)} 
+              class={`cat-pill ${!category ? 'active' : ''}`}
+            >
+              Todas las categorías
+            </a>
+            {categoriesList.map((cat) => (
+              <a 
+                href={getFilterUrl(cat.slug, mechanism)} 
+                class={`cat-pill ${category === cat.slug ? 'active' : ''}`}
+              >
+                <span class="tab-icon">{cat.icon}</span>
+                {cat.name}
+              </a>
+            ))}
+          </nav>
+        </div>
+
+        <div class="filter-row">
+          <span class="filter-label">Mecanismo objetivo:</span>
+          <nav class="category-pills" aria-label="Mecanismos de acción">
+            <a 
+              href={getFilterUrl(category, null)} 
+              class={`cat-pill ${!mechanism ? 'active' : ''}`}
+            >
+              Todos los mecanismos
+            </a>
+            {mechanismsList.map((mech) => (
+              <a 
+                href={getFilterUrl(category, mech.slug)} 
+                class={`cat-pill ${mechanism === mech.slug ? 'active' : ''}`}
+              >
+                <span class="tab-icon">{mech.icon}</span>
+                {mech.name}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </section>
+
+      <!-- Product Grid -->
+      <section class="products-section" aria-label="Catálogo de productos">
+        <div class="products-count" id="products-count-label">
+          Mostrando {pageStart + 1}–{Math.min(pageStart + PRODUCTS_PER_PAGE, totalProducts)} de {totalProducts} productos
+        </div>
+
+        <div id="product-grid" class="product-grid" data-current-page={currentPage}>
+          {allProducts.map((product: any, index) => {
+            const pageIndex = Math.floor(index / PRODUCTS_PER_PAGE) + 1;
+            const isInitiallyVisible = pageIndex === currentPage;
+            const localShortDesc = (getLocalizedField(product, 'shortDescription', lang) ?? product.shortDescription) as string | undefined;
+            return (
+              <article
+                class="product-card glass"
+                data-name={product.name.toLowerCase()}
+                data-cas={product.casNumber ? product.casNumber.toLowerCase() : ''}
+                data-desc={localShortDesc ? localShortDesc.toLowerCase() : ''}
+                data-page-index={pageIndex}
+                style={isInitiallyVisible ? "display: flex;" : "display: none;"}
+              >
+                {product.featured && (
+                  <div class="card-featured-badge">{t('products.featured_badge')}</div>
+                )}
+                <div class="card-image">
+                  <a href={`/es/products/${product.slug}`} aria-label={`Más detalles sobre ${product.name}`}>
+                    <picture>
+                      <source srcset={urlFor(product.heroImage).width(400).format('webp').url()} type="image/webp" />
+                      <img
+                        src={urlFor(product.heroImage).width(400).url()}
+                        alt={product.name}
+                        loading="lazy"
+                        class="card-img"
+                      />
+                    </picture>
+                  </a>
+                </div>
+                <div class="card-body">
+                  <div class="card-top">
+                    <span class="card-category">
+                      {product.categories && product.categories.length > 0
+                        ? product.categories.map(c => c.name).join(' · ')
+                        : product.category?.name}
+                    </span>
+                    {product.purity && (
+                      <span class="card-purity font-mono">{product.purity}</span>
+                    )}
+                  </div>
+                  <h2 class="card-title">
+                    <a href={`/es/products/${product.slug}`}>{product.name}</a>
+                  </h2>
+                  {product.botanicalName && (
+                    <p class="card-botanical">{product.botanicalName}</p>
+                  )}
+                  {localShortDesc && (
+                    <p class="card-desc">{localShortDesc}</p>
+                  )}
+
+                  <div class="card-specs">
+                    {product.casNumber && (
+                      <span class="card-cas">CAS: {product.casNumber}</span>
+                    )}
+                    {product.applicationDisplay && (
+                      <span class={`card-app-badge app--${product.applicationDisplay}`}>
+                        {product.applicationDisplay === 'dual' && '● Doble aplicación'}
+                        {product.applicationDisplay === 'topical' && '● Aplicación tópica'}
+                        {product.applicationDisplay === 'oral' && '● Vía oral'}
+                      </span>
+                    )}
+                  </div>
+
+                  <div class="card-actions">
+                    <a href={`/es/products/${product.slug}`} class="btn btn--secondary btn--sm">
+                      {t('products.view_details')}
+                    </a>
+                    <a href="/es/contact" class="btn btn--gold btn--sm">
+                      {t('products.request_sample')}
+                    </a>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        <!-- No results message -->
+        <div id="no-results" class="no-results" style="display: none;" aria-live="polite">
+          <p>{t('products.no_results')}</p>
+          <button class="btn btn--gold" id="reset-filters">Restablecer filtros</button>
+        </div>
+
+        <!-- Pagination -->
+        {totalPages > 1 && (
+          <nav class="pagination" aria-label="Páginas de productos" id="pagination-nav">
+            <a
+              href={getPageUrl(currentPage - 1)}
+              class={`page-btn page-prev ${currentPage === 1 ? 'disabled' : ''}`}
+              aria-disabled={currentPage === 1}
+              aria-label="Página anterior"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+            </a>
+
+            {pageItems.map((item) =>
+              item.type === 'ellipsis'
+                ? <span class="page-ellipsis">…</span>
+                : <a
+                    href={item.url}
+                    class={`page-btn page-num ${item.active ? 'active' : ''}`}
+                    aria-current={item.active ? 'page' : undefined}
+                  >{item.page}</a>
+            )}
+
+            <a
+              href={getPageUrl(currentPage + 1)}
+              class={`page-btn page-next ${currentPage === totalPages ? 'disabled' : ''}`}
+              aria-disabled={currentPage === totalPages}
+              aria-label="Página siguiente"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </a>
+          </nav>
+        )}
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .products-page { padding-block: 0 var(--space-4xl); }
+
+  .page-banner {
+    position: relative; padding-block: 8rem 5rem;
+    background: linear-gradient(135deg, #030201 0%, #0e1007 60%, #0a0703 100%);
+    overflow: hidden; margin-bottom: var(--space-2xl);
+  }
+  .banner-gradient {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,166,84,0.07) 0%, transparent 70%);
+  }
+  .banner-content { position: relative; z-index: 1; text-align: center; max-width: 700px; margin-inline: auto; }
+  .banner-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
+  .banner-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.75; }
+
+  .academic-highlight {
+    display: block;
+    font-style: italic;
+    color: var(--color-primary-light);
+    border-left: 2px solid var(--color-primary);
+    padding-left: 1rem;
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
+
+  .products-layout { display: flex; flex-direction: column; gap: var(--space-xl); }
+
+  .filter-bar {
+    display: flex; flex-direction: column; gap: 1rem;
+    padding: 1.5rem; border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border) !important;
+  }
+  .search-wrap { position: relative; }
+  .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--color-text-muted); }
+  .search-input {
+    width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem;
+    background: var(--color-surface-2); border: 1px solid var(--color-border);
+    border-radius: var(--radius-md); color: var(--color-text); font-size: 0.9375rem;
+    transition: border-color var(--transition-fast);
+  }
+  .search-input:focus { outline: none; border-color: var(--color-primary); }
+
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.25rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .filter-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+
+  .filter-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    min-width: 180px;
+    flex-shrink: 0;
+  }
+
+  .category-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .cat-pill {
+    padding: 0.375rem 0.875rem; border-radius: var(--radius-full);
+    border: 1px solid var(--color-border); background: transparent;
+    color: var(--color-text-secondary); font-size: 0.8125rem; cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+  .cat-pill:hover { border-color: var(--color-primary); color: var(--color-primary-light); }
+  .cat-pill.active { background: rgba(212,166,84,0.12); border-color: var(--color-primary); color: var(--color-primary-light); }
+
+  .products-section {
+    margin-top: 2.5rem;
+  }
+
+  .products-count {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+    font-family: var(--font-mono);
+  }
+
+  .product-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;
+  }
+
+  .product-card {
+    position: relative; display: flex; flex-direction: column;
+    border-radius: var(--radius-lg); overflow: hidden;
+    border: 1px solid var(--color-border) !important;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+  .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-xl); border-color: rgba(212,166,84,0.3) !important; }
+  .card-featured-badge {
+    position: absolute; top: 0.75rem; right: 0.75rem; z-index: 2;
+    background: var(--color-primary); color: #000;
+    font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.06em;
+    padding: 0.2rem 0.5rem; border-radius: var(--radius-full); text-transform: uppercase;
+  }
+  .card-image { aspect-ratio: 4/3; overflow: hidden; }
+  .card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+  .product-card:hover .card-img { transform: scale(1.04); }
+  .card-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.625rem; flex: 1; }
+  .card-top { display: flex; justify-content: space-between; align-items: center; }
+  .card-category { font-size: 0.75rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .card-purity { font-size: 0.75rem; color: var(--color-primary-light); background: rgba(212,166,84,0.12); padding: 0.15rem 0.5rem; border-radius: var(--radius-full); border: 1px solid rgba(212,166,84,0.25); }
+  .card-title { font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
+  .card-title a { color: var(--color-text); text-decoration: none; transition: color var(--transition-fast); }
+  .card-title a:hover { color: var(--color-primary-light); }
+  .card-botanical { font-style: italic; font-size: 0.8125rem; color: var(--color-text-muted); }
+  .card-desc { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-actions { display: flex; gap: 0.5rem; margin-top: auto; padding-top: 0.5rem; flex-wrap: wrap; }
+  .card-actions .btn { flex-grow: 1; text-align: center; }
+
+  .no-results { text-align: center; padding: 4rem 2rem; color: var(--color-text-muted); }
+
+  /* ── Pagination ── */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    flex-wrap: wrap;
+  }
+
+  .page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.625rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .page-btn:hover:not(.disabled):not(.active) {
+    color: var(--color-primary-light);
+    border-color: var(--color-primary);
+    background: rgba(212, 166, 84, 0.07);
+  }
+
+  .page-btn.active {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    border-color: var(--color-primary);
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(212, 166, 84, 0.25);
+    pointer-events: none;
+  }
+
+  .page-btn.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .page-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    user-select: none;
+  }
+
+  .card-specs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .card-cas {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    background: var(--color-bg-deep);
+    padding: 0.1rem 0.5rem;
+    border-radius: var(--radius-full);
+  }
+
+  .card-app-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.02em;
+    display: inline-block;
+  }
+  .app--dual {
+    background: rgba(212, 166, 84, 0.15);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.4);
+    box-shadow: 0 0 8px rgba(212, 166, 84, 0.2);
+  }
+  .app--topical {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .app--oral {
+    background: rgba(224, 120, 48, 0.1);
+    color: #f39b60;
+    border: 1px solid rgba(224, 120, 48, 0.3);
+  }
+</style>
+
+<script>
+  function initFilters() {
+    const searchInput  = document.getElementById('product-search') as HTMLInputElement;
+    const cards        = document.querySelectorAll('.product-card') as NodeListOf<HTMLElement>;
+    const noResults    = document.getElementById('no-results');
+    const grid         = document.getElementById('product-grid');
+    const countLabel   = document.getElementById('products-count-label');
+    const paginationNav = document.getElementById('pagination-nav');
+
+    let searchTerm     = '';
+    const currentPage = parseInt(grid?.getAttribute('data-current-page') || '1');
+
+    function filterProducts() {
+      let visible = 0;
+      cards.forEach(card => {
+        const name = card.dataset.name ?? '';
+        const cas  = card.dataset.cas ?? '';
+        const desc = card.dataset.desc ?? '';
+        const pageIndex = parseInt(card.getAttribute('data-page-index') || '1');
+
+        let matches = false;
+        if (searchTerm) {
+          matches =
+            name.includes(searchTerm) ||
+            cas.includes(searchTerm) ||
+            desc.includes(searchTerm);
+        } else {
+          matches = pageIndex === currentPage;
+        }
+
+        card.style.display = matches ? 'flex' : 'none';
+        if (matches) visible++;
+      });
+
+      if (countLabel) {
+        if (searchTerm) {
+          countLabel.textContent = `Se encontraron ${visible} productos para la búsqueda «${searchTerm}»`;
+        } else {
+          countLabel.textContent = countLabel.getAttribute('data-original') || '';
+        }
+      }
+
+      if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+      if (grid) grid.style.display = visible === 0 ? 'none' : 'grid';
+      if (paginationNav) paginationNav.style.display = (visible === 0 || searchTerm) ? 'none' : '';
+    }
+
+    // Cache original count text
+    if (countLabel) countLabel.setAttribute('data-original', countLabel.textContent || '');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        searchTerm = searchInput.value.toLowerCase().trim();
+        filterProducts();
+      });
+    }
+
+    const resetButton = document.getElementById('reset-filters');
+    if (resetButton) {
+      resetButton.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        searchTerm = '';
+        filterProducts();
+      });
+    }
+
+    filterProducts();
+  }
+
+  initFilters();
+  document.addEventListener('astro:page-load', initFilters);
+</script>

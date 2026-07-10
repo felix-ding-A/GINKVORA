@@ -199,7 +199,7 @@ const breadcrumbSchema = {
             {post.author && (
               <>
                 <span class="meta-dot">·</span>
-                <span>بقلم {post.author.name}{post.author.credentials ? ` (${post.author.credentials})` : ''}</span>
+                <span>بقلم {getLocalizedField(post.author, 'name', lang) || post.author.name}{(getLocalizedField(post.author, 'credentials', lang) || post.author.credentials) ? ` (${getLocalizedField(post.author, 'credentials', lang) || post.author.credentials})` : ''}</span>
               </>
             )}
           </div>

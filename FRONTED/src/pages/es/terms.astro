@@ -1,0 +1,40 @@
+---
+// src/pages/es/terms.astro — Spanish Terms of Service (simplified)
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const termsSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Términos de Servicio",
+  "description": "Términos de servicio de GINKVORA — reglas de uso del sitio web y condiciones de suministro B2B.",
+  "url": "https://ginkvora.com/es/terms",
+  "additionalType": [
+    "https://en.wikipedia.org/wiki/Terms_of_service"
+  ]
+};
+---
+<BaseLayout lang="es" title="Términos de Servicio | GINKVORA" description="Condiciones de servicio B2B de GINKVORA: garantías de calidad de las materias primas, verificación de COA, condiciones de pago y reglas de suministro al por mayor.">
+  <script type="application/ld+json" set:html={JSON.stringify(termsSchema)} slot="head" />
+  <main class="legal-page bg-noise">
+    <div class="container legal-content">
+      <h1>Términos de Servicio</h1>
+      <p class="last-updated">Última actualización: Enero de 2025</p>
+      <section><h2>1. Aceptación de los Términos</h2><p>Al utilizar el sitio web de GINKVORA, usted acepta cumplir con estos términos de servicio. Si no está de acuerdo con alguno de ellos, por favor no utilice nuestro sitio web.</p></section>
+      <section><h2>2. Suministros B2B</h2><p>GINKVORA suministra exclusivamente a clientes comerciales (B2B). La cantidad mínima de pedido, los precios y las condiciones de entrega se acuerdan individualmente con cada cliente.</p></section>
+      <section><h2>3. Calidad y Garantías</h2><p>Todos los productos se suministran con un certificado de análisis (COA) y se verifican de acuerdo con las normas ISO/GMP. Las reclamaciones se procesan de acuerdo con nuestra política de control de calidad.</p></section>
+      <section><h2>4. Limitación de Responsabilidad</h2><p>GINKVORA es responsable únicamente de las especificaciones de los productos indicadas en la ficha técnica oficial y en el COA. El usuario final es responsable de garantizar la adecuación para su aplicación.</p></section>
+      <section><h2>5. Contacto</h2><p>Para consultas legales, contáctenos en: <a href="mailto:inquiry@ginkvora.com">inquiry@ginkvora.com</a></p></section>
+    </div>
+  </main>
+</BaseLayout>
+<style>
+  .legal-page { padding-block: 9rem var(--space-4xl); }
+  .legal-content { max-width: 800px; }
+  .legal-content h1 { font-size: clamp(2rem, 4vw, 3rem); font-family: var(--font-display); margin-bottom: 0.5rem; }
+  .last-updated { color: var(--color-text-muted); font-size: 0.875rem; margin-bottom: 3rem; }
+  .legal-content section { margin-bottom: 2.5rem; }
+  .legal-content h2 { font-size: 1.375rem; font-family: var(--font-display); color: var(--color-primary-light); margin-bottom: 0.75rem; }
+  .legal-content p { color: var(--color-text-secondary); line-height: 1.8; }
+  .legal-content a { color: var(--color-primary-light); }
+</style>

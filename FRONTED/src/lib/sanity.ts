@@ -293,16 +293,28 @@ export const POST_FIELDS = `
   title,
   title_ru,
   title_ar,
+  title_es,
   "slug": slug.current,
   excerpt,
   excerpt_ru,
   excerpt_ar,
+  excerpt_es,
   coverImage,
   featured,
   publishedAt,
   updatedAt,
   tags[],
-  author->{name, avatar, credentials},
+  author->{
+    name,
+    name_ru,
+    name_ar,
+    name_es,
+    avatar,
+    credentials,
+    credentials_ru,
+    credentials_ar,
+    credentials_es
+  },
   readTime
 `;
 
@@ -449,14 +461,22 @@ export async function getAllAuthors() {
       *[_type == "author"] | order(name asc) {
         _id,
         name,
+        name_ru,
+        name_ar,
+        name_es,
         title,
         title_ru,
         title_ar,
+        title_es,
         credentials,
+        credentials_ru,
+        credentials_ar,
+        credentials_es,
         avatar,
         bio,
         bio_ru,
-        bio_ar
+        bio_ar,
+        bio_es
       }
     `);
     if (data && data.length > 0) return data;
@@ -540,8 +560,14 @@ export type SanityPost = {
   readTime?: number;
   author?: {
     name: string;
+    name_ru?: string;
+    name_ar?: string;
+    name_es?: string;
     avatar?: any;
     credentials?: string;
+    credentials_ru?: string;
+    credentials_ar?: string;
+    credentials_es?: string;
   };
   meta_title?: string;
   meta_title_ru?: string;
@@ -566,14 +592,22 @@ export type SanityPost = {
 export type SanityAuthor = {
   _id: string;
   name: string;
+  name_ru?: string;
+  name_ar?: string;
+  name_es?: string;
   title?: string;
   title_ru?: string;
   title_ar?: string;
+  title_es?: string;
   credentials?: string;
+  credentials_ru?: string;
+  credentials_ar?: string;
+  credentials_es?: string;
   avatar?: any;
   bio?: string;
   bio_ru?: string;
   bio_ar?: string;
+  bio_es?: string;
 };
 
 export { MOCK_POSTS };

@@ -1,0 +1,57 @@
+---
+// src/pages/es/index.astro — Spanish Homepage
+export const prerender = true;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroSection from '../../components/sections/HeroSection.astro';
+import CertificationsMarquee from '../../components/sections/CertificationsMarquee.astro';
+import TwoRoutesSection from '../../components/sections/TwoRoutesSection.astro';
+import ECMPathwaysSection from '../../components/sections/ECMPathwaysSection.astro';
+import ProductCategoriesSection from '../../components/sections/ProductCategoriesSection.astro';
+import StatsSection from '../../components/sections/StatsSection.astro';
+import FeaturedIngredientsSection from '../../components/sections/FeaturedIngredientsSection.astro';
+import WhyUsSection from '../../components/sections/WhyUsSection.astro';
+import ExtractionProcessSection from '../../components/sections/ExtractionProcessSection.astro';
+import InsightsPreviewSection from '../../components/sections/InsightsPreviewSection.astro';
+import ContactCTASection from '../../components/sections/ContactCTASection.astro';
+
+const lang = 'es';
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'GINKVORA',
+  url: 'https://ginkvora.com/es',
+  description: 'Proveedor B2B premium de extractos botánicos para las industrias global de nutracéuticos, cosméticos y salud de mascotas.',
+  inLanguage: 'es-ES',
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title="Proveedor de Extractos Botánicos B2B | Ingredientes Activos Anti-Edad Premium | GINKVORA"
+  description="GINKVORA ofrece ingredientes anti-edad dirigidos a la ECM con opciones de doble aplicación: tópica (grado cosmético) y nutricosmética (grado alimentario). PDRN, NMN, Glabridina y más. Muestras gratuitas disponibles."
+  structuredData={websiteSchema}
+>
+  <HeroSection lang={lang} />
+  <CertificationsMarquee />
+  <ProductCategoriesSection lang={lang} />
+
+  <!-- Visual Divider Break -->
+  <div class="section-divider-break container reveal">
+    <div class="divider-line"></div>
+    <p class="divider-text">
+      Cerrando la brecha entre la extracción botánica cruda y el éxito de la formulación de grado clínico.
+    </p>
+    <div class="divider-line"></div>
+  </div>
+
+  <TwoRoutesSection lang={lang} />
+  <ECMPathwaysSection lang={lang} />
+  <StatsSection lang={lang} />
+  <WhyUsSection lang={lang} />
+  <FeaturedIngredientsSection lang={lang} />
+  <ExtractionProcessSection lang={lang} />
+  <InsightsPreviewSection lang={lang} />
+  <ContactCTASection lang={lang} />
+</BaseLayout>

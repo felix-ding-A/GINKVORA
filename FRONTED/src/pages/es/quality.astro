@@ -1,0 +1,88 @@
+---
+// src/pages/es/quality.astro — Spanish Quality page
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+const lang = 'es';
+const t = useTranslations(lang);
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://ginkvora.com/es' },
+    { '@type': 'ListItem', position: 2, name: 'Calidad y Certificaciones', item: 'https://ginkvora.com/es/quality' },
+  ],
+};
+---
+<BaseLayout lang={lang} title="Control de Calidad y Certificaciones GMP | GINKVORA" description="Estándares de calidad de GINKVORA: análisis de pureza por HPLC, pruebas USP/EP, certificación ISO 9001, GMP, Halal, Kosher y cumplimiento de REACH. Descargue COA.">
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <main class="quality-page bg-noise">
+    <header class="page-banner">
+      <div class="banner-gradient"></div>
+      <div class="container banner-content">
+        <span class="section-label">{t('quality.label')}</span>
+        <h1 class="banner-title">{t('quality.title')}</h1>
+        <p class="banner-desc">Garantizar una pureza constante, documentación fiable y el cumplimiento total de los requisitos para cada lote.</p>
+      </div>
+    </header>
+    <div class="container quality-layout">
+      <section class="certs-section">
+        <h2 class="section-title">Nuestras Certificaciones</h2>
+        <div class="certs-grid">
+          {[
+            { name: 'ISO 9001:2015', desc: 'Norma internacional de sistemas de gestión de calidad' },
+            { name: 'GMP',           desc: 'Buenas Prácticas de Manufactura: norma de calidad obligatoria' },
+            { name: 'FSSC 22000',    desc: 'Norma global de inocuidad y seguridad alimentaria' },
+            { name: 'Kosher',        desc: 'Certificación Kosher para ingredientes' },
+            { name: 'Halal',         desc: 'Certificación Halal para ingredientes' },
+            { name: 'Sin OGM',       desc: 'Verificado: libre de organismos genéticamente modificados' },
+          ].map(cert => (
+            <div class="cert-card glass reveal">
+              <div class="cert-badge-large">{cert.name}</div>
+              <p class="cert-desc">{cert.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section class="qc-section reveal">
+        <h2 class="section-title">Control de Calidad</h2>
+        <div class="qc-steps">
+          {[
+            { step: '01', title: 'Control de entrada de materias primas', desc: 'Cada materia prima entrante se somete a identificación y pruebas de pureza antes de iniciar la producción.' },
+            { step: '02', title: 'Monitoreo del proceso de producción', desc: 'Monitoreo continuo de los parámetros del proceso, como temperatura, presión y tiempo de retención de la extracción.' },
+            { step: '03', title: 'Análisis de producto terminado', desc: 'Análisis por HPLC/GC, pruebas microbiológicas y de metales pesados para cada lote.' },
+            { step: '04', title: 'Documentación y trazabilidad', desc: 'Paquete completo de documentos COA, MSDS e informes de pruebas suministrado con cada entrega.' },
+          ].map(item => (
+            <div class="qc-step glass">
+              <span class="step-num">{item.step}</span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+<style>
+  .quality-page { padding-block: 0 var(--space-4xl); }
+  .page-banner { position: relative; padding-block: 8rem 5rem; background: linear-gradient(135deg, #030201 0%, #0e1007 60%, #0a0703 100%); overflow: hidden; margin-bottom: var(--space-2xl); }
+  .banner-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,166,84,0.07) 0%, transparent 70%); }
+  .banner-content { position: relative; z-index: 1; text-align: center; max-width: 700px; margin-inline: auto; }
+  .banner-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
+  .banner-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.75; }
+  .quality-layout { display: flex; flex-direction: column; gap: var(--space-2xl); }
+  .section-title { font-size: clamp(1.75rem, 3vw, 2.5rem); font-family: var(--font-display); font-weight: 600; margin-bottom: var(--space-xl); }
+  .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
+  .cert-card { padding: 2rem; border-radius: var(--radius-lg); text-align: center; display: flex; flex-direction: column; gap: 0.75rem; border: 1px solid rgba(212,166,84,0.15) !important; }
+  .cert-badge-large { font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; color: var(--color-primary-light); }
+  .cert-desc { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.6; }
+  .qc-steps { display: flex; flex-direction: column; gap: 1.25rem; }
+  .qc-step { display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.75rem; border-radius: var(--radius-lg); border: 1px solid var(--color-border) !important; }
+  .step-num { font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--color-primary); opacity: 0.6; flex-shrink: 0; line-height: 1; }
+  .qc-step h3 { font-size: 1.125rem; font-weight: 600; color: var(--color-text); margin-bottom: 0.375rem; }
+  .qc-step p { font-size: 0.9375rem; color: var(--color-text-secondary); line-height: 1.65; }
+</style>

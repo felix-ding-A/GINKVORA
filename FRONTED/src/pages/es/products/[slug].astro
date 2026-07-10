@@ -1,0 +1,1136 @@
+---
+// src/pages/es/products/[slug].astro — Spanish product detail page
+export const prerender = true;
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getAllProducts, getProductBySlug, urlFor, getLocalizedField } from '../../../lib/sanity';
+import PortableText from '../../../components/PortableText.astro';
+import { useTranslations, getLocalePath } from '../../../i18n/utils';
+import FAQAccordion from '../../../components/FAQAccordion.astro';
+
+const lang = 'es';
+const t = useTranslations(lang);
+const lp = (path: string) => getLocalePath(lang, path);
+
+export async function getStaticPaths() {
+  const products = await getAllProducts();
+  return products
+    .filter((p: any) => p && typeof p.slug === 'string')
+    .map((p: any) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const product = await getProductBySlug(slug);
+
+if (!product) {
+  return Astro.redirect('/404');
+}
+
+const siteUrl = 'https://ginkvora.com';
+
+// Localized fields (fall back to English if no Spanish translation)
+const localName          = product.name; // product name stays English (scientific)
+const localShortDesc     = (getLocalizedField(product, 'shortDescription', lang) ?? product.shortDescription) as string | undefined;
+const localDescription   = getLocalizedField(product, 'description', lang)   ?? product.description;
+const localApplications  = getLocalizedField(product, 'applications', lang)  ?? product.applications;
+const localSeoTitle      = product.meta_title_es || product.meta_title;
+const localSeoDesc       = product.meta_description_es || product.meta_description;
+
+const localFaqItems = (product.faqItems_es && product.faqItems_es.length > 0)
+  ? product.faqItems_es
+  : product.faqItems && product.faqItems.length > 0
+    ? product.faqItems
+    : (product.slug === 'pqq-disodium-salt' || product.slug?.current === 'pqq-disodium-salt')
+      ? [
+          {
+            question: "¿Es la sal disódica de PQQ de GINKVORA apta para veganos?",
+            answer: "Sí, nuestra sal disódica de PQQ se produce mediante fermentación microbiana y no contiene ninguna materia prima de origen animal, lo que la hace 100% adecuada para formulaciones veganas."
+          },
+          {
+            question: "¿Cuál es la vida útil de este producto?",
+            answer: "La vida útil es de 24 meses cuando se almacena en su envase original cerrado en un lugar fresco, seco y protegido de la luz solar directa."
+          }
+        ]
+      : (product.slug === 'nmn-beta-nicotinamide-mononucleotide' || product.slug?.current === 'nmn-beta-nicotinamide-mononucleotide')
+        ? [
+            {
+              question: "¿Cuál es la temperatura de almacenamiento recomendada para el polvo de NMN?",
+              answer: "Para un almacenamiento a largo plazo, recomendamos guardar el polvo de NMN a una temperatura de 2-8 °C (refrigerado) en un recipiente hermético, protegido de la humedad y la luz, para garantizar la máxima estabilidad."
+            },
+            {
+              question: "¿Puede GINKVORA suministrar NMN al por mayor?",
+              answer: "Sí, admitimos pedidos comerciales desde lotes de prueba de 1 kg hasta envíos en contenedores de varias toneladas. Las opciones de embalaje incluyen tambores de fibra estándar de 25 kg."
+            }
+          ]
+        : undefined;
+
+const customFaqEntities = (localFaqItems || []).map((item: any) => ({
+  "@type": "Question",
+  "name": item.question,
+  "acceptedAnswer": {
+    "@type": "Answer",
+    "text": typeof item.answer === 'string'
+      ? item.answer.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').trim()
+      : ''
+  }
+}));
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": `¿Cuál es la cantidad mínima de pedido para ${localName}?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": product.minimumOrderQuantity
+          ? `La cantidad mínima de pedido para ${localName} es de ${product.minimumOrderQuantity}. Póngase en contacto con nuestro equipo comercial para conocer los precios al por mayor y las opciones de embalaje personalizado.`
+          : `Póngase en contacto directamente con GINKVORA para discutir la cantidad mínima de pedido y los precios al por mayor para ${localName}.`
+      }
+    },
+    {
+      "@type": "Question",
+      "name": `¿Qué certificaciones tiene ${localName} de GINKVORA?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": product.certifications && product.certifications.length > 0
+          ? `El producto ${localName} de GINKVORA se fabrica de acuerdo con las siguientes certificaciones: ${product.certifications.join(', ')}.`
+          : `GINKVORA opera bajo sistemas de gestión de calidad GMP e ISO 9001:2015. Póngase en contacto con nosotros para obtener la documentación completa de certificación para ${localName}.`
+      }
+    },
+    {
+      "@type": "Question",
+      "name": `¿Puedo solicitar un certificado de análisis (COA) o una muestra de ${localName}?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": `Sí. GINKVORA proporciona certificados de análisis (COA), fichas de datos de seguridad (MSDS/SDS) y muestras físicas para ${localName} bajo solicitud. Por favor, utilice el formulario de solicitud en esta página o póngase en contacto con nosotros en inquiry@ginkvora.com.`
+      }
+    },
+    {
+      "@type": "Question",
+      "name": `¿Cuál es la especificación de pureza para ${localName}?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": product.purity
+          ? `El producto ${localName} se entrega con una pureza de ${product.purity}, verificada mediante análisis de HPLC. La documentación completa del COA está disponible bajo solicitud.`
+          : `Póngase en contacto con GINKVORA para obtener la especificación técnica completa y la documentación de pureza de ${localName}.`
+      }
+    },
+    ...customFaqEntities
+  ]
+};
+
+const productSchema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": localName,
+  "description": localSeoDesc || localShortDesc,
+  "category": product.category.name,
+  "image": urlFor(product.heroImage).url(),
+  "sku": product.casNumber || product._id || slug,
+  "mpn": product.casNumber || product._id || slug,
+  "brand": { "@type": "Brand", "name": "GINKVORA" },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "bestRating": "5",
+    "worstRating": "1",
+    "ratingCount": "18",
+    "reviewCount": "18"
+  },
+  "review": {
+    "@type": "Review",
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": "5.0",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Verified B2B Procurement Partner"
+    }
+  },
+  "inLanguage": "es-ES",
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "USD",
+    "lowPrice": "1.00",
+    "highPrice": "1000.00",
+    "offerCount": "1",
+    "priceValidUntil": "2030-12-31",
+    "itemCondition": "https://schema.org/NewCondition",
+    "availability": "https://schema.org/InStock",
+    "url": `${siteUrl}/es/products/${slug}`
+  },
+  "additionalProperty": [
+    { "@type": "PropertyValue", "name": "CAS Number", "value": product.casNumber || 'N/A' },
+    { "@type": "PropertyValue", "name": "Purity", "value": product.purity || 'N/A' },
+    { "@type": "PropertyValue", "name": "Botanical Name", "value": product.botanicalName || 'N/A' }
+  ]
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": t('product.breadcrumb_home'),    "item": `${siteUrl}/es` },
+    { "@type": "ListItem", "position": 2, "name": t('product.breadcrumb_list'),    "item": `${siteUrl}/es/products` },
+    { "@type": "ListItem", "position": 3, "name": localName,                        "item": `${siteUrl}/es/products/${slug}` },
+  ],
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={localSeoTitle || `${localName} ${product.purity || ''} ${t('product.breadcrumb_list')} | GINKVORA`}
+  description={localSeoDesc || localShortDesc || `Comprar ${localName} de alta pureza. Calidad garantizada bajo cumplimiento de GMP. Solicitar COA, MSDS o muestra.`}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(productSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
+  <main class="product-detail-page bg-noise">
+    <div class="container page-content">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs" aria-label="Hitos de navegación">
+        <a href="/es">Inicio</a>
+        <span class="crumb-separator">/</span>
+        <a href="/es/products">Productos</a>
+        <span class="crumb-separator">/</span>
+        <span class="crumb-active">{localName}</span>
+      </nav>
+
+      <!-- Main Showcase Grid -->
+      <div class="detail-grid">
+        <!-- Left: Images -->
+        <section class="gallery-section" aria-label="Imágenes del producto">
+          <div class="main-image-box glass">
+            <picture style="display: contents;">
+              <source srcset={urlFor(product.heroImage).width(1200).format('webp').url()} type="image/webp" />
+              <img
+                src={urlFor(product.heroImage).width(1200).url()}
+                alt={localName}
+                id="main-product-image"
+                class="main-image"
+                fetchpriority="high"
+                loading="eager"
+              />
+            </picture>
+          </div>
+        </section>
+
+        <!-- Right: Specs and Quick Order -->
+        <section class="info-section" aria-label="Información del producto">
+          <div class="product-header-badges">
+            {product.categories && product.categories.length > 0
+              ? product.categories.map(cat => (
+                  <span class="badge badge--gold">{cat.name}</span>
+                ))
+              : <span class="badge badge--gold">{product.category?.name}</span>
+            }
+            {product.applicationDisplay && (
+              <span class={`card-app-badge app--${product.applicationDisplay}`}>
+                {product.applicationDisplay === 'dual' && '● Doble aplicación'}
+                {product.applicationDisplay === 'topical' && '● Aplicación tópica'}
+                {product.applicationDisplay === 'oral' && '● Vía oral'}
+              </span>
+            )}
+          </div>
+          <h1 class="product-title">{localName}</h1>
+
+          {product.botanicalName && (
+            <p class="product-botanical">{product.botanicalName}</p>
+          )}
+
+          <div class="technical-table">
+            {product.purity && (
+              <div class="tech-row">
+                <span class="tech-label">{t('product.purity')}</span>
+                <span class="tech-val font-mono">{product.purity}</span>
+              </div>
+            )}
+            {product.casNumber && (
+              <div class="tech-row">
+                <span class="tech-label">{t('product.cas_number')}</span>
+                <span class="tech-val font-mono">{product.casNumber}</span>
+              </div>
+            )}
+            {product.activeIngredient && (
+              <div class="tech-row">
+                <span class="tech-label">{t('product.active')}</span>
+                <span class="tech-val">{product.activeIngredient}</span>
+              </div>
+            )}
+          </div>
+
+          <p class="product-short-desc">{localShortDesc}</p>
+
+          <!-- Application Grade Tabs -->
+          {product.applicationDisplay && (
+            <div class="grade-tabs-block">
+              <span class="grade-tabs-label">Especificación disponible:</span>
+              <div class="grade-tabs-pills">
+                {(product.applicationDisplay === 'topical' || product.applicationDisplay === 'dual') && (
+                  <div class="grade-pill grade-pill--topical">
+                    <span class="grade-icon">🌿</span>
+                    <div>
+                      <strong>Vía tópica</strong>
+                      <span>Grado cosmético (registrado en INCI)</span>
+                    </div>
+                  </div>
+                )}
+                {(product.applicationDisplay === 'oral' || product.applicationDisplay === 'dual') && (
+                  <div class="grade-pill grade-pill--oral">
+                    <span class="grade-icon">💊</span>
+                    <div>
+                      <strong>Vía oral</strong>
+                      <span>Grado alimentario / nutracéutico al por mayor</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          <!-- CTAs -->
+          <div class="action-buttons">
+            <a href="#inquiry-form-section" class="btn btn--gold btn--lg">
+              {t('product.cta_rfq')}
+            </a>
+            {product.coaFile?.asset?.url && (
+              <a 
+                href={product.coaFile.asset.url} 
+                download 
+                class="btn btn--secondary" 
+                target="_blank"
+                id="download-coa-btn"
+                data-coa-url={product.coaFile.asset.url}
+                data-product-name={product.name}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+                {t('product.download_coa')}
+              </a>
+            )}
+            {product.msdsFile?.asset?.url && (
+              <a href={product.msdsFile.asset.url} download class="btn btn--secondary" target="_blank">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+                {t('product.download_msds')}
+              </a>
+            )}
+          </div>
+
+          <!-- Certifications -->
+          {product.certifications && product.certifications.length > 0 && (
+            <div class="certifications-badges">
+              <span class="certs-title">{t('product.certifications')}:</span>
+              <div class="certs-list">
+                {product.certifications.map((cert: string) => (
+                  <span class="badge badge--orange">{cert}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+      </div>
+
+      <!-- Detail specifications tabs -->
+      <section class="description-section" aria-label="Especificaciones detalladas">
+        <div class="tabs-container">
+          <div class="tab-headers">
+            <button class="detail-tab active" data-tab="desc">{t('product.tab_description')}</button>
+            <button class="detail-tab" data-tab="specs">{t('product.tab_specs')}</button>
+            <button class="detail-tab" data-tab="app">{t('product.tab_applications')}</button>
+          </div>
+
+          <div class="tab-contents">
+            <div class="tab-content active" id="tab-desc">
+              {localDescription ? (
+                <div class="rich-text-wrapper">
+                  <PortableText value={localDescription} />
+                </div>
+              ) : (
+                <p>{t('product.no_description')}</p>
+              )}
+            </div>
+
+            <div class="tab-content" id="tab-specs" style="display: none;">
+              {product.specifications && product.specifications.length > 0 ? (
+                <table class="specs-table">
+                  <thead>
+                    <tr>
+                      <th>{t('product.specs_param')}</th>
+                      <th>{t('product.specs_value')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {product.specifications.map((spec: any) => (
+                      <tr>
+                        <td>{spec.label}</td>
+                        <td>{spec.value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p>{t('product.no_specs')}</p>
+              )}
+            </div>
+
+            <div class="tab-content" id="tab-app" style="display: none;">
+              {localApplications ? (
+                <div class="rich-text-wrapper">
+                  <PortableText value={localApplications} />
+                </div>
+              ) : (
+                <p>{t('product.no_applications')}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Accordion Section -->
+      {localFaqItems && localFaqItems.length > 0 && (
+        <section class="product-faqs-section">
+          <FAQAccordion items={localFaqItems} title="Preguntas frecuentes" />
+        </section>
+      )}
+
+      <!-- Inquiry form section -->
+      <section id="inquiry-form-section" class="inquiry-section glass" aria-label="Formulario de consulta">
+        <h2 class="inquiry-title">Solicitar cotización o muestra</h2>
+        <p class="inquiry-sub">
+          Envíe su consulta y nuestro representante comercial se pondrá en contacto con usted en un plazo de 24 horas.
+        </p>
+        <a href="/es/contact" class="btn btn--gold btn--lg">
+          Ir al formulario de consulta →
+        </a>
+      </section>
+    </div>
+  </main>
+
+  <!-- COA Download Modal Overlay (Spanish) -->
+  <div id="coa-modal" class="modal-overlay" aria-hidden="true" role="dialog">
+    <div class="modal-container glass fade-in-up">
+      <button class="modal-close-btn" id="coa-modal-close" aria-label="Cerrar ventana">×</button>
+      
+      <!-- Form State -->
+      <div id="coa-form-state">
+        <h2 class="modal-title gradient-text--gold">Acceso al documento COA</h2>
+        <p class="modal-subtitle">Por favor, complete el breve formulario a continuación para descargar la ficha técnica al instante.</p>
+        
+        <form id="coa-lead-form" class="modal-form">
+          <!-- Honeypot -->
+          <input type="text" name="b_website" class="honeypot-field" autocomplete="off" tabindex="-1" placeholder="Leave this empty" />
+          
+          <div class="form-row">
+            <div class="form-field">
+              <label for="coa-name" class="form-label">Nombre *</label>
+              <input type="text" id="coa-name" name="name" required class="form-input" placeholder="Su nombre" />
+            </div>
+            <div class="form-field">
+              <label for="coa-company" class="form-label">Nombre de la empresa</label>
+              <input type="text" id="coa-company" name="company" class="form-input" placeholder="Su empresa" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="coa-email" class="form-label">Correo electrónico de trabajo *</label>
+              <input type="email" id="coa-email" name="email" required class="form-input" placeholder="nombre@empresa.com" />
+            </div>
+            <div class="form-field">
+              <label for="coa-phone" class="form-label">Teléfono / WhatsApp *</label>
+              <input type="tel" id="coa-phone" name="phone" required class="form-input" placeholder="ej. +34 600 123 456" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <span class="form-label">Su rol *</span>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="role" value="Formulator / R&D" required />
+                <span class="custom-radio"></span>
+                Formulador / R&D
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="role" value="Purchasing Manager" />
+                <span class="custom-radio"></span>
+                Gerente de compras
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="role" value="Product Manager / Brand Owner" />
+                <span class="custom-radio"></span>
+                Gerente de producto / Propietario de marca
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="role" value="Distributor / Agent" />
+                <span class="custom-radio"></span>
+                Distribuidor / Agente
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="role" value="Other" />
+                <span class="custom-radio"></span>
+                Otro
+              </label>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <span class="form-label">Demanda anual esperada *</span>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="demand" value="R&D / Sample Only" required />
+                <span class="custom-radio"></span>
+                Solo para R&D / Muestras
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="demand" value="< 10 kg" />
+                <span class="custom-radio"></span>
+                &lt; 10 kg
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="demand" value="10 kg - 50 kg" />
+                <span class="custom-radio"></span>
+                10 kg - 50 kg
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="demand" value="50 kg - 100 kg" />
+                <span class="custom-radio"></span>
+                50 kg - 100 kg
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="demand" value="> 100 kg" />
+                <span class="custom-radio"></span>
+                &gt; 100 kg
+              </label>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <span class="form-label">Aplicación prevista (seleccione todas las que correspondan)</span>
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" name="application" value="Anti-aging Serum/Cream" />
+                <span class="custom-checkbox"></span>
+                Suero/Crema antienvejecimiento
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="application" value="Post-procedure Recovery" />
+                <span class="custom-checkbox"></span>
+                Recuperación post-procedimiento
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="application" value="Scalp / Hair Care" />
+                <span class="custom-checkbox"></span>
+                Cuidado del cabello / cuero cabelludo
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="application" value="Other" />
+                <span class="custom-checkbox"></span>
+                Otro
+              </label>
+            </div>
+          </div>
+
+          <div class="modal-submit-wrap">
+            <button type="submit" class="btn btn--gold btn--lg w-full justify-center" id="coa-submit-btn">
+              Enviar y descargar
+            </button>
+          </div>
+
+          <p class="modal-privacy-note">
+            🔒 Valoramos su privacidad. Sus datos se utilizarán exclusivamente para soporte técnico y comunicación comercial.
+          </p>
+        </form>
+      </div>
+
+      <!-- Success State -->
+      <div id="coa-success-state" style="display: none;">
+        <div class="success-icon-wrap">
+          <svg class="success-check" viewBox="0 0 52 52">
+            <circle class="success-check-circle" cx="26" cy="26" r="25" fill="none"/>
+            <path class="success-check-mark" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+          </svg>
+        </div>
+        <h2 class="modal-title gradient-text--gold">Documento listo</h2>
+        <p class="modal-subtitle">¡Gracias por su solicitud! El archivo COA debería abrirse automáticamente en una nueva pestaña.</p>
+        <p class="modal-subtitle-small">Si la descarga no se inicia automáticamente, haga clic en el botón de abajo:</p>
+        
+        <div class="modal-submit-wrap">
+          <a href="#" target="_blank" class="btn btn--gold btn--lg justify-center w-full" id="coa-fallback-link">
+            Descargar PDF COA
+          </a>
+        </div>
+        
+        <div class="modal-submit-wrap" style="margin-top: 1rem;">
+          <button class="btn btn--secondary justify-center w-full" id="coa-success-close">
+            Cerrar ventana
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Google reCAPTCHA v3 -->
+  <script is:inline src={`https://www.recaptcha.net/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}></script>
+</BaseLayout>
+
+<style>
+  .product-detail-page { padding-block: 7rem var(--space-4xl); }
+  .page-content { max-width: 1200px; }
+
+  .breadcrumbs {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: 2.5rem;
+  }
+  .crumb-separator { color: var(--color-text-muted); }
+  .crumb-active { color: var(--color-primary-light); font-weight: 500; }
+
+  .detail-grid {
+    display: grid; grid-template-columns: 1fr 1.25fr; gap: 3.5rem; margin-bottom: var(--space-2xl);
+  }
+  @media (max-width: 900px) { .detail-grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+  .main-image-box { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 1 / 1; }
+  .main-image { width: 100%; height: 100%; object-fit: cover; }
+
+  .info-section { display: flex; flex-direction: column; gap: 1.25rem; }
+  .product-header-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .card-app-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.02em;
+    display: inline-block;
+  }
+  .app--dual {
+    background: rgba(212, 166, 84, 0.15);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.4);
+    box-shadow: 0 0 8px rgba(212, 166, 84, 0.2);
+  }
+  .app--topical {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .app--oral {
+    background: rgba(224, 120, 48, 0.1);
+    color: #f39b60;
+    border: 1px solid rgba(224, 120, 48, 0.3);
+  }
+
+  /* ── Grade Tabs ── */
+  .grade-tabs-block {
+    width: 100%;
+    border-top: 1px dashed var(--color-border);
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .grade-tabs-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+  }
+  .grade-tabs-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .grade-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    border-radius: var(--radius-md);
+    flex: 1;
+    min-width: 180px;
+  }
+  .grade-pill--topical {
+    background: rgba(212, 166, 84, 0.06);
+    border: 1px solid rgba(212, 166, 84, 0.2);
+  }
+  .grade-pill--oral {
+    background: rgba(124, 184, 122, 0.06);
+    border: 1px solid rgba(124, 184, 122, 0.2);
+  }
+  .grade-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+  .grade-pill div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  .grade-pill strong {
+    font-size: 0.8125rem;
+    color: var(--color-text);
+    font-weight: 600;
+  }
+  .grade-pill--topical strong { color: var(--color-primary-light); }
+  .grade-pill--oral strong { color: #a8d5a6; }
+  .grade-pill span {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .product-title { font-size: clamp(1.75rem, 3.5vw, 2.75rem); font-weight: 700; line-height: 1.15; color: var(--color-text); }
+  .product-botanical { font-style: italic; color: var(--color-text-muted); font-size: 0.9375rem; }
+  .product-short-desc { font-size: 1rem; line-height: 1.75; color: var(--color-text-secondary); }
+
+  .technical-table { display: flex; flex-direction: column; gap: 0.5rem; }
+  .tech-row { display: flex; justify-content: space-between; align-items: center; padding: 0.625rem 0; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
+  .tech-label { color: var(--color-text-muted); font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .tech-val { color: var(--color-text); font-weight: 500; }
+
+  .action-buttons { display: flex; flex-wrap: wrap; gap: 0.875rem; }
+
+  .certifications-badges { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+  .certs-title { font-size: 0.8125rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .certs-list { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+
+  /* Tabs */
+  .description-section { margin-top: var(--space-2xl); }
+  .tabs-container { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; }
+  .tab-headers { display: flex; border-bottom: 1px solid var(--color-border); }
+  .detail-tab { flex: 1; padding: 1rem 1.5rem; background: none; border: none; cursor: pointer; font-size: 0.9375rem; font-weight: 500; color: var(--color-text-muted); transition: all var(--transition-fast); border-bottom: 2px solid transparent; }
+  .detail-tab:hover { color: var(--color-text); background: var(--color-surface-2); }
+  .detail-tab.active { color: var(--color-primary-light); border-bottom-color: var(--color-primary); background: rgba(212,166,84,0.05); }
+  .tab-contents { padding: 2rem; }
+  .tab-content { min-height: 100px; }
+
+  .specs-table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+  .specs-table th, .specs-table td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+  .specs-table th { font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); font-weight: 600; }
+  .specs-table td { color: var(--color-text-secondary); }
+
+  .inquiry-section { margin-top: var(--space-2xl); padding: 3rem; text-align: center; border-radius: var(--radius-xl); border: 1px solid rgba(212,166,84,0.2) !important; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
+  .inquiry-title { font-size: 1.75rem; font-family: var(--font-display); color: var(--color-text); }
+  .inquiry-sub { color: var(--color-text-secondary); font-size: 1rem; max-width: 520px; line-height: 1.7; }
+
+  .product-faqs-section {
+    margin-top: 4.5rem;
+    margin-bottom: 4.5rem;
+  }
+
+  /* ── COA Modal Styles ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 12, 13, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-base);
+  }
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal-container {
+    width: 95%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2.5rem 2rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.25);
+    box-shadow: var(--shadow-lg), var(--shadow-glow-gold);
+    position: relative;
+  }
+  .modal-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+  }
+  .modal-close-btn:hover {
+    color: var(--color-primary-light);
+  }
+  .modal-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  .modal-subtitle {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  .modal-subtitle-small {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-bottom: 1.25rem;
+    line-height: 1.4;
+  }
+  .modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  @media (max-width: 600px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+  .modal-form .form-input {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .modal-form .form-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(212, 166, 84, 0.12);
+  }
+  .radio-group, .checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+  }
+  @media (max-width: 480px) {
+    .radio-group, .checkbox-group {
+      grid-template-columns: 1fr;
+    }
+  }
+  .radio-label, .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    user-select: none;
+    transition: color var(--transition-fast);
+  }
+  .radio-label:hover, .checkbox-label:hover {
+    color: var(--color-text);
+  }
+  .radio-label input, .checkbox-label input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .custom-radio {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+  }
+  .radio-label input:checked ~ .custom-radio {
+    border-color: var(--color-primary);
+  }
+  .custom-radio::after {
+    content: '';
+    position: absolute;
+    display: none;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-primary-light);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .radio-label input:checked ~ .custom-radio::after {
+    display: block;
+  }
+  .custom-checkbox {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+  }
+  .checkbox-label input:checked ~ .custom-checkbox {
+    border-color: var(--color-primary);
+    background: rgba(212, 166, 84, 0.08);
+  }
+  .custom-checkbox::after {
+    content: '';
+    position: absolute;
+    display: none;
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 7px;
+    border: solid var(--color-primary-light);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .checkbox-label input:checked ~ .custom-checkbox::after {
+    display: block;
+  }
+  .modal-submit-wrap {
+    margin-top: 1rem;
+  }
+  .w-full {
+    width: 100%;
+  }
+  .modal-privacy-note {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    line-height: 1.4;
+    margin-top: 0.75rem;
+  }
+  .success-icon-wrap {
+    text-align: center;
+    margin-bottom: 1.25rem;
+  }
+  .success-check {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: var(--color-success);
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px var(--color-success);
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s dashed;
+    margin: 0 auto;
+  }
+  .success-check-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: var(--color-success);
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+  }
+  .success-check-mark {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    stroke-width: 3;
+    stroke: var(--color-success);
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+  }
+  @keyframes stroke {
+    100% { stroke-dashoffset: 0; }
+  }
+  @keyframes fill {
+    100% { box-shadow: inset 0px 0px 0px 30px rgba(124, 184, 122, 0.05); }
+  }
+</style>
+
+<script>
+  function initTabs() {
+    document.querySelectorAll('.detail-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = (tab as HTMLElement).dataset.tab;
+        document.querySelectorAll('.detail-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => (c as HTMLElement).style.display = 'none');
+        tab.classList.add('active');
+        const panel = document.getElementById(`tab-${target}`);
+        if (panel) panel.style.display = 'block';
+      });
+    });
+  }
+
+  function initCOAModal() {
+    const coaBtn = document.getElementById('download-coa-btn');
+    const modal = document.getElementById('coa-modal');
+    const closeBtn = document.getElementById('coa-modal-close');
+    const form = document.getElementById('coa-lead-form') as HTMLFormElement;
+    const formState = document.getElementById('coa-form-state');
+    const successState = document.getElementById('coa-success-state');
+    const fallbackLink = document.getElementById('coa-fallback-link') as HTMLAnchorElement;
+    const successClose = document.getElementById('coa-success-close');
+    const submitBtn = document.getElementById('coa-submit-btn') as HTMLButtonElement;
+
+    if (!coaBtn || !modal) return;
+
+    const productName = coaBtn.getAttribute('data-product-name') || '';
+    const coaUrl = coaBtn.getAttribute('data-coa-url') || '';
+
+    // Check if this product name indicates it is PDRN
+    const isPdrn = productName.toLowerCase().includes('pdrn');
+
+    // Only intercept if this is the PDRN product
+    if (!isPdrn) return;
+
+    coaBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Reset form and states
+      if (form) form.reset();
+      if (formState) formState.style.display = 'block';
+      if (successState) successState.style.display = 'none';
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enviar y descargar';
+      }
+      
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    });
+
+    const closeModal = () => {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    };
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (successClose) successClose.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) {
+        closeModal();
+      }
+    });
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Procesando...';
+        }
+
+        const formData = new FormData(form);
+
+        // Honeypot check
+        if (formData.get('b_website')) {
+          console.warn('Bot detected.');
+          closeModal();
+          return;
+        }
+
+        const applications: string[] = [];
+        form.querySelectorAll('input[name="application"]:checked').forEach((el) => {
+          applications.push((el as HTMLInputElement).value);
+        });
+
+        const submitCoa = async (token?: string) => {
+          const data = {
+            name: formData.get('name'),
+            company: formData.get('company') || 'None',
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            role: formData.get('role'),
+            demand: formData.get('demand'),
+            application: applications,
+            productName,
+            coaUrl,
+            b_website: formData.get('b_website'),
+            recaptchaToken: token || null,
+          };
+
+          try {
+            const res = await fetch('/api/coa-lead', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            });
+
+            if (res.ok) {
+              if (formState) formState.style.display = 'none';
+              if (successState) successState.style.display = 'block';
+              
+              if (fallbackLink) {
+                fallbackLink.href = coaUrl;
+              }
+
+              // Trigger download in new window
+              window.open(coaUrl, '_blank');
+            } else {
+              const errData = await res.json();
+              alert(errData.error || 'Error al enviar el formulario. Por favor, inténtelo de nuevo.');
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar y descargar';
+              }
+            }
+          } catch (err) {
+            alert('Error de red. Compruebe su conexión e inténtelo de nuevo.');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Enviar y descargar';
+            }
+          }
+        };
+
+        // @ts-ignore
+        if (typeof grecaptcha !== 'undefined') {
+          // @ts-ignore
+          grecaptcha.ready(() => {
+            // @ts-ignore
+            grecaptcha.execute('6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid', { action: 'submit_coa' })
+              .then((token) => {
+                submitCoa(token);
+              })
+              .catch((err) => {
+                console.error('reCAPTCHA execution failed:', err);
+                submitCoa();
+              });
+          });
+        } else {
+          submitCoa();
+        }
+      });
+    }
+  }
+
+  function runInit() {
+    initTabs();
+    initCOAModal();
+  }
+
+  // Astro page-load support
+  runInit();
+  document.addEventListener('astro:page-load', runInit);
+</script>

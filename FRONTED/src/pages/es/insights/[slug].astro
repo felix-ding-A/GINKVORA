@@ -1,11 +1,22 @@
 ---
-// src/pages/insights/[slug].astro — Detailed Blog Post View
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getAllPosts, getPostBySlug, urlFor, getLocalizedField } from '../../lib/sanity';
-import PortableText from '../../components/PortableText.astro';
-import { useTranslations, getLocalePath } from '../../i18n/utils';
-import type { Lang } from '../../i18n/utils';
-import FAQAccordion from '../../components/FAQAccordion.astro';
+// src/pages/es/insights/[slug].astro — Spanish blog post detail page
+export const prerender = true;
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getAllPosts, getPostBySlug, urlFor, getLocalizedField } from '../../../lib/sanity';
+import PortableText from '../../../components/PortableText.astro';
+import { useTranslations, getLocalePath } from '../../../i18n/utils';
+import FAQAccordion from '../../../components/FAQAccordion.astro';
+
+const lang = 'es';
+const t = useTranslations(lang);
+const lp = (path: string) => getLocalePath(lang, path);
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts(100);
+  return posts
+    .filter((p: any) => p && typeof p.slug === 'string')
+    .map((p: any) => ({ params: { slug: p.slug } }));
+}
 
 const { slug } = Astro.params;
 const post = await getPostBySlug(slug);
@@ -14,27 +25,31 @@ if (!post) {
   return Astro.redirect('/404');
 }
 
-const lang = 'en';
-const t = useTranslations(lang as Lang);
-const lp = (path: string) => getLocalePath(lang as Lang, path);
-
-
 const siteUrl = 'https://ginkvora.com';
 
-const pageTitle = post.meta_title || `${post.title} | GINKVORA Insights`;
-const pageDescription = post.meta_description || post.excerpt;
+// Localized fields — fall back to English if no Spanish available
+const localTitle      = (getLocalizedField(post, 'title', lang)         ?? post.title)         as string;
+const localExcerpt    = (getLocalizedField(post, 'excerpt', lang)        ?? post.excerpt)        as string | undefined;
+const localBody       = getLocalizedField(post, 'body', lang)            ?? post.body;
+const localSeoTitle   = (getLocalizedField(post, 'meta_title', lang)       ?? post.meta_title)       as string | undefined;
+const localSeoDesc    = (getLocalizedField(post, 'meta_description', lang) ?? post.meta_description) as string | undefined;
+const localRelatedShort = post.relatedProduct
+  ? ((getLocalizedField(post.relatedProduct, 'shortDescription', lang) ?? post.relatedProduct.shortDescription) as string | undefined)
+  : undefined;
 
-// Article (BlogPosting) Schema
+const pageTitle       = localSeoTitle  || `${localTitle} | GINKVORA`;
+const pageDescription = localSeoDesc   || localExcerpt;
+
 const blogSchema = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": post.title,
+  "headline": localTitle,
   "description": pageDescription,
   "image": urlFor(post.coverImage).url(),
   "datePublished": post.publishedAt || new Date().toISOString(),
   "dateModified": post.updatedAt || post.publishedAt || new Date().toISOString(),
-  "url": `${siteUrl}/insights/${slug}`,
-  "inLanguage": "en-US",
+  "url": `${siteUrl}/es/insights/${slug}`,
+  "inLanguage": "es-ES",
   "author": {
     "@type": post.author ? "Person" : "Organization",
     "name": post.author?.name || "GINKVORA",
@@ -43,30 +58,25 @@ const blogSchema = {
   "publisher": {
     "@type": "Organization",
     "name": "GINKVORA",
-    "logo": {
-      "@type": "ImageObject",
-      "url": `${siteUrl}/images/logo.svg`
-    }
+    "logo": { "@type": "ImageObject", "url": `${siteUrl}/images/logo.svg` }
   },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": `${siteUrl}/insights/${slug}`
-  }
 };
 
 // FAQ fallback for display and verification
-const displayFaqItems = post.faqItems && post.faqItems.length > 0
-  ? post.faqItems
-  : [
-      {
-        question: "What is the science behind GINKVORA's ingredients?",
-        answer: "Our ingredients undergo rigorous scientific validation, including high-performance liquid chromatography (HPLC) testing and clinical study reviews, to ensure safety and potency."
-      },
-      {
-        question: "How does GINKVORA ensure regulatory compliance?",
-        answer: "We work closely with global regulatory bodies and maintain comprehensive documentation including COAs, MSDS sheets, and GMP compliance certifications."
-      }
-    ];
+const displayFaqItems = post.faqItems_es && post.faqItems_es.length > 0
+  ? post.faqItems_es
+  : post.faqItems && post.faqItems.length > 0
+    ? post.faqItems
+    : [
+        {
+          question: "¿Cuál es la base científica de los ingredientes de GINKVORA?",
+          answer: "Nuestros ingredientes pasan por una rigurosa validación científica, que incluye cromatografía líquida de alta resolución (HPLC) y revisiones de ensayos clínicos, para garantizar la máxima seguridad y eficacia."
+        },
+        {
+          question: "¿Cómo garantiza GINKVORA el cumplimiento normativo?",
+          answer: "Colaboramos estrechamente con las agencias reguladoras globales y mantenemos la documentación completa, incluyendo certificados de análisis (COA), fichas de datos de seguridad (MSDS) y certificaciones de cumplimiento GMP."
+        }
+      ];
 
 // FAQ Schema if faqItems exist
 const faqSchema = displayFaqItems && displayFaqItems.length > 0 ? {
@@ -88,37 +98,30 @@ const faqSchema = displayFaqItems && displayFaqItems.length > 0 ? {
   })
 } : null;
 
-// BreadcrumbList Schema
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Home", "item": siteUrl },
-    { "@type": "ListItem", "position": 2, "name": "Insights", "item": `${siteUrl}/insights` },
-    { "@type": "ListItem", "position": 3, "name": post.title, "item": `${siteUrl}/insights/${slug}` }
-  ]
+    { "@type": "ListItem", "position": 1, "name": "Inicio", "item": `${siteUrl}/es` },
+    { "@type": "ListItem", "position": 2, "name": "Blog",   "item": `${siteUrl}/es/insights` },
+    { "@type": "ListItem", "position": 3, "name": localTitle, "item": `${siteUrl}/es/insights/${slug}` },
+  ],
 };
 ---
 
 <BaseLayout
+  lang={lang}
   title={pageTitle}
   description={pageDescription}
 >
   <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} slot="head" />
   {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />}
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
-  <link
-    rel="preload"
-    as="image"
-    href={urlFor(post.coverImage).width(1200).format('webp').url()}
-    type="image/webp"
-    slot="head"
-  />
 
   <main class="insight-detail bg-noise">
     <div class="container article-layout-wrapper">
       <!-- Left Sidebar: TOC & Share -->
-      <aside class="article-sidebar article-sidebar--left" aria-label="Article navigation">
+      <aside class="article-sidebar article-sidebar--left" aria-label="Navegación por el artículo">
         <div class="sidebar-sticky">
           <!-- Table of Contents -->
           <div class="sidebar-widget widget-toc glass">
@@ -138,20 +141,20 @@ const breadcrumbSchema = {
               {t('insights.share_title')}
             </h4>
             <div class="share-actions">
-              <button class="share-btn share-btn--facebook" id="share-facebook" aria-label="Share on Facebook">
+              <button class="share-btn share-btn--facebook" id="share-facebook" aria-label="Compartir en Facebook">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
               </button>
-              <button class="share-btn share-btn--linkedin" id="share-linkedin" aria-label="Share on LinkedIn">
+              <button class="share-btn share-btn--linkedin" id="share-linkedin" aria-label="Compartir en LinkedIn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
               </button>
-              <button class="share-btn share-btn--twitter" id="share-twitter" aria-label="Share on Twitter/X">
+              <button class="share-btn share-btn--twitter" id="share-twitter" aria-label="Compartir en Twitter/X">
                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
               </button>
-              <button class="share-btn share-btn--copy" id="share-copy" aria-label="Copy Link">
+              <button class="share-btn share-btn--copy" id="share-copy" aria-label="Copiar enlace">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                 <span class="share-tooltip" id="share-copy-tooltip">{t('insights.share_copied')}</span>
               </button>
-              <button class="share-btn share-btn--email" id="share-email" aria-label="Share via Email">
+              <button class="share-btn share-btn--email" id="share-email" aria-label="Compartir por Email">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               </button>
             </div>
@@ -162,43 +165,41 @@ const breadcrumbSchema = {
       <!-- Main Article Container -->
       <div class="article-container">
         <!-- Breadcrumbs -->
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-          <a href="/">Home</a>
+        <nav class="breadcrumbs" aria-label="Hitos de navegación">
+          <a href="/es">Inicio</a>
           <span class="crumb-separator">/</span>
-          <a href="/insights">Insights</a>
+          <a href="/es/insights">Blog</a>
           <span class="crumb-separator">/</span>
-          <span class="crumb-active">Article</span>
+          <span class="crumb-active">Artículo</span>
         </nav>
 
         <!-- Article Header -->
         <header class="article-header">
           <div class="article-meta">
             <time datetime={post.publishedAt}>
-              {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              }) : 'May 21, 2026'}
+              {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('es-ES', {
+                year: 'numeric', month: 'long', day: 'numeric'
+              }) : ''}
             </time>
             {post.readTime && (
               <>
                 <span class="meta-dot">·</span>
-                <span>{post.readTime} min read</span>
+                <span>{post.readTime} {t('insights.min_read')}</span>
               </>
             )}
             {post.author && (
               <>
                 <span class="meta-dot">·</span>
-                <span>By {getLocalizedField(post.author, 'name', lang) || post.author.name}{(getLocalizedField(post.author, 'credentials', lang) || post.author.credentials) ? `, ${getLocalizedField(post.author, 'credentials', lang) || post.author.credentials}` : ''}</span>
+                <span>{t('insights.by_author')} {getLocalizedField(post.author, 'name', lang) || post.author.name}{(getLocalizedField(post.author, 'credentials', lang) || post.author.credentials) ? `, ${getLocalizedField(post.author, 'credentials', lang) || post.author.credentials}` : ''}</span>
               </>
             )}
           </div>
 
-          <h1 class="article-title">{post.title}</h1>
+          <h1 class="article-title">{localTitle}</h1>
 
           {post.tags && post.tags.length > 0 && (
             <div class="article-tags">
-              {post.tags.map((tag) => (
+              {post.tags.map((tag: string) => (
                 <span class="badge badge--gold">{tag}</span>
               ))}
             </div>
@@ -211,7 +212,7 @@ const breadcrumbSchema = {
             <source srcset={urlFor(post.coverImage).width(1200).format('webp').url()} type="image/webp" />
             <img
               src={urlFor(post.coverImage).width(1200).url()}
-              alt={post.title}
+              alt={localTitle}
               class="cover-img"
               fetchpriority="high"
               loading="eager"
@@ -221,27 +222,29 @@ const breadcrumbSchema = {
 
         <!-- Article Body -->
         <article class="article-body">
-          {post.body ? (
-            <PortableText value={post.body} />
+          {localBody ? (
+            <PortableText value={localBody} />
           ) : (
-            <p>{post.excerpt}</p>
+            <p>{localExcerpt}</p>
           )}
         </article>
 
         <!-- Related Product Callout -->
         {post.relatedProduct && (
-          <section class="related-product-callout glass" aria-label="Related Product">
+          <section class="related-product-callout glass" aria-label="Ingrediente relacionado">
             <div class="related-product-header">
-              <span class="purity-badge">Related Ingredient</span>
+              <span class="purity-badge">Ingrediente relacionado</span>
             </div>
             <div class="related-product-body">
               <div class="related-product-info">
-                <h3 class="related-product-name">{post.relatedProduct.name}</h3>
-                {post.relatedProduct.purity && <span class="purity-badge" style="margin-left: 0.5rem;">{post.relatedProduct.purity}</span>}
-                <p class="related-product-desc">{post.relatedProduct.shortDescription}</p>
+                <h3 class="related-product-name">
+                  {post.relatedProduct.name}
+                  {post.relatedProduct.purity && <span class="purity-badge" style="margin-left: 0.5rem;">{post.relatedProduct.purity}</span>}
+                </h3>
+                <p class="related-product-desc">{localRelatedShort}</p>
               </div>
-              <a href={`/products/${post.relatedProduct.slug}`} class="btn btn--gold btn--sm">
-                View Specification & Request COA
+              <a href={`/es/products/${post.relatedProduct.slug}`} class="btn btn--gold btn--sm">
+                Especificaciones y solicitud de COA →
               </a>
             </div>
           </section>
@@ -250,24 +253,24 @@ const breadcrumbSchema = {
         <!-- FAQ Accordion -->
         {displayFaqItems && displayFaqItems.length > 0 && (
           <section class="article-faqs glass">
-            <FAQAccordion items={displayFaqItems} title="Frequently Asked Questions" />
+            <FAQAccordion items={displayFaqItems} title="Preguntas frecuentes" />
           </section>
         )}
 
-        <!-- Bottom CTAs -->
-        <section class="post-cta glass" aria-label="RFQ Action">
+        <!-- Bottom CTA -->
+        <section class="post-cta glass" aria-label="Solicitar cotización">
           <div class="cta-content">
-            <h3>Need Premium Grade Ingredients?</h3>
-            <p>Request documentation, COAs, or sample shipments for any active plant constituent directly from our commercial desk.</p>
+            <h3>{t('common.contact_cta')}</h3>
+            <p>{t('common.contact_cta_sub')}</p>
           </div>
-          <a href="/contact" class="btn btn--gold">
-            Request Quotation / Sample
+          <a href="/es/contact" class="btn btn--gold">
+            {t('common.contact_cta_btn')}
           </a>
         </section>
       </div>
 
       <!-- Right Sidebar: Quick Inquiry & Related Product -->
-      <aside class="article-sidebar article-sidebar--right" aria-label="Article actions">
+      <aside class="article-sidebar article-sidebar--right" aria-label="Acciones del artículo">
         <div class="sidebar-sticky">
           <!-- B2B Quick Inquiry Form Widget -->
           <div class="sidebar-widget widget-inquiry glass">
@@ -281,15 +284,15 @@ const breadcrumbSchema = {
               <input type="text" name="b_website" class="honeypot-field" autocomplete="off" tabindex="-1" placeholder="Leave this field empty" />
               <div class="form-field">
                 <label for="sb-name" class="form-label">{t('cta.form_name')}</label>
-                <input type="text" id="sb-name" name="name" class="form-input" placeholder="Name / Company Name" required autocomplete="name" />
+                <input type="text" id="sb-name" name="name" class="form-input" placeholder="Nombre / Compañía" required autocomplete="name" />
               </div>
               <div class="form-field">
                 <label for="sb-phone" class="form-label">{t('cta.form_phone')}</label>
-                <input type="tel" id="sb-phone" name="phone" class="form-input" placeholder="+1 (555) 123-4567" required autocomplete="tel" />
+                <input type="tel" id="sb-phone" name="phone" class="form-input" placeholder="+34 600 123 456" required autocomplete="tel" />
               </div>
               <div class="form-field">
                 <label for="sb-email" class="form-label">{t('cta.form_email')}</label>
-                <input type="email" id="sb-email" name="email" class="form-input" placeholder="email@company.com" required autocomplete="email" />
+                <input type="email" id="sb-email" name="email" class="form-input" placeholder="correo@empresa.com" required autocomplete="email" />
               </div>
               
               <!-- Hidden interest category default to "insights" or corresponding related product -->
@@ -310,9 +313,9 @@ const breadcrumbSchema = {
                 {t('hero.featured')}
               </h4>
               <div class="sb-product-card">
-                <span class="purity-badge">{post.relatedProduct.purity || 'High Purity'}</span>
+                <span class="purity-badge">{post.relatedProduct.purity || 'Alta pureza'}</span>
                 <h5 class="sb-product-name">{post.relatedProduct.name}</h5>
-                <p class="sb-product-desc">{post.relatedProduct.shortDescription}</p>
+                <p class="sb-product-desc">{localRelatedShort}</p>
                 <a href={lp(`/products/${post.relatedProduct.slug}`)} class="btn btn--gold btn--sm" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
                   {t('products.view_details')}
                 </a>
@@ -327,19 +330,19 @@ const breadcrumbSchema = {
               <div class="sb-certs-list">
                 <div class="sb-cert-item">
                   <span class="cert-dot"></span>
-                  <span>GMP Certified Production</span>
+                  <span>Producción certificada GMP</span>
                 </div>
                 <div class="sb-cert-item">
                   <span class="cert-dot"></span>
-                  <span>ISO 9001:2015 Standards</span>
+                  <span>Normas ISO 9001:2015</span>
                 </div>
                 <div class="sb-cert-item">
                   <span class="cert-dot"></span>
-                  <span>Halal & Kosher Audited</span>
+                  <span>Auditoría Halal y Kosher</span>
                 </div>
                 <div class="sb-cert-item">
                   <span class="cert-dot"></span>
-                  <span>100% Third-Party Lab Tested</span>
+                  <span>Pruebas de laboratorio 100% independientes</span>
                 </div>
               </div>
             </div>
@@ -348,14 +351,10 @@ const breadcrumbSchema = {
       </aside>
     </div>
   </main>
-
 </BaseLayout>
 
 <style>
-  .insight-detail {
-    padding-block: 7rem var(--space-4xl);
-  }
-
+  .insight-detail { padding-block: 7rem var(--space-4xl); }
   .article-container {
     flex: 1;
     max-width: 800px;
@@ -597,84 +596,21 @@ const breadcrumbSchema = {
     background-color: var(--color-primary);
   }
 
-  .breadcrumbs {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-    color: var(--color-text-muted);
-    margin-bottom: 2.5rem;
-    max-width: 800px;
-    margin-inline: auto;
-  }
+  .breadcrumbs { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: 2.5rem; max-width: 800px; margin-inline: auto; }
+  .crumb-separator { color: var(--color-text-muted); }
+  .crumb-active { color: var(--color-primary-light); font-weight: 500; }
 
-  .crumb-separator {
-    color: var(--color-text-muted);
-  }
+  .article-header { text-align: center; margin-bottom: 3rem; max-width: 800px; margin-inline: auto; }
+  .article-meta { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--color-text-muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .meta-dot { margin-inline: 0.5rem; }
+  .article-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; line-height: 1.15; margin-bottom: 1.25rem; color: var(--color-text); }
+  .article-tags { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
 
-  .crumb-active {
-    color: var(--color-primary-light);
-    font-weight: 500;
-  }
+  .article-cover { width: 100%; aspect-ratio: 16/9; overflow: hidden; margin-bottom: 3.5rem; border-color: rgba(212,166,84,0.15) !important; }
+  .cover-img { width: 100%; height: 100%; object-fit: cover; }
 
-  /* ── Header ── */
-  .article-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    max-width: 800px;
-    margin-inline: auto;
-  }
-
-  .article-meta {
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-    margin-bottom: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .meta-dot {
-    margin-inline: 0.5rem;
-  }
-
-  .article-title {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 700;
-    line-height: 1.15;
-    margin-bottom: 1.25rem;
-    color: var(--color-text);
-  }
-
-  .article-tags {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  /* ── Cover Image ── */
-  .article-cover {
-    width: 100%;
-    aspect-ratio: 16/9;
-    overflow: hidden;
-    margin-bottom: 3.5rem;
-    border-color: rgba(212, 166, 84, 0.15) !important;
-  }
-
-  .cover-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* ── Body Content ── */
-  .article-body {
-    font-size: 1.0625rem;
-    line-height: 1.85;
-    color: var(--color-text-secondary);
-  }
-
+  .article-body { font-size: 1.0625rem; line-height: 1.85; color: var(--color-text-secondary); }
+  
   /* Keep text-based elements readable and centered at 800px */
   .article-body :global(p),
   .article-body :global(ul),
@@ -687,128 +623,28 @@ const breadcrumbSchema = {
     margin-inline: auto;
   }
 
-  .article-body :global(p) {
-    margin-bottom: 1.5rem;
-  }
-
-  .article-body :global(h2), .article-body :global(h3) {
-    color: var(--color-text);
-    margin-block: 2.5rem 1rem;
-    font-family: var(--font-display);
-    font-weight: 600;
-    scroll-margin-top: 8rem;
-  }
-
+  .article-body :global(p) { margin-bottom: 1.5rem; }
+  .article-body :global(h2), .article-body :global(h3) { color: var(--color-text); margin-block: 2.5rem 1rem; font-family: var(--font-display); font-weight: 600; scroll-margin-top: 8rem; }
   .article-body :global(h2) { font-size: 1.75rem; }
   .article-body :global(h3) { font-size: 1.375rem; }
+  .article-body :global(ul) { margin-bottom: 1.5rem; padding-left: 1.5rem; list-style: disc; }
+  .article-body :global(li) { margin-bottom: 0.5rem; }
 
-  .article-body :global(ul) {
-    margin-bottom: 1.5rem;
-    padding-left: 1.5rem;
-    list-style: disc;
-  }
+  .post-cta { margin-top: 4.5rem; padding: 2rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; border-radius: var(--radius-lg); border-color: rgba(212,166,84,0.2) !important; }
+  @media (max-width: 640px) { .post-cta { flex-direction: column; text-align: center; gap: 1.25rem; } }
+  .cta-content h3 { font-size: 1.375rem; color: var(--color-primary-light); margin-bottom: 0.25rem; }
+  .cta-content p { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.5; }
+  .post-cta .btn { flex-shrink: 0; }
 
-  .article-body :global(li) {
-    margin-bottom: 0.5rem;
-  }
+  .related-product-callout { margin-top: 4rem; padding: 2rem; border-radius: var(--radius-lg); border: 1px solid rgba(212,166,84,0.15) !important; }
+  .related-product-header { margin-bottom: 1rem; }
+  .related-product-body { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  @media (max-width: 640px) { .related-product-body { flex-direction: column; align-items: flex-start; gap: 1.25rem; } }
+  .related-product-info { flex: 1; }
+  .related-product-name { font-size: 1.5rem; font-family: var(--font-display); font-weight: 600; color: var(--color-text); margin-bottom: 0.5rem; display: inline-flex; align-items: center; gap: 0.75rem; }
+  .purity-badge { display: inline-block; font-size: 0.75rem; font-family: var(--font-mono); color: var(--color-primary-light); border: 1px solid rgba(212,166,84,0.3); padding: 0.125rem 0.5rem; border-radius: 9999px; margin-bottom: 0.5rem; }
+  .related-product-desc { font-size: 0.9375rem; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 0; }
 
-  /* ── Bottom CTA ── */
-  .post-cta {
-    margin-top: 4.5rem;
-    padding: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    border-radius: var(--radius-lg);
-    border-color: rgba(212, 166, 84, 0.2) !important;
-  }
-
-  @media (max-width: 640px) {
-    .post-cta {
-      flex-direction: column;
-      text-align: center;
-      gap: 1.25rem;
-    }
-  }
-
-  .cta-content h3 {
-    font-size: 1.375rem;
-    color: var(--color-primary-light);
-    margin-bottom: 0.25rem;
-  }
-
-  .cta-content p {
-    font-size: 0.875rem;
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-  }
-
-  .post-cta .btn {
-    flex-shrink: 0;
-  }
-
-  /* ── Related Product Callout ── */
-  .related-product-callout {
-    margin-top: 4rem;
-    padding: 2rem;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(212, 166, 84, 0.15) !important;
-    background: rgba(212, 166, 84, 0.02);
-  }
-  
-  .related-product-header {
-    margin-bottom: 1rem;
-  }
-  
-  .related-product-body {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-  }
-  
-  @media (max-width: 640px) {
-    .related-product-body {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1.25rem;
-    }
-  }
-  
-  .related-product-info {
-    flex: 1;
-  }
-  
-  .related-product-name {
-    font-size: 1.5rem;
-    font-family: var(--font-display);
-    font-weight: 600;
-    color: var(--color-text);
-    margin-bottom: 0.5rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  
-  .purity-badge {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-family: var(--font-mono);
-    color: var(--color-primary-light);
-    border: 1px solid rgba(212, 166, 84, 0.3);
-    padding: 0.125rem 0.5rem;
-    border-radius: 9999px;
-    margin-bottom: 0.5rem;
-  }
-  
-  .related-product-desc {
-    font-size: 0.9375rem;
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-    margin-bottom: 0;
-  }
-  
   /* ── FAQs ── */
   .article-faqs {
     margin-top: 4rem;
@@ -957,7 +793,7 @@ const breadcrumbSchema = {
 
     const initialHtml = sbSubmitBtn.innerHTML;
     sbSubmitBtn.disabled = true;
-    sbSubmitBtn.textContent = 'Sending...';
+    sbSubmitBtn.textContent = 'Enviando...';
 
     const formData = new FormData(sbForm);
     if (formData.get('b_website')) {
@@ -981,6 +817,8 @@ const breadcrumbSchema = {
           redirectUrl = '/ru/thank-you';
         } else if (pathname.startsWith('/ar')) {
           redirectUrl = '/ar/thank-you';
+        } else if (pathname.startsWith('/es')) {
+          redirectUrl = '/es/thank-you';
         }
         window.location.href = redirectUrl;
       } else {
@@ -989,8 +827,7 @@ const breadcrumbSchema = {
     } catch {
       sbSubmitBtn.disabled = false;
       sbSubmitBtn.innerHTML = initialHtml;
-      alert('Something went wrong. Please email us directly at inquiry@ginkvora.com');
+      alert('Algo salió mal. Por favor, escríbanos directamente a inquiry@ginkvora.com');
     }
   });
 </script>
-

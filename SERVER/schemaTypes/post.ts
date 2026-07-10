@@ -9,7 +9,7 @@ export const postType = defineType({
   icon: () => '📝',
   groups: [
     { name: 'basic', title: 'Basic Info', default: true },
-    { name: 'i18n', title: '🌍 Translations (RU & AR)' },
+    { name: 'i18n', title: '🌍 Translations (RU & AR & ES)' },
     { name: 'seo', title: 'SEO Settings' },
     { name: 'faq', title: 'FAQ' },
   ],
@@ -186,7 +186,7 @@ export const postType = defineType({
       title: '🇸🇦 Meta Title (AR)',
       type: 'string',
       group: 'i18n',
-      description: 'عنوان الصفحة لمحركات البحث باللغة العربية (حتى 60 حرفاً).',
+      description: 'العنوان التعريفي لمحركات البحث باللغة العربية (حتى 60 حرفاً).',
       validation: (Rule) => Rule.max(70),
     }),
     defineField({
@@ -196,6 +196,50 @@ export const postType = defineType({
       group: 'i18n',
       rows: 3,
       description: 'الوصف التعريفي لمحركات البحث باللغة العربية (حتى 160 حرفاً).',
+      validation: (Rule) => Rule.max(160),
+    }),
+
+    // ── 🌍 Translations (Spanish) ────────────────
+    defineField({
+      name: 'title_es',
+      title: '🇪🇸 Título (ES)',
+      type: 'string',
+      group: 'i18n',
+      description: 'Título del artículo en español',
+      validation: (Rule) => Rule.max(100),
+    }),
+    defineField({
+      name: 'excerpt_es',
+      title: '🇪🇸 Extracto (ES)',
+      type: 'text',
+      group: 'i18n',
+      rows: 3,
+      description: 'Breve resumen del artículo en español (para tarjetas)',
+      validation: (Rule) => Rule.max(250),
+    }),
+    defineField({
+      name: 'body_es',
+      title: '🇪🇸 Cuerpo del Artículo (ES, Markdown)',
+      type: 'markdown',
+      group: 'i18n',
+      description: 'Texto completo del artículo en español en formato Markdown.',
+      components: { input: CustomMarkdownInput },
+    }),
+    defineField({
+      name: 'meta_title_es',
+      title: '🇪🇸 Meta Title (ES)',
+      type: 'string',
+      group: 'i18n',
+      description: 'Título de la página para motores de búsqueda en español (hasta 60 caracteres).',
+      validation: (Rule) => Rule.max(70),
+    }),
+    defineField({
+      name: 'meta_description_es',
+      title: '🇪🇸 Meta Description (ES)',
+      type: 'text',
+      group: 'i18n',
+      rows: 3,
+      description: 'Meta descripción para motores de búsqueda en español (hasta 160 caracteres).',
       validation: (Rule) => Rule.max(160),
     }),
 
@@ -295,6 +339,35 @@ export const postType = defineType({
             defineField({
               name: 'answer',
               title: 'الإجابة',
+              type: 'text',
+              rows: 3,
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'faqItems_es',
+      title: 'FAQ Items (ES)',
+      type: 'array',
+      group: 'faq',
+      description: 'Frequently Asked Questions for this post in Spanish',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'faqItem',
+          title: 'FAQ Item',
+          fields: [
+            defineField({
+              name: 'question',
+              title: 'Pregunta',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'answer',
+              title: 'Respuesta',
               type: 'text',
               rows: 3,
               validation: (Rule) => Rule.required(),
