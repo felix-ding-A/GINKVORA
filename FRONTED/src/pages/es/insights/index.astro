@@ -13,6 +13,13 @@ const searchQuery = Astro.url.searchParams.get('q') || '';
 const { posts, total } = await getPostsPaginated({ category, search: searchQuery, page, pageSize: 9 });
 const totalPages = Math.ceil(total / 9);
 
+// Helper function to build page URLs while preserving category query params
+function getPageHref(pageNum: number) {
+  const url = new URL(Astro.url.href);
+  url.searchParams.set('page', pageNum.toString());
+  return url.pathname + url.search;
+}
+
 const siteUrl = 'https://ginkvora.com';
 
 // Breadcrumb structured data
@@ -149,6 +156,59 @@ const itemListSchema = {
             );
           })}
         </div>
+
+        <!-- Pagination Component -->
+        {totalPages > 1 && (
+          <nav class="pagination" aria-label="Navegación de paginación">
+            {page > 1 ? (
+              <a href={getPageHref(page - 1)} class="page-btn page-arrow" aria-label="Ir a la página anterior">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                {t('common.previous')}
+              </a>
+            ) : (
+              <span class="page-btn page-btn--disabled page-arrow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                {t('common.previous')}
+              </span>
+            )}
+
+            <div class="page-numbers">
+              {Array.from({ length: totalPages }).map((_, idx) => {
+                const pageNum = idx + 1;
+                const isCurrent = pageNum === page;
+                return isCurrent ? (
+                  <span class="page-btn page-btn--active" aria-current="page">
+                    {pageNum}
+                  </span>
+                ) : (
+                  <a href={getPageHref(pageNum)} class="page-btn" aria-label={`Ir a la página ${pageNum}`}>
+                    {pageNum}
+                  </a>
+                );
+              })}
+            </div>
+
+            {page < totalPages ? (
+              <a href={getPageHref(page + 1)} class="page-btn page-arrow" aria-label="Ir a la siguiente página">
+                {t('common.next')}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </a>
+            ) : (
+              <span class="page-btn page-btn--disabled page-arrow">
+                {t('common.next')}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </span>
+            )}
+          </nav>
+        )}
       ) : (
         <div class="no-posts-container glass">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -195,6 +255,64 @@ const itemListSchema = {
   .tag-chip { font-size: 0.72rem; padding: 0.15rem 0.5rem; border-radius: var(--radius-full); border: 1px solid var(--color-border); color: var(--color-text-muted); }
   .read-more { font-size: 0.875rem; color: var(--color-primary-light); text-decoration: none; font-weight: 500; margin-top: auto; transition: color var(--transition-fast); }
   .read-more:hover { color: var(--color-primary); }
+
+  /* ── Pagination ── */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 4rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 2.5rem;
+  }
+
+  .page-numbers {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.5rem;
+    min-width: 2.5rem;
+    padding-inline: 0.75rem;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all var(--transition-base);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .page-btn:hover:not(.page-btn--disabled):not(.page-btn--active) {
+    color: var(--color-primary-light);
+    border-color: var(--color-primary-light);
+    background: rgba(212, 166, 84, 0.05);
+  }
+
+  .page-btn--active {
+    background: var(--color-primary);
+    color: var(--color-bg);
+    border-color: var(--color-primary);
+    cursor: default;
+  }
+
+  .page-btn--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .page-arrow {
+    gap: 0.25rem;
+    padding-inline: 1rem;
+  }
   .no-posts-container {
     display: flex;
     flex-direction: column;
