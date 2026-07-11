@@ -154,11 +154,13 @@ export const PRODUCT_FIELDS = `
   shortDescription,
   shortDescription_ru,
   shortDescription_ar,
+  shortDescription_es,
   featured,
   heroImage,
   applications,
   applications_ru,
   applications_ar,
+  applications_es,
   application,
   inciName,
   certifications[],
@@ -173,6 +175,7 @@ export const PRODUCT_DETAIL_FIELDS = `
   description,
   description_ru,
   description_ar,
+  description_es,
   specifications[]{label, value},
   gallery[],
   coaFile{asset->{url}},
@@ -186,9 +189,12 @@ export const PRODUCT_DETAIL_FIELDS = `
   meta_description_ru,
   meta_title_ar,
   meta_description_ar,
+  meta_title_es,
+  meta_description_es,
   faqItems,
   faqItems_ru,
-  faqItems_ar
+  faqItems_ar,
+  faqItems_es
 `;
 
 export async function getAllProducts(category: string | null = null, mechanism: string | null = null) {
@@ -408,21 +414,26 @@ export async function getPostBySlug(slug: string) {
         body,
         body_ru,
         body_ar,
+        body_es,
         meta_title,
         meta_title_ru,
         meta_title_ar,
+        meta_title_es,
         meta_description,
         meta_description_ru,
         meta_description_ar,
+        meta_description_es,
         faqItems,
         faqItems_ru,
         faqItems_ar,
+        faqItems_es,
         relatedProduct->{
           name,
           "slug": slug.current,
           shortDescription,
           shortDescription_ru,
           shortDescription_ar,
+          shortDescription_es,
           purity,
           heroImage
         }
