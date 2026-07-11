@@ -1,12 +1,20 @@
 ---
 const lang = 'ar';
 // src/pages/insights/[slug].astro — Detailed Blog Post View
+export const prerender = true;
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getAllPosts, getPostBySlug, urlFor, getLocalizedField } from '../../../lib/sanity';
 import PortableText from '../../../components/PortableText.astro';
 import { useTranslations, getLocalePath } from '../../../i18n/utils';
 import type { Lang } from '../../../i18n/utils';
 import FAQAccordion from '../../../components/FAQAccordion.astro';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts(100);
+  return posts
+    .filter((p: any) => p && typeof p.slug === 'string')
+    .map((p: any) => ({ params: { slug: p.slug } }));
+}
 
 const { slug } = Astro.params;
 const post = await getPostBySlug(slug);
@@ -218,7 +226,15 @@ const breadcrumbSchema = {
         <!-- Cover Image -->
         <div class="article-cover glass">
           <picture style="display: contents;">
-            <source srcset={urlFor(post.coverImage).width(1200).format('webp').url()} type="image/webp" />
+            <source 
+              srcset={`
+                ${urlFor(post.coverImage).width(600).format('webp').url()} 600w,
+                ${urlFor(post.coverImage).width(900).format('webp').url()} 900w,
+                ${urlFor(post.coverImage).width(1200).format('webp').url()} 1200w
+              `} 
+              sizes="(max-width: 600px) 100vw, (max-width: 900px) 90vw, 1200px"
+              type="image/webp" 
+            />
             <img
               src={urlFor(post.coverImage).width(1200).url()}
               alt={localTitle}

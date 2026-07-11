@@ -1,10 +1,18 @@
 ---
 const lang = 'ar';
 // src/pages/products/[slug].astro — Detailed page for specific ingredients
+export const prerender = true;
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getAllProducts, getProductBySlug, urlFor, getLocalizedField } from '../../../lib/sanity';
 import PortableText from '../../../components/PortableText.astro';
 import FAQAccordion from '../../../components/FAQAccordion.astro';
+
+export async function getStaticPaths() {
+  const products = await getAllProducts();
+  return products
+    .filter((p: any) => p && (typeof p.slug === 'string' || p.slug?.current))
+    .map((p: any) => ({ params: { slug: typeof p.slug === 'string' ? p.slug : p.slug.current } }));
+}
 
 const { slug } = Astro.params;
 const product = await getProductBySlug(slug);
@@ -210,7 +218,15 @@ const faqSchema = {
         <section class="gallery-section" aria-label="Product Images">
           <div class="main-image-box glass">
             <picture style="display: contents;">
-              <source srcset={urlFor(product.heroImage).width(1200).format('webp').url()} type="image/webp" />
+              <source 
+                srcset={`
+                  ${urlFor(product.heroImage).width(600).format('webp').url()} 600w,
+                  ${urlFor(product.heroImage).width(900).format('webp').url()} 900w,
+                  ${urlFor(product.heroImage).width(1200).format('webp').url()} 1200w
+                `} 
+                sizes="(max-width: 600px) 100vw, (max-width: 900px) 90vw, 1200px"
+                type="image/webp" 
+              />
               <img
                 src={urlFor(product.heroImage).width(1200).url()}
                 alt={product.name}
