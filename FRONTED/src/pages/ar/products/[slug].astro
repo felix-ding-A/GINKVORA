@@ -1525,6 +1525,14 @@ const faqSchema = {
                 fallbackLink.href = coaUrl;
               }
 
+              // Push custom event to dataLayer for GTM tracking
+              window.dataLayer = window.dataLayer || [];
+              window.dataLayer.push({
+                event: 'coa_lead_submit',
+                productName: productName,
+                coaUrl: coaUrl
+              });
+
               // Trigger the download in a new window
               window.open(coaUrl, '_blank');
             } else {

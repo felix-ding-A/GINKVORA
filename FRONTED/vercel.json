@@ -42,6 +42,10 @@
     { "source": "/products/egcg", "destination": "/products/egcg-98", "permanent": true },
     { "source": "/products/niacinamide", "destination": "/products", "permanent": true },
     { "source": "/products/nmn-nicotinamide-mononucleotide", "destination": "/products/nmn-beta-nicotinamide-mononucleotide", "permanent": true },
+    { "source": "/products/copper-tripeptide-1-ghk-cu-hydrochloride", "destination": "/products/ghk-cu", "permanent": true },
+    { "source": "/ru/products/copper-tripeptide-1-ghk-cu-hydrochloride", "destination": "/ru/products/ghk-cu", "permanent": true },
+    { "source": "/es/products/copper-tripeptide-1-ghk-cu-hydrochloride", "destination": "/es/products/ghk-cu", "permanent": true },
+    { "source": "/ar/products/copper-tripeptide-1-ghk-cu-hydrochloride", "destination": "/ar/products/ghk-cu", "permanent": true },
     { "source": "/insights/quercetin-senolytic-aging", "destination": "/insights", "permanent": true }
   ]
 }
