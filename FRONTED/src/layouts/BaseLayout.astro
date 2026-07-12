@@ -253,27 +253,6 @@ const organizationSchema = {
     <!-- Performance: DNS prefetch & Preconnect -->
     <link rel="dns-prefetch" href="//cdn.sanity.io" />
     <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
-    <link rel="preconnect" href="https://analytics.ginkvora.com" />
-
-    <!-- Analytics (Umami) — loaded async to avoid blocking initial render -->
-    <script is:inline>
-      try {
-        const url = new URL(window.location.href);
-        if (url.searchParams.get('access') === 'gkv_admin_debug') {
-          localStorage.setItem('umami.disabled', '1');
-          console.log('[Umami] Access token detected. Analytics disabled.');
-          url.searchParams.delete('access');
-          window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
-        }
-      } catch (e) {
-        console.warn('[Umami] Failed to process access token:', e);
-      }
-    </script>
-    <script
-      async
-      src="https://analytics.ginkvora.com/script.js"
-      data-website-id="df5768a4-e9af-4c4b-8c72-620a91411e86">
-    </script>
 
     <!-- Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
