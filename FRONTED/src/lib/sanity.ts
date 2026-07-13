@@ -208,7 +208,7 @@ export async function getAllProducts(category: string | null = null, mechanism: 
     *[_type == "product"
       && ($category == "" || $category in mainCategories)
       && ($mechanism == "" || $mechanism in antiAgingMechanisms)
-    ] | order(featured desc, name asc) {
+    ] | order(_updatedAt desc) {
       ${PRODUCT_FIELDS}
     }
   `;
