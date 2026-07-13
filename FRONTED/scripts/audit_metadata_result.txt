@@ -1,0 +1,101 @@
+=== AUDITING PRODUCTS ===
+
+=== AUDITING POSTS ===
+
+=== SEARCHING FOR RUSSIAN GLABRIDIN / QUERCETIN POSTS ===
+
+Glabridin related posts (7):
+- Slug: glabridin-12-week-timeline
+  Title: Glabridin Before and After: A 12-Week Transformation Timeline
+  Title (RU): Глабридин до и после: 12-недельный таймлайн осветления
+  Desc (RU): Что происходит с меланином, воспалением и коллагеном каждую неделю после введения глабридина в формулу. Понедельный биологический таймлайн для косметологов.
+- Slug: before-and-after-glabridin
+  Title: Before and After Glabridin: What 16× Stronger Than Kojic Acid Actually Looks Like in a Formula
+  Title (RU): Глабридин vs койевая кислота: разница в ингибировании тирозиназы 16×
+  Desc (RU): Глабридин ингибирует тирозиназу в 16 раз сильнее койевой кислоты. Руководство по рецептуре, клинические сроки и реальные результаты до и после применения.
+- Slug: licorice-extract-vs-glabridin
+  Title: Licorice Extract vs. Purified Glabridin: The Real Difference
+  Title (RU): Экстракт солодки vs. глабридин 90%: сравнение партий
+  Desc (RU): Экстракт солодки содержит переменный глабридин. Глабридин 90% верифицирован по HPLC. Разрыв определяет клиническую эффективность и соответствие требованиям.
+- Slug: glabridin-b2b-sourcing-guide
+  Title: Glabridin B2B Sourcing Guide: Purity Grades, Supplier Evaluation & Bulk Pricing
+  Title (RU): Глабридин: B2B-закупки — чистота, поставщики, оптовые цены
+  Desc (RU): Руководство по B2B-закупкам глабридина: 40% vs 98% чистота, HPLC-верификация COA, чек-лист поставщиков, ценообразование, MOQ, упаковка, производители Китая.
+- Slug: glabridin-complete-guide
+  Title: Glabridin: The Complete Guide to Licorice Root's Most Powerful Bioactive for Skin
+  Title (RU): Глабридин для кожи: полный гид по свойствам и механизму
+  Desc (RU): Глабридин — мощный биоактив солодки для кожи. Многоцелевое осветление, антиоксидантное и противовоспалительное действие.
+- Slug: glabridin-cream-formulation-guide
+  Title: Glabridin Cream & Serum Formulation Guide: Concentration, Delivery Systems & Stability
+  Title (RU): Глабридин: формуляция крема и сыворотки — руководство
+  Desc (RU): Формуляция глабридина: растворимость, 0,01-0,5% для крема и сыворотки, pH 4,0-5,5, доставка NLC и циклодекстрином, протокол O/W для косметической разработки.
+- Slug: glabridin-safety-side-effects-regulatory
+  Title: Glabridin Safety, Side Effects & Regulatory Status: What Formulators Need to Know
+  Title (RU): Глабридин: безопасность, побочные эффекты, регуляторный статус
+  Desc (RU): Безопасность глабридина: патч-тест 30 добровольцев (ноль раздражений), токсичность глабрена, CYP450, беременность, глобальный регуляторный статус.
+
+Quercetin related posts (16):
+- Slug: quercetin-antioxidant-free-radicals
+  Title: Free Radicals vs. Quercetin: The Antioxidant Mechanism Explained for Non-Scientists
+  Title (RU): Польза кверцетина как антиоксиданта: защита от свободных радикалов и Nrf2 | GINKVORA
+  Desc (RU): Кверцетин нейтрализует свободные радикалы и активирует путь Nrf2, снижая окислительный стресс. Превосходит витамины C и E по показателю ORAC.
+- Slug: flavone-mother-molecule-unclaimed
+  Title: Stop Chasing Trendy Flavonoids — Their Mother Molecule Is Unclaimed
+  Title (RU): Флавон: флавоноидный остов, который ещё не использует ни один бренд
+  Desc (RU): Кверцетин, лютеолин, EGCG — все они производные флавона. Материнская молекула проще, стабильнее и никем не занята. Стратегия создания категории для B2B-брендов.
+- Slug: quercetin-safety-dosage
+  Title: Quercetin Safety Profile: Dosage, Drug Interactions, and Who Should Avoid It
+  Title (RU): Кверцетин: противопоказания, вред, побочные эффекты | GINKVORA
+  Desc (RU): Кому нельзя кверцетин? Противопоказания при беременности, взаимодействие с варфарином и статинами, вред при болезнях почек. Полный обзор с дозировками.
+- Slug: quercetin-supplement-formulation
+  Title: How to Formulate a Quercetin Supplement: Dosage, Combinations, and Delivery Forms
+  Title (RU): Как создать добавку с кверцетином | GINKVORA
+  Desc (RU): Руководство технолога по кверцетину: формы биодоступности, дозировки по целям здоровья, синергетические стеки, системы доставки и требования к качеству.
+- Slug: quercetin-extract-production-process
+  Title: From Sophora Japonica to Your Supplement: How Quercetin Extract Is Made
+  Title (RU): Как производят экстракт кверцетина: полное руководство | GINKVORA
+  Desc (RU): От Sophora japonica до 95% чистого экстракта: экстракция, гидролиз рутина, кристаллизация, ВЭЖХ-стандартизация и требования к качеству. | GINKVORA
+- Slug: quercetin-mast-cell-stabilizer
+  Title: How Quercetin Stabilizes Mast Cells to Reduce Seasonal Allergy Reactions
+  Title (RU): Как кверцетин снижает сезонную аллергию | GINKVORA
+  Desc (RU): Кверцетин успокаивает аллергический ринит путём стабилизации тучных клеток. Узнайте о механизмах IgE, кальция и NF-κB, подтверждённых клиническими данными.
+- Slug: quercetin-dasatinib-natural-senolytics-comparison
+  Title: Quercetin + Dasatinib vs. Natural Senolytics: What Longevity Science Recommends
+  Title (RU): Кверцетин против D+Q: природные сенолитики | GINKVORA
+  Desc (RU): Сравнение D+Q с природными сенолитиками: кверцетин, физетин, куркумин. Руководство для производителей добавок долголетия.
+- Slug: quercetin-antihistamine-allergy
+  Title: Quercetin as a Natural Antihistamine: How It Calms Allergy Symptoms Without Side Effects
+  Title (RU): Кверцетин как натуральный антигистамин | GINKVORA
+  Desc (RU): Узнайте, как кверцетин стабилизирует тучные клетки и блокирует гистамин, снижая симптомы аллергии естественным путём. Клинически подтверждено, без сонливости.
+- Slug: quercetin-senolytic-anti-aging
+  Title: Quercetin as a Senolytic: How It Clears Zombie Cells to Slow Biological Aging
+  Title (RU): Кверцетин как сенолитик: антивозрастной активный ингредиент | GINKVORA
+  Desc (RU): Кверцетин — природный сенолитик, удаляющий стареющие клетки. О механизме действия, научных исследованиях и применении в антивозрастной медицине.
+- Slug: quercetin-gut-inflammation
+  Title: Quercetin for Gut Inflammation: From Leaky Gut to IBD Support
+  Title (RU): Кверцетин при воспалении кишечника: Leaky Gut и ВЗК | GINKVORA
+  Desc (RU): Кверцетин помогает восстановить leaky gut, повышая белки плотных контактов ZO-1, окклюдин и клаудин, и подавляет воспаление ЖКТ через NF-κB. Активный ингредиент для нутрицевтических формул.
+- Slug: quercetin-food-sources
+  Title: What Foods Contain the Most Quercetin? Top 15 Dietary Sources Ranked
+  Title (RU): Кверцетин в продуктах: топ-15 источников | GINKVORA
+  Desc (RU): В каких продуктах больше всего кверцетина? Каперсы лидируют (234 мг/100г), затем красный лук (32 мг). Полный топ-15 с порциями и влиянием приготовления.
+- Slug: quercetin-inflammation-nfkb
+  Title: Quercetin and Inflammation: How This Flavonoid Inhibits NF-κB and Reduces Chronic Pain
+  Title (RU): Кверцетин ингибирует NF-κB: противовоспалительный | GINKVORA
+  Desc (RU): Кверцетин ингибирует NF-κB через пути AKT1-FoxO1 и JAK/STAT, снижая TNF-α, IL-6, IL-1β, COX-2 и NLRP3. Клинически доказан при артрите и хронической боли.
+- Slug: quercetin-immune-defense
+  Title: Quercetin for Immune Defense: The Flavonoid That Activates Your Body's First-Line Protection
+  Title (RU): Кверцетин для иммунитета: защита первой линии | GINKVORA
+  Desc (RU): Кверцетин активирует NK-клетки, улучшает макрофаги и доставляет цинк в клетки. Подтверждено РКИ с 1 002 участниками.
+- Slug: quercetin-bromelain-vitamin-c
+  Title: Quercetin + Bromelain + Vitamin C: Why This Trio Is the Ultimate Immune Stack
+  Title (RU): Кверцетин + Бромелайн + Витамин C: синергия | GINKVORA
+  Desc (RU): Бромелайн повышает абсорбцию кверцетина в 20 раз, витамин C регенерирует активность. Иммунный стек для добавок от GINKVORA.
+- Slug: quercetin-zinc-ionophore
+  Title: Quercetin and Zinc: The Ionophore Mechanism That Enhances Antiviral Defense
+  Title (RU): Кверцетин и цинк: механизм ионофора для противовирусной защиты
+  Desc (RU): Кверцетин — природный ионофор цинка, транспортирующий Zn2+ в клетки для блокировки вирусной репликации. Анализ механизмов и клинических данных. | GINKVORA
+- Slug: quercetin-nad-stack
+  Title: Quercetin and NAD+: Stacking Flavonoids with Nicotinamide for Cellular Rejuvenation
+  Title (RU): Комплекс Кверцетин + NAD+: ингибитор CD38 и синергия NMN | GINKVORA
+  Desc (RU): Кверцетин повышает NAD+ путём ингибирования CD38 и активации SIRT1. Как комбинировать его с NMN и NR для усиленного клеточного омоложения.

@@ -10,6 +10,7 @@ const staticPages = [
   'about/mission',
   'custom-formulation',
   'calculator',
+  'featured-formulas',
   'anti-aging-philosophy',
   'contact',
   'quality',

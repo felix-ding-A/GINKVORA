@@ -46,6 +46,50 @@
     { "source": "/ru/products/copper-tripeptide-1-ghk-cu-hydrochloride", "destination": "/ru/products/ghk-cu", "permanent": true },
     { "source": "/es/products/copper-tripeptide-1-ghk-cu-hydrochloride", "destination": "/es/products/ghk-cu", "permanent": true },
     { "source": "/ar/products/copper-tripeptide-1-ghk-cu-hydrochloride", "destination": "/ar/products/ghk-cu", "permanent": true },
-    { "source": "/insights/quercetin-senolytic-aging", "destination": "/insights", "permanent": true }
+    { "source": "/insights/quercetin-senolytic-aging", "destination": "/insights", "permanent": true },
+
+    { "source": "/Featured%20Formulas", "destination": "/featured-formulas", "permanent": true },
+    { "source": "/ru/Featured%20Formulas", "destination": "/ru/featured-formulas", "permanent": true },
+    { "source": "/es/Featured%20Formulas", "destination": "/es/featured-formulas", "permanent": true },
+    { "source": "/ar/Featured%20Formulas", "destination": "/ar/featured-formulas", "permanent": true },
+    { "source": "/Featured Formulas", "destination": "/featured-formulas", "permanent": true },
+    { "source": "/ru/Featured Formulas", "destination": "/ru/featured-formulas", "permanent": true },
+    { "source": "/es/Featured Formulas", "destination": "/es/featured-formulas", "permanent": true },
+    { "source": "/ar/Featured Formulas", "destination": "/ar/featured-formulas", "permanent": true },
+
+    { "source": "/insights/quercetin-mast-cell-stabilizer", "destination": "/insights/quercetin-safety-dosage", "permanent": true },
+    { "source": "/ru/insights/quercetin-mast-cell-stabilizer", "destination": "/ru/insights/quercetin-safety-dosage", "permanent": true },
+    { "source": "/es/insights/quercetin-mast-cell-stabilizer", "destination": "/es/insights/quercetin-safety-dosage", "permanent": true },
+    { "source": "/ar/insights/quercetin-mast-cell-stabilizer", "destination": "/ar/insights/quercetin-safety-dosage", "permanent": true },
+
+    { "source": "/insights/quercetin-antihistamine-allergy", "destination": "/insights/quercetin-safety-dosage", "permanent": true },
+    { "source": "/ru/insights/quercetin-antihistamine-allergy", "destination": "/ru/insights/quercetin-safety-dosage", "permanent": true },
+    { "source": "/es/insights/quercetin-antihistamine-allergy", "destination": "/es/insights/quercetin-safety-dosage", "permanent": true },
+    { "source": "/ar/insights/quercetin-antihistamine-allergy", "destination": "/ar/insights/quercetin-safety-dosage", "permanent": true },
+
+    { "source": "/insights/quercetin-nad-stack", "destination": "/insights/quercetin-senolytic-anti-aging", "permanent": true },
+    { "source": "/ru/insights/quercetin-nad-stack", "destination": "/ru/insights/quercetin-senolytic-anti-aging", "permanent": true },
+    { "source": "/es/insights/quercetin-nad-stack", "destination": "/es/insights/quercetin-senolytic-anti-aging", "permanent": true },
+    { "source": "/ar/insights/quercetin-nad-stack", "destination": "/ar/insights/quercetin-senolytic-anti-aging", "permanent": true },
+
+    { "source": "/insights/quercetin-dasatinib-natural-senolytics-comparison", "destination": "/insights/quercetin-senolytic-anti-aging", "permanent": true },
+    { "source": "/ru/insights/quercetin-dasatinib-natural-senolytics-comparison", "destination": "/ru/insights/quercetin-senolytic-anti-aging", "permanent": true },
+    { "source": "/es/insights/quercetin-dasatinib-natural-senolytics-comparison", "destination": "/es/insights/quercetin-senolytic-anti-aging", "permanent": true },
+    { "source": "/ar/insights/quercetin-dasatinib-natural-senolytics-comparison", "destination": "/ar/insights/quercetin-senolytic-anti-aging", "permanent": true },
+
+    { "source": "/insights/quercetin-antioxidant-free-radicals", "destination": "/insights/quercetin-senolytic-anti-aging", "permanent": true },
+    { "source": "/ru/insights/quercetin-antioxidant-free-radicals", "destination": "/ru/insights/quercetin-senolytic-anti-aging", "permanent": true },
+    { "source": "/es/insights/quercetin-antioxidant-free-radicals", "destination": "/es/insights/quercetin-senolytic-anti-aging", "permanent": true },
+    { "source": "/ar/insights/quercetin-antioxidant-free-radicals", "destination": "/ar/insights/quercetin-senolytic-anti-aging", "permanent": true },
+
+    { "source": "/insights/quercetin-inflammation-nfkb", "destination": "/insights/quercetin-senolytic-anti-aging", "permanent": true },
+    { "source": "/ru/insights/quercetin-inflammation-nfkb", "destination": "/ru/insights/quercetin-senolytic-anti-aging", "permanent": true },
+    { "source": "/es/insights/quercetin-inflammation-nfkb", "destination": "/es/insights/quercetin-senolytic-anti-aging", "permanent": true },
+    { "source": "/ar/insights/quercetin-inflammation-nfkb", "destination": "/ar/insights/quercetin-senolytic-anti-aging", "permanent": true },
+
+    { "source": "/insights/quercetin-zinc-ionophore", "destination": "/insights/quercetin-supplement-formulation", "permanent": true },
+    { "source": "/ru/insights/quercetin-zinc-ionophore", "destination": "/ru/insights/quercetin-supplement-formulation", "permanent": true },
+    { "source": "/es/insights/quercetin-zinc-ionophore", "destination": "/es/insights/quercetin-supplement-formulation", "permanent": true },
+    { "source": "/ar/insights/quercetin-zinc-ionophore", "destination": "/ar/insights/quercetin-supplement-formulation", "permanent": true }
   ]
 }
