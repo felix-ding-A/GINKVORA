@@ -194,7 +194,8 @@ export const PRODUCT_DETAIL_FIELDS = `
   faqItems,
   faqItems_ru,
   faqItems_ar,
-  faqItems_es
+  faqItems_es,
+  minimumOrderQuantity
 `;
 
 export async function getAllProducts(category: string | null = null, mechanism: string | null = null) {

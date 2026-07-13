@@ -100,7 +100,7 @@ const displayFaqItems = product.faqItems && product.faqItems.length > 0
           answer: "The shelf life is 24 months when stored in the original unopened container in a cool, dry place away from direct sunlight."
         }
       ]
-    : (product.slug === 'nmn-beta-nicotinamide-mononucleotide' || product.slug?.current === 'nmn-beta-nicotinamide-mononucleotide')
+    : (product.slug === 'nmn-beta-nicotinamide-mononucleotide' || product.slug?.current === 'nmn-beta-nicotinamide-mononucleotide' || product.slug === 'nmn-nicotinamide-mononucleotide' || product.slug?.current === 'nmn-nicotinamide-mononucleotide')
       ? [
           {
             question: "What is the recommended storage temperature for NMN powder?",
@@ -410,6 +410,46 @@ const faqSchema = {
         </div>
       </section>
 
+      <!-- B2B Bulk Sourcing & Logistics Specifications -->
+      <section class="b2b-sourcing-section glass" aria-label="B2B Sourcing Specifications">
+        <h2 class="b2b-sourcing-title">Bulk Sourcing & Logistics</h2>
+        <p class="b2b-sourcing-subtitle">Commercial supply chain specifications for professional buyers and brand owners.</p>
+        
+        <div class="b2b-grid">
+          <div class="b2b-card">
+            <div class="b2b-card-icon">📦</div>
+            <div class="b2b-card-content">
+              <h3>Packaging Options</h3>
+              <p>Standard export packaging: 1 kg / aluminum foil bag, 25 kg / fiber drum with double food-grade inner plastic lining. Custom packaging configurations available for commercial contracts.</p>
+            </div>
+          </div>
+          
+          <div class="b2b-card">
+            <div class="b2b-card-icon">⚖️</div>
+            <div class="b2b-card-content">
+              <h3>Minimum Order Quantity (MOQ)</h3>
+              <p>{product.minimumOrderQuantity ? `Our official minimum order quantity is ${product.minimumOrderQuantity}.` : "Standard commercial MOQ is 1 kg (sample quantities from 10g-50g available for R&D evaluation)."}</p>
+            </div>
+          </div>
+          
+          <div class="b2b-card">
+            <div class="b2b-card-icon">🛡️</div>
+            <div class="b2b-card-content">
+              <h3>Quality & Documentation</h3>
+              <p>Every shipment is accompanied by a batch-specific Certificate of Analysis (COA). MSDS, TSE/BSE free statements, allergen reports, and stability data sheets are provided upon R&D request.</p>
+            </div>
+          </div>
+          
+          <div class="b2b-card">
+            <div class="b2b-card-icon">✈️</div>
+            <div class="b2b-card-content">
+              <h3>Lead Time & Logistics</h3>
+              <p>Ex-stock items ship within 1-3 business days. High-volume manufacturing lead time is 2-3 weeks. We support global air express (FedEx/DHL/TNT), air cargo, and sea freight under incoterms (FOB, CIF, DDP).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- FAQ Accordion Section -->
       {displayFaqItems && displayFaqItems.length > 0 && (
         <section class="product-faqs-section">
@@ -640,6 +680,92 @@ const faqSchema = {
 <style>
   .product-detail-page {
     padding-block: 7rem var(--space-4xl);
+  }
+
+  /* ── B2B Sourcing Section ── */
+  .b2b-sourcing-section {
+    margin-top: 4rem;
+    padding: 3rem 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.15);
+    background: rgba(22, 24, 26, 0.45);
+  }
+
+  .b2b-sourcing-title {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--color-text);
+  }
+
+  .b2b-sourcing-subtitle {
+    color: var(--color-text-secondary);
+    text-align: center;
+    max-width: 600px;
+    margin: 0.5rem auto 2.5rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .b2b-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .b2b-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .b2b-card {
+    display: flex;
+    gap: 1.25rem;
+    align-items: start;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all var(--transition-base);
+  }
+
+  .b2b-card:hover {
+    border-color: rgba(212, 166, 84, 0.3);
+    background: rgba(212, 166, 84, 0.02);
+    transform: translateY(-2px);
+  }
+
+  .b2b-card-icon {
+    font-size: 1.75rem;
+    background: rgba(212, 166, 84, 0.08);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(212, 166, 84, 0.2);
+    flex-shrink: 0;
+  }
+
+  .b2b-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .b2b-card-content h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+  }
+
+  .b2b-card-content p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
   }
 
   .breadcrumbs {
@@ -1415,12 +1541,6 @@ const faqSchema = {
 
     const productName = coaBtn.getAttribute('data-product-name') || '';
     const coaUrl = coaBtn.getAttribute('data-coa-url') || '';
-
-    // Check if this product name indicates it is PDRN
-    const isPdrn = productName.toLowerCase().includes('pdrn');
-
-    // Only intercept if this is the PDRN product
-    if (!isPdrn) return;
 
     coaBtn.addEventListener('click', (e) => {
       e.preventDefault();
