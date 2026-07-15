@@ -41,9 +41,13 @@ if (!post) {
 
 const localTitle         = getLocalizedField(post, 'title', lang) ?? post.title;
 const localExcerpt       = getLocalizedField(post, 'excerpt', lang) ?? post.excerpt;
+const localBody          = getLocalizedField(post, 'body', lang) ?? post.body;
 const localSeoTitle      = post.meta_title_ar || post.meta_title;
 const localSeoDesc       = post.meta_description_ar || post.meta_description;
 const localFaqItems      = post.faqItems_ar && post.faqItems_ar.length > 0 ? post.faqItems_ar : post.faqItems;
+const localRelatedShort  = post.relatedProduct
+  ? (getLocalizedField(post.relatedProduct, 'shortDescription', lang) ?? post.relatedProduct.shortDescription)
+  : undefined;
 
 
 const t = useTranslations(lang as Lang);
@@ -264,8 +268,8 @@ const breadcrumbSchema = {
 
         <!-- Article Body -->
         <article class="article-body">
-          {post.body ? (
-            <PortableText value={post.body} />
+          {localBody ? (
+            <PortableText value={localBody} />
           ) : (
             <p>{localExcerpt}</p>
           )}
@@ -281,7 +285,7 @@ const breadcrumbSchema = {
               <div class="related-product-info">
                 <h3 class="related-product-name">{post.relatedProduct.name}</h3>
                 {post.relatedProduct.purity && <span class="purity-badge" style="margin-inline-start: 0.5rem;">{post.relatedProduct.purity}</span>}
-                <p class="related-product-desc">{post.relatedProduct.shortDescription}</p>
+                <p class="related-product-desc">{localRelatedShort}</p>
               </div>
               <a href={`/ar/products/${post.relatedProduct.slug}`} class="btn btn--gold btn--sm">
                 عرض المواصفات وطلب شهادة التحليل (COA)
@@ -388,7 +392,7 @@ const breadcrumbSchema = {
               <div class="sb-product-card">
                 <span class="purity-badge">{post.relatedProduct.purity || 'High Purity'}</span>
                 <h5 class="sb-product-name">{post.relatedProduct.name}</h5>
-                <p class="sb-product-desc">{post.relatedProduct.shortDescription}</p>
+                <p class="sb-product-desc">{localRelatedShort}</p>
                 <a href={lp(`/products/${post.relatedProduct.slug}`)} class="btn btn--gold btn--sm" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
                   {t('products.view_details')}
                 </a>
