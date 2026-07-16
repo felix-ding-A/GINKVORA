@@ -260,7 +260,15 @@ export async function getProductBySlug(slug: string) {
       }`,
       { slug }
     );
-    if (data) return data;
+    if (data) {
+      if (data.coaFile?.asset?.url) {
+        data.coaFile.asset.url = data.coaFile.asset.url.replace('https://files.sanity.io', '/files/sanity');
+      }
+      if (data.msdsFile?.asset?.url) {
+        data.msdsFile.asset.url = data.msdsFile.asset.url.replace('https://files.sanity.io', '/files/sanity');
+      }
+      return data;
+    }
     return MOCK_PRODUCTS.find(p => p.slug === slug) || null;
   } catch (err) {
     console.warn(`Sanity API connection failed, looking up fallback product: ${slug}`);

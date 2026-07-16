@@ -27,7 +27,8 @@
     }
   ],
   "rewrites": [
-    { "source": "/images/sanity/:path*", "destination": "https://cdn.sanity.io/:path*" }
+    { "source": "/images/sanity/:path*", "destination": "https://cdn.sanity.io/:path*" },
+    { "source": "/files/sanity/:path*", "destination": "https://files.sanity.io/:path*" }
   ],
   "redirects": [
     { "source": "/blog/:path*", "destination": "/insights/:path*", "permanent": true },
