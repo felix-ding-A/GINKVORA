@@ -70,6 +70,11 @@ if (typeof value === 'string') {
 if (htmlContent.includes('<table')) {
   htmlContent = htmlContent.replace(/<table([\s\S]*?)>([\s\S]*?)<\/table>/gi, '<div class="table-container"><table$1>$2</table></div>');
 }
+
+// Replace any raw sanity CDN domains in rich text / markdown HTML content
+htmlContent = htmlContent
+  .replace(/https:\/\/cdn\.sanity\.io/g, '/media/images')
+  .replace(/https:\/\/files\.sanity\.io/g, '/media/files');
 ---
 
 <div class="portable-text" set:html={htmlContent} />
