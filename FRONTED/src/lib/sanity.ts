@@ -7,12 +7,13 @@ import { MOCK_PRODUCTS, MOCK_CATEGORIES, MOCK_POSTS, MOCK_SITE_SETTINGS, MOCK_AU
 // Client Configuration
 // ---------------------------------------------------------------------------
 export const sanityClient = createClient({
-  projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'placeholder',
-  dataset: import.meta.env.PUBLIC_SANITY_DATASET || 'production',
+  projectId: import.meta.env.SANITY_PROJECT_ID || 'placeholder',
+  dataset: import.meta.env.SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
   useCdn: import.meta.env.PROD ? true : false,
   token: import.meta.env.SANITY_API_TOKEN,
 });
+
 
 // ---------------------------------------------------------------------------
 // Image URL Builder

@@ -24,6 +24,30 @@
     {
       "source": "/assets/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/media/images/(.*)",
+      "headers": [
+        { "key": "Cache-Control",          "value": "public, max-age=31536000, immutable" },
+        { "key": "x-sanity-cache-status",  "value": "" },
+        { "key": "x-sanity-project-id",    "value": "" },
+        { "key": "x-sanity-request-id",    "value": "" },
+        { "key": "x-sanity-api-version",   "value": "" },
+        { "key": "server",                 "value": "" },
+        { "key": "via",                    "value": "" }
+      ]
+    },
+    {
+      "source": "/media/files/(.*)",
+      "headers": [
+        { "key": "Cache-Control",          "value": "public, max-age=31536000, immutable" },
+        { "key": "x-sanity-cache-status",  "value": "" },
+        { "key": "x-sanity-project-id",    "value": "" },
+        { "key": "x-sanity-request-id",    "value": "" },
+        { "key": "x-sanity-api-version",   "value": "" },
+        { "key": "server",                 "value": "" },
+        { "key": "via",                    "value": "" }
+      ]
     }
   ],
   "rewrites": [
