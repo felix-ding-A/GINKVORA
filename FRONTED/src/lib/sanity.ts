@@ -100,7 +100,13 @@ export function urlFor(source: any) {
     return fallbackBuilder;
   }
   try {
-    return builder.image(source).auto('format');
+    const b = builder.image(source).auto('format');
+    const originalUrl = b.url.bind(b);
+    b.url = () => {
+      const url = originalUrl();
+      return url ? url.replace('https://cdn.sanity.io', '/images/sanity') : '';
+    };
+    return b;
   } catch (err) {
     let currentUrl = 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&auto=format&fit=crop&q=80';
     const fallbackBuilder = {

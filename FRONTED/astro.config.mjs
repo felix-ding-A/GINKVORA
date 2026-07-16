@@ -15,6 +15,7 @@ export default defineConfig({
 
   build: {
     inlineStylesheets: 'always',
+    assets: 'assets',
   },
 
   integrations: [
