@@ -104,7 +104,7 @@ export function urlFor(source: any) {
     const originalUrl = b.url.bind(b);
     b.url = () => {
       const url = originalUrl();
-      return url ? url.replace('https://cdn.sanity.io', '/images/sanity') : '';
+      return url ? url.replace('https://cdn.sanity.io', '/media/images') : '';
     };
     return b;
   } catch (err) {
@@ -262,10 +262,10 @@ export async function getProductBySlug(slug: string) {
     );
     if (data) {
       if (data.coaFile?.asset?.url) {
-        data.coaFile.asset.url = data.coaFile.asset.url.replace('https://files.sanity.io', '/files/sanity');
+        data.coaFile.asset.url = data.coaFile.asset.url.replace('https://files.sanity.io', '/media/files');
       }
       if (data.msdsFile?.asset?.url) {
-        data.msdsFile.asset.url = data.msdsFile.asset.url.replace('https://files.sanity.io', '/files/sanity');
+        data.msdsFile.asset.url = data.msdsFile.asset.url.replace('https://files.sanity.io', '/media/files');
       }
       return data;
     }
