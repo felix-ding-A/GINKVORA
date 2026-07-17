@@ -2,7 +2,7 @@
 const lang = 'ar';
 // src/pages/insights/index.astro — B2B Industry Insights & Ingredient Research Blog
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getPostsPaginated, urlFor } from '../../../lib/sanity';
+import { getPostsPaginated, urlFor, getLocalizedField } from '../../../lib/sanity';
 
 const siteUrl = 'https://ginkvora.com/ar';
 const selectedCategory = Astro.url.searchParams.get('category');
@@ -65,12 +65,15 @@ const itemListSchema = {
   "description": "تحديثات البحوث العلمية، واتجاهات السوق، والتحديثات التنظيمية للمكونات النباتية النشطة.",
   "url": `${siteUrl}/insights`,
   "numberOfItems": posts.length,
-  "itemListElement": posts.map((post, i) => ({
-    "@type": "ListItem",
-    "position": i + 1,
-    "url": `${siteUrl}/insights/${post.slug}`,
-    "name": post.title,
-  }))
+  "itemListElement": posts.map((post, i) => {
+    const localTitle = getLocalizedField(post, 'title', lang) ?? post.title;
+    return {
+      "@type": "ListItem",
+      "position": i + 1,
+      "url": `${siteUrl}/insights/${post.slug}`,
+      "name": localTitle,
+    };
+  })
 };
 
 
@@ -157,61 +160,66 @@ const itemListSchema = {
     <div class="container insights-container">
       {posts.length > 0 ? (
         <section class="insights-grid" aria-label="قائمة مقالات المدونة">
-          {posts.map((post) => (
-            <article class="blog-card glass reveal">
-              <div class="card-image-box">
-                <a href={`/ar/insights/${post.slug}`} class="card-image-link" aria-label={`اقرأ ${post.title}`}>
-                  <picture style="display: contents;">
-                    <source srcset={urlFor(post.coverImage).width(800).format('webp').url()} type="image/webp" />
-                    <img
-                      src={urlFor(post.coverImage).width(800).url()}
-                      alt={post.title}
-                      loading="lazy"
-                      class="card-img"
-                    />
-                  </picture>
-                </a>
-                {post.tags && post.tags.length > 0 && (
-                  <span class="card-tag">{post.tags[0]}</span>
-                )}
-              </div>
-
-              <div class="card-body">
-                <div class="card-meta">
-                  <time datetime={post.publishedAt}>
-                    {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('ar-EG', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric'
-                    }) : 'مايو 2026'}
-                  </time>
-                  {post.readTime && (
-                    <>
-                      <span class="meta-dot">·</span>
-                      <span>قراءة {post.readTime} دقيقة</span>
-                    </>
+          {posts.map((post) => {
+            const localTitle = getLocalizedField(post, 'title', lang) ?? post.title;
+            const localExcerpt = getLocalizedField(post, 'excerpt', lang) ?? post.excerpt;
+            const translatedTag = post.tags && post.tags.length > 0 ? (categoryTranslations[post.tags[0]] || post.tags[0]) : null;
+            return (
+              <article class="blog-card glass reveal">
+                <div class="card-image-box">
+                  <a href={`/ar/insights/${post.slug}`} class="card-image-link" aria-label={`اقرأ ${localTitle}`}>
+                    <picture style="display: contents;">
+                      <source srcset={urlFor(post.coverImage).width(800).format('webp').url()} type="image/webp" />
+                      <img
+                        src={urlFor(post.coverImage).width(800).url()}
+                        alt={localTitle}
+                        loading="lazy"
+                        class="card-img"
+                      />
+                    </picture>
+                  </a>
+                  {translatedTag && (
+                    <span class="card-tag">{translatedTag}</span>
                   )}
                 </div>
 
-                <h2 class="card-title">
-                  <a href={`/ar/insights/${post.slug}`}>{post.title}</a>
-                </h2>
+                <div class="card-body">
+                  <div class="card-meta">
+                    <time datetime={post.publishedAt}>
+                      {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('ar-EG', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      }) : 'مايو 2026'}
+                    </time>
+                    {post.readTime && (
+                      <>
+                        <span class="meta-dot">·</span>
+                        <span>قراءة {post.readTime} دقيقة</span>
+                      </>
+                    )}
+                  </div>
 
-                <p class="card-excerpt">{post.excerpt}</p>
+                  <h2 class="card-title">
+                    <a href={`/ar/insights/${post.slug}`}>{localTitle}</a>
+                  </h2>
 
-                <div class="card-footer">
-                  <a href={`/ar/insights/${post.slug}`} class="read-more">
-                    اقرأ المقال
-                    <span class="sr-only"> عن {post.title}</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                      <line x1="5" y1="12" x2="19" y2="12"/>
-                      <polyline points="12 5 19 12 12 19"/>
-                    </svg>
-                  </a>
+                  <p class="card-excerpt">{localExcerpt}</p>
+
+                  <div class="card-footer">
+                    <a href={`/ar/insights/${post.slug}`} class="read-more">
+                      اقرأ المقال
+                      <span class="sr-only"> عن {localTitle}</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                        <polyline points="12 5 19 12 12 19"/>
+                      </svg>
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </section>
 
         <!-- Pagination Component -->
