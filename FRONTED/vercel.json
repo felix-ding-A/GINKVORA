@@ -84,6 +84,11 @@
     { "source": "/ru/products/copper-tripeptide-1-ghk-cu-hydrochloride", "destination": "/ru/products/ghk-cu", "permanent": true },
     { "source": "/es/products/copper-tripeptide-1-ghk-cu-hydrochloride", "destination": "/es/products/ghk-cu", "permanent": true },
     { "source": "/ar/products/copper-tripeptide-1-ghk-cu-hydrochloride", "destination": "/ar/products/ghk-cu", "permanent": true },
+
+    { "source": "/products/glabridin-40", "destination": "/products/glabridin", "permanent": true },
+    { "source": "/ru/products/glabridin-40", "destination": "/ru/products/glabridin", "permanent": true },
+    { "source": "/es/products/glabridin-40", "destination": "/es/products/glabridin", "permanent": true },
+    { "source": "/ar/products/glabridin-40", "destination": "/ar/products/glabridin", "permanent": true },
     { "source": "/insights/quercetin-senolytic-aging", "destination": "/insights", "permanent": true },
 
     { "source": "/Featured%20Formulas", "destination": "/featured-formulas", "permanent": true },

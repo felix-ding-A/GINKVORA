@@ -67,7 +67,7 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
   {
     _id: 'prod-2',
     name: 'NMN Beta-Nicotinamide Mononucleotide',
-    slug: 'nmn-beta-nicotinamide-mononucleotide',
+    slug: 'nmn-nicotinamide-mononucleotide',
     category: { name: 'Health Supplements', slug: 'health-supplements' },
     botanicalName: 'Beta-Nicotinamide Mononucleotide',
     purity: '≥ 99.5%',
@@ -119,7 +119,7 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
   {
     _id: 'prod-3',
     name: 'Glabridin 40%',
-    slug: 'glabridin-40',
+    slug: 'glabridin',
     category: { name: 'Cosmetic Actives', slug: 'cosmetic-actives' },
     botanicalName: 'Glycyrrhiza glabra extract',
     purity: '40% Glabridin',
@@ -151,7 +151,7 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
   {
     _id: 'prod-4',
     name: 'EGCG 98%',
-    slug: 'egcg-98',
+    slug: 'egcg-epigallocatechin-gallate',
     category: { name: 'Dual-Use', slug: 'cosmetic-actives' },
     botanicalName: 'Epigallocatechin Gallate',
     purity: '≥ 98%',
@@ -182,7 +182,7 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
   {
     _id: 'prod-5',
     name: 'Luteolin 98%',
-    slug: 'luteolin-98',
+    slug: 'luteolin',
     category: { name: 'Health Supplements', slug: 'health-supplements' },
     botanicalName: 'Luteolin',
     purity: '≥ 98%',
@@ -209,7 +209,7 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
   {
     _id: 'prod-6',
     name: 'Flavone 99%',
-    slug: 'flavone-99',
+    slug: 'flavone',
     category: { name: 'Health Supplements', slug: 'health-supplements' },
     botanicalName: '2-Phenyl-4H-chromen-4-one',
     purity: '≥ 99%',
