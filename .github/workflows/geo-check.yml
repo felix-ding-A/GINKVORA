@@ -1,0 +1,309 @@
+# geo-check — GINKVORA (ginkvora.com) GEO Citability 闸门
+# ====================================================================
+# 站点实况：Astro SSR (output: 'server' + Vercel adapter)，4 语言 (en/ru/ar/es)
+# 因为 SSR 不产出静态 dist/*.html，本 workflow 抓取线上渲染后的页面（AI 爬虫
+# 看到的也是这个），再跑 citability 审计。
+#
+# 触发：每天 14:00 北京时间自动跑 + 手动 dispatch（可选语言/页面类型/阈值）
+# 失败行为：自动开/更新 GitHub Issue，不阻塞 Vercel 部署
+# ====================================================================
+
+name: GEO Citability Audit
+
+on:
+  schedule:
+    # 每天 UTC 06:00 = 北京时间 14:00
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      locale:
+        description: '审计语言 (en/ru/ar/es/all)'
+        default: 'en'
+        type: choice
+        options: ['en', 'ru', 'ar', 'es', 'all']
+      page_types:
+        description: '页面类型 (insights/products/landing/all)'
+        default: 'insights,products'
+        type: choice
+        options:
+          - 'insights,products'
+          - 'insights'
+          - 'products'
+          - 'all'
+      min_score:
+        description: '最低平均可引用性分数 (0-100)'
+        default: '50'
+      min_optimal:
+        description: '最少最优长度(134-167词)段落数'
+        default: '1'
+      max_pages:
+        description: '最多抓取页数 (0=不限，防止跑太久)'
+        default: '0'
+
+permissions:
+  contents: read
+  issues: write   # 用于失败时自动开 issue
+
+concurrency:
+  group: geo-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r tools/geo-check/requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Fetch Sitemaps & Filter Target URLs
+        id: sitemap
+        shell: python
+        run: |
+          import urllib.request
+          import xml.etree.ElementTree as ET
+          import os, json
+
+          # 输入参数
+          locale_input = "${{ inputs.locale || 'en' }}"
+          types_input = "${{ inputs.page_types || 'insights,products' }}"
+          max_pages = int("${{ inputs.max_pages || '0' }}")
+
+          SITE_URL = "https://ginkvora.com"
+          SITEMAP_INDEX = f"{SITE_URL}/sitemap-index.xml"
+          NS = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+
+          def fetch_xml(url):
+              req = urllib.request.Request(url, headers={'User-Agent': 'GKA-GEO-Bot/1.0'})
+              with urllib.request.urlopen(req, timeout=15) as r:
+                  return ET.fromstring(r.read())
+
+          urls = []
+          try:
+              root = fetch_xml(SITEMAP_INDEX)
+              sitemaps = [loc.text for loc in root.findall('.//sm:loc', NS)]
+          except Exception as e:
+              print(f"::warning::无法获取 sitemap-index.xml ({e}), 直接落到 sitemap-0.xml")
+              sitemaps = [f"{SITE_URL}/sitemap-0.xml"]
+
+          for sm in sitemaps:
+              try:
+                  tree = fetch_xml(sm)
+                  for loc in tree.findall('.//sm:loc', NS):
+                      u = loc.text.strip()
+                      # 按语言过滤
+                      path = u.replace(SITE_URL, '')
+                      if locale_input != 'all':
+                          if locale_input == 'en':
+                              if path.startswith('/ru/') or path.startswith('/ar/') or path.startswith('/es/'):
+                                  continue
+                          else:
+                              if not path.startswith(f'/{locale_input}/'):
+                                  continue
+                      # 按页面类型过滤
+                      if types_input != 'all':
+                          target_types = types_input.split(',')
+                          hit = any(f'/{t}/' in path for t in target_types)
+                          if not hit:
+                              continue
+                      urls.append(u)
+              except Exception as e:
+                  print(f"::warning::读取 sitemap {sm} 失败: {e}")
+
+          # 去重
+          urls = sorted(list(set(urls)))
+          if max_pages > 0:
+              urls = urls[:max_pages]
+
+          print(f"✅ 筛选出 {len(urls)} 个目标 URL (locale={locale_input}, types={types_input})")
+          os.makedirs('tmp_urls', exist_ok=True)
+          with open('tmp_urls/targets.json', 'w') as f:
+              json.dump(urls, f, indent=2)
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f"url_count={len(urls)}\n")
+
+      - name: Parallel Fetch & Render (SSR HTML)
+        if: steps.sitemap.outputs.url_count != '0'
+        shell: python
+        run: |
+          import json, subprocess, os
+          from concurrent.futures import ThreadPoolExecutor
+
+          with open('tmp_urls/targets.json') as f:
+              urls = json.load(f)
+
+          os.makedirs('rendered_html', exist_ok=True)
+
+          def fetch_one(url):
+              cmd = [
+                  "python", "tools/geo-check/geo_check.py", "fetch", url,
+                  "--mode", "never",
+                  "--out", "rendered_html",
+                  "--json"
+              ]
+              res = subprocess.run(cmd, capture_output=True, text=True)
+              if res.returncode == 0:
+                  print(f"✓ 抓取成功: {url}")
+              else:
+                  print(f"✗ 抓取失败: {url} -> {res.stderr[:200]}")
+
+          print(f"🚀 开始 4 并发抓取 {len(urls)} 个页面...")
+          with ThreadPoolExecutor(max_workers=4) as ex:
+              ex.map(fetch_one, urls)
+
+      - name: Run Citability Audit
+        id: audit
+        if: steps.sitemap.outputs.url_count != '0'
+        continue-on-error: true   # 失败不中推，记录到 step output 然后统一发 issue
+        shell: python
+        run: |
+          import subprocess, json, sys, os
+
+          min_score = "${{ inputs.min_score || '50' }}"
+          min_optimal = "${{ inputs.min_optimal || '1' }}"
+
+          cmd = [
+              "python", "tools/geo-check/geo_check.py", "audit", "rendered_html",
+              "--min-score", min_score,
+              "--min-optimal", min_optimal,
+              "--json"
+          ]
+
+          res = subprocess.run(cmd, capture_output=True, text=True)
+          try:
+              data = json.loads(res.stdout)
+          except Exception as e:
+              print(f"::error::解析 audit JSON 失败: {e}\nstdout: {res.stdout}\nstderr: {res.stderr}")
+              sys.exit(1)
+
+          os.makedirs('audit_report', exist_ok=True)
+          with open('audit_report/results.json', 'w') as f:
+              json.dump(data, f, indent=2)
+
+          passed = data.get("pass", False)
+          failed_items = data.get("failed", [])
+          total_items = len(data.get("results", []))
+
+          print(f"\n📊 审计结果: pass={passed}, total={total_items}, failed={len(failed_items)}")
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f"passed={str(passed).lower()}\n")
+              out.write(f"total={total_items}\n")
+              out.write(f"failed_count={len(failed_items)}\n")
+
+          if not passed:
+              sys.exit(1)
+
+      - name: Create or Update GitHub Issue on Audit Failure
+        if: steps.audit.outputs.passed == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('audit_report/results.json', 'utf8'));
+            const failed = data.failed || [];
+            
+            const title = `🚨 GEO Citability 巡检未通过 (${failed.length}/${data.results.length} 页低于阈值)`;
+            
+            let body = `### 📊 GEO 可引用性 (Citability) 巡检报告\n\n`;
+            body += `- **运行时间**: ${new Date().toISOString().replace('T', ' ').substring(0, 19)} UTC\n`;
+            body += `- **触发语言**: \`${process.env.LOCALE || 'en'}\`\n`;
+            body += `- **检查总数**: ${data.results.length} 页\n`;
+            body += `- **不达标页数**: **${failed.length}** 页 (阈值: 均分≥${process.env.MIN_SCORE || 50}, 最优段落≥${process.env.MIN_OPTIMAL || 1})\n\n`;
+            body += `#### ❌ 不达标页面明细 (前 20 页):\n\n`;
+            body += `| 页面路径 | 平均分 | 最优长度段 (134-167词) | 评级分布 |\n|---|---|---|---|\n`;
+            
+            failed.slice(0, 20).forEach(item => {
+              const file = item.file.replace('rendered_html/', '');
+              body += `| \`${file}\` | **${item.average_citability_score}** | ${item.optimal_length_passages} | A:${item.grade_distribution.A} B:${item.grade_distribution.B} C:${item.grade_distribution.C} D:${item.grade_distribution.D} F:${item.grade_distribution.F} |\n`;
+            });
+            
+            if (failed.length > 20) {
+              body += `\n*仅展示前 20 页，完整细节见 Workflow Artifacts。*\n`;
+            }
+            
+            body += `\n---\n💡 **优化建议**: 针对 C/D/F 评级段落，将其改写为 **134-167 词自包含定义段落**，并在段落中补充具体数据、百分比与实验数据支撑。`;
+
+            // 查找是否已有开着的 GEO 报告 Issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: ['geo-audit']
+            });
+
+            if (issues.data.length > 0) {
+              const issueNumber = issues.data[0].number;
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                title: title,
+                body: body
+              });
+              console.log(`Updated Issue #${issueNumber}`);
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['geo-audit']
+              });
+              console.log(`Created new Issue`);
+            }
+        env:
+          LOCALE: ${{ inputs.locale || 'en' }}
+          MIN_SCORE: ${{ inputs.min_score || '50' }}
+          MIN_OPTIMAL: ${{ inputs.min_optimal || '1' }}
+
+      - name: Close Open Issue on Audit Success
+        if: steps.audit.outputs.passed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: ['geo-audit']
+            });
+
+            for (const issue of issues.data) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: '🎉 **最新 GEO Citability 巡检已全部达标！自动关闭本 Issue。**'
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed'
+              });
+              console.log(`Closed Issue #${issue.number}`);
+            }
+
+      - name: Upload Audit Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: geo-citability-report
+          path: |
+            audit_report/
+            tmp_urls/
+          retention-days: 7

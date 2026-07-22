@@ -1,0 +1,6 @@
+beautifulsoup4>=4.12.0,<5.0.0
+lxml>=5.3.2,<7.0.0
+
+# 可选: 仅 fetch 子命令 / citability 传 URL 时需要 (SPA 感知渲染)
+# 安装后还需跑: playwright install chromium
+playwright>=1.40.0
