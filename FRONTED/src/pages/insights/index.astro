@@ -2,7 +2,10 @@
 // src/pages/insights/index.astro — B2B Industry Insights & Ingredient Research Blog
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPostsPaginated, urlFor } from '../../lib/sanity';
+import { getLocalePath } from '../../i18n/utils';
 
+const lang = 'en';
+const lp = (path: string) => getLocalePath(lang, path);
 const siteUrl = 'https://ginkvora.com';
 const selectedCategory = Astro.url.searchParams.get('category');
 const searchQuery = Astro.url.searchParams.get('q') || '';
@@ -115,7 +118,7 @@ const itemListSchema = {
     <div class="container filter-container">
       <nav class="category-tabs" aria-label="Category filter">
         <a 
-          href={searchQuery ? `/insights?q=${encodeURIComponent(searchQuery)}` : "/insights"} 
+          href={lp(searchQuery ? `/insights?q=${encodeURIComponent(searchQuery)}` : "/insights")} 
           class:list={['category-tab', { 'category-tab--active': !selectedCategory }]}
         >
           All
@@ -123,12 +126,12 @@ const itemListSchema = {
         {['Ingredient Spotlight', 'Formulation Tips', 'Research', 'Quality & Testing', 'Regulatory', 'Market Trends', 'Industry News'].map(cat => {
           const catSlug = cat.toLowerCase().replace(/[^a-z0-9]/g, '');
           const isActive = selectedCategory && selectedCategory.toLowerCase().replace(/[^a-z0-9]/g, '') === catSlug;
-          const href = searchQuery 
+          const rawHref = searchQuery 
             ? `/insights?category=${encodeURIComponent(cat)}&q=${encodeURIComponent(searchQuery)}`
             : `/insights?category=${encodeURIComponent(cat)}`;
           return (
             <a 
-              href={href} 
+              href={lp(rawHref)} 
               class:list={['category-tab', { 'category-tab--active': isActive }]}
             >
               {cat}

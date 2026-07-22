@@ -639,3 +639,44 @@ export type SanityAuthor = {
 
 export { MOCK_POSTS };
 
+// ---------------------------------------------------------------------------
+// Related Products & Related Posts Queries for Product Detail Pages
+// ---------------------------------------------------------------------------
+export async function getRelatedProductsForProduct(productId: string, categorySlug?: string) {
+  try {
+    const query = `*[_type == "product" && _id != $productId && category->slug.current == $categorySlug][0...3] {
+      ${PRODUCT_FIELDS}
+    }`;
+    const data = await sanityClient.fetch(query, { productId: productId || '', categorySlug: categorySlug || '' });
+    if (data && data.length > 0) return data;
+    return MOCK_PRODUCTS.filter(p => p._id !== productId && (!categorySlug || p.category?.slug === categorySlug)).slice(0, 3);
+  } catch (err) {
+    return MOCK_PRODUCTS.filter(p => p._id !== productId && (!categorySlug || p.category?.slug === categorySlug)).slice(0, 3);
+  }
+}
+
+export async function getRelatedPostsForProduct(productId: string, categoryRef?: string) {
+  try {
+    // Reverse lookup via relatedProduct._ref
+    const reverseQuery = `*[_type == "post" && relatedProduct._ref == $productId] | order(publishedAt desc)[0...3] {
+      ${POST_FIELDS}
+    }`;
+    let posts = await sanityClient.fetch(reverseQuery, { productId: productId || '' });
+    if (!posts || posts.length < 3) {
+      // Fallback lookup via shared category._ref
+      const fallbackQuery = `*[_type == "post" && relatedProduct._ref != $productId && category._ref == $categoryRef] | order(publishedAt desc)[0...3] {
+        ${POST_FIELDS}
+      }`;
+      const fallbackPosts = await sanityClient.fetch(fallbackQuery, { productId: productId || '', categoryRef: categoryRef || '' });
+      const existingIds = new Set((posts || []).map((p: any) => p._id));
+      const extra = (fallbackPosts || []).filter((p: any) => !existingIds.has(p._id));
+      posts = [...(posts || []), ...extra].slice(0, 3);
+    }
+    if (posts && posts.length > 0) return posts;
+    return MOCK_POSTS.slice(0, 3);
+  } catch (err) {
+    return MOCK_POSTS.slice(0, 3);
+  }
+}
+
+

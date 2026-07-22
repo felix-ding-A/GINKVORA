@@ -3,9 +3,11 @@
 export const prerender = true;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getAllProducts, getProductBySlug, urlFor } from '../../lib/sanity';
+import { getAllProducts, getProductBySlug, urlFor, getRelatedProductsForProduct, getRelatedPostsForProduct } from '../../lib/sanity';
 import PortableText from '../../components/PortableText.astro';
 import FAQAccordion from '../../components/FAQAccordion.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import RelatedSection from '../../components/sections/RelatedSection.astro';
 
 export async function getStaticPaths() {
   const products = await getAllProducts();
@@ -20,6 +22,9 @@ const product = await getProductBySlug(slug);
 if (!product) {
   return Astro.redirect('/404');
 }
+
+const relatedProducts = await getRelatedProductsForProduct(product._id, product.category?.slug);
+const relatedPosts = await getRelatedPostsForProduct(product._id, product.category?._ref);
 
 const siteUrl = 'https://ginkvora.com';
 
@@ -177,7 +182,6 @@ const faqSchema = {
   description={product.meta_description || product.shortDescription || `Purchase high purity ${product.name}. Quality guaranteed under GMP certifications. Request COA, MSDS, or sample.`}
 >
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} slot="head" />
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <link
     rel="preload"
@@ -190,13 +194,14 @@ const faqSchema = {
   <main class="product-detail-page bg-noise">
     <div class="container page-content">
       <!-- Breadcrumbs -->
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a>
-        <span class="crumb-separator">/</span>
-        <a href="/products">Products</a>
-        <span class="crumb-separator">/</span>
-        <span class="crumb-active">{product.name}</span>
-      </nav>
+      <Breadcrumbs
+        items={[
+          { name: 'Home', path: '/' },
+          { name: 'Products', path: '/products' },
+          { name: product.name }
+        ]}
+        lang="en"
+      />
 
       <!-- Main Showcase Grid -->
       <div class="detail-grid">
@@ -456,6 +461,9 @@ const faqSchema = {
           <FAQAccordion items={displayFaqItems} title="Frequently Asked Questions" />
         </section>
       )}
+
+      <!-- Related Active Ingredients & Research Insights -->
+      <RelatedSection relatedProducts={relatedProducts} relatedPosts={relatedPosts} lang="en" />
 
       <!-- Inquiry form -->
       <section id="inquiry-form-section" class="inquiry-form-section glass" aria-label="Inquiry Form">

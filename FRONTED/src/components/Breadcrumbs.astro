@@ -1,0 +1,61 @@
+---
+// src/components/Breadcrumbs.astro — Shared localized breadcrumb with JSON-LD schema
+import { getLocalePath } from '../i18n/utils';
+import type { Lang } from '../i18n/utils';
+
+export interface BreadcrumbItem {
+  name: string;
+  path?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+  lang?: string;
+}
+
+const { items = [], lang = 'en' } = Astro.props;
+const typedLang = lang as Lang;
+const siteUrl = 'https://ginkvora.com';
+
+// Generate structured data
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": items.map((item, index) => {
+    const itemPath = item.path ? getLocalePath(typedLang, item.path) : undefined;
+    const fullUrl = itemPath === '/' ? siteUrl : (itemPath ? `${siteUrl}${itemPath}` : undefined);
+    
+    const listItem: any = {
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": item.name
+    };
+    if (fullUrl) {
+      listItem.item = fullUrl;
+    }
+    return listItem;
+  })
+};
+---
+
+<!-- JSON-LD Structured Data for Breadcrumbs -->
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+<!-- HTML Breadcrumb Navigation -->
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  {items.map((item, index) => {
+    const isLast = index === items.length - 1;
+    const itemPath = item.path ? getLocalePath(typedLang, item.path) : undefined;
+    
+    return (
+      <Fragment key={index}>
+        {index > 0 && <span class="crumb-separator">/</span>}
+        {isLast || !itemPath ? (
+          <span class="crumb-active">{item.name}</span>
+        ) : (
+          <a href={itemPath}>{item.name}</a>
+        )}
+      </Fragment>
+    );
+  })}
+</nav>

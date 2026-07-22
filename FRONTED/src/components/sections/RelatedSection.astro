@@ -1,0 +1,76 @@
+---
+// src/components/sections/RelatedSection.astro — Related Products & Insights block for product detail pages
+import { urlFor } from '../../lib/sanity';
+import { getLocalePath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+
+interface Props {
+  relatedProducts?: any[];
+  relatedPosts?: any[];
+  lang?: string;
+}
+
+const { relatedProducts = [], relatedPosts = [], lang = 'en' } = Astro.props;
+const typedLang = lang as Lang;
+const lp = (path: string) => getLocalePath(typedLang, path);
+---
+
+{((relatedProducts && relatedProducts.length > 0) || (relatedPosts && relatedPosts.length > 0)) && (
+  <div class="product-related-blocks" style="margin-top: 3rem; margin-bottom: 2rem;">
+    {/* Related Active Ingredients */}
+    {relatedProducts && relatedProducts.length > 0 && (
+      <section class="related-products-section" aria-label="Related Products" style="margin-bottom: 2.5rem;">
+        <h3 class="related-posts-title" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--color-text-main, #ffffff);">
+          Related Active Ingredients
+        </h3>
+        <div class="related-posts-grid">
+          {relatedProducts.slice(0, 3).map((p: any) => (
+            <a href={lp(`/products/${p.slug}`)} class="related-post-card glass">
+              {p.heroImage && (
+                <div class="related-post-img-wrap">
+                  <img src={urlFor(p.heroImage).width(400).url()} alt={p.name} class="related-post-img" loading="lazy" />
+                </div>
+              )}
+              <div class="related-post-content">
+                {p.purity && <span class="purity-badge" style="display: inline-block; margin-bottom: 0.5rem;">{p.purity}</span>}
+                <h4 class="related-post-card-title">{p.name}</h4>
+                <p class="related-post-excerpt">{p.shortDescription}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {/* Related Insights & Research */}
+    {relatedPosts && relatedPosts.length > 0 && (
+      <section class="related-posts-section" aria-label="Related Scientific Insights">
+        <h3 class="related-posts-title" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--color-text-main, #ffffff);">
+          Related Research & Insights
+        </h3>
+        <div class="related-posts-grid">
+          {relatedPosts.slice(0, 3).map((rp: any) => (
+            <a href={lp(`/insights/${rp.slug}`)} class="related-post-card glass">
+              {rp.coverImage && (
+                <div class="related-post-img-wrap">
+                  <img src={urlFor(rp.coverImage).width(400).url()} alt={rp.title} class="related-post-img" loading="lazy" />
+                </div>
+              )}
+              <div class="related-post-content">
+                <span class="related-post-date">
+                  {rp.publishedAt ? new Date(rp.publishedAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                  }) : ''}
+                </span>
+                <h4 class="related-post-card-title">{rp.title}</h4>
+                <p class="related-post-excerpt">{rp.excerpt}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+)}

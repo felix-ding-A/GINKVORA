@@ -1,0 +1,18 @@
+---
+// src/components/TagBadge.astro — Localized tag badge with category search anchor
+import { getLocalePath } from '../i18n/utils';
+import type { Lang } from '../i18n/utils';
+
+interface Props {
+  tag: string;
+  lang?: string;
+}
+
+const { tag, lang = 'en' } = Astro.props;
+const typedLang = lang as Lang;
+const href = getLocalePath(typedLang, `/insights?category=${encodeURIComponent(tag)}`);
+---
+
+<a href={href} class="badge badge--gold hover:underline" style="text-decoration: none; display: inline-block; transition: all 0.2s ease;">
+  {tag}
+</a>
