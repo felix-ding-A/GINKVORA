@@ -3,9 +3,11 @@ const lang = 'ar';
 // src/pages/products/[slug].astro — Detailed page for specific ingredients
 export const prerender = true;
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getAllProducts, getProductBySlug, urlFor, getLocalizedField } from '../../../lib/sanity';
+import { getAllProducts, getProductBySlug, urlFor, getLocalizedField, getRelatedProductsForProduct, getRelatedPostsForProduct } from '../../../lib/sanity';
 import PortableText from '../../../components/PortableText.astro';
 import FAQAccordion from '../../../components/FAQAccordion.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import RelatedSection from '../../../components/sections/RelatedSection.astro';
 
 export async function getStaticPaths() {
   const products = await getAllProducts();
@@ -19,6 +21,16 @@ const product = await getProductBySlug(slug);
 if (!product) {
   return Astro.redirect('/404');
 }
+
+const categorySlug = Array.isArray(product.category)
+  ? product.category[0]?.slug
+  : (product.category?.slug || product.categories?.[0]?.slug);
+const categoryRef = Array.isArray(product.category)
+  ? product.category[0]?._ref
+  : (product.category?._ref || product.categories?.[0]?._ref);
+
+const relatedProducts = await getRelatedProductsForProduct(product._id, categorySlug, categoryRef);
+const relatedPosts = await getRelatedPostsForProduct(product._id, categorySlug, categoryRef);
 
 const localName          = product.name;
 const localShortDesc     = (getLocalizedField(product, 'shortDescription', lang) ?? product.shortDescription) as string | undefined;
@@ -191,7 +203,6 @@ const faqSchema = {
   description={localSeoDesc || localShortDesc || `Purchase high purity ${product.name}. Quality guaranteed under GMP certifications. Request COA, MSDS, or sample.`}
 >
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} slot="head" />
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <link
     rel="preload"
@@ -204,13 +215,14 @@ const faqSchema = {
   <main class="product-detail-page bg-noise">
     <div class="container page-content">
       <!-- Breadcrumbs -->
-      <nav class="breadcrumbs" aria-label="مسار التنقل">
-        <a href="/ar">الرئيسية</a>
-        <span class="crumb-separator">/</span>
-        <a href="/ar/products">المكونات</a>
-        <span class="crumb-separator">/</span>
-        <span class="crumb-active">{product.name}</span>
-      </nav>
+      <Breadcrumbs
+        items={[
+          { name: 'الرئيسية', path: '/' },
+          { name: 'المكونات', path: '/products' },
+          { name: product.name }
+        ]}
+        lang={lang}
+      />
 
       <!-- Main Showcase Grid -->
       <div class="detail-grid">
@@ -470,6 +482,9 @@ const faqSchema = {
           <FAQAccordion items={displayFaqItems} title="الأسئلة الشائعة" />
         </section>
       )}
+
+      <!-- Related Products & Research Insights -->
+      <RelatedSection relatedProducts={relatedProducts} relatedPosts={relatedPosts} lang={lang} />
 
       <!-- Inquiry form -->
       <section id="inquiry-form-section" class="inquiry-form-section glass" aria-label="Inquiry Form">

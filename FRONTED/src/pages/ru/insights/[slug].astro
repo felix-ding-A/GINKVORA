@@ -6,6 +6,8 @@ import { getAllPosts, getPostBySlug, urlFor, getLocalizedField } from '../../../
 import PortableText from '../../../components/PortableText.astro';
 import { useTranslations, getLocalePath } from '../../../i18n/utils';
 import FAQAccordion from '../../../components/FAQAccordion.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import TagBadge from '../../../components/TagBadge.astro';
 
 const lang = 'ru';
 const t = useTranslations(lang);
@@ -182,13 +184,14 @@ const breadcrumbSchema = {
       <!-- Main Article Container -->
       <div class="article-container">
         <!-- Breadcrumbs -->
-        <nav class="breadcrumbs" aria-label="Хлебные крошки">
-          <a href="/ru">Главная</a>
-          <span class="crumb-separator">/</span>
-          <a href="/ru/insights">Блог</a>
-          <span class="crumb-separator">/</span>
-          <span class="crumb-active">Статья</span>
-        </nav>
+        <Breadcrumbs
+          items={[
+            { name: t('nav.home') || 'Главная', path: '/' },
+            { name: 'Insights', path: '/insights' },
+            { name: localTitle || post.title }
+          ]}
+          lang={lang}
+        />
 
         <!-- Article Header -->
         <header class="article-header">
@@ -217,7 +220,7 @@ const breadcrumbSchema = {
           {post.tags && post.tags.length > 0 && (
             <div class="article-tags">
               {post.tags.map((tag: string) => (
-                <span class="badge badge--gold">{tag}</span>
+                <TagBadge tag={tag} lang={lang} />
               ))}
             </div>
           )}

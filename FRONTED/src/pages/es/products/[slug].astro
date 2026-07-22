@@ -2,10 +2,12 @@
 // src/pages/es/products/[slug].astro — Spanish product detail page
 export const prerender = true;
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getAllProducts, getProductBySlug, urlFor, getLocalizedField } from '../../../lib/sanity';
+import { getAllProducts, getProductBySlug, urlFor, getLocalizedField, getRelatedProductsForProduct, getRelatedPostsForProduct } from '../../../lib/sanity';
 import PortableText from '../../../components/PortableText.astro';
 import { useTranslations, getLocalePath } from '../../../i18n/utils';
 import FAQAccordion from '../../../components/FAQAccordion.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import RelatedSection from '../../../components/sections/RelatedSection.astro';
 
 const lang = 'es';
 const t = useTranslations(lang);
@@ -24,6 +26,16 @@ const product = await getProductBySlug(slug);
 if (!product) {
   return Astro.redirect('/404');
 }
+
+const categorySlug = Array.isArray(product.category)
+  ? product.category[0]?.slug
+  : (product.category?.slug || product.categories?.[0]?.slug);
+const categoryRef = Array.isArray(product.category)
+  ? product.category[0]?._ref
+  : (product.category?._ref || product.categories?.[0]?._ref);
+
+const relatedProducts = await getRelatedProductsForProduct(product._id, categorySlug, categoryRef);
+const relatedPosts = await getRelatedPostsForProduct(product._id, categorySlug, categoryRef);
 
 const siteUrl = 'https://ginkvora.com';
 
@@ -187,19 +199,19 @@ const breadcrumbSchema = {
   description={localSeoDesc || localShortDesc || `Comprar ${localName} de alta pureza. Calidad garantizada bajo cumplimiento de GMP. Solicitar COA, MSDS o muestra.`}
 >
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} slot="head" />
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 
   <main class="product-detail-page bg-noise">
     <div class="container page-content">
       <!-- Breadcrumbs -->
-      <nav class="breadcrumbs" aria-label="Hitos de navegación">
-        <a href="/es">Inicio</a>
-        <span class="crumb-separator">/</span>
-        <a href="/es/products">Productos</a>
-        <span class="crumb-separator">/</span>
-        <span class="crumb-active">{localName}</span>
-      </nav>
+      <Breadcrumbs
+        items={[
+          { name: t('nav.home') || 'Inicio', path: '/' },
+          { name: t('nav.products') || 'Productos', path: '/products' },
+          { name: localName }
+        ]}
+        lang={lang}
+      />
 
       <!-- Main Showcase Grid -->
       <div class="detail-grid">
@@ -440,6 +452,9 @@ const breadcrumbSchema = {
           <FAQAccordion items={localFaqItems} title="Preguntas frecuentes" />
         </section>
       )}
+
+      <!-- Related Products & Research Insights -->
+      <RelatedSection relatedProducts={relatedProducts} relatedPosts={relatedPosts} lang={lang} />
 
       <!-- Inquiry form section -->
       <section id="inquiry-form-section" class="inquiry-section glass" aria-label="Formulario de consulta">

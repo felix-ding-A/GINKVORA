@@ -8,6 +8,8 @@ import PortableText from '../../../components/PortableText.astro';
 import { useTranslations, getLocalePath } from '../../../i18n/utils';
 import type { Lang } from '../../../i18n/utils';
 import FAQAccordion from '../../../components/FAQAccordion.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import TagBadge from '../../../components/TagBadge.astro';
 
 export async function getStaticPaths() {
   const posts = await getAllPosts(100);
@@ -201,13 +203,14 @@ const breadcrumbSchema = {
       <!-- Main Article Container -->
       <div class="article-container">
         <!-- Breadcrumbs -->
-        <nav class="breadcrumbs" aria-label="مسار التنقل">
-          <a href="/ar">الرئيسية</a>
-          <span class="crumb-separator">/</span>
-          <a href="/ar/insights">الأبحاث والتقارير</a>
-          <span class="crumb-separator">/</span>
-          <span class="crumb-active">المقال</span>
-        </nav>
+        <Breadcrumbs
+          items={[
+            { name: 'الرئيسية', path: '/' },
+            { name: 'الأبحاث والتقارير', path: '/insights' },
+            { name: localTitle || post.title }
+          ]}
+          lang={lang}
+        />
 
         <!-- Article Header -->
         <header class="article-header">
@@ -238,7 +241,7 @@ const breadcrumbSchema = {
           {post.tags && post.tags.length > 0 && (
             <div class="article-tags">
               {post.tags.map((tag) => (
-                <span class="badge badge--gold">{tag}</span>
+                <TagBadge tag={tag} lang={lang} />
               ))}
             </div>
           )}

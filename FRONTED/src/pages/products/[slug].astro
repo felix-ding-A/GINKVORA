@@ -23,8 +23,15 @@ if (!product) {
   return Astro.redirect('/404');
 }
 
-const relatedProducts = await getRelatedProductsForProduct(product._id, product.category?.slug);
-const relatedPosts = await getRelatedPostsForProduct(product._id, product.category?._ref);
+const categorySlug = Array.isArray(product.category)
+  ? product.category[0]?.slug
+  : (product.category?.slug || product.categories?.[0]?.slug);
+const categoryRef = Array.isArray(product.category)
+  ? product.category[0]?._ref
+  : (product.category?._ref || product.categories?.[0]?._ref);
+
+const relatedProducts = await getRelatedProductsForProduct(product._id, categorySlug, categoryRef);
+const relatedPosts = await getRelatedPostsForProduct(product._id, categorySlug, categoryRef);
 
 const siteUrl = 'https://ginkvora.com';
 

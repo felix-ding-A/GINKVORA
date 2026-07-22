@@ -642,32 +642,43 @@ export { MOCK_POSTS };
 // ---------------------------------------------------------------------------
 // Related Products & Related Posts Queries for Product Detail Pages
 // ---------------------------------------------------------------------------
-export async function getRelatedProductsForProduct(productId: string, categorySlug?: string) {
+export async function getRelatedProductsForProduct(productId: string, categorySlug?: string, categoryRef?: string) {
   try {
-    const query = `*[_type == "product" && _id != $productId && category->slug.current == $categorySlug][0...3] {
+    const cslug = categorySlug || '';
+    const cref = categoryRef || '';
+    const query = `*[_type == "product" && _id != $productId && (
+      ($cslug != "" && ($cslug == category->slug.current || $cslug in category[]->slug.current || $cslug in mainCategories))
+      || ($cref != "" && ($cref == category._ref || $cref in category[]._ref))
+    )][0...3] {
       ${PRODUCT_FIELDS}
     }`;
-    const data = await sanityClient.fetch(query, { productId: productId || '', categorySlug: categorySlug || '' });
+    const data = await sanityClient.fetch(query, { productId: productId || '', cslug, cref });
     if (data && data.length > 0) return data;
-    return MOCK_PRODUCTS.filter(p => p._id !== productId && (!categorySlug || p.category?.slug === categorySlug)).slice(0, 3);
+    return MOCK_PRODUCTS.filter(p => p._id !== productId && (!categorySlug || p.category?.slug === categorySlug || (p.mainCategories && p.mainCategories.includes(categorySlug)))).slice(0, 3);
   } catch (err) {
-    return MOCK_PRODUCTS.filter(p => p._id !== productId && (!categorySlug || p.category?.slug === categorySlug)).slice(0, 3);
+    return MOCK_PRODUCTS.filter(p => p._id !== productId).slice(0, 3);
   }
 }
 
-export async function getRelatedPostsForProduct(productId: string, categoryRef?: string) {
+export async function getRelatedPostsForProduct(productId: string, categorySlug?: string, categoryRef?: string) {
   try {
-    // Reverse lookup via relatedProduct._ref
+    const cslug = categorySlug || '';
+    const cref = categoryRef || '';
+
+    // 1. Reverse lookup via relatedProduct._ref
     const reverseQuery = `*[_type == "post" && relatedProduct._ref == $productId] | order(publishedAt desc)[0...3] {
       ${POST_FIELDS}
     }`;
     let posts = await sanityClient.fetch(reverseQuery, { productId: productId || '' });
     if (!posts || posts.length < 3) {
-      // Fallback lookup via shared category._ref
-      const fallbackQuery = `*[_type == "post" && relatedProduct._ref != $productId && category._ref == $categoryRef] | order(publishedAt desc)[0...3] {
+      // 2. Fallback lookup via shared category reference or slug
+      const fallbackQuery = `*[_type == "post" && (relatedProduct._ref != $productId || !defined(relatedProduct)) && (
+        ($cref != "" && ($cref == category._ref || $cref in category[]._ref))
+        || ($cslug != "" && ($cslug == category->slug.current || $cslug in category[]->slug.current || $cslug in tags))
+      )] | order(publishedAt desc)[0...3] {
         ${POST_FIELDS}
       }`;
-      const fallbackPosts = await sanityClient.fetch(fallbackQuery, { productId: productId || '', categoryRef: categoryRef || '' });
+      const fallbackPosts = await sanityClient.fetch(fallbackQuery, { productId: productId || '', cslug, cref });
       const existingIds = new Set((posts || []).map((p: any) => p._id));
       const extra = (fallbackPosts || []).filter((p: any) => !existingIds.has(p._id));
       posts = [...(posts || []), ...extra].slice(0, 3);
