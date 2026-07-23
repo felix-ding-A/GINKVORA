@@ -23,11 +23,11 @@ on:
         options: ['en', 'ru', 'ar', 'es', 'all']
       page_types:
         description: '页面类型 (insights/products/landing/all)'
-        default: 'insights,products'
+        default: 'insights'
         type: choice
         options:
-          - 'insights,products'
           - 'insights'
+          - 'insights,products'
           - 'products'
           - 'all'
       min_score:
@@ -78,7 +78,7 @@ jobs:
 
           # 输入参数
           locale_input = "${{ inputs.locale || 'en' }}"
-          types_input = "${{ inputs.page_types || 'insights,products' }}"
+          types_input = "${{ inputs.page_types || 'insights' }}"
           max_pages = int("${{ inputs.max_pages || '0' }}")
 
           SITE_URL = "https://ginkvora.com"
