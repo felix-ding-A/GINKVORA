@@ -13,8 +13,8 @@ async function main() {
   console.log('🚀 Starting IndexNow URL submission...');
   
   if (!fs.existsSync(SITEMAP_PATH)) {
-    console.error(`❌ Sitemap file not found at ${SITEMAP_PATH}. Ensure build ran first.`);
-    process.exit(0);
+    console.warn(`⚠️ Sitemap file not found at ${SITEMAP_PATH}. Skipping IndexNow submission.`);
+    return;
   }
 
   try {
@@ -28,16 +28,32 @@ async function main() {
     }
 
     if (urls.length === 0) {
-      console.log('⚠️ No URLs found in sitemap.');
+      console.log('⚠️ No URLs found in sitemap. Skipping IndexNow submission.');
       return;
     }
 
     console.log(`🔍 Found ${urls.length} URLs in sitemap. Submitting to IndexNow...`);
 
+    // First verify the key file is reachable (it may not be during build since
+    // the new deployment is not yet live when postbuild runs on Vercel)
+    const keyUrl = `https://${HOST}/${KEY}.txt`;
+    try {
+      const keyCheck = await fetch(keyUrl, { method: 'HEAD', signal: AbortSignal.timeout(8000) });
+      if (!keyCheck.ok) {
+        console.warn(`⚠️ IndexNow key file not reachable at ${keyUrl} (status ${keyCheck.status}).`);
+        console.warn('   This is expected during the FIRST deploy. Skipping IndexNow — will submit on next deploy.');
+        return;
+      }
+    } catch (e) {
+      console.warn(`⚠️ Could not reach key file at ${keyUrl}: ${e.message}`);
+      console.warn('   Skipping IndexNow submission to avoid a 403 error.');
+      return;
+    }
+
     const payload = {
       host: HOST,
       key: KEY,
-      keyLocation: `https://${HOST}/${KEY}.txt`,
+      keyLocation: keyUrl,
       urlList: urls
     };
 
@@ -53,10 +69,12 @@ async function main() {
       console.log(`✅ IndexNow submission successful! Status: ${response.status}`);
     } else {
       const errorText = await response.text();
-      console.error(`❌ IndexNow submission failed. Status: ${response.status}, Error: ${errorText}`);
+      // Treat as a warning — a failed IndexNow ping must never break the deployment
+      console.warn(`⚠️ IndexNow submission returned ${response.status}: ${errorText}`);
+      console.warn('   Deployment will continue. The sitemap will be crawled normally.');
     }
   } catch (err) {
-    console.error('❌ Error submitting to IndexNow:', err);
+    console.warn('⚠️ IndexNow submission encountered an error (non-fatal):', err.message);
   }
 }
 
