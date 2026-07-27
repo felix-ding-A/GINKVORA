@@ -693,66 +693,19 @@ html[lang="ar"] .badge {
 }
 
 /* ==========================================================================
-   Chatwoot Live Chat Overrides (Touch, Pointer Events & Scroll Lock Fix)
+   Chatwoot Live Chat — minimal essential overrides
+   (Do NOT override overflow/position/size — the SDK manages those)
    ========================================================================== */
 
-/* Prevent background page scrolling when Chatwoot chat is open */
-body.chatwoot-open {
-  overflow: hidden !important;
-  touch-action: none !important;
-}
-
-/* Fix pointer events, touch responsiveness, and z-index when Chatwoot is open */
-.woot-widget-holder {
-  z-index: 2147483647 !important;
-  overscroll-behavior: contain !important;
-  -webkit-overflow-scrolling: touch !important;
-}
-
-.woot-widget-holder:not(.woot--hide) {
+.woot-widget-holder:not(.woot--hide),
+.woot-widget-holder iframe,
+#chatwoot_live_chat_widget,
+.woot-widget-bubble,
+.woot-widget-bubble iframe {
   pointer-events: auto !important;
   touch-action: auto !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  overscroll-behavior: contain !important;
 }
 
 .woot-widget-holder.woot--hide {
   pointer-events: none !important;
-}
-
-.woot-widget-holder iframe,
-iframe[name="chatwoot_live_chat_window"] {
-  pointer-events: auto !important;
-  touch-action: auto !important;
-  width: 100% !important;
-  height: 100% !important;
-  border: 0 !important;
-  overscroll-behavior: contain !important;
-}
-
-.woot-widget-bubble {
-  z-index: 2147483646 !important;
-  pointer-events: auto !important;
-  touch-action: auto !important;
-}
-
-.woot-widget-bubble iframe,
-iframe[name="chatwoot_live_chat_launcher"] {
-  pointer-events: auto !important;
-  touch-action: auto !important;
-}
-
-/* Ensure proper responsiveness and touch interaction on screen sizes > 666px */
-@media only screen and (min-width: 667px) {
-  .woot-widget-holder:not(.woot--hide) {
-    bottom: 20px !important;
-    right: 20px !important;
-    width: 400px !important;
-    max-width: calc(100vw - 32px) !important;
-    height: 600px !important;
-    max-height: calc(100vh - 40px) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
-  }
 }

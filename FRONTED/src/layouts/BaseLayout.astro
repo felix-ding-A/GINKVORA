@@ -434,49 +434,8 @@ const organizationSchema = {
             websiteToken: 'bTcHGarMBnzRt4D4roByeZoF',
             baseUrl: BASE_URL
           });
-          initChatwootScrollLock();
-        }
+        };
       })(document,"script");
-
-      function initChatwootScrollLock() {
-        let attempts = 0;
-        const interval = setInterval(function() {
-          attempts++;
-          const holder = document.querySelector('.woot-widget-holder');
-          if (holder) {
-            clearInterval(interval);
-
-            // Stop touch & wheel event propagation to prevent scrolling the background page
-            holder.addEventListener('touchmove', function(e) {
-              e.stopPropagation();
-            }, { passive: true });
-
-            holder.addEventListener('wheel', function(e) {
-              e.stopPropagation();
-            }, { passive: true });
-
-            // Watch for open/close state changes via MutationObserver
-            const observer = new MutationObserver(function() {
-              const isOpen = !holder.classList.contains('woot--hide');
-              if (isOpen) {
-                document.body.classList.add('chatwoot-open');
-              } else {
-                document.body.classList.remove('chatwoot-open');
-              }
-            });
-
-            observer.observe(holder, { attributes: true, attributeFilter: ['class'] });
-
-            // Set initial state
-            if (!holder.classList.contains('woot--hide')) {
-              document.body.classList.add('chatwoot-open');
-            }
-          }
-          if (attempts > 50) clearInterval(interval);
-        }, 200);
-      }
-
-      document.addEventListener('astro:page-load', initChatwootScrollLock);
     </script>
   </body>
 </html>
