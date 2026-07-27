@@ -420,22 +420,146 @@ const organizationSchema = {
       document.addEventListener('astro:page-load', initCookieConsent);
     </script>
 
-    <!-- Chatwoot Live Chat -->
+    <!-- Chatwoot Live Chat Widget (Ginkvora Custom) -->
     <script is:inline>
       window.chatwootSettings = {"position":"right","type":"expanded_bubble","launcherTitle":"Chat Live"};
-      (function(d,t) {
-        var BASE_URL="https://chat.ginkvora.com";
-        var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-        g.src=BASE_URL+"/packs/js/sdk.js";
+      (function (d, t) {
+        var BASE_URL = "https://chat.ginkvora.com";
+        var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        g.src = BASE_URL + "/packs/js/sdk.js";
+        g.defer = true;
         g.async = true;
-        s.parentNode.insertBefore(g,s);
-        g.onload=function(){
+        s.parentNode.insertBefore(g, s);
+        g.onload = function () {
           window.chatwootSDK.run({
             websiteToken: 'bTcHGarMBnzRt4D4roByeZoF',
-            baseUrl: BASE_URL
+            baseUrl: BASE_URL,
+            locale: 'en'
           });
         };
-      })(document,"script");
+      })(document, "script");
+    </script>
+
+    <!-- Ginkvora widget enhancements: scroll shake + badge + skip welcome + auto intro -->
+    <style is:inline>
+      @keyframes cw-shake {
+        0%, 100% { transform: rotate(0deg) scale(1); }
+        10%, 30%, 50%, 70%, 90% { transform: rotate(-10deg) scale(1.05); }
+        20%, 40%, 60%, 80% { transform: rotate(10deg) scale(1.05); }
+      }
+      .woot-widget-bubble.cw-shake {
+        animation: cw-shake 1s ease-in-out infinite !important;
+      }
+      .cw-badge {
+        position: fixed;
+        z-index: 2147483001 !important;
+        width: 22px;
+        height: 22px;
+        background: #ff3b30;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        font-family: -apple-system, "Segoe UI", sans-serif;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(255, 59, 48, 0.5);
+        pointer-events: none;
+        animation: cw-pulse 2s ease-in-out infinite;
+      }
+      @keyframes cw-pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.2); opacity: 0.85; }
+      }
+    </style>
+    <script is:inline>
+      (function () {
+        var scrolled = false;
+        var badge = null;
+        var launcherBound = false;
+        var introSent = false;
+
+        function getLauncher() {
+          return document.querySelector('.woot-widget-bubble');
+        }
+
+        function positionBadge() {
+          if (!badge) return;
+          var launcher = getLauncher();
+          if (!launcher) return;
+          var rect = launcher.getBoundingClientRect();
+          badge.style.right = (window.innerWidth - rect.right + 4) + 'px';
+          badge.style.bottom = (window.innerHeight - rect.top + 4) + 'px';
+        }
+
+        function showBadge() {
+          if (badge) return;
+          badge = document.createElement('div');
+          badge.className = 'cw-badge';
+          badge.textContent = '1';
+          document.body.appendChild(badge);
+          positionBadge();
+        }
+
+        function hideBadge() {
+          if (badge) { badge.remove(); badge = null; }
+        }
+
+        function startShake() {
+          var launcher = getLauncher();
+          if (launcher) {
+            launcher.classList.add('cw-shake');
+            showBadge();
+          }
+        }
+
+        function stopShake() {
+          var launcher = getLauncher();
+          if (launcher) launcher.classList.remove('cw-shake');
+          hideBadge();
+        }
+
+        // 滚动超过 200px 后 launcher 抖动 + 红角标
+        window.addEventListener('scroll', function () {
+          if (window.scrollY > 200 && !scrolled) {
+            scrolled = true;
+            startShake();
+          }
+        }, { passive: true });
+
+        // widget ready 后绑定交互
+        window.addEventListener('chatwoot:ready', function () {
+          var tryBind = setInterval(function () {
+            var launcher = getLauncher();
+            if (launcher && !launcherBound) {
+              clearInterval(tryBind);
+              launcherBound = true;
+
+              launcher.addEventListener('click', function () {
+                stopShake();
+                if (!introSent) {
+                  introSent = true;
+                  setTimeout(function () {
+                    if (window.$chatwoot && window.$chatwoot.sendMessage) {
+                      window.$chatwoot.sendMessage('hi');
+                    }
+                  }, 500);
+                }
+              });
+
+              if (scrolled) startShake();
+            }
+          }, 500);
+
+          setTimeout(function () { clearInterval(tryBind); }, 5000);
+        });
+
+        window.addEventListener('resize', function () {
+          if (badge) positionBadge();
+        });
+      })();
     </script>
   </body>
 </html>
