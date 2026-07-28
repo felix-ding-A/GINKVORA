@@ -138,6 +138,30 @@
     { "source": "/insights/licorice-extract-vs-purified-glabridin", "destination": "/insights/licorice-extract-vs-glabridin", "permanent": true },
     { "source": "/ru/insights/licorice-extract-vs-purified-glabridin", "destination": "/ru/insights/licorice-extract-vs-glabridin", "permanent": true },
     { "source": "/es/insights/licorice-extract-vs-purified-glabridin", "destination": "/es/insights/licorice-extract-vs-glabridin", "permanent": true },
-    { "source": "/ar/insights/licorice-extract-vs-purified-glabridin", "destination": "/ar/insights/licorice-extract-vs-glabridin", "permanent": true }
+    { "source": "/ar/insights/licorice-extract-vs-purified-glabridin", "destination": "/ar/insights/licorice-extract-vs-glabridin", "permanent": true },
+
+    { "source": "/insights/author/:path*", "destination": "/insights", "permanent": true },
+    { "source": "/ru/insights/author/:path*", "destination": "/ru/insights", "permanent": true },
+    { "source": "/es/insights/author/:path*", "destination": "/es/insights", "permanent": true },
+    { "source": "/ar/insights/author/:path*", "destination": "/ar/insights", "permanent": true },
+
+    { "source": "/products/pdrn-polydeoxyribonucleotide", "destination": "/products", "permanent": true },
+    { "source": "/ru/products/pdrn-polydeoxyribonucleotide", "destination": "/ru/products", "permanent": true },
+    { "source": "/es/products/pdrn-polydeoxyribonucleotide", "destination": "/es/products", "permanent": true },
+    { "source": "/ar/products/pdrn-polydeoxyribonucleotide", "destination": "/ar/products", "permanent": true },
+
+    { "source": "/products/flavone-99", "destination": "/products/flavone", "permanent": true },
+    { "source": "/ru/products/flavone-99", "destination": "/ru/products/flavone", "permanent": true },
+    { "source": "/es/products/flavone-99", "destination": "/es/products/flavone", "permanent": true },
+    { "source": "/ar/products/flavone-99", "destination": "/ar/products/flavone", "permanent": true },
+    { "source": "/products/luteolin-98", "destination": "/products/luteolin", "permanent": true },
+    { "source": "/ru/products/luteolin-98", "destination": "/ru/products/luteolin", "permanent": true },
+    { "source": "/es/products/luteolin-98", "destination": "/es/products/luteolin", "permanent": true },
+    { "source": "/ar/products/luteolin-98", "destination": "/ar/products/luteolin", "permanent": true },
+
+    { "source": "/blog/phloretin", "destination": "/insights", "permanent": true },
+    { "source": "/blog/glabridin-complete-guide-benefits-mechanism", "destination": "/insights", "permanent": true },
+    { "source": "/blog/palmitoyl-tripeptide-38-matrixyl-synthe-6", "destination": "/insights", "permanent": true },
+    { "source": "/blog/egcg-98-percent-green-tea-extract", "destination": "/insights", "permanent": true }
   ]
 }
