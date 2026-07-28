@@ -254,6 +254,20 @@ const loadPreset = (preset: typeof PRESET_INGREDIENTS[0]) => {
   }
 };
 
+const handleInputFocus = (field: 'mass' | 'conc' | 'volume' | 'mw') => {
+  if (target.value === field) {
+    const fields: ('mass' | 'conc' | 'volume' | 'mw')[] = ['mass', 'conc', 'volume', 'mw'];
+    target.value = fields.find(f => f !== field) || 'conc';
+  }
+};
+
+const handlePctInputFocus = (field: 'solute' | 'total' | 'pct') => {
+  if (pctTarget.value === field) {
+    const fields: ('solute' | 'total' | 'pct')[] = ['solute', 'total', 'pct'];
+    pctTarget.value = fields.find(f => f !== field) || 'solute';
+  }
+};
+
 const handleReset = () => {
   if (calcMode.value === 'molarity') {
     mass.value = '88.06';
@@ -345,16 +359,17 @@ onMounted(() => {
                 @click="target = 'mass'" 
                 :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'mass' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
               >
-                {{ target === 'mass' ? 'Target' : 'Solve' }}
+                {{ target === 'mass' ? '⚡ Result' : 'Set Target' }}
               </button>
             </div>
             <div class="flex gap-2">
               <input
                 id="molarity-mass"
                 type="number"
+                step="any"
                 class="form-input font-mono"
                 v-model="mass"
-                :disabled="target === 'mass'"
+                @focus="handleInputFocus('mass')"
                 placeholder="Enter mass"
               />
               <select class="form-input form-select w-24" v-model="massUnit" aria-label="Mass unit">
@@ -371,16 +386,17 @@ onMounted(() => {
                 @click="target = 'conc'" 
                 :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'conc' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
               >
-                {{ target === 'conc' ? 'Target' : 'Solve' }}
+                {{ target === 'conc' ? '⚡ Result' : 'Set Target' }}
               </button>
             </div>
             <div class="flex gap-2">
               <input
                 id="molarity-conc"
                 type="number"
+                step="any"
                 class="form-input font-mono"
                 v-model="conc"
-                :disabled="target === 'conc'"
+                @focus="handleInputFocus('conc')"
                 placeholder="Enter conc"
               />
               <select class="form-input form-select w-24" v-model="concUnit" aria-label="Concentration unit">
@@ -397,16 +413,17 @@ onMounted(() => {
                 @click="target = 'volume'" 
                 :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'volume' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
               >
-                {{ target === 'volume' ? 'Target' : 'Solve' }}
+                {{ target === 'volume' ? '⚡ Result' : 'Set Target' }}
               </button>
             </div>
             <div class="flex gap-2">
               <input
                 id="molarity-volume"
                 type="number"
+                step="any"
                 class="form-input font-mono"
                 v-model="volume"
-                :disabled="target === 'volume'"
+                @focus="handleInputFocus('volume')"
                 placeholder="Enter volume"
               />
               <select class="form-input form-select w-24" v-model="volumeUnit" aria-label="Volume unit">
@@ -423,16 +440,17 @@ onMounted(() => {
                 @click="target = 'mw'" 
                 :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'mw' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
               >
-                {{ target === 'mw' ? 'Target' : 'Solve' }}
+                {{ target === 'mw' ? '⚡ Result' : 'Set Target' }}
               </button>
             </div>
             <div class="flex gap-2">
               <input
                 id="molarity-mw"
                 type="number"
+                step="any"
                 class="form-input font-mono"
                 v-model="mw"
-                :disabled="target === 'mw'"
+                @focus="handleInputFocus('mw')"
                 placeholder="Enter MW"
               />
               <span class="form-input w-24 flex items-center justify-center text-xs text-[var(--color-text-muted)] bg-white/5 select-none">

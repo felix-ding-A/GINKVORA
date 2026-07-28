@@ -85,6 +85,13 @@ const formatResult = (num: number): string => {
   return parseFloat(num.toFixed(4)).toString();
 };
 
+const handleStdFocus = (field: 'c1' | 'v1' | 'c2' | 'v2') => {
+  if (target.value === field) {
+    const fields: ('c1' | 'v1' | 'c2' | 'v2')[] = ['c1', 'v1', 'c2', 'v2'];
+    target.value = fields.find(f => f !== field) || 'v1';
+  }
+};
+
 const convertConcToBase = (value: number, unit: string, mwVal: number): number => {
   const unitInfo = CONC_UNITS.find(u => u.label === unit);
   if (!unitInfo) return value;
@@ -430,11 +437,11 @@ onMounted(() => {
             <div class="flex justify-between items-center mb-2">
               <label class="form-label font-semibold text-xs uppercase tracking-wider">Stock Concentration (C₁)</label>
               <button @click="target = 'c1'" :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'c1' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']">
-                {{ target === 'c1' ? 'Target' : 'Solve' }}
+                {{ target === 'c1' ? '⚡ Result' : 'Set Target' }}
               </button>
             </div>
             <div class="flex gap-2">
-              <input type="number" class="form-input font-mono" v-model="c1" :disabled="target === 'c1'" />
+              <input type="number" step="any" class="form-input font-mono" v-model="c1" @focus="handleStdFocus('c1')" />
               <select class="form-input form-select w-28" v-model="c1Unit">
                 <option v-for="u in CONC_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
               </select>
@@ -446,11 +453,11 @@ onMounted(() => {
             <div class="flex justify-between items-center mb-2">
               <label class="form-label font-semibold text-xs uppercase tracking-wider">Stock Volume (V₁)</label>
               <button @click="target = 'v1'" :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'v1' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']">
-                {{ target === 'v1' ? 'Target' : 'Solve' }}
+                {{ target === 'v1' ? '⚡ Result' : 'Set Target' }}
               </button>
             </div>
             <div class="flex gap-2">
-              <input type="number" class="form-input font-mono" v-model="v1" :disabled="target === 'v1'" />
+              <input type="number" step="any" class="form-input font-mono" v-model="v1" @focus="handleStdFocus('v1')" />
               <select class="form-input form-select w-28" v-model="v1Unit">
                 <option v-for="u in VOL_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
               </select>
@@ -462,11 +469,11 @@ onMounted(() => {
             <div class="flex justify-between items-center mb-2">
               <label class="form-label font-semibold text-xs uppercase tracking-wider">Final Concentration (C₂)</label>
               <button @click="target = 'c2'" :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'c2' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']">
-                {{ target === 'c2' ? 'Target' : 'Solve' }}
+                {{ target === 'c2' ? '⚡ Result' : 'Set Target' }}
               </button>
             </div>
             <div class="flex gap-2">
-              <input type="number" class="form-input font-mono" v-model="c2" :disabled="target === 'c2'" />
+              <input type="number" step="any" class="form-input font-mono" v-model="c2" @focus="handleStdFocus('c2')" />
               <select class="form-input form-select w-28" v-model="c2Unit">
                 <option v-for="u in CONC_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
               </select>
@@ -478,11 +485,11 @@ onMounted(() => {
             <div class="flex justify-between items-center mb-2">
               <label class="form-label font-semibold text-xs uppercase tracking-wider">Final Volume (V₂)</label>
               <button @click="target = 'v2'" :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'v2' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']">
-                {{ target === 'v2' ? 'Target' : 'Solve' }}
+                {{ target === 'v2' ? '⚡ Result' : 'Set Target' }}
               </button>
             </div>
             <div class="flex gap-2">
-              <input type="number" class="form-input font-mono" v-model="v2" :disabled="target === 'v2'" />
+              <input type="number" step="any" class="form-input font-mono" v-model="v2" @focus="handleStdFocus('v2')" />
               <select class="form-input form-select w-28" v-model="v2Unit">
                 <option v-for="u in VOL_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
               </select>

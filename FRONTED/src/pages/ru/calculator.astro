@@ -92,9 +92,10 @@ const faqSchema = {
         <p class="banner-desc">Профессиональные расчётные инструменты для специалистов R&D и исследователей в области формуляций.</p>
       </div>
     </header>
-    <div class="container formulator-layout">
-      <FormulatorConsole client:only="vue" />
-    </div>
+    <!-- Main interactive formulator wrapper -->
+    <section class="container section--sm">
+      <FormulatorConsole client:load />
+    </section>
   </main>
 </BaseLayout>
 <style>

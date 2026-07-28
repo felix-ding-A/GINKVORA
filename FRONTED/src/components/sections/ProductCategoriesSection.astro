@@ -367,6 +367,12 @@ const categories = [
     text-align: center;
   }
 
+  @media (min-width: 1400px) {
+    .categories-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
   @media (max-width: 768px) {
     .categories-grid {
       grid-template-columns: 1fr;

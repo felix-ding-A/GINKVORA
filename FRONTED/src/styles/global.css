@@ -135,8 +135,8 @@
   --z-tooltip: 300;
 
   /* ── Container ── */
-  --container-max:     1280px;
-  --container-padding: clamp(1rem, 5vw, 2.5rem);
+  --container-max:     1720px;
+  --container-padding: clamp(1rem, 4vw, 3rem);
 }
 
 /* ── Base Reset ── */
@@ -417,6 +417,10 @@ button { cursor: pointer; font-family: var(--font-body); }
 /* ── Flex Utilities ── */
 .flex-center  { display: flex; align-items: center; justify-content: center; }
 .flex-between { display: flex; align-items: center; justify-content: space-between; }
+
+/* ── Background utility classes (full-bleed section backgrounds) ── */
+.bg-deep    { background-color: var(--color-bg-deep); }
+.bg-surface { background-color: var(--color-surface); }
 
 /* ── Background noise texture ── */
 .bg-noise { position: relative; }

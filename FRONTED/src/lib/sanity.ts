@@ -670,8 +670,11 @@ export async function getRelatedPostsForProduct(productId: string, categorySlug?
       ${POST_FIELDS}
     }`;
     let posts = await sanityClient.fetch(reverseQuery, { productId: productId || '' });
-    if (!posts || posts.length < 3) {
-      // 2. Fallback lookup via shared category reference or slug
+    
+    if (!posts) posts = [];
+
+    // 2. Fallback lookup via shared category reference or slug
+    if (posts.length < 3) {
       const fallbackQuery = `*[_type == "post" && (relatedProduct._ref != $productId || !defined(relatedProduct)) && (
         ($cref != "" && ($cref == category._ref || $cref in category[]._ref))
         || ($cslug != "" && ($cslug == category->slug.current || $cslug in category[]->slug.current || $cslug in tags))
@@ -679,15 +682,29 @@ export async function getRelatedPostsForProduct(productId: string, categorySlug?
         ${POST_FIELDS}
       }`;
       const fallbackPosts = await sanityClient.fetch(fallbackQuery, { productId: productId || '', cslug, cref });
-      const existingIds = new Set((posts || []).map((p: any) => p._id));
+      const existingIds = new Set(posts.map((p: any) => p._id));
       const extra = (fallbackPosts || []).filter((p: any) => !existingIds.has(p._id));
-      posts = [...(posts || []), ...extra].slice(0, 3);
+      posts = [...posts, ...extra].slice(0, 3);
     }
+
+    // 3. Option B: If still less than 3 posts, fill remaining slots with the latest published Sanity posts
+    if (posts.length < 3) {
+      const existingIds = Array.from(new Set(posts.map((p: any) => p._id).filter(Boolean)));
+      const latestQuery = `*[_type == "post" && !(_id in $existingIds)] | order(publishedAt desc)[0...3] {
+        ${POST_FIELDS}
+      }`;
+      const latestPosts = await sanityClient.fetch(latestQuery, { existingIds });
+      const currentIds = new Set(posts.map((p: any) => p._id));
+      const extraLatest = (latestPosts || []).filter((p: any) => !currentIds.has(p._id));
+      posts = [...posts, ...extraLatest].slice(0, 3);
+    }
+
     if (posts && posts.length > 0) return posts;
     return MOCK_POSTS.slice(0, 3);
   } catch (err) {
     return MOCK_POSTS.slice(0, 3);
   }
 }
+
 
 

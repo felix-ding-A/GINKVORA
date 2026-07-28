@@ -310,7 +310,7 @@ const ingredients = [
   }
 
   .section-header {
-    max-width: 600px;
+    max-width: 800px;
   }
 
   .carousel-controls {
@@ -577,6 +577,12 @@ const ingredients = [
     background: var(--color-primary, #d4a654);
     width: 20px;
     border-radius: 4px;
+  }
+
+  @media (min-width: 1400px) {
+    .ingredient-card {
+      flex: 0 0 calc(25% - 1.125rem);
+    }
   }
 
   @media (max-width: 1023px) {

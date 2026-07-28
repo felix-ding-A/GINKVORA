@@ -6,20 +6,21 @@ import { getPostsPaginated, urlFor, getLocalizedField, MOCK_POSTS } from '../../
 
 const lang = 'es';
 
-// Dynamic fetch: get 1 post in "Market Trends" category
+// Dynamic fetch: get 1 post in "Market Trends" category, or fall back to the latest real Sanity post
 let recommendedPost = null;
 try {
   const { posts } = await getPostsPaginated({ category: 'Market Trends', page: 1, pageSize: 1 });
   if (posts && posts.length > 0) {
     recommendedPost = posts[0];
+  } else {
+    const { posts: latest } = await getPostsPaginated({ page: 1, pageSize: 1 });
+    if (latest && latest.length > 0) {
+      recommendedPost = latest[0];
+    }
   }
 } catch (err) {
   console.warn('Failed to fetch recommended post from Sanity in thank-you page, using local fallback.');
-}
-
-// Fallback to local mock data
-if (!recommendedPost) {
-  recommendedPost = MOCK_POSTS.find(p => p.tags && p.tags.includes('Market Trends')) || MOCK_POSTS[0];
+  recommendedPost = MOCK_POSTS[0];
 }
 
 // Localize article details with translation fallback
