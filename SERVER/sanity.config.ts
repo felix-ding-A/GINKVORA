@@ -3,6 +3,8 @@ import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { table } from '@sanity/table'
 import { markdownSchema } from 'sanity-plugin-markdown'
+import { media } from 'sanity-plugin-media'
+import { muxInput } from 'sanity-plugin-mux-input'
 import { schemaTypes } from './schemaTypes'
 import { GenerateWithAIAction } from './actions/generateWithAI'
 
@@ -81,6 +83,8 @@ export default defineConfig({
     visionTool(),
     table(),
     markdownSchema(),
+    media(),
+    muxInput(),
   ],
 
   document: {

@@ -479,7 +479,6 @@ const organizationSchema = {
         var scrolled = false;
         var badge = null;
         var launcherBound = false;
-        var introSent = false;
 
         function getLauncher() {
           return document.querySelector('.woot-widget-bubble');
@@ -539,14 +538,7 @@ const organizationSchema = {
 
               launcher.addEventListener('click', function () {
                 stopShake();
-                if (!introSent) {
-                  introSent = true;
-                  setTimeout(function () {
-                    if (window.$chatwoot && window.$chatwoot.sendMessage) {
-                      window.$chatwoot.sendMessage('hi');
-                    }
-                  }, 500);
-                }
+                // 自我介绍由 widget 内部在首次进入对话时自动触发
               });
 
               if (scrolled) startShake();

@@ -365,10 +365,18 @@ export const productType = defineType({
         defineField({
           name: 'alt',
           type: 'string',
-          title: 'Alt Text',
+          title: 'Alt Text (Required for SEO)',
           description: 'Describe the image for accessibility and SEO',
+          validation: (Rule) => Rule.required().error('Hero Image 的 Alt 替代文本不可为空！'),
         }),
       ],
+    }),
+    defineField({
+      name: 'productVideo',
+      title: 'Product Demonstration Video',
+      type: 'mux.video',
+      group: 'media',
+      description: 'Upload video for product demonstration via Mux Video CDN',
     }),
     defineField({
       name: 'gallery',
@@ -380,7 +388,12 @@ export const productType = defineType({
           type: 'image',
           options: { hotspot: true },
           fields: [
-            defineField({ name: 'alt', type: 'string', title: 'Alt Text' }),
+            defineField({
+              name: 'alt',
+              type: 'string',
+              title: 'Alt Text',
+              validation: (Rule) => Rule.required().error('画廊图片的 Alt 替代文本不可为空！'),
+            }),
           ],
         }),
       ],
@@ -409,11 +422,25 @@ export const productType = defineType({
 
     // ── SEO ─────────────────────────────────────────
     defineField({
+      name: 'seoKeywords',
+      title: 'Focus Keyword / Keyphrase',
+      type: 'string',
+      group: 'seo',
+      description: 'Target SEO keyword for this product (e.g. "PQQ Disodium Salt wholesale")',
+    }),
+    defineField({
       name: 'meta_title',
       title: 'Meta Title (EN)',
       type: 'string',
       group: 'seo',
-      description: 'Custom meta title for SEO optimization (max 60 chars).',
+      description: 'Custom meta title for SEO optimization (建议 10~60 字符).',
+      validation: (Rule) =>
+        Rule.required()
+          .error('SEO 错误：Meta Title 不能为空！')
+          .min(10)
+          .warning('SEO 提示：Meta Title 建议不少于 10 个字符')
+          .max(60)
+          .error('SEO 错误：Meta Title 超过 60 个字符，谷歌搜素结果会被截断！'),
     }),
     defineField({
       name: 'meta_description',
@@ -421,7 +448,14 @@ export const productType = defineType({
       type: 'text',
       group: 'seo',
       rows: 3,
-      description: 'Custom meta description for SEO optimization (max 160 chars).',
+      description: 'Custom meta description for SEO optimization (建议 50~160 字符).',
+      validation: (Rule) =>
+        Rule.required()
+          .error('SEO 错误：Meta Description 不能为空！')
+          .min(50)
+          .warning('SEO 提示：Meta Description 建议不少于 50 个字符')
+          .max(160)
+          .error('SEO 错误：Meta Description 超过 160 个字符，谷歌搜素结果会被截断！'),
     }),
     defineField({
       name: 'faqItems',

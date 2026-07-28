@@ -12,10 +12,13 @@
   "dependencies": {
     "@sanity/table": "^2.0.1",
     "@sanity/vision": "^5.26.0",
+    "easymde": "*",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "sanity": "^5.26.0",
     "sanity-plugin-markdown": "^8.0.5",
+    "sanity-plugin-media": "*",
+    "sanity-plugin-mux-input": "*",
     "styled-components": "^6.1.14"
   },
   "devDependencies": {

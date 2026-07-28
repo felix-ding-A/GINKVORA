@@ -43,8 +43,20 @@ export const postType = defineType({
       group: 'basic',
       options: { hotspot: true },
       fields: [
-        defineField({ name: 'alt', type: 'string', title: 'Alt Text' }),
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alt Text (Required for SEO)',
+          validation: (Rule) => Rule.required().error('封面图的 Alt 替代文本不可为空！'),
+        }),
       ],
+    }),
+    defineField({
+      name: 'postVideo',
+      title: 'Featured Post Video',
+      type: 'mux.video',
+      group: 'basic',
+      description: 'Upload video for this blog post via Mux Video CDN',
     }),
     defineField({
       name: 'publishedAt',
@@ -243,13 +255,27 @@ export const postType = defineType({
       validation: (Rule) => Rule.max(160),
     }),
 
+
+    defineField({
+      name: 'seoKeywords',
+      title: 'Focus Keyword / Keyphrase',
+      type: 'string',
+      group: 'seo',
+      description: 'Target SEO keyword for this blog post (e.g. "PQQ anti-aging benefits")',
+    }),
     defineField({
       name: 'meta_title',
       title: 'Meta Title (Title Tag)',
       type: 'string',
       group: 'seo',
-      description: 'Used for the browser title tag. Keep it under 60 characters.',
-      validation: (Rule) => Rule.max(70),
+      description: 'Used for the browser title tag (建议 10~60 字符).',
+      validation: (Rule) =>
+        Rule.required()
+          .error('SEO 错误：Meta Title 不能为空！')
+          .min(10)
+          .warning('SEO 提示：Meta Title 建议不少于 10 个字符')
+          .max(60)
+          .error('SEO 错误：Meta Title 超过 60 个字符，谷歌搜素结果会被截断！'),
     }),
     defineField({
       name: 'meta_description',
@@ -257,8 +283,14 @@ export const postType = defineType({
       type: 'text',
       group: 'seo',
       rows: 3,
-      description: 'Used for the search engine results snippet. Keep it under 160 characters.',
-      validation: (Rule) => Rule.max(160),
+      description: 'Used for the search engine results snippet (建议 50~160 字符).',
+      validation: (Rule) =>
+        Rule.required()
+          .error('SEO 错误：Meta Description 不能为空！')
+          .min(50)
+          .warning('SEO 提示：Meta Description 建议不少于 50 个字符')
+          .max(160)
+          .error('SEO 错误：Meta Description 超过 160 个字符，谷歌搜素结果会被截断！'),
     }),
     defineField({
       name: 'faqItems',
