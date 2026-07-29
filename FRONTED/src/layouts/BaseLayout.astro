@@ -250,6 +250,11 @@ const organizationSchema = {
     <!-- Performance: Preload Critical Hero Background Image -->
     <link rel="preload" as="image" href="/images/hero-bg.webp" type="image/webp" />
 
+    <!-- Performance: Third-party DNS Prefetch & Preconnect -->
+    <link rel="dns-prefetch" href="https://chat.ginkvora.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
+
 
 
     <!-- Structured Data -->
@@ -420,25 +425,59 @@ const organizationSchema = {
       document.addEventListener('astro:page-load', initCookieConsent);
     </script>
 
-    <!-- Chatwoot Live Chat Widget (Ginkvora Custom) -->
+    <!-- Chatwoot Live Chat Widget (Ginkvora Custom — Deferred Loading) -->
     <script is:inline>
       window.chatwootSettings = {"position":"right","type":"expanded_bubble","launcherTitle":"Chat Live"};
-      (function (d, t) {
-        var BASE_URL = "https://chat.ginkvora.com";
-        var g = d.createElement(t),
-            s = d.getElementsByTagName(t)[0];
-        g.src = BASE_URL + "/packs/js/sdk.js";
-        g.defer = true;
-        g.async = true;
-        s.parentNode.insertBefore(g, s);
-        g.onload = function () {
-          window.chatwootSDK.run({
-            websiteToken: 'bTcHGarMBnzRt4D4roByeZoF',
-            baseUrl: BASE_URL,
-            locale: 'en'
+      (function () {
+        let loaded = false;
+        function loadChatwoot() {
+          if (loaded) return;
+          loaded = true;
+          var BASE_URL = "https://chat.ginkvora.com";
+          var g = document.createElement("script");
+          var s = document.getElementsByTagName("script")[0];
+          g.src = BASE_URL + "/packs/js/sdk.js";
+          g.defer = true;
+          g.async = true;
+          s.parentNode.insertBefore(g, s);
+          g.onload = function () {
+            if (window.chatwootSDK) {
+              window.chatwootSDK.run({
+                websiteToken: 'bTcHGarMBnzRt4D4roByeZoF',
+                baseUrl: BASE_URL,
+                locale: 'en'
+              });
+            }
+          };
+        }
+
+        function scheduleChatwoot() {
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(function() {
+              setTimeout(loadChatwoot, 3500);
+            });
+          } else {
+            setTimeout(loadChatwoot, 4000);
+          }
+
+          const triggerEvents = ['click', 'mousedown', 'mousemove', 'touchstart', 'scroll', 'keydown'];
+          function triggerLoad() {
+            loadChatwoot();
+            triggerEvents.forEach(function(event) {
+              window.removeEventListener(event, triggerLoad);
+            });
+          }
+          triggerEvents.forEach(function(event) {
+            window.addEventListener(event, triggerLoad, { passive: true });
           });
-        };
-      })(document, "script");
+        }
+
+        if (document.readyState === 'complete') {
+          scheduleChatwoot();
+        } else {
+          window.addEventListener('load', scheduleChatwoot, { passive: true });
+        }
+      })();
     </script>
 
     <!-- Ginkvora widget enhancements: scroll shake + skip welcome + auto intro -->
