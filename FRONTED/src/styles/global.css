@@ -4,8 +4,6 @@
    "Pure Nature, Proven Science"
    ============================================ */
 
-
-
 @import "tailwindcss";
 
 /* ── Local Font Declarations ── */
@@ -93,6 +91,7 @@
 
   /* ── Typography ── */
   --font-display:  'Cormorant Garamond', 'Georgia', serif;
+  --font-title:    'Cormorant Garamond', 'Georgia', serif;
   --font-body:     'DM Sans', 'Helvetica Neue', sans-serif;
   --font-mono:     'JetBrains Mono', 'Courier New', monospace;
 
@@ -109,23 +108,22 @@
 
   /* ── Border radius ── */
   --radius-sm:   0.375rem;
-  --radius-md:   0.75rem;
-  --radius-lg:   1.25rem;
-  --radius-xl:   2rem;
+  --radius-md:   0.625rem;
+  --radius-lg:   1rem;
+  --radius-xl:   1.5rem;
   --radius-full: 9999px;
 
   /* ── Shadows ── */
-  --shadow-sm:        0 1px 3px rgba(0,0,0,0.5);
-  --shadow-md:        0 4px 16px rgba(0,0,0,0.6);
-  --shadow-lg:        0 8px 40px rgba(0,0,0,0.7);
-  --shadow-glow-gold: 0 0 40px rgba(212,166,84,0.25);
-  --shadow-glow-orange: 0 0 40px rgba(224,120,48,0.2);
+  --shadow-sm:   0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md:   0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg:   0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-glow-gold:   0 0 24px rgba(212, 166, 84, 0.25);
+  --shadow-glow-orange: 0 0 24px rgba(224, 120, 48, 0.25);
 
   /* ── Transitions ── */
-  --transition-fast:   150ms ease;
-  --transition-base:   250ms ease;
-  --transition-slow:   400ms ease;
-  --transition-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
   /* ── Z-index ── */
   --z-base:    1;
@@ -133,53 +131,54 @@
   --z-nav:     100;
   --z-modal:   200;
   --z-tooltip: 300;
+  --z-header:  1000;
 
   /* ── Container ── */
-  --container-max:     1720px;
+  --container-max:     1440px;
   --container-padding: clamp(1rem, 4vw, 3rem);
 }
 
-/* ── Base Reset ── */
+/* ── Base Styles ── */
 *, *::before, *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html {
   font-size: 16px;
   scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-  scrollbar-width: auto;
-  scrollbar-color: rgba(212, 166, 84, 0.5) var(--color-bg-deep);
 }
 
 body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-family: var(--font-body);
   font-weight: 400;
-  line-height: 1.7;
-  color: var(--color-text);
-  background-color: var(--color-bg);
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 
 /* ── Typography ── */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  line-height: 1.15;
+  font-family: var(--font-title);
+  font-weight: 700;
+  line-height: 1.2;
   color: var(--color-text);
-  letter-spacing: -0.01em;
+  margin-top: 0;
+  letter-spacing: -0.02em;
 }
 
-h1 { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 700; }
-h2 { font-size: clamp(1.875rem, 4vw, 3.25rem); }
-h3 { font-size: clamp(1.375rem, 2.5vw, 2rem); }
-h4 { font-size: clamp(1.125rem, 2vw, 1.5rem); }
-h5 { font-size: 1.125rem; }
-h6 { font-size: 1rem; }
+h1 { font-size: clamp(2.35rem, 5.5vw, 4.5rem); font-weight: 800; }
+h2 { font-size: clamp(1.75rem, 3.5vw, 3rem); font-weight: 700; }
+h3 { font-size: clamp(1.3rem, 2.2vw, 1.875rem); font-weight: 700; }
+h4 { font-size: clamp(1.1rem, 1.8vw, 1.375rem); font-weight: 600; }
+
+.font-brand,
+.brand-display {
+  font-family: var(--font-display);
+}
 
 p { line-height: 1.75; color: var(--color-text-secondary); }
 

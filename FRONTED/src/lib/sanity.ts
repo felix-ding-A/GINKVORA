@@ -1,6 +1,6 @@
 // src/lib/sanity.ts — Sanity client and query helpers (with robust Mock Data fallback)
 import { createClient } from '@sanity/client';
-import imageUrlBuilder from '@sanity/image-url';
+import createImageUrlBuilder from '@sanity/image-url';
 import { MOCK_PRODUCTS, MOCK_CATEGORIES, MOCK_POSTS, MOCK_SITE_SETTINGS, MOCK_AUTHORS } from './mockData';
 
 // ---------------------------------------------------------------------------
@@ -18,7 +18,7 @@ export const sanityClient = createClient({
 // ---------------------------------------------------------------------------
 // Image URL Builder
 // ---------------------------------------------------------------------------
-const builder = imageUrlBuilder(sanityClient);
+const builder = createImageUrlBuilder(sanityClient);
 
 function setUrlParam(urlStr: string, param: string, value: string): string {
   try {

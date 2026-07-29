@@ -1,5 +1,5 @@
 ---
-// src/components/sections/RelatedSection.astro — Related Products & Insights block for product detail pages
+// src/components/sections/RelatedSection.astro — Related Products & Insights card grid for product detail pages
 import { urlFor } from '../../lib/sanity';
 import { getLocalePath } from '../../i18n/utils';
 import type { Lang } from '../../i18n/utils';
@@ -11,30 +11,72 @@ interface Props {
 }
 
 const { relatedProducts = [], relatedPosts = [], lang = 'en' } = Astro.props;
-const typedLang = lang as Lang;
+const typedLang = (lang || 'en') as Lang;
 const lp = (path: string) => getLocalePath(typedLang, path);
+
+const titles = {
+  en: {
+    products: 'Related Active Ingredients',
+    posts: 'Related Research & Insights',
+    readMore: 'Read Article',
+    viewDetails: 'View Specifications'
+  },
+  ru: {
+    products: 'Сопутствующие активные ингредиенты',
+    posts: 'Связанные исследования и статьи',
+    readMore: 'Читать статью',
+    viewDetails: 'Подробнее'
+  },
+  es: {
+    products: 'Ingredientes activos relacionados',
+    posts: 'Investigaciones y artículos relacionados',
+    readMore: 'Leer artículo',
+    viewDetails: 'Ver detalles'
+  },
+  ar: {
+    products: 'المكونات النشطة ذات الصلة',
+    posts: 'الأبحاث والتحليلات ذات الصلة',
+    readMore: 'قراءة المقال',
+    viewDetails: 'عرض التفاصيل'
+  }
+};
+
+const t = titles[typedLang] || titles.en;
 ---
 
 {((relatedProducts && relatedProducts.length > 0) || (relatedPosts && relatedPosts.length > 0)) && (
-  <div class="product-related-blocks" style="margin-top: 3rem; margin-bottom: 2rem;">
+  <div class="product-related-blocks">
     {/* Related Active Ingredients */}
     {relatedProducts && relatedProducts.length > 0 && (
-      <section class="related-products-section" aria-label="Related Products" style="margin-bottom: 2.5rem;">
-        <h3 class="related-posts-title" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--color-text-main, #ffffff);">
-          Related Active Ingredients
-        </h3>
-        <div class="related-posts-grid">
+      <section class="related-section" aria-label="Related Products">
+        <div class="section-header">
+          <h3 class="section-title">
+            <span class="title-icon">🧪</span>
+            {t.products}
+          </h3>
+        </div>
+        <div class="related-grid">
           {relatedProducts.slice(0, 3).map((p: any) => (
-            <a href={lp(`/products/${p.slug}`)} class="related-post-card glass">
-              {p.heroImage && (
-                <div class="related-post-img-wrap">
-                  <img src={urlFor(p.heroImage).width(400).url()} alt={p.name} class="related-post-img" loading="lazy" />
+            <a href={lp(`/products/${p.slug}`)} class="related-card glass">
+              <div class="card-img-wrap">
+                {p.heroImage ? (
+                  <img
+                    src={urlFor(p.heroImage).width(600).height(400).fit('crop').url()}
+                    alt={p.name}
+                    class="card-img"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div class="card-img-placeholder">🌿</div>
+                )}
+                {p.purity && <span class="card-badge">{p.purity}</span>}
+              </div>
+              <div class="card-body">
+                <h4 class="card-title">{p.name}</h4>
+                <p class="card-excerpt">{p.shortDescription || p.shortDescription_ru || p.shortDescription_es || p.shortDescription_ar}</p>
+                <div class="card-footer">
+                  <span class="card-action-link">{t.viewDetails} &rarr;</span>
                 </div>
-              )}
-              <div class="related-post-content">
-                {p.purity && <span class="purity-badge" style="display: inline-block; margin-bottom: 0.5rem;">{p.purity}</span>}
-                <h4 class="related-post-card-title">{p.name}</h4>
-                <p class="related-post-excerpt">{p.shortDescription}</p>
               </div>
             </a>
           ))}
@@ -44,28 +86,43 @@ const lp = (path: string) => getLocalePath(typedLang, path);
 
     {/* Related Insights & Research */}
     {relatedPosts && relatedPosts.length > 0 && (
-      <section class="related-posts-section" aria-label="Related Scientific Insights">
-        <h3 class="related-posts-title" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--color-text-main, #ffffff);">
-          Related Research & Insights
-        </h3>
-        <div class="related-posts-grid">
+      <section class="related-section" aria-label="Related Scientific Insights">
+        <div class="section-header">
+          <h3 class="section-title">
+            <span class="title-icon">📰</span>
+            {t.posts}
+          </h3>
+        </div>
+        <div class="related-grid">
           {relatedPosts.slice(0, 3).map((rp: any) => (
-            <a href={lp(`/insights/${rp.slug}`)} class="related-post-card glass">
-              {rp.coverImage && (
-                <div class="related-post-img-wrap">
-                  <img src={urlFor(rp.coverImage).width(400).url()} alt={rp.title} class="related-post-img" loading="lazy" />
+            <a href={lp(`/insights/${rp.slug}`)} class="related-card glass">
+              <div class="card-img-wrap">
+                {rp.coverImage ? (
+                  <img
+                    src={urlFor(rp.coverImage).width(600).height(400).fit('crop').url()}
+                    alt={rp.title}
+                    class="card-img"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div class="card-img-placeholder">🔬</div>
+                )}
+                {rp.publishedAt && (
+                  <span class="card-date-badge">
+                    {new Date(rp.publishedAt).toLocaleDateString(typedLang === 'ru' ? 'ru-RU' : typedLang === 'es' ? 'es-ES' : 'en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    })}
+                  </span>
+                )}
+              </div>
+              <div class="card-body">
+                <h4 class="card-title">{rp.title}</h4>
+                <p class="card-excerpt">{rp.excerpt}</p>
+                <div class="card-footer">
+                  <span class="card-action-link">{t.readMore} &rarr;</span>
                 </div>
-              )}
-              <div class="related-post-content">
-                <span class="related-post-date">
-                  {rp.publishedAt ? new Date(rp.publishedAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                  }) : ''}
-                </span>
-                <h4 class="related-post-card-title">{rp.title}</h4>
-                <p class="related-post-excerpt">{rp.excerpt}</p>
               </div>
             </a>
           ))}
@@ -74,3 +131,202 @@ const lp = (path: string) => getLocalePath(typedLang, path);
     )}
   </div>
 )}
+
+<style>
+  .product-related-blocks {
+    margin-top: 3.5rem;
+    margin-bottom: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  .related-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(212, 166, 84, 0.15);
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text, #ffffff);
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    letter-spacing: -0.01em;
+  }
+
+  .title-icon {
+    font-size: 1.25rem;
+  }
+
+  /* ── 3-Column Grid ── */
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  /* ── Card Component ── */
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: var(--radius-lg, 12px);
+    overflow: hidden;
+    text-decoration: none;
+    background: var(--color-surface, rgba(20, 17, 13, 0.6));
+    border: 1px solid rgba(212, 166, 84, 0.15) !important;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .related-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(212, 166, 84, 0.45) !important;
+    box-shadow: 0 8px 24px rgba(212, 166, 84, 0.15), 0 0 15px rgba(212, 166, 84, 0.1);
+  }
+
+  /* ── Image Banner ── */
+  .card-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    background: rgba(10, 8, 5, 0.8);
+    overflow: hidden;
+  }
+
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .related-card:hover .card-img {
+    transform: scale(1.06);
+  }
+
+  .card-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    background: rgba(212, 166, 84, 0.05);
+  }
+
+  /* ── Badges ── */
+  .card-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(6, 5, 3, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(212, 166, 84, 0.3);
+    color: var(--color-primary-light, #f0c878);
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: var(--font-mono, monospace);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full, 9999px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  .card-date-badge {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    background: rgba(6, 5, 3, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.75rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: var(--radius-sm, 4px);
+  }
+
+  /* ── Card Content Body ── */
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    flex-grow: 1;
+  }
+
+  .card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text, #ffffff);
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.2s ease;
+  }
+
+  .related-card:hover .card-title {
+    color: var(--color-primary-light, #f0c878);
+  }
+
+  .card-excerpt {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary, rgba(255, 255, 255, 0.7));
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .card-action-link {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-primary-light, #f0c878);
+    transition: transform 0.2s ease, color 0.2s ease;
+    display: inline-block;
+  }
+
+  .related-card:hover .card-action-link {
+    transform: translateX(4px);
+    color: #ffffff;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    .related-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .related-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .product-related-blocks {
+      margin-top: 2.5rem;
+      margin-bottom: 2.5rem;
+      gap: 2.5rem;
+    }
+  }
+</style>

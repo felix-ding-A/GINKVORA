@@ -9,6 +9,41 @@ const resend = new Resend(import.meta.env.RESEND_API_KEY);
 const FROM_EMAIL = import.meta.env.FROM_EMAIL || 'noreply@ginkvora.com';
 const TO_EMAIL   = import.meta.env.TO_EMAIL   || 'inquiry@ginkvora.com';
 
+// ---------------------------------------------------------------------------
+// Security Helpers: HTML Sanitization & Memory Rate Limiting
+// ---------------------------------------------------------------------------
+function escapeHtml(str: any): string {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute window
+const MAX_REQUESTS_PER_WINDOW = 5;       // Max 5 submissions per minute per IP
+
+function checkRateLimit(ip: string): boolean {
+  if (!ip || ip === 'Unknown') return true;
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+
+  if (!record || now > record.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return true;
+  }
+
+  if (record.count >= MAX_REQUESTS_PER_WINDOW) {
+    return false;
+  }
+
+  record.count += 1;
+  return true;
+}
+
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
@@ -31,6 +66,15 @@ export const POST: APIRoute = async ({ request }) => {
     // If x-forwarded-for contains multiple IPs, take the first one
     const ip = rawIp.split(',')[0].trim();
 
+    // Rate limiting check
+    if (!checkRateLimit(ip)) {
+      console.warn(`Rate limit exceeded for COA request from IP: ${ip}`);
+      return new Response(
+        JSON.stringify({ error: 'Too many requests. Please wait a minute before trying again.' }),
+        { status: 429, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Default to Vercel geo headers as fallback
     let country = request.headers.get('x-vercel-ip-country') || 'Unknown';
     let region = request.headers.get('x-vercel-ip-country-region') || 'Unknown';
@@ -39,10 +83,10 @@ export const POST: APIRoute = async ({ request }) => {
     let latitude = request.headers.get('x-vercel-ip-latitude') || 'Unknown';
     let longitude = request.headers.get('x-vercel-ip-longitude') || 'Unknown';
 
-    // Fetch real location from ip-api if it is a public IP
+    // Fetch real location from ip-api via HTTPS if it is a public IP
     if (ip !== 'Unknown' && ip !== '127.0.0.1' && ip !== '::1' && !ip.startsWith('192.168.') && !ip.startsWith('10.')) {
       try {
-        const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
+        const geoRes = await fetch(`https://ip-api.com/json/${ip}`);
         if (geoRes.ok) {
           const geoData = await geoRes.json();
           if (geoData.status === 'success') {
@@ -65,7 +109,7 @@ export const POST: APIRoute = async ({ request }) => {
     const submissionId = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 15);
 
     const mapsLink = (latitude !== 'Unknown' && longitude !== 'Unknown')
-      ? `<a href="https://www.google.com/maps?q=${latitude},${longitude}" target="_blank" style="color:#4a8a48;text-decoration:underline;">View on Google Maps</a>`
+      ? `<a href="https://www.google.com/maps?q=${encodeURIComponent(latitude)},${encodeURIComponent(longitude)}" target="_blank" style="color:#4a8a48;text-decoration:underline;">View on Google Maps</a>`
       : 'N/A';
 
     // --- Honeypot check ---
@@ -147,7 +191,7 @@ export const POST: APIRoute = async ({ request }) => {
       from: FROM_EMAIL,
       to: TO_EMAIL,
       replyTo: email,
-      subject: `[COA Access] Lead: ${name} — ${productName}`,
+      subject: `[COA Access] Lead: ${escapeHtml(name)} — ${escapeHtml(productName)}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -178,61 +222,61 @@ export const POST: APIRoute = async ({ request }) => {
               
               <div class="field">
                 <div class="label">Target Product / Ingredient</div>
-                <div class="value" style="font-weight: 600; color: #a07830;">${productName}</div>
+                <div class="value" style="font-weight: 600; color: #a07830;">${escapeHtml(productName)}</div>
               </div>
 
               <div class="field">
                 <div class="label">Downloaded COA Link</div>
-                <div class="value"><a href="${coaUrl}" target="_blank" style="color:#4a8a48; word-break: break-all;">${coaUrl}</a></div>
+                <div class="value"><a href="${escapeHtml(coaUrl)}" target="_blank" style="color:#4a8a48; word-break: break-all;">${escapeHtml(coaUrl)}</a></div>
               </div>
 
               <div class="field">
                 <div class="label">Contact Name</div>
-                <div class="value">${name}</div>
+                <div class="value">${escapeHtml(name)}</div>
               </div>
 
               <div class="field">
                 <div class="label">Company Name</div>
-                <div class="value">${company || 'Not Specified'}</div>
+                <div class="value">${escapeHtml(company || 'Not Specified')}</div>
               </div>
 
               <div class="field">
                 <div class="label">Email Address</div>
-                <div class="value"><a href="mailto:${email}" style="color:#4a8a48;">${email}</a></div>
+                <div class="value"><a href="mailto:${escapeHtml(email)}" style="color:#4a8a48;">${escapeHtml(email)}</a></div>
               </div>
 
               <div class="field">
                 <div class="label">Phone / WhatsApp</div>
-                <div class="value">${phone}</div>
+                <div class="value">${escapeHtml(phone)}</div>
               </div>
 
               <div class="field">
                 <div class="label">Professional Role</div>
-                <div class="value"><span class="tag">${role}</span></div>
+                <div class="value"><span class="tag">${escapeHtml(role)}</span></div>
               </div>
 
               <div class="field">
                 <div class="label">Estimated Annual Demand</div>
-                <div class="value"><span class="tag-alt">${demand}</span></div>
+                <div class="value"><span class="tag-alt">${escapeHtml(demand)}</span></div>
               </div>
 
               <div class="field">
                 <div class="label">Intended Formulation Application</div>
-                <div class="value" style="white-space:pre-wrap;">${applicationStr}</div>
+                <div class="value" style="white-space:pre-wrap;">${escapeHtml(applicationStr)}</div>
               </div>
 
               <!-- Lead Tracking Metadata -->
               <div style="margin-top: 32px; padding-top: 24px; border-top: 2px dashed #a8d5a6; padding-bottom: 8px;">
                 <div class="label" style="color: #2d7a2d; font-weight: bold; margin-bottom: 12px;">Lead Tracking Metadata</div>
                 <table style="width: 100%; font-size: 13px; color: #444; border-collapse: collapse;">
-                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600; width: 150px;">Submission ID</td><td style="padding: 6px 0; font-family: monospace; font-size: 11px;">${submissionId}</td></tr>
-                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Source Page</td><td style="padding: 6px 0; word-break: break-all;">${referer}</td></tr>
-                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Client IP</td><td style="padding: 6px 0; font-family: monospace;">${ip}</td></tr>
-                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Location</td><td style="padding: 6px 0;">${city}, ${region}, ${country}</td></tr>
-                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Timezone</td><td style="padding: 6px 0;">${timezone}</td></tr>
-                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Coordinates</td><td style="padding: 6px 0;">${latitude}, ${longitude} ${mapsLink !== 'N/A' ? `(${mapsLink})` : ''}</td></tr>
-                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Browser Lang</td><td style="padding: 6px 0;">${acceptLanguage}</td></tr>
-                  <tr><td style="padding: 6px 0; font-weight: 600; vertical-align: top;">User Agent</td><td style="padding: 6px 0; font-size: 11px; word-break: break-all;">${userAgent}</td></tr>
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600; width: 150px;">Submission ID</td><td style="padding: 6px 0; font-family: monospace; font-size: 11px;">${escapeHtml(submissionId)}</td></tr>
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Source Page</td><td style="padding: 6px 0; word-break: break-all;">${escapeHtml(referer)}</td></tr>
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Client IP</td><td style="padding: 6px 0; font-family: monospace;">${escapeHtml(ip)}</td></tr>
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Location</td><td style="padding: 6px 0;">${escapeHtml(city)}, ${escapeHtml(region)}, ${escapeHtml(country)}</td></tr>
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Timezone</td><td style="padding: 6px 0;">${escapeHtml(timezone)}</td></tr>
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Coordinates</td><td style="padding: 6px 0;">${escapeHtml(latitude)}, ${escapeHtml(longitude)} ${mapsLink !== 'N/A' ? `(${mapsLink})` : ''}</td></tr>
+                  <tr style="border-bottom: 1px solid #f0f0f0;"><td style="padding: 6px 0; font-weight: 600;">Browser Lang</td><td style="padding: 6px 0;">${escapeHtml(acceptLanguage)}</td></tr>
+                  <tr><td style="padding: 6px 0; font-weight: 600; vertical-align: top;">User Agent</td><td style="padding: 6px 0; font-size: 11px; word-break: break-all;">${escapeHtml(userAgent)}</td></tr>
                 </table>
               </div>
             </div>
@@ -250,7 +294,7 @@ export const POST: APIRoute = async ({ request }) => {
       await resend.emails.send({
         from: FROM_EMAIL,
         to: email,
-        subject: `Your requested COA for ${productName} — GINKVORA`,
+        subject: `Your requested COA for ${escapeHtml(productName)} — GINKVORA`,
         html: `
           <!DOCTYPE html>
           <html>
@@ -274,12 +318,12 @@ export const POST: APIRoute = async ({ request }) => {
                 <div class="logo">GINKVORA</div>
               </div>
               <div class="body">
-                <h2>Hello ${name},</h2>
+                <h2>Hello ${escapeHtml(name)},</h2>
                 <p>Thank you for your interest in our active ingredients. We've compiled the requested technical documentation for you.</p>
-                <p>You can access and download the Certificate of Analysis (COA) for <strong style="color: #a07830;">${productName}</strong> by clicking the button below:</p>
+                <p>You can access and download the Certificate of Analysis (COA) for <strong style="color: #a07830;">${escapeHtml(productName)}</strong> by clicking the button below:</p>
                 
                 <div style="text-align: center;">
-                  <a href="${coaUrl}" target="_blank" class="btn">Download COA Document</a>
+                  <a href="${escapeHtml(coaUrl)}" target="_blank" class="btn">Download COA Document</a>
                 </div>
 
                 <p>If you require physical samples for R&D testing, custom formulation pricing, or specific compliance certificates (MSDS, kosher, halal, etc.), feel free to reply to this email directly or reach our commercial desk at <a href="mailto:inquiry@ginkvora.com" style="color:#4a8a48;">inquiry@ginkvora.com</a>.</p>

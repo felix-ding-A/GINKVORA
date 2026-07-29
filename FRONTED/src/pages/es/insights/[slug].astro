@@ -183,19 +183,23 @@ const breadcrumbSchema = {
 
       <!-- Main Article Container -->
       <div class="article-container">
-        <!-- Breadcrumbs -->
-        <!-- Breadcrumbs -->
-        <Breadcrumbs
-          items={[
-            { name: t('nav.home') || 'Inicio', path: '/' },
-            { name: 'Insights', path: '/insights' },
-            { name: localTitle || post.title }
-          ]}
-          lang={lang}
-        />
+        <!-- Breadcrumbs & Divider -->
+        <div class="article-breadcrumbs-wrap">
+          <Breadcrumbs
+            items={[
+              { name: t('nav.home') || 'Inicio', path: '/' },
+              { name: 'Insights', path: '/insights' },
+              { name: localTitle || post.title }
+            ]}
+            lang={lang}
+          />
+          <hr class="breadcrumbs-divider" />
+        </div>
 
         <!-- Article Header -->
         <header class="article-header">
+          <h1 class="article-title">{localTitle}</h1>
+
           <div class="article-meta">
             <time datetime={post.publishedAt}>
               {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('es-ES', {
@@ -215,8 +219,6 @@ const breadcrumbSchema = {
               </>
             )}
           </div>
-
-          <h1 class="article-title">{localTitle}</h1>
 
           {post.tags && post.tags.length > 0 && (
             <div class="article-tags">
@@ -413,6 +415,43 @@ const breadcrumbSchema = {
     flex: 1;
     max-width: 800px;
     min-width: 0;
+  }
+
+  /* ── Breadcrumbs Divider & Article Header ── */
+  .article-breadcrumbs-wrap {
+    margin-bottom: 1.5rem;
+  }
+
+  .breadcrumbs-divider {
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    margin-top: 0.875rem;
+    margin-bottom: 0;
+  }
+
+  .article-header {
+    margin-bottom: 2rem;
+  }
+
+  .article-title {
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .meta-dot {
+    color: var(--color-primary-light);
   }
 
   /* ── Related Posts Section ── */
