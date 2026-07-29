@@ -1,6 +1,6 @@
 ---
 // src/pages/es/insights/[slug].astro — Spanish blog post detail page
-export const prerender = true;
+export const prerender = false;
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getAllPosts, getPostBySlug, urlFor, getLocalizedField } from '../../../lib/sanity';
 import PortableText from '../../../components/PortableText.astro';
@@ -13,19 +13,9 @@ const lang = 'es';
 const t = useTranslations(lang);
 const lp = (path: string) => getLocalePath(lang, path);
 
-export async function getStaticPaths() {
-  const posts = await getAllPosts(100);
-  return posts
-    .filter((p: any) => p && typeof p.slug === 'string')
-    .map((p: any) => ({
-      params: { slug: p.slug },
-      props: { posts }
-    }));
-}
-
 const { slug } = Astro.params;
-const { posts = [] } = Astro.props;
 const post = await getPostBySlug(slug);
+const posts = await getAllPosts(10);
 
 // Filter related posts sharing tags with current post, or fallback to latest posts
 const relatedPosts = posts

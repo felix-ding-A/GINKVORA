@@ -1,6 +1,6 @@
 ---
 // src/pages/insights/[slug].astro — Detailed Blog Post View
-export const prerender = true;
+export const prerender = false;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllPosts, getPostBySlug, urlFor, getLocalizedField } from '../../lib/sanity';
@@ -11,19 +11,9 @@ import FAQAccordion from '../../components/FAQAccordion.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import TagBadge from '../../components/TagBadge.astro';
 
-export async function getStaticPaths() {
-  const posts = await getAllPosts(100);
-  return posts
-    .filter((p: any) => p && typeof p.slug === 'string')
-    .map((p: any) => ({
-      params: { slug: p.slug },
-      props: { posts }
-    }));
-}
-
 const { slug } = Astro.params;
-const { posts = [] } = Astro.props;
 const post = await getPostBySlug(slug);
+const posts = await getAllPosts(10);
 
 // Filter related posts sharing tags with current post, or fallback to latest posts
 const relatedPosts = posts

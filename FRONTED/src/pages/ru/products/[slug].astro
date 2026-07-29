@@ -1,6 +1,6 @@
 ---
 // src/pages/ru/products/[slug].astro — Russian product detail page
-export const prerender = true;
+export const prerender = false;
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getAllProducts, getProductBySlug, urlFor, getLocalizedField, getRelatedProductsForProduct, getRelatedPostsForProduct } from '../../../lib/sanity';
 import PortableText from '../../../components/PortableText.astro';
@@ -12,13 +12,6 @@ import RelatedSection from '../../../components/sections/RelatedSection.astro';
 const lang = 'ru';
 const t = useTranslations(lang);
 const lp = (path: string) => getLocalePath(lang, path);
-
-export async function getStaticPaths() {
-  const products = await getAllProducts();
-  return products
-    .filter((p: any) => p && typeof p.slug === 'string')
-    .map((p: any) => ({ params: { slug: p.slug } }));
-}
 
 const { slug } = Astro.params;
 const product = await getProductBySlug(slug);
