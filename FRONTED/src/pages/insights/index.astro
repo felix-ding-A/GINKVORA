@@ -1,5 +1,7 @@
 ---
 // src/pages/insights/index.astro — B2B Industry Insights & Ingredient Research Blog
+export const prerender = true;
+
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPostsPaginated, urlFor } from '../../lib/sanity';
 import { getLocalePath } from '../../i18n/utils';

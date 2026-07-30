@@ -1,5 +1,7 @@
 ---
 // src/pages/products/index.astro — Products listing page with search and category filters
+export const prerender = true;
+
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllProducts, urlFor } from '../../lib/sanity';
 

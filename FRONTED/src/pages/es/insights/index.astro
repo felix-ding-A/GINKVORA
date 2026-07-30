@@ -1,5 +1,7 @@
 ---
 // src/pages/es/insights/index.astro — Spanish insights listing
+export const prerender = true;
+
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getPostsPaginated, urlFor, getLocalizedField } from '../../../lib/sanity';
 import { useTranslations } from '../../../i18n/utils';

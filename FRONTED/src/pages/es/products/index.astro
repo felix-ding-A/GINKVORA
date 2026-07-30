@@ -1,5 +1,7 @@
 ---
 // src/pages/es/products/index.astro — Spanish products listing page
+export const prerender = true;
+
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getAllProducts, urlFor, getLocalizedField } from '../../../lib/sanity';
 import { useTranslations } from '../../../i18n/utils';
