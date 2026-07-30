@@ -3,6 +3,7 @@
 import '../styles/global.css';
 import Navbar from '../components/layout/Navbar.astro';
 import Footer from '../components/layout/Footer.astro';
+import BackToTop from '../components/layout/BackToTop.astro';
 import { stripLangPrefix, getDir } from '../i18n/utils';
 import type { Lang } from '../i18n/ui';
 
@@ -299,6 +300,9 @@ const organizationSchema = {
     <div class="cv-deferred-footer">
       <Footer lang={lang} />
     </div>
+
+    <!-- Back to Top Button -->
+    <BackToTop lang={lang} />
 
     <!-- Reveal animation script -->
     <script>

@@ -15,6 +15,10 @@ import PortableText from '../../components/PortableText.astro';
 import FAQAccordion from '../../components/FAQAccordion.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import RelatedSection from '../../components/sections/RelatedSection.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const lang = 'en';
+const t = useTranslations(lang);
 
 const { slug } = Astro.params;
 const product = await getProductBySlug(slug);
@@ -352,7 +356,7 @@ const faqSchema = {
             )}
           </div>
 
-          <!-- Certifications -->
+          {/* Certifications */}
           {product.certifications && product.certifications.length > 0 && (
             <div class="certifications-badges">
               <span class="certs-title">Certifications:</span>
@@ -363,6 +367,32 @@ const faqSchema = {
               </div>
             </div>
           )}
+
+          <!-- Share Widget -->
+          <div class="product-share-bar">
+            <span class="share-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              {t('product.share_title')}
+            </span>
+            <div class="share-actions">
+              <button class="share-btn share-btn--facebook" id="share-facebook" aria-label="Share on Facebook">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              </button>
+              <button class="share-btn share-btn--linkedin" id="share-linkedin" aria-label="Share on LinkedIn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </button>
+              <button class="share-btn share-btn--twitter" id="share-twitter" aria-label="Share on Twitter/X">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </button>
+              <button class="share-btn share-btn--copy" id="share-copy" aria-label="Copy Link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span class="share-tooltip" id="share-copy-tooltip">{t('product.share_copied')}</span>
+              </button>
+              <button class="share-btn share-btn--email" id="share-email" aria-label="Share via Email">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </button>
+            </div>
+          </div>
         </section>
       </div>
 
@@ -695,6 +725,76 @@ const faqSchema = {
 <style>
   .product-detail-page {
     padding-block: 7rem var(--space-4xl);
+  }
+
+  /* Product Share Bar */
+  .product-share-bar {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .share-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .share-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+  }
+
+  .share-btn:hover {
+    color: var(--color-primary-light);
+    border-color: var(--color-primary);
+    background: var(--color-primary-glow);
+    transform: translateY(-2px);
+  }
+
+  .share-tooltip {
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary-light);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .share-tooltip--visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 
   /* ── B2B Sourcing Section ── */
@@ -1044,9 +1144,25 @@ const faqSchema = {
   }
 
   .tab-headers {
+    position: sticky;
+    top: 3.65rem;
+    z-index: 10;
     display: flex;
     gap: 1.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    background: rgba(11, 12, 13, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--color-border);
+    padding-top: 0.75rem;
+    padding-bottom: 0.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tab-headers::-webkit-scrollbar {
+    display: none;
   }
 
   .detail-tab {
@@ -1439,6 +1555,7 @@ const faqSchema = {
   function initTabs() {
     const tabs = document.querySelectorAll('.detail-tab');
     const contents = document.querySelectorAll('.tab-content');
+    const descSection = document.querySelector('.description-section');
 
     tabs.forEach((tab) => {
       tab.addEventListener('click', () => {
@@ -1450,6 +1567,19 @@ const faqSchema = {
         const targetContent = document.getElementById(targetId);
         if (targetContent) {
           targetContent.style.display = 'block';
+        }
+
+        // Auto-scroll to top of tab section if user is scrolled down into tab content
+        if (descSection) {
+          const rect = descSection.getBoundingClientRect();
+          const navbarOffset = 70;
+          if (rect.top < navbarOffset) {
+            const targetY = window.scrollY + rect.top - navbarOffset;
+            window.scrollTo({
+              top: Math.max(0, targetY),
+              behavior: 'smooth'
+            });
+          }
         }
       });
     });
@@ -1694,9 +1824,52 @@ const faqSchema = {
     }
   }
 
+  function initSocialShare() {
+    const shareFacebook = document.getElementById('share-facebook');
+    const shareLinkedin = document.getElementById('share-linkedin');
+    const shareTwitter = document.getElementById('share-twitter');
+    const shareCopy = document.getElementById('share-copy');
+    const shareEmail = document.getElementById('share-email');
+
+    const pageUrl = window.location.href;
+    const pageTitle = document.title;
+
+    shareFacebook?.addEventListener('click', () => {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`, '_blank', 'width=600,height=600');
+    });
+
+    shareLinkedin?.addEventListener('click', () => {
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`, '_blank', 'width=600,height=600');
+    });
+
+    shareTwitter?.addEventListener('click', () => {
+      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(pageTitle)}`, '_blank', 'width=600,height=400');
+    });
+
+    shareEmail?.addEventListener('click', () => {
+      window.location.href = `mailto:?subject=${encodeURIComponent(pageTitle)}&body=${encodeURIComponent(pageUrl)}`;
+    });
+
+    shareCopy?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(pageUrl);
+        const tooltip = document.getElementById('share-copy-tooltip');
+        if (tooltip) {
+          tooltip.classList.add('share-tooltip--visible');
+          setTimeout(() => {
+            tooltip.classList.remove('share-tooltip--visible');
+          }, 2000);
+        }
+      } catch (err) {
+        console.error('Failed to copy link: ', err);
+      }
+    });
+  }
+
   function runInit() {
     initTabs();
     initCOAModal();
+    initSocialShare();
   }
 
   // Astro page-load support

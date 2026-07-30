@@ -1,0 +1,109 @@
+---
+// src/components/layout/BackToTop.astro — Floating Back-to-Top Button
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'en' } = Astro.props;
+
+const ariaLabelMap: Record<string, string> = {
+  en: 'Back to top',
+  ru: 'Наверх',
+  es: 'Volver arriba',
+  ar: 'العودة إلى الأعلى',
+};
+
+const ariaLabel = ariaLabelMap[lang] || ariaLabelMap.en;
+---
+
+<button
+  id="back-to-top"
+  class="back-to-top"
+  aria-label={ariaLabel}
+  title={ariaLabel}
+>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M18 15l-6-6-6 6"/>
+  </svg>
+</button>
+
+<style>
+  .back-to-top {
+    position: fixed;
+    bottom: 6rem;
+    right: 1.5rem;
+    z-index: 99;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(14, 18, 16, 0.85);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .back-to-top:hover {
+    color: var(--color-primary-light);
+    border-color: var(--color-primary);
+    background: rgba(212, 166, 84, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(212, 166, 84, 0.25);
+  }
+
+  .back-to-top:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 640px) {
+    .back-to-top {
+      bottom: 5.5rem;
+      right: 1.25rem;
+      width: 40px;
+      height: 40px;
+    }
+  }
+</style>
+
+<script>
+  function initBackToTop() {
+    const btn = document.getElementById('back-to-top');
+    if (!btn) return;
+
+    const toggleVisibility = () => {
+      if (window.scrollY > 300) {
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+    };
+
+    window.addEventListener('scroll', toggleVisibility, { passive: true });
+    toggleVisibility();
+
+    btn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    });
+  }
+
+  initBackToTop();
+  document.addEventListener('astro:page-load', initBackToTop);
+</script>
