@@ -18,6 +18,7 @@ interface Props {
   canonicalUrl?: string;
   noindex?: boolean;
   structuredData?: object;
+  preloadHeroImage?: boolean;
 }
 
 const {
@@ -30,6 +31,7 @@ const {
   canonicalUrl,
   noindex = false,
   structuredData,
+  preloadHeroImage = false,
 } = Astro.props;
 
 const resolvedDir = dir || getDir(lang as Lang);
@@ -226,7 +228,11 @@ const organizationSchema = {
       <>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" />
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+        <noscript>
+          <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+        </noscript>
       </>
     )}
 
@@ -244,8 +250,8 @@ const organizationSchema = {
     <link rel="preload" as="font" type="font/woff2" href="/fonts/dm-sans-normal-400.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond-normal-700.woff2" crossorigin />
 
-    <!-- Performance: Preload Critical Hero Background Image -->
-    <link rel="preload" as="image" href="/images/hero-bg.webp" type="image/webp" />
+    <!-- Performance: Preload Critical Hero Background Image (Only on pages with Hero) -->
+    {preloadHeroImage && <link rel="preload" as="image" href="/images/hero-bg.webp" type="image/webp" />}
 
     <!-- Performance: Third-party DNS Prefetch & Preconnect -->
     <link rel="dns-prefetch" href="https://chat.ginkvora.com" />
