@@ -302,7 +302,7 @@ onMounted(() => {
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[var(--color-border)]">
       <div>
         <h3 class="text-lg font-bold font-display text-[var(--color-text)]">Molarity & Percentage Solver</h3>
-        <p class="text-xs text-[var(--color-text-secondary)] mt-0.5">
+        <p class="text-sm text-[var(--color-text-secondary)] mt-1">
           Select what variable to calculate — inputs are on the left, live result is highlighted on the right.
         </p>
       </div>
@@ -612,18 +612,18 @@ onMounted(() => {
 
             <!-- Step Formula Display -->
             <div class="p-3.5 rounded-xl bg-black/50 border border-white/10 font-mono text-xs text-[var(--color-primary-light)] leading-relaxed whitespace-pre-line">
-              <div class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider font-sans mb-1 font-bold">
+              <div class="text-xs text-[var(--color-text-secondary)] uppercase tracking-wider font-sans mb-1 font-bold">
                 Formula Breakdown:
               </div>
               {{ calcMode === 'molarity' ? formulaString : pctFormulaString }}
             </div>
 
             <!-- Disclaimer & Contact Link -->
-            <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] flex-wrap gap-1">
-              <span class="text-[var(--color-text-muted)] italic">
+            <div class="pt-2.5 border-t border-white/10 flex items-center justify-between text-xs flex-wrap gap-2">
+              <span class="text-[var(--color-text-secondary)] italic text-xs">
                 * Note: Results are estimates and may contain minor variances.
               </span>
-              <a href="/contact" class="text-[var(--color-primary-light)] font-bold hover:underline flex items-center gap-1">
+              <a href="/contact" class="text-[var(--color-primary-light)] font-bold hover:underline flex items-center gap-1 text-xs">
                 Contact Ginkvora Formulators →
               </a>
             </div>

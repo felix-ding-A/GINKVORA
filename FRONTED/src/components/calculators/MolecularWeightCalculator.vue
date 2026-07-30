@@ -88,7 +88,7 @@ onMounted(() => {
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[var(--color-border)]">
       <div>
         <h3 class="text-lg font-bold font-display text-[var(--color-text)]">Molecular Weight & Composition</h3>
-        <p class="text-xs text-[var(--color-text-secondary)] mt-0.5">
+        <p class="text-sm text-[var(--color-text-secondary)] mt-1">
           Parse complex chemical formulas (hydrates, nested brackets) and compute elemental mass percentages.
         </p>
       </div>
@@ -199,20 +199,20 @@ onMounted(() => {
                 >
                   <div class="flex items-center gap-2">
                     <span class="w-2.5 h-2.5 rounded-full" :style="{ backgroundColor: colors[idx % colors.length] }" />
-                    <strong class="text-white">{{ item.element }}</strong>
-                    <span class="text-[10px] text-[var(--color-text-muted)]">×{{ item.count }}</span>
+                    <strong class="text-white text-xs">{{ item.element }}</strong>
+                    <span class="text-xs text-[var(--color-text-secondary)]">×{{ item.count }}</span>
                   </div>
-                  <span class="font-bold" :style="{ color: colors[idx % colors.length] }">{{ item.percentage }}%</span>
+                  <span class="font-bold text-xs" :style="{ color: colors[idx % colors.length] }">{{ item.percentage }}%</span>
                 </div>
               </div>
             </div>
 
             <!-- Disclaimer & Contact Link -->
-            <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] flex-wrap gap-1">
-              <span class="text-[var(--color-text-muted)] italic">
+            <div class="pt-2.5 border-t border-white/10 flex items-center justify-between text-xs flex-wrap gap-2">
+              <span class="text-[var(--color-text-secondary)] italic text-xs">
                 * Note: Results are estimates and may contain minor variances.
               </span>
-              <a href="/contact" class="text-[var(--color-primary-light)] font-bold hover:underline flex items-center gap-1">
+              <a href="/contact" class="text-[var(--color-primary-light)] font-bold hover:underline flex items-center gap-1 text-xs">
                 Contact Ginkvora Formulators →
               </a>
             </div>

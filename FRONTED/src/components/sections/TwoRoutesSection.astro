@@ -48,7 +48,9 @@ const oralIngredients = [
       <!-- Route 1: Topical -->
       <div class="route-card glass reveal">
         <div class="route-badge badge--gold">Topical Route</div>
-        <div class="route-icon" aria-hidden="true">🧴</div>
+        <div class="route-icon flex items-center justify-center w-12 h-12 rounded-2xl bg-[var(--color-primary-glow)] border border-[var(--color-primary)]/30 text-[var(--color-primary-light)] mb-4" aria-hidden="true">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v7.31L4.75 18.15A2 2 0 0 0 6.46 21h11.08a2 2 0 0 0 1.71-2.85L14 9.31V2"/><line x1="8.5" y1="2" x2="15.5" y2="2"/></svg>
+        </div>
         <h3 class="route-card-title">{t('routes.topical_title')}</h3>
         <p class="route-card-desc">{t('routes.topical_desc')}</p>
         
@@ -71,7 +73,9 @@ const oralIngredients = [
       <!-- Route 2: Oral -->
       <div class="route-card glass reveal reveal-delay-1">
         <div class="route-badge badge--green">Ingestible Route</div>
-        <div class="route-icon" aria-hidden="true">💊</div>
+        <div class="route-icon flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 mb-4" aria-hidden="true">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
+        </div>
         <h3 class="route-card-title">{t('routes.oral_title')}</h3>
         <p class="route-card-desc">{t('routes.oral_desc')}</p>
         

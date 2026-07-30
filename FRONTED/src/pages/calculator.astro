@@ -119,7 +119,9 @@ const faqSchema = {
       <div class="grid grid-2">
         <!-- Card 1: Molarity & Percentages -->
         <div class="reference-card glass">
-          <div class="card-icon">🧪</div>
+          <div class="card-icon-wrapper w-10 h-10 rounded-xl bg-[var(--color-primary-glow)] border border-[var(--color-primary)]/30 flex items-center justify-center text-[var(--color-primary-light)] shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v7.31L4.75 18.15A2 2 0 0 0 6.46 21h11.08a2 2 0 0 0 1.71-2.85L14 9.31V2"/><line x1="8.5" y1="2" x2="15.5" y2="2"/></svg>
+          </div>
           <h3 class="card-title">Molarity & Percentage w/w Calculations</h3>
           <p class="card-text">
             Molarity (M) defines the concentration of a solute in a solution as moles of solute per liter of solution (mol/L).
@@ -137,7 +139,9 @@ const faqSchema = {
 
         <!-- Card 2: Dilution & Scaling -->
         <div class="reference-card glass">
-          <div class="card-icon">💧</div>
+          <div class="card-icon-wrapper w-10 h-10 rounded-xl bg-[var(--color-primary-glow)] border border-[var(--color-primary)]/30 flex items-center justify-center text-[var(--color-primary-light)] shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
+          </div>
           <h3 class="card-title">Dilution & Scaling (C₁V₁ = C₂V₂)</h3>
           <p class="card-text">
             The dilution equation relates the concentration and volume of a stock solution to the desired final concentration and volume.
@@ -152,7 +156,9 @@ const faqSchema = {
 
         <!-- Card 3: Molecular Weight Parser -->
         <div class="reference-card glass">
-          <div class="card-icon">🧬</div>
+          <div class="card-icon-wrapper w-10 h-10 rounded-xl bg-[var(--color-primary-glow)] border border-[var(--color-primary)]/30 flex items-center justify-center text-[var(--color-primary-light)] shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 21a9 9 0 0 0 9-9 9 9 0 0 0-9-9 9 9 0 0 0-9 9 9 9 0 0 0 9 9z"/><path d="M2 12h20"/></svg>
+          </div>
           <h3 class="card-title">Molecular Weight & Chemical Formulas</h3>
           <p class="card-text">
             Molecular weight (MW) is calculated by summing the atomic weights of all constituent atoms in a chemical formula. Our system parses standard chemical symbols, nested parentheses, and hydrates.
@@ -167,7 +173,9 @@ const faqSchema = {
 
         <!-- Card 4: HLB Emulsion & SOP Systems -->
         <div class="reference-card glass">
-          <div class="card-icon">⚖️</div>
+          <div class="card-icon-wrapper w-10 h-10 rounded-xl bg-[var(--color-primary-glow)] border border-[var(--color-primary)]/30 flex items-center justify-center text-[var(--color-primary-light)] shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
           <h3 class="card-title">HLB & Disintegration Kinetics</h3>
           <p class="card-text">
             The Hydrophilic-Lipophilic Balance (HLB) is a measure of the degree to which a surfactant is hydrophilic or lipophilic. Ideal emulsions require balancing surfactant HLB with the required HLB (rHLB) of the oil phase.
@@ -301,8 +309,8 @@ const faqSchema = {
   }
 
   .card-text {
-    font-size: 0.9375rem;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.65;
     color: var(--color-text-secondary);
   }
 
@@ -312,7 +320,8 @@ const faqSchema = {
     padding: var(--space-sm) var(--space-md);
     border-radius: var(--radius-sm);
     color: var(--color-primary-light);
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
     overflow-x: auto;
   }
 

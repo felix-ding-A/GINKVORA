@@ -10,7 +10,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
 const categories = [
   {
     id: 'superfood',
-    icon: '🍎',
+    iconSvg: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>`,
     titleKey: 'categories.health_title',
     descKey: 'categories.health_desc',
     href: lp('/products?category=superfood'),
@@ -27,7 +27,7 @@ const categories = [
   },
   {
     id: 'liposomal',
-    icon: '🧬',
+    iconSvg: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 21a9 9 0 0 0 9-9 9 9 0 0 0-9-9 9 9 0 0 0-9 9 9 9 0 0 0 9 9z"/><path d="M2 12h20"/></svg>`,
     titleKey: 'categories.cosmetic_title',
     descKey: 'categories.cosmetic_desc',
     href: lp('/products?category=liposomal'),
@@ -44,7 +44,7 @@ const categories = [
   },
   {
     id: 'pet-longevity',
-    icon: '🐾',
+    iconSvg: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`,
     titleKey: 'categories.pet_title',
     descKey: 'categories.pet_desc',
     href: lp('/products?category=pet-longevity'),
@@ -61,7 +61,7 @@ const categories = [
   },
   {
     id: 'custom',
-    icon: '⚗️',
+    iconSvg: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2"><path d="M10 2v7.31L4.75 18.15A2 2 0 0 0 6.46 21h11.08a2 2 0 0 0 1.71-2.85L14 9.31V2"/><line x1="8.5" y1="2" x2="15.5" y2="2"/></svg>`,
     titleKey: 'categories.custom_title',
     descKey: 'categories.custom_desc',
     href: lp('/custom-formulation'),
@@ -107,7 +107,7 @@ const categories = [
           <div class="cat-image">
             <img src={cat.image} alt={cat.imageAlt} loading="lazy" width="400" height="240" onerror={`this.onerror=null;this.src='${cat.fallbackImage}'`} />
             <div class="cat-image-overlay"></div>
-            <span class="cat-icon-badge" role="img" aria-hidden="true">{cat.icon}</span>
+            <span class="cat-icon-badge flex items-center justify-center" set:html={cat.iconSvg} aria-hidden="true" />
           </div>
 
           <!-- Body -->
