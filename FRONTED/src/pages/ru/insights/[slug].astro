@@ -1,8 +1,15 @@
 ---
 // src/pages/ru/insights/[slug].astro — Russian blog post detail page
-export const prerender = false;
+export const prerender = true;
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getAllPosts, getPostBySlug, urlFor, getLocalizedField } from '../../../lib/sanity';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts(100);
+  return posts.map((post: any) => ({
+    params: { slug: post.slug },
+  }));
+}
 import PortableText from '../../../components/PortableText.astro';
 import { useTranslations, getLocalePath } from '../../../i18n/utils';
 import FAQAccordion from '../../../components/FAQAccordion.astro';

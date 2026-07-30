@@ -1,8 +1,15 @@
 ---
 // src/pages/ru/products/[slug].astro — Russian product detail page
-export const prerender = false;
+export const prerender = true;
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getAllProducts, getProductBySlug, urlFor, getLocalizedField, getRelatedProductsForProduct, getRelatedPostsForProduct } from '../../../lib/sanity';
+
+export async function getStaticPaths() {
+  const products = await getAllProducts();
+  return products.map((product: any) => ({
+    params: { slug: product.slug },
+  }));
+}
 import PortableText from '../../../components/PortableText.astro';
 import { useTranslations, getLocalePath } from '../../../i18n/utils';
 import FAQAccordion from '../../../components/FAQAccordion.astro';

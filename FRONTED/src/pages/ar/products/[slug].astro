@@ -1,9 +1,16 @@
 ---
 const lang = 'ar';
 // src/pages/products/[slug].astro — Detailed page for specific ingredients
-export const prerender = false;
+export const prerender = true;
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getAllProducts, getProductBySlug, urlFor, getLocalizedField, getRelatedProductsForProduct, getRelatedPostsForProduct } from '../../../lib/sanity';
+
+export async function getStaticPaths() {
+  const products = await getAllProducts();
+  return products.map((product: any) => ({
+    params: { slug: product.slug },
+  }));
+}
 import PortableText from '../../../components/PortableText.astro';
 import FAQAccordion from '../../../components/FAQAccordion.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';

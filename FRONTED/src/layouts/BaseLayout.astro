@@ -239,12 +239,9 @@ const organizationSchema = {
 
     <!--
       Performance: Font Preloads
-      All font weights used above-the-fold are preloaded to parallelize
-      font downloads with CSS parsing, eliminating FOIT (Flash of Invisible Text).
+      Preload primary body and heading font weights to eliminate FOIT while keeping network sockets free for Hero image.
     -->
     <link rel="preload" as="font" type="font/woff2" href="/fonts/dm-sans-normal-400.woff2" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="/fonts/dm-sans-normal-600.woff2" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond-normal-400.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond-normal-700.woff2" crossorigin />
 
     <!-- Performance: Preload Critical Hero Background Image -->
