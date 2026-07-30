@@ -1158,7 +1158,7 @@ const faqSchema = {
     border-bottom: 1px solid var(--color-border);
     padding-top: 0.75rem;
     padding-bottom: 0.25rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
   }
 
   .tab-headers::-webkit-scrollbar {
@@ -1246,13 +1246,28 @@ const faqSchema = {
     line-height: 1.8;
   }
 
+  .rich-text-wrapper :global(> *:first-child),
+  .rich-text-wrapper :global(h1:first-child),
+  .rich-text-wrapper :global(h2:first-child),
+  .rich-text-wrapper :global(h3:first-child),
+  .rich-text-wrapper :global(h4:first-child),
+  .rich-text-wrapper :global(p:first-child) {
+    margin-top: 0 !important;
+  }
+
   .rich-text-wrapper :global(p) {
     margin-bottom: 1rem;
   }
 
-  .rich-text-wrapper :global(h3) {
+  .rich-text-wrapper :global(h2) {
     color: var(--color-primary-light);
     margin-block: 1.5rem 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  .rich-text-wrapper :global(h3) {
+    color: var(--color-primary-light);
+    margin-block: 1.25rem 0.5rem;
   }
 
   /* ── Inquiry Section ── */

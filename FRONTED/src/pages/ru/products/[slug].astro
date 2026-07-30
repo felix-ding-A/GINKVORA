@@ -967,8 +967,16 @@ const breadcrumbSchema = {
   .detail-tab { flex: 1; padding: 1rem 1.5rem; background: none; border: none; cursor: pointer; font-size: 0.9375rem; font-weight: 500; color: var(--color-text-muted); transition: all var(--transition-fast); border-bottom: 2px solid transparent; }
   .detail-tab:hover { color: var(--color-text); background: var(--color-surface-2); }
   .detail-tab.active { color: var(--color-primary-light); border-bottom-color: var(--color-primary); background: rgba(212,166,84,0.05); }
-  .tab-contents { padding: 2rem; }
+  .tab-contents { padding: 1rem 1.5rem 1.5rem; }
   .tab-content { min-height: 100px; }
+  .tab-content :global(> *:first-child),
+  .tab-content :global(h1:first-child),
+  .tab-content :global(h2:first-child),
+  .tab-content :global(h3:first-child),
+  .tab-content :global(h4:first-child),
+  .tab-content :global(p:first-child) {
+    margin-top: 0 !important;
+  }
 
   .specs-table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
   .specs-table th, .specs-table td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
