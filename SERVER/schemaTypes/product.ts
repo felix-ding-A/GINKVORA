@@ -422,13 +422,6 @@ export const productType = defineType({
 
     // ── SEO ─────────────────────────────────────────
     defineField({
-      name: 'seoKeywords',
-      title: 'Focus Keyword / Keyphrase',
-      type: 'string',
-      group: 'seo',
-      description: 'Target SEO keyword for this product (e.g. "PQQ Disodium Salt wholesale")',
-    }),
-    defineField({
       name: 'meta_title',
       title: 'Meta Title (EN)',
       type: 'string',

@@ -257,13 +257,6 @@ export const postType = defineType({
 
 
     defineField({
-      name: 'seoKeywords',
-      title: 'Focus Keyword / Keyphrase',
-      type: 'string',
-      group: 'seo',
-      description: 'Target SEO keyword for this blog post (e.g. "PQQ anti-aging benefits")',
-    }),
-    defineField({
       name: 'meta_title',
       title: 'Meta Title (Title Tag)',
       type: 'string',
