@@ -10,15 +10,15 @@ const siteUrl = 'https://ginkvora.com';
 const formulatorSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "Scientific Formulation Solver | GINKVORA",
-  "description": "Free B2B interactive calculators for chemical molarity, serial dilutions, molecular weight parsing, and cosmetic/supplement recipe builders.",
+  "name": "Online Lab & Chemical Formulation Calculator | GINKVORA",
+  "description": "Free online scientific lab calculator tool: compute chemical molarity, C1V1 serial dilutions, molecular weight parsing, and cosmetic/supplement recipe formulation.",
   "url": `${siteUrl}/calculator`,
   "isPartOf": { "@type": "WebSite", "url": siteUrl, "name": "GINKVORA" },
   "breadcrumb": {
     "@type": "BreadcrumbList",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": siteUrl },
-      { "@type": "ListItem", "position": 2, "name": "Formulation Solver", "item": `${siteUrl}/calculator` }
+      { "@type": "ListItem", "position": 2, "name": "Lab Formulation Calculator", "item": `${siteUrl}/calculator` }
     ]
   }
 };
@@ -27,8 +27,8 @@ const formulatorSchema = {
 const appSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "GINKVORA Formulation Console",
-  "description": "Professional web-based calculator suite for lab scientists — covering molarity, serial dilutions, molecular weight parsing, HLB emulsion balancing, capsule sizing, and supplement formulation.",
+  "name": "GINKVORA Scientific Lab & Formulation Calculator",
+  "description": "Free online web-based scientific calculator tool for laboratory scientists — covering molarity, C1V1 serial dilutions, molecular weight parsing, HLB emulsion balancing, and recipe scaling.",
   "applicationCategory": "ScienceApplication",
   "operatingSystem": "Web Browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -78,9 +78,14 @@ const faqSchema = {
 ---
 
 <BaseLayout
-  title="Scientific Formulation Solver"
-  description="Free interactive laboratory calculators: molarity solver, serial dilution planner, molecular weight parser, HLB emulsion calculator, and supplement/cosmetic recipe builder."
+  title="Online Lab & Chemical Formulation Calculator"
+  description="Free interactive laboratory calculator tool: molarity solver, serial dilution planner, molecular weight parser, HLB emulsion calculator, and supplement/cosmetic recipe builder."
 >
+  <link rel="alternate" hreflang="en" href={`${siteUrl}/calculator`} slot="head" />
+  <link rel="alternate" hreflang="es" href={`${siteUrl}/es/calculator`} slot="head" />
+  <link rel="alternate" hreflang="ru" href={`${siteUrl}/ru/calculator`} slot="head" />
+  <link rel="alternate" hreflang="ar" href={`${siteUrl}/ar/calculator`} slot="head" />
+  <link rel="alternate" hreflang="x-default" href={`${siteUrl}/calculator`} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(formulatorSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
@@ -90,11 +95,7 @@ const faqSchema = {
     <header class="page-banner" aria-label="Page Header">
       <div class="banner-gradient"></div>
       <div class="container banner-content">
-        <span class="section-label">Digital Lab Tools</span>
-        <h1 class="banner-title">Pure Formulation Console</h1>
-        <p class="banner-desc">
-          Professional laboratory suite for computing solvent mixtures, serial dilutions, powder capsule capacities, and cosmetic emulsion HLB ratios.
-        </p>
+        <h1 class="banner-title">Scientific Lab & Formulation Calculator</h1>
       </div>
     </header>
 
@@ -109,7 +110,7 @@ const faqSchema = {
       
       <div class="reference-header">
         <span class="section-label">Documentation & Reference</span>
-        <h2 id="reference-title" class="section-title">Formulation Reference Guide</h2>
+        <h2 id="reference-title" class="section-title">Lab Calculator & Formulation Reference Guide</h2>
         <p class="section-desc">
           Technical specifications, mathematical equations, and standard operating procedures (SOP) used in our calculators.
         </p>
@@ -217,10 +218,23 @@ const faqSchema = {
   /* ── Banner ── */
   .page-banner {
     position: relative;
-    padding-block: 5rem 2.5rem;
+    padding-block: 3.5rem 1.25rem;
     overflow: hidden;
     background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
     border-bottom: 1px solid var(--color-border);
+  }
+
+  .feature-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(212, 166, 84, 0.25);
+    color: var(--color-text-secondary);
+    font-size: 0.8125rem;
+    font-weight: 500;
   }
 
   .banner-gradient {
@@ -245,18 +259,18 @@ const faqSchema = {
 
   /* ── Reference Section ── */
   .reference-section {
-    margin-top: var(--space-4xl);
+    margin-top: var(--space-xl);
   }
 
   .divider {
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--color-border-strong), transparent);
-    margin-bottom: var(--space-4xl);
+    margin-bottom: var(--space-xl);
   }
 
   .reference-header {
     text-align: center;
-    margin-bottom: var(--space-2xl);
+    margin-bottom: var(--space-lg);
   }
 
   .reference-card {

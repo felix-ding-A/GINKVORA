@@ -58,14 +58,29 @@ const pctFormulaString = ref('');
 const pctError = ref('');
 
 // ==========================================
-// STATE: IU ↔ MG CONVERTER
+// STATE: IU ↔ MG CONVERTER & PRESET TOGGLE
 // ==========================================
 const iuActiveKey = ref('vitA');
 const iuValue = ref('5000');
 const mgValue = ref('1.5');
+const activeRightTab = ref<'presets' | 'iu'>('presets');
 
-// Computed current IU factor info
 const currentIuItem = computed(() => IU_FACTORS[iuActiveKey.value]);
+
+// Computed active result value for the Hero Display
+const activeResultDisplay = computed(() => {
+  if (calcMode.value === 'molarity') {
+    if (target.value === 'mass') return { val: mass.value, unit: massUnit.value, label: 'Solute Mass (m)' };
+    if (target.value === 'conc') return { val: conc.value, unit: concUnit.value, label: 'Concentration (C)' };
+    if (target.value === 'volume') return { val: volume.value, unit: volumeUnit.value, label: 'Solvent Volume (V)' };
+    if (target.value === 'mw') return { val: mw.value, unit: 'g/mol', label: 'Molecular Weight (MW)' };
+  } else {
+    if (pctTarget.value === 'solute') return { val: pctSolute.value, unit: pctSoluteUnit.value, label: 'Solute Amount' };
+    if (pctTarget.value === 'total') return { val: pctTotal.value, unit: pctTotalUnit.value, label: 'Total Formula Amount' };
+    if (pctTarget.value === 'pct') return { val: pctValue.value, unit: `% (${pctType.value === 'ww' ? 'w/w' : 'v/v'})`, label: 'Concentration Percentage' };
+  }
+  return { val: '0', unit: '', label: '' };
+});
 
 // ==========================================
 // CALCULATIONS
@@ -73,13 +88,13 @@ const currentIuItem = computed(() => IU_FACTORS[iuActiveKey.value]);
 const getSIFactor = (type: 'mass' | 'conc' | 'volume', unit: string): number => {
   if (type === 'mass') {
     const u = MASS_UNITS.find(x => x.label === unit);
-    return u ? u.factor / 1e3 : 1.0; // Standardize to grams
+    return u ? u.factor / 1e3 : 1.0;
   } else if (type === 'conc') {
     const u = CONC_UNITS.find(x => x.label === unit);
-    return u ? u.factor / 1e3 : 1.0; // Standardize to M
+    return u ? u.factor / 1e3 : 1.0;
   } else if (type === 'volume') {
     const u = VOL_UNITS.find(x => x.label === unit);
-    return u ? u.factor / 1e3 : 1.0; // Standardize to L
+    return u ? u.factor / 1e3 : 1.0;
   }
   return 1.0;
 };
@@ -102,33 +117,33 @@ const calculateMolarity = () => {
   try {
     if (target.value === 'mass') {
       if (isNaN(cVal) || isNaN(vVal) || isNaN(mwVal)) return;
-      if (cVal <= 0 || vVal <= 0 || mwVal <= 0) throw new Error('Concentration, Volume, and Molecular Weight must be greater than 0');
+      if (cVal <= 0 || vVal <= 0 || mwVal <= 0) throw new Error('Concentration, Volume, and MW must be greater than 0');
       const C_SI = cVal * getSIFactor('conc', concUnit.value);
       const V_SI = vVal * getSIFactor('volume', volumeUnit.value);
       const mass_g = C_SI * V_SI * mwVal;
       const mass_target = mass_g / getSIFactor('mass', massUnit.value);
       mass.value = formatResult(mass_target);
-      formulaString.value = `Mass = Concentration × Volume × MW = ${cVal} ${concUnit.value} × ${vVal} ${volumeUnit.value} × ${mwVal} g/mol`;
+      formulaString.value = `Mass = Concentration × Volume × MW\n= ${cVal} ${concUnit.value} × ${vVal} ${volumeUnit.value} × ${mwVal} g/mol`;
     }
     else if (target.value === 'conc') {
       if (isNaN(mVal) || isNaN(vVal) || isNaN(mwVal)) return;
-      if (mVal <= 0 || vVal <= 0 || mwVal <= 0) throw new Error('Mass, Volume, and Molecular Weight must be greater than 0');
+      if (mVal <= 0 || vVal <= 0 || mwVal <= 0) throw new Error('Mass, Volume, and MW must be greater than 0');
       const mass_g = mVal * getSIFactor('mass', massUnit.value);
       const V_SI = vVal * getSIFactor('volume', volumeUnit.value);
       const conc_M = mass_g / (V_SI * mwVal);
       const conc_target = conc_M / getSIFactor('conc', concUnit.value);
       conc.value = formatResult(conc_target);
-      formulaString.value = `Concentration = Mass / (Volume × MW) = ${mVal} ${massUnit.value} / (${vVal} ${volumeUnit.value} × ${mwVal} g/mol)`;
+      formulaString.value = `Concentration = Mass / (Volume × MW)\n= ${mVal} ${massUnit.value} / (${vVal} ${volumeUnit.value} × ${mwVal} g/mol)`;
     }
     else if (target.value === 'volume') {
       if (isNaN(mVal) || isNaN(cVal) || isNaN(mwVal)) return;
-      if (mVal <= 0 || cVal <= 0 || mwVal <= 0) throw new Error('Mass, Concentration, and Molecular Weight must be greater than 0');
+      if (mVal <= 0 || cVal <= 0 || mwVal <= 0) throw new Error('Mass, Concentration, and MW must be greater than 0');
       const mass_g = mVal * getSIFactor('mass', massUnit.value);
       const C_SI = cVal * getSIFactor('conc', concUnit.value);
       const volume_L = mass_g / (C_SI * mwVal);
       const volume_target = volume_L / getSIFactor('volume', volumeUnit.value);
       volume.value = formatResult(volume_target);
-      formulaString.value = `Volume = Mass / (Concentration × MW) = ${mVal} ${massUnit.value} / (${cVal} ${concUnit.value} × ${mwVal} g/mol)`;
+      formulaString.value = `Volume = Mass / (Concentration × MW)\n= ${mVal} ${massUnit.value} / (${cVal} ${concUnit.value} × ${mwVal} g/mol)`;
     }
     else if (target.value === 'mw') {
       if (isNaN(mVal) || isNaN(cVal) || isNaN(vVal)) return;
@@ -138,7 +153,7 @@ const calculateMolarity = () => {
       const V_SI = vVal * getSIFactor('volume', volumeUnit.value);
       const mw_calc = mass_g / (C_SI * V_SI);
       mw.value = formatResult(mw_calc);
-      formulaString.value = `Molecular Weight = Mass / (Concentration × Volume) = ${mVal} ${massUnit.value} / (${cVal} ${concUnit.value} × ${vVal} ${volumeUnit.value})`;
+      formulaString.value = `Molecular Weight = Mass / (Concentration × Volume)\n= ${mVal} ${massUnit.value} / (${cVal} ${concUnit.value} × ${vVal} ${volumeUnit.value})`;
     }
   } catch (e: any) {
     molarityError.value = e.message;
@@ -174,7 +189,7 @@ const calculatePercentage = () => {
       pctValue.value = formatResult(calculatedPct);
       
       const labelStr = pctType.value === 'ww' ? 'w/w' : 'v/v';
-      pctFormulaString.value = `Percentage (% ${labelStr}) = (Solute / Total) × 100% = (${soluteVal} ${pctSoluteUnit.value} / ${totalTotalLabel(totalVal)}) × 100%`;
+      pctFormulaString.value = `Percentage (% ${labelStr}) = (Solute / Total) × 100%\n= (${soluteVal} ${pctSoluteUnit.value} / ${totalVal} ${pctTotalUnit.value}) × 100%`;
     }
     else if (pctTarget.value === 'solute') {
       if (isNaN(totalVal) || isNaN(pValue)) return;
@@ -184,7 +199,7 @@ const calculatePercentage = () => {
       const calculatedSolute = calculatedSoluteBase / getUnitFactor(pctSoluteUnit.value);
       pctSolute.value = formatResult(calculatedSolute);
       
-      pctFormulaString.value = `Solute Amount = Total × (Percentage / 100) = ${totalVal} ${pctTotalUnit.value} × (${pValue}% / 100)`;
+      pctFormulaString.value = `Solute Amount = Total × (Percentage / 100)\n= ${totalVal} ${pctTotalUnit.value} × (${pValue}% / 100)`;
     }
     else if (pctTarget.value === 'total') {
       if (isNaN(soluteVal) || isNaN(pValue)) return;
@@ -194,18 +209,13 @@ const calculatePercentage = () => {
       const calculatedTotal = calculatedTotalBase / getUnitFactor(pctTotalUnit.value);
       pctTotal.value = formatResult(calculatedTotal);
       
-      pctFormulaString.value = `Total Amount = Solute / (Percentage / 100) = ${soluteVal} ${pctSoluteUnit.value} / (${pValue}% / 100)`;
+      pctFormulaString.value = `Total Amount = Solute / (Percentage / 100)\n= ${soluteVal} ${pctSoluteUnit.value} / (${pValue}% / 100)`;
     }
   } catch (e: any) {
     pctError.value = e.message;
   }
 };
 
-const totalTotalLabel = (val: number): string => {
-  return `${val} ${pctTotalUnit.value}`;
-};
-
-// IU ↔ Mg conversion
 const convertIuToMg = (val: string) => {
   iuValue.value = val;
   const num = parseFloat(val);
@@ -214,8 +224,7 @@ const convertIuToMg = (val: string) => {
     return;
   }
   const factor = IU_FACTORS[iuActiveKey.value].iuToMg;
-  const calculatedMg = num * factor;
-  mgValue.value = calculatedMg.toString();
+  mgValue.value = (num * factor).toString();
 };
 
 const convertMgToIu = (val: string) => {
@@ -226,8 +235,7 @@ const convertMgToIu = (val: string) => {
     return;
   }
   const factor = IU_FACTORS[iuActiveKey.value].mgToIu;
-  const calculatedIu = Math.round(num * factor);
-  iuValue.value = calculatedIu.toString();
+  iuValue.value = Math.round(num * factor).toString();
 };
 
 const applyConvertedMg = () => {
@@ -235,37 +243,17 @@ const applyConvertedMg = () => {
   if (calcMode.value === 'molarity') {
     mass.value = mgValue.value;
     massUnit.value = 'mg';
-    if (target.value === 'mass') {
-      target.value = 'conc'; // Prevent overwriting calculated result
-    }
+    if (target.value === 'mass') target.value = 'conc';
   } else {
     pctSolute.value = mgValue.value;
     pctSoluteUnit.value = 'g';
-    if (pctTarget.value === 'solute') {
-      pctTarget.value = 'pct';
-    }
+    if (pctTarget.value === 'solute') pctTarget.value = 'pct';
   }
 };
 
 const loadPreset = (preset: typeof PRESET_INGREDIENTS[0]) => {
   mw.value = preset.mw.toString();
-  if (target.value === 'mw') {
-    target.value = 'mass';
-  }
-};
-
-const handleInputFocus = (field: 'mass' | 'conc' | 'volume' | 'mw') => {
-  if (target.value === field) {
-    const fields: ('mass' | 'conc' | 'volume' | 'mw')[] = ['mass', 'conc', 'volume', 'mw'];
-    target.value = fields.find(f => f !== field) || 'conc';
-  }
-};
-
-const handlePctInputFocus = (field: 'solute' | 'total' | 'pct') => {
-  if (pctTarget.value === field) {
-    const fields: ('solute' | 'total' | 'pct')[] = ['solute', 'total', 'pct'];
-    pctTarget.value = fields.find(f => f !== field) || 'solute';
-  }
+  if (target.value === 'mw') target.value = 'mass';
 };
 
 const handleReset = () => {
@@ -291,370 +279,449 @@ const handleReset = () => {
   }
 };
 
-// Setup watchers for auto calculation
 watch([mass, massUnit, conc, concUnit, volume, volumeUnit, mw, target, calcMode], () => {
-  if (calcMode.value === 'molarity') {
-    calculateMolarity();
-  }
+  if (calcMode.value === 'molarity') calculateMolarity();
 });
 
 watch([pctType, pctSolute, pctSoluteUnit, pctTotal, pctTotalUnit, pctValue, pctTarget, calcMode], () => {
-  if (calcMode.value === 'percentage') {
-    calculatePercentage();
-  }
+  if (calcMode.value === 'percentage') calculatePercentage();
 });
 
 watch(iuActiveKey, () => {
   convertIuToMg(iuValue.value);
 });
 
-// Initial trigger
 onMounted(() => {
   calculateMolarity();
 });
 </script>
 
 <template>
-  <div class="calculator-wrapper flex flex-col gap-6">
-    <!-- Header -->
-    <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+  <div class="molarity-calc-container flex flex-col gap-6">
+    <!-- Top Bar: Header & Mode Switcher -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[var(--color-border)]">
       <div>
-        <h2 class="text-2xl font-bold font-display gradient-text--gold">Molarity & Percentage</h2>
-        <p class="text-sm text-[var(--color-text-secondary)] mt-1">
-          Solve for Molarity parameters or Weight/Volume percentage configurations
+        <h3 class="text-lg font-bold font-display text-[var(--color-text)]">Molarity & Percentage Solver</h3>
+        <p class="text-xs text-[var(--color-text-secondary)] mt-0.5">
+          Select what variable to calculate — inputs are on the left, live result is highlighted on the right.
         </p>
       </div>
-      <!-- Mode Toggle Switch -->
-      <div class="mode-toggle-switch">
+
+      <!-- Mode Pill Toggle -->
+      <div class="inline-flex p-1 bg-black/40 border border-[var(--color-border)] rounded-xl self-start sm:self-auto">
         <button
           @click="calcMode = 'molarity'"
-          :class="['mode-toggle-btn', calcMode === 'molarity' ? 'mode-toggle-btn--active' : '']"
+          :class="[
+            'px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all',
+            calcMode === 'molarity'
+              ? 'bg-[var(--color-primary)] text-[var(--color-bg)] shadow-md font-bold'
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
+          ]"
         >
-          Molarity Mode
+          Molarity (M)
         </button>
         <button
           @click="calcMode = 'percentage'"
-          :class="['mode-toggle-btn', calcMode === 'percentage' ? 'mode-toggle-btn--active' : '']"
+          :class="[
+            'px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all',
+            calcMode === 'percentage'
+              ? 'bg-[var(--color-primary)] text-[var(--color-bg)] shadow-md font-bold'
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
+          ]"
         >
-          Percentage Mode
+          Percentage (% w/w)
         </button>
       </div>
     </div>
 
-    <!-- main Grid layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Left side: Parameters Editor (takes 2 cols) -->
-      <div class="lg:col-span-2 glass p-6 border border-[var(--color-border)] flex flex-col gap-6">
-        <h3 class="text-lg font-semibold text-[var(--color-primary-light)] flex items-center gap-2">
-          ⚙️ Target Parameter Configuration
-        </h3>
+    <!-- Main Two-Column Layout: Left (Inputs) vs Right (Hero Result Board) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      
+      <!-- ── LEFT COLUMN (7/12): INPUT PARAMETERS PANEL ── -->
+      <div class="lg:col-span-7 flex flex-col gap-5">
+        
+        <div class="panel-card p-5 rounded-2xl bg-black/20 border border-[var(--color-border)]">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold uppercase tracking-wider text-[var(--color-primary-light)] flex items-center gap-1.5">
+              <span>📥</span> Input Parameters
+            </span>
+            <span class="text-[11px] text-[var(--color-text-muted)]">
+              Click <strong class="text-[var(--color-primary-light)]">Solve Target</strong> to compute that variable
+            </span>
+          </div>
 
-        <!-- Molarity Mode Inputs -->
-        <div v-if="calcMode === 'molarity'" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <!-- Mass input -->
-          <div :class="['p-4 rounded-xl border transition-all', target === 'mass' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
-            <div class="flex justify-between items-center mb-2">
-              <label for="molarity-mass" class="form-label font-semibold text-xs uppercase tracking-wider">Solute Mass (m)</label>
-              <button 
-                @click="target = 'mass'" 
-                :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'mass' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
-              >
-                {{ target === 'mass' ? '⚡ Result' : 'Set Target' }}
-              </button>
+          <!-- MOLARITY MODE INPUTS -->
+          <div v-if="calcMode === 'molarity'" class="flex flex-col gap-3.5">
+            <!-- 1. Mass Input -->
+            <div :class="['input-row-card', target === 'mass' ? 'input-row-card--target' : '']">
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="m-mass" class="text-xs font-bold text-[var(--color-text)] flex items-center gap-1.5">
+                  <span>Solute Mass (m)</span>
+                </label>
+                <button
+                  @click="target = 'mass'"
+                  :class="['target-btn', target === 'mass' ? 'target-btn--active' : '']"
+                >
+                  {{ target === 'mass' ? '⚡ Solving Target' : 'Solve Target' }}
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <input
+                  id="m-mass"
+                  type="number"
+                  step="any"
+                  v-model="mass"
+                  :disabled="target === 'mass'"
+                  class="calc-input"
+                  placeholder="Enter mass"
+                />
+                <select v-model="massUnit" class="calc-unit-select" aria-label="Mass Unit">
+                  <option v-for="u in MASS_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
+                </select>
+              </div>
             </div>
-            <div class="flex gap-2">
-              <input
-                id="molarity-mass"
-                type="number"
-                step="any"
-                class="form-input font-mono"
-                v-model="mass"
-                @focus="handleInputFocus('mass')"
-                placeholder="Enter mass"
-              />
-              <select class="form-input form-select w-24" v-model="massUnit" aria-label="Mass unit">
-                <option v-for="u in MASS_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
-              </select>
+
+            <!-- 2. Concentration Input -->
+            <div :class="['input-row-card', target === 'conc' ? 'input-row-card--target' : '']">
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="m-conc" class="text-xs font-bold text-[var(--color-text)] flex items-center gap-1.5">
+                  <span>Target Concentration (C)</span>
+                </label>
+                <button
+                  @click="target = 'conc'"
+                  :class="['target-btn', target === 'conc' ? 'target-btn--active' : '']"
+                >
+                  {{ target === 'conc' ? '⚡ Solving Target' : 'Solve Target' }}
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <input
+                  id="m-conc"
+                  type="number"
+                  step="any"
+                  v-model="conc"
+                  :disabled="target === 'conc'"
+                  class="calc-input"
+                  placeholder="Enter concentration"
+                />
+                <select v-model="concUnit" class="calc-unit-select" aria-label="Concentration Unit">
+                  <option v-for="u in CONC_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 3. Volume Input -->
+            <div :class="['input-row-card', target === 'volume' ? 'input-row-card--target' : '']">
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="m-vol" class="text-xs font-bold text-[var(--color-text)] flex items-center gap-1.5">
+                  <span>Solvent Volume (V)</span>
+                </label>
+                <button
+                  @click="target = 'volume'"
+                  :class="['target-btn', target === 'volume' ? 'target-btn--active' : '']"
+                >
+                  {{ target === 'volume' ? '⚡ Solving Target' : 'Solve Target' }}
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <input
+                  id="m-vol"
+                  type="number"
+                  step="any"
+                  v-model="volume"
+                  :disabled="target === 'volume'"
+                  class="calc-input"
+                  placeholder="Enter volume"
+                />
+                <select v-model="volumeUnit" class="calc-unit-select" aria-label="Volume Unit">
+                  <option v-for="u in VOL_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 4. Molecular Weight Input -->
+            <div :class="['input-row-card', target === 'mw' ? 'input-row-card--target' : '']">
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="m-mw" class="text-xs font-bold text-[var(--color-text)] flex items-center gap-1.5">
+                  <span>Molecular Weight (MW)</span>
+                </label>
+                <button
+                  @click="target = 'mw'"
+                  :class="['target-btn', target === 'mw' ? 'target-btn--active' : '']"
+                >
+                  {{ target === 'mw' ? '⚡ Solving Target' : 'Solve Target' }}
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <input
+                  id="m-mw"
+                  type="number"
+                  step="any"
+                  v-model="mw"
+                  :disabled="target === 'mw'"
+                  class="calc-input"
+                  placeholder="Enter molecular weight"
+                />
+                <span class="calc-unit-badge">g/mol</span>
+              </div>
             </div>
           </div>
 
-          <!-- Concentration input -->
-          <div :class="['p-4 rounded-xl border transition-all', target === 'conc' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
-            <div class="flex justify-between items-center mb-2">
-              <label for="molarity-conc" class="form-label font-semibold text-xs uppercase tracking-wider">Target Concentration (C)</label>
-              <button 
-                @click="target = 'conc'" 
-                :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'conc' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
-              >
-                {{ target === 'conc' ? '⚡ Result' : 'Set Target' }}
-              </button>
+          <!-- PERCENTAGE MODE INPUTS -->
+          <div v-else class="flex flex-col gap-3.5">
+            <!-- 1. Solute Amount -->
+            <div :class="['input-row-card', pctTarget === 'solute' ? 'input-row-card--target' : '']">
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="pct-s" class="text-xs font-bold text-[var(--color-text)]">Solute Amount</label>
+                <button
+                  @click="pctTarget = 'solute'"
+                  :class="['target-btn', pctTarget === 'solute' ? 'target-btn--active' : '']"
+                >
+                  {{ pctTarget === 'solute' ? '⚡ Solving Target' : 'Solve Target' }}
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <input
+                  id="pct-s"
+                  type="number"
+                  v-model="pctSolute"
+                  :disabled="pctTarget === 'solute'"
+                  class="calc-input"
+                  placeholder="Enter solute"
+                />
+                <select v-model="pctSoluteUnit" class="calc-unit-select" aria-label="Solute Unit">
+                  <option value="g">g</option>
+                  <option value="mg">mg</option>
+                  <option value="kg">kg</option>
+                  <option value="mL">mL</option>
+                  <option value="L">L</option>
+                </select>
+              </div>
             </div>
-            <div class="flex gap-2">
-              <input
-                id="molarity-conc"
-                type="number"
-                step="any"
-                class="form-input font-mono"
-                v-model="conc"
-                @focus="handleInputFocus('conc')"
-                placeholder="Enter conc"
-              />
-              <select class="form-input form-select w-24" v-model="concUnit" aria-label="Concentration unit">
-                <option v-for="u in CONC_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
-              </select>
+
+            <!-- 2. Total Formula Amount -->
+            <div :class="['input-row-card', pctTarget === 'total' ? 'input-row-card--target' : '']">
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="pct-t" class="text-xs font-bold text-[var(--color-text)]">Total Solution Mass/Vol</label>
+                <button
+                  @click="pctTarget = 'total'"
+                  :class="['target-btn', pctTarget === 'total' ? 'target-btn--active' : '']"
+                >
+                  {{ pctTarget === 'total' ? '⚡ Solving Target' : 'Solve Target' }}
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <input
+                  id="pct-t"
+                  type="number"
+                  v-model="pctTotal"
+                  :disabled="pctTarget === 'total'"
+                  class="calc-input"
+                  placeholder="Enter total"
+                />
+                <select v-model="pctTotalUnit" class="calc-unit-select" aria-label="Total Unit">
+                  <option value="g">g</option>
+                  <option value="kg">kg</option>
+                  <option value="mL">mL</option>
+                  <option value="L">L</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 3. Percentage Concentration -->
+            <div :class="['input-row-card', pctTarget === 'pct' ? 'input-row-card--target' : '']">
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="pct-v" class="text-xs font-bold text-[var(--color-text)]">Concentration Percentage</label>
+                <button
+                  @click="pctTarget = 'pct'"
+                  :class="['target-btn', pctTarget === 'pct' ? 'target-btn--active' : '']"
+                >
+                  {{ pctTarget === 'pct' ? '⚡ Solving Target' : 'Solve Target' }}
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <input
+                  id="pct-v"
+                  type="number"
+                  v-model="pctValue"
+                  :disabled="pctTarget === 'pct'"
+                  class="calc-input"
+                  placeholder="Enter percentage"
+                />
+                <span class="calc-unit-badge">% ({{ pctType === 'ww' ? 'w/w' : 'v/v' }})</span>
+              </div>
+            </div>
+
+            <!-- 4. Percentage Type Radio -->
+            <div class="p-3.5 rounded-xl border border-[var(--color-border)] bg-black/20 flex items-center justify-between">
+              <span class="text-xs font-semibold text-[var(--color-text-secondary)]">Ratio Basis:</span>
+              <div class="flex gap-4">
+                <label class="flex items-center gap-1.5 text-xs text-[var(--color-text)] cursor-pointer">
+                  <input type="radio" value="ww" v-model="pctType" class="accent-[var(--color-primary)]" />
+                  Weight-in-Weight (w/w)
+                </label>
+                <label class="flex items-center gap-1.5 text-xs text-[var(--color-text)] cursor-pointer">
+                  <input type="radio" value="vv" v-model="pctType" class="accent-[var(--color-primary)]" />
+                  Volume-in-Volume (v/v)
+                </label>
+              </div>
             </div>
           </div>
 
-          <!-- Volume input -->
-          <div :class="['p-4 rounded-xl border transition-all', target === 'volume' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
-            <div class="flex justify-between items-center mb-2">
-              <label for="molarity-volume" class="form-label font-semibold text-xs uppercase tracking-wider">Solvent Volume (V)</label>
-              <button 
-                @click="target = 'volume'" 
-                :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'volume' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
-              >
-                {{ target === 'volume' ? '⚡ Result' : 'Set Target' }}
-              </button>
-            </div>
-            <div class="flex gap-2">
-              <input
-                id="molarity-volume"
-                type="number"
-                step="any"
-                class="form-input font-mono"
-                v-model="volume"
-                @focus="handleInputFocus('volume')"
-                placeholder="Enter volume"
-              />
-              <select class="form-input form-select w-24" v-model="volumeUnit" aria-label="Volume unit">
-                <option v-for="u in VOL_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
-              </select>
-            </div>
+          <!-- Bottom Actions -->
+          <div class="mt-4 pt-3 border-t border-[var(--color-border)] flex items-center justify-between">
+            <button @click="handleReset" class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] flex items-center gap-1 transition-colors">
+              <span>🔄</span> Reset to defaults
+            </button>
+            <span class="text-[10px] text-[var(--color-text-muted)] italic">
+              Auto-calculates on keypress
+            </span>
           </div>
-
-          <!-- Molecular Weight input -->
-          <div :class="['p-4 rounded-xl border transition-all', target === 'mw' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
-            <div class="flex justify-between items-center mb-2">
-              <label for="molarity-mw" class="form-label font-semibold text-xs uppercase tracking-wider">Molecular Weight (MW)</label>
-              <button 
-                @click="target = 'mw'" 
-                :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'mw' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
-              >
-                {{ target === 'mw' ? '⚡ Result' : 'Set Target' }}
-              </button>
-            </div>
-            <div class="flex gap-2">
-              <input
-                id="molarity-mw"
-                type="number"
-                step="any"
-                class="form-input font-mono"
-                v-model="mw"
-                @focus="handleInputFocus('mw')"
-                placeholder="Enter MW"
-              />
-              <span class="form-input w-24 flex items-center justify-center text-xs text-[var(--color-text-muted)] bg-white/5 select-none">
-                g/mol
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Percentage Mode Inputs -->
-        <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <!-- Solute Amount -->
-          <div :class="['p-4 rounded-xl border transition-all', pctTarget === 'solute' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
-            <div class="flex justify-between items-center mb-2">
-              <label for="pct-solute" class="form-label font-semibold text-xs uppercase tracking-wider">Solute Amount</label>
-              <button 
-                @click="pctTarget = 'solute'" 
-                :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', pctTarget === 'solute' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
-              >
-                {{ pctTarget === 'solute' ? 'Target' : 'Solve' }}
-              </button>
-            </div>
-            <div class="flex gap-2">
-              <input
-                id="pct-solute"
-                type="number"
-                class="form-input font-mono"
-                v-model="pctSolute"
-                :disabled="pctTarget === 'solute'"
-                placeholder="Enter solute"
-              />
-              <select class="form-input form-select w-24" v-model="pctSoluteUnit" aria-label="Solute unit">
-                <option value="g">g</option>
-                <option value="mg">mg</option>
-                <option value="kg">kg</option>
-                <option value="mL">mL</option>
-                <option value="L">L</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Total Amount -->
-          <div :class="['p-4 rounded-xl border transition-all', pctTarget === 'total' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
-            <div class="flex justify-between items-center mb-2">
-              <label for="pct-total" class="form-label font-semibold text-xs uppercase tracking-wider">Total Formula Amount</label>
-              <button 
-                @click="pctTarget = 'total'" 
-                :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', pctTarget === 'total' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
-              >
-                {{ pctTarget === 'total' ? 'Target' : 'Solve' }}
-              </button>
-            </div>
-            <div class="flex gap-2">
-              <input
-                id="pct-total"
-                type="number"
-                class="form-input font-mono"
-                v-model="pctTotal"
-                :disabled="pctTarget === 'total'"
-                placeholder="Enter total"
-              />
-              <select class="form-input form-select w-24" v-model="pctTotalUnit" aria-label="Total unit">
-                <option value="g">g</option>
-                <option value="kg">kg</option>
-                <option value="mL">mL</option>
-                <option value="L">L</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Percentage Value -->
-          <div :class="['p-4 rounded-xl border transition-all', pctTarget === 'pct' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
-            <div class="flex justify-between items-center mb-2">
-              <label for="pct-value" class="form-label font-semibold text-xs uppercase tracking-wider">Concentration Percentage</label>
-              <button 
-                @click="pctTarget = 'pct'" 
-                :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', pctTarget === 'pct' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']"
-              >
-                {{ pctTarget === 'pct' ? 'Target' : 'Solve' }}
-              </button>
-            </div>
-            <div class="flex gap-2">
-              <input
-                id="pct-value"
-                type="number"
-                class="form-input font-mono"
-                v-model="pctValue"
-                :disabled="pctTarget === 'pct'"
-                placeholder="Enter percentage"
-              />
-              <span class="form-input w-24 flex items-center justify-center text-xs font-bold text-[var(--color-primary)] bg-white/5 select-none">
-                % ({{ pctType === 'ww' ? 'w/w' : 'v/v' }})
-              </span>
-            </div>
-          </div>
-
-          <!-- Pct Type Select -->
-          <div class="p-4 rounded-xl border border-[var(--color-border)] bg-black/20">
-            <span class="form-label font-semibold text-xs uppercase tracking-wider mb-2 block">Percentage Relation Type</span>
-            <div class="flex gap-4 h-[42px] items-center">
-              <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" value="ww" v-model="pctType" class="accent-[var(--color-primary)]" />
-                Weight-in-Weight (w/w)
-              </label>
-              <label class="flex items-center gap-2 cursor-pointer text-sm">
-                <input type="radio" value="vv" v-model="pctType" class="accent-[var(--color-primary)]" />
-                Volume-in-Volume (v/v)
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <!-- Formulas and Errors -->
-        <div class="border-t border-[var(--color-border)] pt-4 flex flex-col gap-3">
-          <div v-if="molarityError || pctError" class="p-3 bg-[var(--color-error)]/10 border border-[var(--color-error)]/30 rounded-lg text-sm text-[var(--color-error)] flex items-center gap-2">
-            <span>⚠️</span>
-            <span>{{ calcMode === 'molarity' ? molarityError : pctError }}</span>
-          </div>
-
-          <div v-else class="p-4 bg-white/[0.02] border border-[var(--color-border)] rounded-xl">
-            <div class="text-xs text-[var(--color-text-secondary)] uppercase tracking-wider mb-1 font-bold">Calculation Equation</div>
-            <div class="font-mono text-sm text-[var(--color-primary-light)]">
-              {{ calcMode === 'molarity' ? formulaString : pctFormulaString }}
-            </div>
-          </div>
-
-          <button @click="handleReset" class="btn btn--secondary self-start py-2 text-xs flex items-center gap-1.5">
-            🔄 Reset Calculator
-          </button>
         </div>
       </div>
 
-      <!-- Right side: Sidebar Helpers (Presets & Converter) -->
-      <div class="flex flex-col gap-6">
-        <!-- Preset Molecular Weights (Molarity mode only) -->
-        <div v-if="calcMode === 'molarity'" class="glass p-5 border border-[var(--color-border)] flex flex-col gap-4">
-          <h3 class="text-sm font-semibold text-[var(--color-primary-light)] flex items-center gap-2">
-            🧬 Ingredient MW Presets
-          </h3>
-          <div class="flex flex-col gap-2 max-h-48 overflow-y-auto custom-scrollbar pr-1">
-            <button
-              v-for="item in PRESET_INGREDIENTS"
-              :key="item.nameCn"
-              @click="loadPreset(item)"
-              class="w-full text-left p-2.5 rounded-lg border border-[var(--color-border)] bg-black/10 hover:bg-white/[0.04] transition-all flex justify-between items-center"
-            >
-              <div class="flex flex-col">
-                <span class="text-xs font-semibold text-[var(--color-text)]">{{ item.nameEn }}</span>
-                <span class="text-[10px] text-[var(--color-text-secondary)]">{{ item.formula }}</span>
+      <!-- ── RIGHT COLUMN (5/12): HERO RESULT BOARD & TOOLS ── -->
+      <div class="lg:col-span-5 flex flex-col gap-5">
+        
+        <!-- 🎯 HERO HIGH-CONTRAST RESULT BOARD -->
+        <div class="result-hero-board p-6 rounded-2xl border border-[var(--color-primary)]/40 bg-gradient-to-b from-[#1c160c] to-[#0d0a05] shadow-xl relative overflow-hidden">
+          <div class="glow-ambient"></div>
+          
+          <div class="relative z-10 flex flex-col gap-4">
+            <!-- Error State -->
+            <div v-if="molarityError || pctError" class="p-4 rounded-xl bg-red-950/40 border border-red-500/30 text-xs text-red-300 leading-relaxed">
+              <strong>⚠️ Calculation Notice:</strong>
+              <p class="mt-1">{{ calcMode === 'molarity' ? molarityError : pctError }}</p>
+            </div>
+
+            <!-- Main Result Output Display -->
+            <div v-else class="flex flex-col gap-1 my-1">
+              <span class="text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider">
+                {{ activeResultDisplay.label }}
+              </span>
+
+              <div class="flex items-baseline gap-2 flex-wrap">
+                <span class="text-4xl sm:text-5xl font-black font-mono text-[var(--color-primary-light)] tracking-tight drop-shadow-md">
+                  {{ activeResultDisplay.val }}
+                </span>
+                <span class="text-lg font-bold font-mono text-[var(--color-accent-light)]">
+                  {{ activeResultDisplay.unit }}
+                </span>
               </div>
-              <span class="text-xs font-mono text-[var(--color-primary)] font-bold">{{ item.mw }}</span>
-            </button>
+            </div>
+
+            <!-- Step Formula Display -->
+            <div class="p-3.5 rounded-xl bg-black/50 border border-white/10 font-mono text-xs text-[var(--color-primary-light)] leading-relaxed whitespace-pre-line">
+              <div class="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider font-sans mb-1 font-bold">
+                Formula Breakdown:
+              </div>
+              {{ calcMode === 'molarity' ? formulaString : pctFormulaString }}
+            </div>
+
+            <!-- Disclaimer & Contact Link -->
+            <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] flex-wrap gap-1">
+              <span class="text-[var(--color-text-muted)] italic">
+                * Note: Results are estimates and may contain minor variances.
+              </span>
+              <a href="/contact" class="text-[var(--color-primary-light)] font-bold hover:underline flex items-center gap-1">
+                Contact Ginkvora Formulators →
+              </a>
+            </div>
           </div>
         </div>
 
-        <!-- Vitamin IU ↔ mg Activity Converter -->
-        <div class="glass p-5 border border-[var(--color-border)] flex flex-col gap-4">
-          <h3 class="text-sm font-semibold text-[var(--color-primary-light)] flex items-center gap-2">
-            🧪 Vitamin IU ↔ mg Converter
-          </h3>
-          
-          <div class="flex flex-col gap-3">
+        <!-- 🛠️ AUXILIARY TOOLS TABS: PRESETS & CONVERTER -->
+        <div class="aux-tools-card p-5 rounded-2xl bg-black/20 border border-[var(--color-border)] flex flex-col gap-4">
+          <!-- Tools Tab Bar -->
+          <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-2.5">
+            <div class="flex gap-2">
+              <button
+                @click="activeRightTab = 'presets'"
+                :class="[
+                  'px-3 py-1 text-xs font-bold rounded-lg transition-all',
+                  activeRightTab === 'presets'
+                    ? 'bg-white/10 text-[var(--color-primary-light)] border border-white/10'
+                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+                ]"
+              >
+                🧬 MW Presets
+              </button>
+              <button
+                @click="activeRightTab = 'iu'"
+                :class="[
+                  'px-3 py-1 text-xs font-bold rounded-lg transition-all',
+                  activeRightTab === 'iu'
+                    ? 'bg-white/10 text-[var(--color-primary-light)] border border-white/10'
+                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+                ]"
+              >
+                🧪 Vitamin IU ↔ mg
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB A: INGREDIENT PRESETS -->
+          <div v-if="activeRightTab === 'presets'" class="flex flex-col gap-2">
+            <span class="text-[11px] text-[var(--color-text-muted)]">
+              Click any common ingredient to load its Molecular Weight into the calculator:
+            </span>
+            <div class="flex flex-col gap-1.5 max-h-48 overflow-y-auto custom-scrollbar pr-1">
+              <button
+                v-for="item in PRESET_INGREDIENTS"
+                :key="item.nameCn"
+                @click="loadPreset(item)"
+                class="w-full text-left p-2 rounded-lg border border-[var(--color-border)] bg-black/10 hover:bg-white/[0.04] transition-all flex justify-between items-center group"
+              >
+                <div class="flex flex-col">
+                  <span class="text-xs font-semibold text-[var(--color-text)] group-hover:text-[var(--color-primary-light)]">
+                    {{ item.nameEn }}
+                  </span>
+                  <span class="text-[10px] font-mono text-[var(--color-text-muted)]">{{ item.formula }}</span>
+                </div>
+                <span class="text-xs font-mono font-bold text-[var(--color-primary)] bg-white/5 px-2 py-0.5 rounded">
+                  {{ item.mw }}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB B: VITAMIN IU CONVERTER -->
+          <div v-else-if="activeRightTab === 'iu'" class="flex flex-col gap-3">
             <div>
-              <label for="iu-ingredient-select" class="form-label text-[11px] mb-1.5 block">Vitamin Active Ingredient</label>
-              <select id="iu-ingredient-select" class="form-input form-select text-xs" v-model="iuActiveKey">
+              <label for="iu-select" class="text-[11px] text-[var(--color-text-muted)] mb-1 block">Select Vitamin:</label>
+              <select id="iu-select" v-model="iuActiveKey" class="calc-unit-select w-full text-xs">
                 <option value="vitA">Vitamin A (Retinol)</option>
                 <option value="vitD3">Vitamin D3 (Cholecalciferol)</option>
                 <option value="vitE">Vitamin E (d-α-Tocopherol)</option>
               </select>
             </div>
 
-            <!-- Active Factors Info Card -->
-            <div class="p-3 bg-black/30 border border-[var(--color-border)] rounded-lg text-[11px] text-[var(--color-text-secondary)]">
-              <div class="flex justify-between mb-1">
-                <span>Ingredient Type:</span>
-                <span class="font-bold text-[var(--color-text)]">{{ currentIuItem.nameEn || currentIuItem.nameCn }}</span>
-              </div>
-              <div class="flex justify-between">
-                <span>Standard activity:</span>
-                <span class="font-mono text-[var(--color-primary)]">1 mg = {{ formatResult(currentIuItem.mgToIu) }} IU</span>
-              </div>
+            <div class="p-2.5 rounded-lg bg-black/30 border border-[var(--color-border)] text-[11px] text-[var(--color-text-secondary)] flex justify-between font-mono">
+              <span>Standard Activity:</span>
+              <span class="text-[var(--color-primary-light)] font-bold">1 mg = {{ currentIuItem.mgToIu }} IU</span>
             </div>
 
             <div class="grid grid-cols-2 gap-2">
               <div>
-                <label for="converter-iu" class="form-label text-[10px] mb-1 block">Activity (IU)</label>
+                <label for="converter-iu" class="text-[10px] text-[var(--color-text-muted)] mb-1 block">Activity (IU)</label>
                 <input
                   id="converter-iu"
                   type="number"
-                  class="form-input font-mono text-xs"
+                  class="calc-input text-xs font-mono"
                   :value="iuValue"
                   @input="convertIuToMg(($event.target as HTMLInputElement).value)"
-                  placeholder="IU amount"
+                  placeholder="IU"
                 />
               </div>
               <div>
-                <label for="converter-mg" class="form-label text-[10px] mb-1 block">Mass (mg)</label>
+                <label for="converter-mg" class="text-[10px] text-[var(--color-text-muted)] mb-1 block">Mass (mg)</label>
                 <input
                   id="converter-mg"
                   type="number"
-                  class="form-input font-mono text-xs"
+                  class="calc-input text-xs font-mono"
                   :value="mgValue"
                   @input="convertMgToIu(($event.target as HTMLInputElement).value)"
-                  placeholder="mg amount"
+                  placeholder="mg"
                 />
               </div>
             </div>
@@ -662,13 +729,120 @@ onMounted(() => {
             <button
               @click="applyConvertedMg"
               :disabled="!mgValue"
-              class="w-full btn btn--gold text-xs py-2 mt-2 disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-1"
+              class="w-full btn btn--gold py-1.5 text-xs font-bold flex items-center justify-center gap-1.5 disabled:opacity-40"
             >
-              📥 Apply Mass to Left Pane
+              📥 Apply mg to Solute Mass
             </button>
           </div>
         </div>
+
       </div>
+
     </div>
   </div>
 </template>
+
+<style scoped>
+/* ── ROW CARDS & INPUT STYLING ── */
+.input-row-card {
+  padding: 0.875rem 1rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--color-border);
+  background: rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.input-row-card--target {
+  border-color: rgba(212, 166, 84, 0.5) !important;
+  background: rgba(212, 166, 84, 0.05) !important;
+  box-shadow: 0 0 12px rgba(212, 166, 84, 0.08);
+}
+
+.target-btn {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.375rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.target-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+}
+
+.target-btn--active {
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-bg) !important;
+}
+
+.calc-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.75rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  color: var(--color-text);
+  font-family: monospace;
+  font-size: 0.9375rem;
+  transition: border-color 0.15s ease;
+}
+
+.calc-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.calc-input:disabled {
+  background: rgba(212, 166, 84, 0.08);
+  color: var(--color-primary-light);
+  font-weight: 700;
+  cursor: default;
+}
+
+.calc-unit-select {
+  padding: 0.5rem 0.625rem;
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  color: var(--color-text);
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.calc-unit-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  user-select: none;
+}
+
+/* ── HERO RESULT BOARD ── */
+.result-hero-board {
+  box-shadow: 0 10px 30px -10px rgba(212, 166, 84, 0.15);
+}
+
+.glow-ambient {
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(212, 166, 84, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+</style>

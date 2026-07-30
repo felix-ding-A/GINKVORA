@@ -166,8 +166,8 @@ export const ui = {
     'quality.label':            'Our Standards',
 
     // ── Formulator ──
-    'formulator.title':         'Scientific Formulation Console',
-    'formulator.label':         'Lab Tools',
+    'formulator.title':         'Scientific Lab & Formulation Calculator',
+    'formulator.label':         'Free Online Lab Tool',
 
     // ── WhyUs Section ──
     'whyus.label':              'Why GINKVORA',
@@ -487,8 +487,8 @@ export const ui = {
     'quality.label':            'Наши стандарты',
 
     // ── Formulator ──
-    'formulator.title':         'Консоль научных рецептур',
-    'formulator.label':         'Лабораторные инструменты',
+    'formulator.title':         'Калькулятор научных рецептур и лаборатории',
+    'formulator.label':         'Онлайн калькулятор',
 
     // ── WhyUs Section ──
     'whyus.label':              'Почему GINKVORA',
@@ -808,8 +808,8 @@ export const ui = {
     'quality.label':            'معاييرنا',
 
     // ── Formulator ──
-    'formulator.title':         'لوحة تحكم التركيب العلمي',
-    'formulator.label':         'أدوات المختبر',
+    'formulator.title':         'حاسبة التركيبات العلمية والمختبرية',
+    'formulator.label':         'أداة حسابية مجانية',
 
     // ── WhyUs Section ──
     'whyus.label':              'لماذا GINKVORA',
@@ -1128,8 +1128,8 @@ export const ui = {
     'quality.label':            'Nuestros Estándares',
 
     // ── Formulator ──
-    'formulator.title':         'Consola Científica de Formulación',
-    'formulator.label':         'Herramientas de Lab',
+    'formulator.title':         'Calculadora de Formulación Científica y Laboratorio',
+    'formulator.label':         'Herramienta de Lab Gratuita',
 
     // ── WhyUs Section ──
     'whyus.label':              'Por qué GINKVORA',

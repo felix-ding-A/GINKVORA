@@ -40,11 +40,7 @@ const localBusinessSchema = {
     <header class="page-banner" aria-label="Page Header">
       <div class="banner-gradient"></div>
       <div class="container banner-content">
-        <span class="section-label">Get in Touch</span>
-        <h1 class="banner-title">Contact GINKVORA — B2B Bulk Ingredient Inquiry & RFQ</h1>
-        <p class="banner-desc">
-          Ready to source high-purity active ingredients? Contact our commercial team for instant quotations, sample shipping, and compliance documentation.
-        </p>
+        <h1 class="banner-title">Contact GINKVORA</h1>
       </div>
     </header>
 
@@ -63,7 +59,7 @@ const localBusinessSchema = {
                 <input type="text" id="name" name="name" required class="form-input" placeholder="John Doe / BioTech Ltd" />
               </div>
               <div class="form-field">
-                <label for="email" class="form-label">Work Email *</label>
+                <label for="email" class="form-label">Email / Work Email *</label>
                 <input type="email" id="email" name="email" required class="form-input" placeholder="john@company.com" />
               </div>
             </div>
@@ -81,8 +77,8 @@ const localBusinessSchema = {
 
             <div class="form-row-2">
               <div class="form-field">
-                <label for="industry" class="form-label">Industry Sector *</label>
-                <select id="industry" name="industry" required class="form-input form-select">
+                <label for="industry" class="form-label">Industry Sector</label>
+                <select id="industry" name="industry" class="form-input form-select">
                   <option value="" disabled selected>Select sector...</option>
                   <option value="dietary-supplements">Dietary Supplements</option>
                   <option value="cosmetics">Cosmetics & Skincare</option>
@@ -93,15 +89,15 @@ const localBusinessSchema = {
                 </select>
               </div>
               <div class="form-field">
-                <label for="productSelect" class="form-label">Target Ingredient *</label>
-                <input type="text" id="productSelect" name="productName" required class="form-input" placeholder="e.g. PQQ, NMN, Glabridin..." />
+                <label for="productSelect" class="form-label">Target Ingredient</label>
+                <input type="text" id="productSelect" name="productName" class="form-input" placeholder="e.g. PQQ, NMN, Glabridin..." />
               </div>
             </div>
 
             <div class="form-row-2">
               <div class="form-field">
-                <label for="quantity" class="form-label">Required Quantity *</label>
-                <input type="text" id="quantity" name="quantity" required class="form-input" placeholder="e.g. 25kg, 100kg" />
+                <label for="quantity" class="form-label">Required Quantity</label>
+                <input type="text" id="quantity" name="quantity" class="form-input" placeholder="e.g. 25kg, 100kg" />
               </div>
             </div>
 

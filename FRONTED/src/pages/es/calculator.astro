@@ -1,27 +1,25 @@
 ---
-// src/pages/es/calculator.astro — Spanish Formulation Console page
+// src/pages/es/calculator.astro — Spanish Formulation Calculator page
 export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FormulatorConsole from '../../components/calculators/FormulatorConsole.vue';
-import { useTranslations } from '../../i18n/utils';
-const lang = 'es';
-const t = useTranslations(lang);
 
+const lang = 'es';
 const siteUrl = 'https://ginkvora.com';
 
 // WebPage schema
 const formulatorSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "Consola de Formulación Científica | GINKVORA",
-  "description": "Calculadoras interactivas B2B gratuitas para molaridad química, diluciones en serie, masa molecular y formulaciones de cosméticos/suplementos.",
+  "name": "Calculadora de Formulación Científica y Laboratorio | GINKVORA",
+  "description": "Herramienta de calculadora de laboratorio en línea gratuita: calcula molaridad química, diluciones en serie (C1V1), masa molecular y formulaciones.",
   "url": `${siteUrl}/es/calculator`,
   "isPartOf": { "@type": "WebSite", "url": siteUrl, "name": "GINKVORA" },
   "breadcrumb": {
     "@type": "BreadcrumbList",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Inicio", "item": `${siteUrl}/es` },
-      { "@type": "ListItem", "position": 2, "name": "Calculadora de formulación", "item": `${siteUrl}/es/calculator` }
+      { "@type": "ListItem", "position": 2, "name": "Calculadora de laboratorio", "item": `${siteUrl}/es/calculator` }
     ]
   }
 };
@@ -30,8 +28,8 @@ const formulatorSchema = {
 const appSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Consola de Formulación GINKVORA",
-  "description": "Conjunto de herramientas profesionales de cálculo para científicos de laboratorio: cálculo de molaridad, diluciones en serie, masa molecular, equilibrio hidrófilo-lipófilo HLB, tamaños de cápsulas y formulación de suplementos.",
+  "name": "Calculadora de Formulación y Laboratorio GINKVORA",
+  "description": "Herramienta de calculadora de laboratorio profesional gratuita: molaridad química, diluciones en serie (C1V1), masa molecular y escala de recetas.",
   "applicationCategory": "ScienceApplication",
   "operatingSystem": "Web Browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -79,31 +77,271 @@ const faqSchema = {
   ]
 };
 ---
-<BaseLayout lang={lang} title="Consola de Formulación Científica | GINKVORA" description="Herramientas profesionales para calcular molaridad, diluciones y formulaciones. Diseñadas para investigadores y especialistas en I+D.">
+
+<BaseLayout
+  lang={lang}
+  title="Calculadora de Formulación Científica y Laboratorio | GINKVORA"
+  description="Herramienta gratuita para calcular molaridad química, diluciones C1V1, masa molecular y escala de formulaciones. Diseñada para investigadores y R&D."
+>
+  <link rel="alternate" hreflang="en" href={`${siteUrl}/calculator`} slot="head" />
+  <link rel="alternate" hreflang="es" href={`${siteUrl}/es/calculator`} slot="head" />
+  <link rel="alternate" hreflang="ru" href={`${siteUrl}/ru/calculator`} slot="head" />
+  <link rel="alternate" hreflang="ar" href={`${siteUrl}/ar/calculator`} slot="head" />
+  <link rel="alternate" hreflang="x-default" href={`${siteUrl}/calculator`} slot="head" />
+
   <script type="application/ld+json" set:html={JSON.stringify(formulatorSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
   <main class="formulator-page bg-noise">
+    <!-- Header banner -->
     <header class="page-banner">
       <div class="banner-gradient"></div>
       <div class="container banner-content">
-        <span class="section-label">{t('formulator.label')}</span>
-        <h1 class="banner-title">{t('formulator.title')}</h1>
-        <p class="banner-desc">Herramientas de cálculo profesionales para especialistas en I+D e investigadores de formulación.</p>
+        <h1 class="banner-title">Calculadora de Formulación Científica y Laboratorio</h1>
       </div>
     </header>
+
     <!-- Main interactive formulator wrapper -->
     <section class="container section--sm">
       <FormulatorConsole client:idle />
     </section>
+
+    <!-- Static Reference Guide & FAQ Section for SEO -->
+    <section class="container section reference-section" aria-labelledby="reference-title">
+      <div class="divider"></div>
+      
+      <div class="reference-header">
+        <span class="section-label">Documentación y Referencia</span>
+        <h2 id="reference-title" class="section-title">Guía de Referencia de Formulación y Calculadora</h2>
+        <p class="section-desc">
+          Especificaciones técnicas, ecuaciones matemáticas y procedimientos operativos estándar (SOP) utilizados en nuestras calculadoras.
+        </p>
+      </div>
+
+      <div class="grid grid-2">
+        <!-- Card 1 -->
+        <div class="reference-card glass">
+          <div class="card-icon">🧪</div>
+          <h3 class="card-title">Cálculos de Molaridad y Porcentajes % w/w</h3>
+          <p class="card-text">
+            La molaridad (M) define la concentración de un soluto en solución expresada en moles por litro (mol/L).
+          </p>
+          <div class="equation-block font-mono text-sm">
+            Masa (g) = Concentración (M) × Volumen (L) × Peso Molecular (g/mol)
+          </div>
+          <p class="card-text mt-3">
+            El porcentaje en peso (% w/w) representa la masa del soluto dividida por la masa total de la fórmula, multiplicada por 100.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            % w/w = (Masa del Soluto / Masa Total de la Fórmula) × 100%
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="reference-card glass">
+          <div class="card-icon">💧</div>
+          <h3 class="card-title">Dilución y Escala (C₁V₁ = C₂V₂)</h3>
+          <p class="card-text">
+            La ecuación de dilución relaciona la concentración y el volumen de una solución madre con la concentración y volumen finales deseados.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            C₁ × V₁ = C₂ × V₂
+          </div>
+          <p class="card-text mt-3">
+            Para preparar una dilución, calcule el volumen madre necesario (V₁ = (C₂ × V₂) / C₁), trasváselo y añada diluyente hasta alcanzar V₂.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="reference-card glass">
+          <div class="card-icon">🧬</div>
+          <h3 class="card-title">Analizador de Peso Molecular</h3>
+          <p class="card-text">
+            El peso molecular (PM) se calcula sumando las masas atómicas de todos los átomos de la fórmula química.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            Ejemplo: CuSO₄·5H₂O (Sulfato de Cobre Pentahidratado)
+          </div>
+          <p class="card-text mt-3">
+            El sistema analiza símbolos químicos estándar IUPAC y resuelve la estequiometría dinámicamente.
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="reference-card glass">
+          <div class="card-icon">⚖️</div>
+          <h3 class="card-title">Equilibrio HLB y Cinética de Emulsión</h3>
+          <p class="card-text">
+            El equilibrio hidrófilo-lipófilo (HLB) mide el grado de afinidad por agua o aceite de un surfactante.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            Emulsionante A% = (rHLB - HLB_B) / (HLB_A - HLB_B) × 100%
+          </div>
+          <p class="card-text mt-3">
+            Permite balancear la fase oleosa para estabilidad óptima de lociones y cremas cosméticas.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <div class="faq-container mt-5">
+        <h3 class="faq-section-title">Preguntas Frecuentes</h3>
+        
+        <div class="faq-item">
+          <h4 class="faq-question">¿Qué es una solución madre en diluciones de laboratorio?</h4>
+          <p class="faq-answer">
+            Una solución madre es una solución concentrada que se diluirá a una concentración menor para su uso real en el laboratorio. El uso de soluciones madre ahorra tiempo en la preparación y mejora la precisión.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4 class="faq-question">¿Cómo afectan los hidratos al cálculo del peso molecular?</h4>
+          <p class="faq-answer">
+            Los compuestos hidratados contienen moléculas de agua unidas químicamente. Al pesar la sustancia química seca, el peso de las moléculas de agua debe incluirse en el cálculo del peso molecular.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4 class="faq-question">¿Qué es el HLB en las formulaciones cosméticas?</h4>
+          <p class="faq-answer">
+            HLB significa equilibrio hidrófilo-lipófilo. Es un valor de 0 a 20 que indica la afinidad de un emulsionante por el agua (hidrófilo) o el aceite (lipófilo).
+          </p>
+        </div>
+      </div>
+    </section>
   </main>
 </BaseLayout>
+
 <style>
-  .formulator-page { padding-block: 0 var(--space-4xl); }
-  .page-banner { position: relative; padding-block: 8rem 4rem; background: linear-gradient(135deg, #030201 0%, #0e1007 60%, #0a0703 100%); overflow: hidden; margin-bottom: var(--space-2xl); }
-  .banner-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,166,84,0.07) 0%, transparent 70%); }
-  .banner-content { position: relative; z-index: 1; text-align: center; max-width: 700px; margin-inline: auto; }
-  .banner-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
-  .banner-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.75; }
-  .formulator-layout { padding-bottom: var(--space-2xl); }
+  .formulator-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  .page-banner {
+    position: relative;
+    padding-block: 3.5rem 1.25rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0e1007 60%, #0a0703 100%);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-xl);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,166,84,0.07) 0%, transparent 70%);
+  }
+
+  .banner-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 700px;
+    margin-inline: auto;
+  }
+
+  .banner-title {
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--color-text);
+  }
+
+  /* ── Reference Section ── */
+  .reference-section {
+    margin-top: var(--space-xl);
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border-strong), transparent);
+    margin-bottom: var(--space-xl);
+  }
+
+  .reference-header {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+  }
+
+  .reference-card {
+    padding: var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    transition: transform var(--transition-base), border-color var(--transition-base);
+  }
+
+  .reference-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-border-strong);
+  }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+  }
+
+  .card-text {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .equation-block {
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 2px solid var(--color-primary);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+    overflow-x: auto;
+  }
+
+  /* ── FAQ Section ── */
+  .faq-container {
+    margin-top: var(--space-3xl);
+    max-width: 800px;
+    margin-inline: auto;
+  }
+
+  .faq-section-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: var(--space-xl);
+    color: var(--color-text);
+  }
+
+  .faq-item {
+    padding-block: var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-item:last-child {
+    border-bottom: none;
+  }
+
+  .faq-question {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+    margin-bottom: var(--space-sm);
+  }
+
+  .faq-answer {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
 </style>

@@ -10,7 +10,6 @@ const calculateMW = () => {
   mwResult.value = parseFormula(formula.value);
 };
 
-// Search presets
 const filteredPresets = computed(() => {
   const term = searchTerm.value.trim().toLowerCase();
   if (!term) return PRESET_INGREDIENTS;
@@ -21,7 +20,6 @@ const filteredPresets = computed(() => {
   );
 });
 
-// Match typed formula in presets database
 const matchedPreset = computed(() => {
   const cleanTyped = formula.value.replace(/\s+/g, '');
   return PRESET_INGREDIENTS.find(
@@ -29,7 +27,6 @@ const matchedPreset = computed(() => {
   );
 });
 
-// Element mass percentage breakdown
 const breakdown = computed(() => {
   if (!mwResult.value || mwResult.value.error || mwResult.value.molecularWeight === 0) return [];
   
@@ -65,17 +62,15 @@ const handleClear = () => {
   formula.value = '';
 };
 
-// Color palettes for breakdown segments (Gold, Orange, Green, Warm tones)
 const colors = [
   'var(--color-primary)',
   'var(--color-accent)',
-  'var(--color-success)',
-  '#f09050',
-  '#f0c878',
-  '#a07830',
-  '#b05818',
-  '#c8b898',
-  '#7a6848'
+  '#34d399',
+  '#f97316',
+  '#fbbf24',
+  '#a855f7',
+  '#ec4899',
+  '#38bdf8'
 ];
 
 watch(formula, () => {
@@ -88,188 +83,172 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="calculator-wrapper flex flex-col gap-6">
+  <div class="mw-calc-container flex flex-col gap-6">
     <!-- Header -->
-    <div class="flex justify-between items-center border-b border-[var(--color-border)] pb-3">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[var(--color-border)]">
       <div>
-        <h2 class="text-2xl font-bold font-display gradient-text--gold">Molecular Weight</h2>
-        <p class="text-sm text-[var(--color-text-secondary)] mt-1">
-          Parse complex formulas (hydrates, nested brackets) and analyze element mass percentage composition
+        <h3 class="text-lg font-bold font-display text-[var(--color-text)]">Molecular Weight & Composition</h3>
+        <p class="text-xs text-[var(--color-text-secondary)] mt-0.5">
+          Parse complex chemical formulas (hydrates, nested brackets) and compute elemental mass percentages.
         </p>
       </div>
-      <button @click="formula = 'C10H16N2O2'" class="btn btn--secondary py-1 px-3 text-xs flex items-center gap-1">
-        🔄 Reset
+
+      <button @click="formula = 'C10H16N2O2'" class="btn btn--secondary py-1 px-3 text-xs self-start sm:self-auto">
+        🔄 Reset Formula
       </button>
     </div>
 
-    <!-- Main Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Left & Center: Editors & Breakdown (2 cols) -->
-      <div class="lg:col-span-2 flex flex-col gap-6">
-        <!-- Input & Keyboard Panel -->
-        <div class="glass p-6 border border-[var(--color-border)] flex flex-col gap-6">
+    <!-- Layout: Left (Input & Hero Result) vs Right (Preset Search) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <!-- Left Area (7/12) -->
+      <div class="lg:col-span-7 flex flex-col gap-5">
+        <!-- Formula Input Box -->
+        <div class="p-5 rounded-2xl bg-black/20 border border-[var(--color-border)] flex flex-col gap-4">
           <div>
-            <label for="chem-formula-input" class="form-label text-xs uppercase font-bold tracking-wider mb-2 block">Enter Chemical Formula</label>
+            <label for="chem-formula" class="text-xs font-bold uppercase tracking-wider text-[var(--color-primary-light)] mb-2 block">
+              🧪 Enter Chemical Formula
+            </label>
             <input
-              id="chem-formula-input"
+              id="chem-formula"
               type="text"
-              class="form-input font-mono text-xl py-3 px-4 border border-[var(--color-border)]"
               v-model="formula"
+              class="w-full p-3 bg-black/50 border border-[var(--color-border)] focus:border-[var(--color-primary)] rounded-xl font-mono text-xl text-[var(--color-primary-light)] font-bold outline-none"
               placeholder="e.g. Ca(OH)2 or CuSO4·5H2O"
             />
           </div>
 
-          <!-- Virtual Keyboard for clean touchscreen/glove laboratory environment -->
+          <!-- Virtual Keyboard -->
           <div>
-            <span class="form-label text-[11px] text-[var(--color-text-muted)] uppercase font-semibold tracking-wider mb-2.5 block">
-              Laboratory Virtual Keyboard (Quick Input)
+            <span class="text-[10px] text-[var(--color-text-muted)] uppercase font-semibold tracking-wider mb-2 block">
+              Lab Touch Keyboard (Quick Symbols)
             </span>
             <div class="flex flex-wrap gap-1.5">
               <button
                 v-for="char in ['C', 'H', 'O', 'N', 'P', 'S', 'Na', 'Cl', 'K', 'Ca', 'Mg', 'Fe', 'Cu', 'Zn', '(', ')', '·', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0']"
                 :key="char"
                 @click="handleKeyPress(char)"
-                class="px-3.5 py-1.5 rounded-lg border border-[var(--color-border)] bg-black/10 text-xs font-mono font-bold hover:bg-white/[0.04] transition-all min-w-[36px]"
+                class="px-3 py-1 rounded-lg border border-[var(--color-border)] bg-black/20 text-xs font-mono font-bold hover:bg-white/10 transition-colors"
               >
                 {{ char }}
               </button>
-              <button
-                @click="handleBackspace"
-                class="px-4 py-1.5 rounded-lg border border-[var(--color-error)]/30 bg-[var(--color-error)]/5 text-xs text-[var(--color-error)] font-bold hover:bg-[var(--color-error)]/15 transition-all min-w-[60px]"
-              >
-                Back
+              <button @click="handleBackspace" class="px-3 py-1 rounded-lg border border-red-500/30 bg-red-950/20 text-xs text-red-400 font-bold hover:bg-red-900/30">
+                ⌫
               </button>
-              <button
-                @click="handleClear"
-                class="px-4 py-1.5 rounded-lg border border-[var(--color-border)] bg-white/5 text-xs text-[var(--color-text-secondary)] hover:bg-white/10 transition-all min-w-[60px]"
-              >
+              <button @click="handleClear" class="px-3 py-1 rounded-lg border border-[var(--color-border)] bg-white/5 text-xs text-[var(--color-text-muted)] hover:text-white">
                 Clear
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Parse Result Panel -->
-        <div v-if="mwResult" class="glass p-6 border border-[var(--color-border)] flex flex-col gap-6">
-          <!-- Failure Alert -->
-          <div v-if="mwResult.error" class="p-3 bg-[var(--color-error)]/10 border border-[var(--color-error)]/30 rounded-lg text-sm text-[var(--color-error)] flex items-center gap-2">
-            <span>⚠️</span>
-            <div><strong>Formula parsing failed:</strong> {{ mwResult.error }}</div>
+        <!-- 🎯 Hero MW Output Result Card -->
+        <div v-if="mwResult" class="p-6 rounded-2xl border border-[var(--color-primary)]/40 bg-gradient-to-b from-[#1c160c] to-[#0d0a05] shadow-xl relative overflow-hidden flex flex-col gap-4">
+          <div v-if="mwResult.error" class="p-3 rounded-xl bg-red-950/40 border border-red-500/30 text-xs text-red-300">
+            <strong>⚠️ Parse Error:</strong> {{ mwResult.error }}
           </div>
 
           <template v-else>
-            <!-- Header display -->
-            <div class="flex justify-between items-center border-b border-[var(--color-border)] pb-4">
+            <!-- Big Result Header -->
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
               <div>
-                <span class="form-label text-[10px] uppercase font-bold tracking-wider mb-0.5 block">Parsed Formula</span>
-                <strong class="text-xl font-mono text-[var(--color-primary-light)]">{{ mwResult.formula }}</strong>
+                <span class="text-[10px] uppercase font-bold text-[var(--color-text-muted)] block mb-0.5">Parsed Formula</span>
+                <span class="text-xl font-mono font-bold text-[var(--color-primary-light)]">{{ mwResult.formula }}</span>
               </div>
               <div class="text-right">
-                <span class="form-label text-[10px] uppercase font-bold tracking-wider mb-0.5 block">Calculated Molecular Weight</span>
-                <strong class="text-3xl font-mono text-[var(--color-accent-light)] font-bold">
-                  {{ mwResult.molecularWeight }} <span class="text-sm font-medium text-[var(--color-text-secondary)]">g/mol</span>
-                </strong>
-              </div>
-            </div>
-
-            <!-- Preset detail info match -->
-            <div v-if="matchedPreset" class="p-4 rounded-xl bg-[var(--color-success)]/5 border border-[var(--color-success)]/20 flex gap-3 text-xs leading-relaxed">
-              <span class="text-base">ℹ️</span>
-              <div class="flex flex-col gap-1">
-                <div class="flex items-center gap-2 flex-wrap">
-                  <strong class="text-[var(--color-text)] font-semibold text-sm">{{ matchedPreset.nameEn }}</strong>
-                  <span class="px-2 py-0.5 bg-white/5 border border-[var(--color-border)] rounded text-[9px] text-[var(--color-primary)] uppercase tracking-wider font-bold">
-                    {{ matchedPreset.type }}
-                  </span>
+                <span class="text-[10px] uppercase font-bold text-[var(--color-text-muted)] block mb-0.5">Molecular Weight</span>
+                <div class="flex items-baseline gap-1">
+                  <span class="text-4xl font-black font-mono text-[var(--color-primary-light)]">{{ mwResult.molecularWeight }}</span>
+                  <span class="text-xs font-mono text-[var(--color-accent-light)] font-bold">g/mol</span>
                 </div>
-                <p class="text-[var(--color-text-secondary)]">{{ matchedPreset.desc }}</p>
               </div>
             </div>
 
-            <!-- Stacked bar graph of breakdown -->
-            <div>
-              <h4 class="text-sm font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                📊 Element Mass Percentage Breakdown
-              </h4>
+            <!-- Matched Ingredient Info Badge -->
+            <div v-if="matchedPreset" class="p-3 rounded-xl bg-emerald-950/20 border border-emerald-500/30 text-xs text-emerald-300 flex items-center justify-between">
+              <div>
+                <strong class="font-bold text-white">{{ matchedPreset.nameEn }}</strong> — {{ matchedPreset.desc }}
+              </div>
+              <span class="px-2 py-0.5 rounded bg-emerald-900/40 text-[10px] uppercase font-bold font-mono text-emerald-400 border border-emerald-500/30">
+                {{ matchedPreset.type }}
+              </span>
+            </div>
 
-              <div class="flex h-4 w-full rounded-full overflow-hidden mb-5 bg-black/30 border border-[var(--color-border)]">
+            <!-- Element Mass Breakdown -->
+            <div class="flex flex-col gap-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-[var(--color-primary-light)]">
+                📊 Element Mass Percentage Breakdown
+              </span>
+
+              <!-- Stacked Segment Bar -->
+              <div class="flex h-3.5 w-full rounded-full overflow-hidden bg-black/50 border border-white/10">
                 <div
                   v-for="(item, idx) in breakdown"
                   :key="item.element"
-                  :style="{
-                    width: `${item.percentage}%`,
-                    backgroundColor: colors[idx % colors.length]
-                  }"
-                  :title="`${item.element} (${item.nameEn}): ${item.percentage}%`"
+                  :style="{ width: `${item.percentage}%`, backgroundColor: colors[idx % colors.length] }"
+                  :title="`${item.element}: ${item.percentage}%`"
                   class="h-full transition-all"
                 />
               </div>
 
-              <!-- List details -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Details Grid -->
+              <div class="grid grid-cols-2 gap-2 mt-1">
                 <div
                   v-for="(item, idx) in breakdown"
                   :key="item.element"
-                  class="p-3.5 rounded-xl border border-[var(--color-border)] bg-black/10 flex flex-col gap-2"
+                  class="p-2.5 rounded-xl border border-white/5 bg-black/40 flex justify-between items-center text-xs font-mono"
                 >
-                  <div class="flex justify-between items-center">
-                    <div class="flex items-center gap-2">
-                      <span class="w-2.5 h-2.5 rounded-full" :style="{ backgroundColor: colors[idx % colors.length] }" />
-                      <strong class="font-mono text-sm">{{ item.element }}</strong>
-                      <span class="text-[10px] text-[var(--color-text-muted)]">{{ item.nameEn }}</span>
-                    </div>
-                    <span class="text-xs font-bold font-mono" :style="{ color: colors[idx % colors.length] }">
-                      {{ item.percentage }}%
-                    </span>
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full" :style="{ backgroundColor: colors[idx % colors.length] }" />
+                    <strong class="text-white">{{ item.element }}</strong>
+                    <span class="text-[10px] text-[var(--color-text-muted)]">×{{ item.count }}</span>
                   </div>
-
-                  <div class="flex justify-between text-[11px] text-[var(--color-text-secondary)] font-mono border-t border-white/[0.03] pt-1.5">
-                    <span>Count: <strong>{{ item.count }}</strong></span>
-                    <span>At. Wt: <strong>{{ item.atomicWeight }}</strong></span>
-                    <span>Mass: <strong>{{ item.subtotal }}</strong></span>
-                  </div>
+                  <span class="font-bold" :style="{ color: colors[idx % colors.length] }">{{ item.percentage }}%</span>
                 </div>
               </div>
+            </div>
+
+            <!-- Disclaimer & Contact Link -->
+            <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] flex-wrap gap-1">
+              <span class="text-[var(--color-text-muted)] italic">
+                * Note: Results are estimates and may contain minor variances.
+              </span>
+              <a href="/contact" class="text-[var(--color-primary-light)] font-bold hover:underline flex items-center gap-1">
+                Contact Ginkvora Formulators →
+              </a>
             </div>
           </template>
         </div>
       </div>
 
-      <!-- Right Panel: Presets Database (1 col) -->
-      <div class="glass p-5 border border-[var(--color-border)] flex flex-col gap-4 max-h-[600px]">
-        <h3 class="text-sm font-semibold text-[var(--color-primary-light)]">Formula Database Presets</h3>
-        
-        <div class="relative">
-          <input
-            type="text"
-            class="form-input text-xs pl-8 py-2"
-            placeholder="Search name, formula..."
-            v-model="searchTerm"
-          />
-          <span class="absolute left-3 top-2.5 text-xs text-[var(--color-text-muted)]">🔍</span>
-        </div>
+      <!-- Right Area: Presets DB (5/12) -->
+      <div class="lg:col-span-5 p-5 rounded-2xl bg-black/20 border border-[var(--color-border)] flex flex-col gap-4">
+        <span class="text-xs font-bold uppercase tracking-wider text-[var(--color-primary-light)]">
+          📚 Formula Database Presets
+        </span>
 
-        <div class="flex flex-col gap-2 overflow-y-auto custom-scrollbar flex-1 pr-1">
-          <div
+        <input
+          type="text"
+          v-model="searchTerm"
+          placeholder="Search compound name or formula..."
+          class="w-full p-2 bg-black/40 border border-[var(--color-border)] rounded-xl text-xs text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]"
+        />
+
+        <div class="flex flex-col gap-1.5 max-h-[420px] overflow-y-auto custom-scrollbar pr-1">
+          <button
             v-for="p in filteredPresets"
             :key="p.nameEn"
             @click="formula = p.formula"
-            class="p-2.5 rounded-lg border border-[var(--color-border)] bg-black/15 hover:bg-white/[0.03] cursor-pointer transition-all flex flex-col gap-1.5"
+            class="w-full text-left p-2.5 rounded-xl border border-[var(--color-border)] bg-black/20 hover:bg-white/[0.04] transition-all flex flex-col gap-1 group"
           >
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-xs text-[var(--color-text)]">{{ p.nameEn }}</span>
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary-light)]">{{ p.nameEn }}</span>
+              <span class="font-mono text-[10px] text-[var(--color-primary)] font-bold">MW: {{ p.mw }}</span>
             </div>
-            <div class="flex justify-between text-[10px] font-mono text-[var(--color-text-secondary)]">
-              <span class="text-[var(--color-primary)] font-bold">{{ p.formula }}</span>
-              <span>MW: {{ p.mw }}</span>
+            <div class="flex justify-between text-[10px] font-mono text-[var(--color-text-muted)]">
+              <span>{{ p.formula }}</span>
+              <span class="italic text-[9px]">{{ p.type }}</span>
             </div>
-            <div class="text-[9px] text-[var(--color-text-muted)] italic font-mono truncate">
-              {{ p.type }}
-            </div>
-          </div>
-          <div v-if="filteredPresets.length === 0" class="text-center text-xs text-[var(--color-text-muted)] py-4">
-            No matching preset formulas
-          </div>
+          </button>
         </div>
       </div>
     </div>

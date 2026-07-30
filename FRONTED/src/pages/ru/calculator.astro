@@ -1,27 +1,25 @@
 ---
-// src/pages/ru/calculator.astro — Russian Formulation Console page
+// src/pages/ru/calculator.astro — Russian Formulation Calculator page
 export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FormulatorConsole from '../../components/calculators/FormulatorConsole.vue';
-import { useTranslations } from '../../i18n/utils';
-const lang = 'ru';
-const t = useTranslations(lang);
 
+const lang = 'ru';
 const siteUrl = 'https://ginkvora.com';
 
 // WebPage schema
 const formulatorSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "Консоль научных рецептур | GINKVORA",
-  "description": "Бесплатные интерактивные калькуляторы B2B для расчета молярности химических веществ, серийных разбавлений, молекулярной массы и построения рецептур косметики/добавок.",
+  "name": "Калькулятор научных рецептур и лаборатории | GINKVORA",
+  "description": "Бесплатный онлайн калькулятор для лабораторий: расчет молярности химических веществ, серийных разбавлений C1V1, молекулярной массы и рецептур.",
   "url": `${siteUrl}/ru/calculator`,
   "isPartOf": { "@type": "WebSite", "url": siteUrl, "name": "GINKVORA" },
   "breadcrumb": {
     "@type": "BreadcrumbList",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Главная", "item": `${siteUrl}/ru` },
-      { "@type": "ListItem", "position": 2, "name": "Калькулятор формуляций", "item": `${siteUrl}/ru/calculator` }
+      { "@type": "ListItem", "position": 2, "name": "Лабораторный калькулятор", "item": `${siteUrl}/ru/calculator` }
     ]
   }
 };
@@ -30,8 +28,8 @@ const formulatorSchema = {
 const appSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Консоль рецептур GINKVORA",
-  "description": "Профессиональный веб-инструментарий калькуляторов для лабораторных ученых — расчет молярности, серийных разбавлений, молекулярной массы, баланса эмульсий HLB, размеров капсул и рецептур добавок.",
+  "name": "Калькулятор рецептур и лаборатории GINKVORA",
+  "description": "Бесплатный профессиональный онлайн калькулятор для лабораторных ученых — расчет молярности, серийных разбавлений C1V1, молекулярной массы и масштабирования рецептур.",
   "applicationCategory": "ScienceApplication",
   "operatingSystem": "Web Browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -79,31 +77,271 @@ const faqSchema = {
   ]
 };
 ---
-<BaseLayout lang={lang} title="Консоль научных рецептур | GINKVORA" description="Профессиональные инструменты для расчёта молярности, разбавлений и рецептур. Разработаны для исследователей и специалистов R&D.">
+
+<BaseLayout
+  lang={lang}
+  title="Калькулятор научных рецептур и лаборатории | GINKVORA"
+  description="Бесплатный интерактивный лабораторный калькулятор: расчет молярности, серийных разбавлений C1V1, молекулярной массы и масштабирования рецептур."
+>
+  <link rel="alternate" hreflang="en" href={`${siteUrl}/calculator`} slot="head" />
+  <link rel="alternate" hreflang="es" href={`${siteUrl}/es/calculator`} slot="head" />
+  <link rel="alternate" hreflang="ru" href={`${siteUrl}/ru/calculator`} slot="head" />
+  <link rel="alternate" hreflang="ar" href={`${siteUrl}/ar/calculator`} slot="head" />
+  <link rel="alternate" hreflang="x-default" href={`${siteUrl}/calculator`} slot="head" />
+
   <script type="application/ld+json" set:html={JSON.stringify(formulatorSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
   <main class="formulator-page bg-noise">
+    <!-- Header banner -->
     <header class="page-banner">
       <div class="banner-gradient"></div>
       <div class="container banner-content">
-        <span class="section-label">{t('formulator.label')}</span>
-        <h1 class="banner-title">{t('formulator.title')}</h1>
-        <p class="banner-desc">Профессиональные расчётные инструменты для специалистов R&D и исследователей в области формуляций.</p>
+        <h1 class="banner-title">Калькулятор научных рецептур и лаборатории</h1>
       </div>
     </header>
+
     <!-- Main interactive formulator wrapper -->
     <section class="container section--sm">
       <FormulatorConsole client:idle />
     </section>
+
+    <!-- Static Reference Guide & FAQ Section for SEO -->
+    <section class="container section reference-section" aria-labelledby="reference-title">
+      <div class="divider"></div>
+      
+      <div class="reference-header">
+        <span class="section-label">Документация и Справка</span>
+        <h2 id="reference-title" class="section-title">Справочное руководство по расчетам и формуляциям</h2>
+        <p class="section-desc">
+          Технические спецификации, математические уравнения и стандартные операционные процедуры (SOP), используемые в наших калькуляторах.
+        </p>
+      </div>
+
+      <div class="grid grid-2">
+        <!-- Card 1 -->
+        <div class="reference-card glass">
+          <div class="card-icon">🧪</div>
+          <h3 class="card-title">Расчеты молярности и массовых процентов % w/w</h3>
+          <p class="card-text">
+            Молярность (М) определяет концентрацию растворенного вещества в растворе в молях на литр (моль/л).
+          </p>
+          <div class="equation-block font-mono text-sm">
+            Масса (г) = Концентрация (М) × Объем (л) × Молекулярная масса (г/моль)
+          </div>
+          <p class="card-text mt-3">
+            Весовой процент (% w/w) представляет собой массу вещества, деленную на общую массу рецептуры, умноженную на 100%.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            % w/w = (Масса вещества / Общая масса смеси) × 100%
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="reference-card glass">
+          <div class="card-icon">💧</div>
+          <h3 class="card-title">Разбавление и масштабирование (C₁V₁ = C₂V₂)</h3>
+          <p class="card-text">
+            Уравнение разбавления связывает концентрацию и объем стокового раствора с требуемой конечной концентрацией и объемом.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            C₁ × V₁ = C₂ × V₂
+          </div>
+          <p class="card-text mt-3">
+            Для приготовления разбавления рассчитайте необходимый объем стока (V₁ = (C₂ × V₂) / C₁) и добавьте растворитель до V₂.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="reference-card glass">
+          <div class="card-icon">🧬</div>
+          <h3 class="card-title">Анализатор молекулярной массы</h3>
+          <p class="card-text">
+            Молекулярная масса (ММ) рассчитывается путем суммирования атомных масс всех элементов химической формулы.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            Пример: CuSO₄·5H₂O (Пентагидрат сульфата меди)
+          </div>
+          <p class="card-text mt-3">
+            Система распознает стандартные символы IUPAC и динамически вычисляет стехиометрию гидратов.
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="reference-card glass">
+          <div class="card-icon">⚖️</div>
+          <h3 class="card-title">Баланс HLB и кинетика эмульсий</h3>
+          <p class="card-text">
+            Гидрофильно-липофильный баланс (HLB) определяет сродство поверхностно-активного вещества к воде или маслу.
+          </p>
+          <div class="equation-block font-mono text-sm">
+            Эмульгатор А% = (rHLB - HLB_B) / (HLB_A - HLB_B) × 100%
+          </div>
+          <p class="card-text mt-3">
+            Обеспечивает точный баланс масляной фазы для стабильности косметических кремов и лосьонов.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <div class="faq-container mt-5">
+        <h3 class="faq-section-title">Часто задаваемые вопросы</h3>
+        
+        <div class="faq-item">
+          <h4 class="faq-question">Что такое стоковый раствор при лабораторном разведении?</h4>
+          <p class="faq-answer">
+            Стоковый раствор — это концентрированный раствор, который будет разбавлен до более низкой концентрации для использования в лаборатории. Это экономит время и повышает точность.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4 class="faq-question">Как гидраты влияют на расчет молекулярной массы?</h4>
+          <p class="faq-answer">
+            Гидратированные соединения содержат связанные молекулы воды. При взвешивании сухого вещества вес молекул воды должен быть включен в расчет.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4 class="faq-question">Что такое HLB в косметических рецептурах?</h4>
+          <p class="faq-answer">
+            HLB — это гидрофильно-липофильный баланс со значением от 0 до 20, указывающий на сродство эмульгатора к воде или маслу.
+          </p>
+        </div>
+      </div>
+    </section>
   </main>
 </BaseLayout>
+
 <style>
-  .formulator-page { padding-block: 0 var(--space-4xl); }
-  .page-banner { position: relative; padding-block: 8rem 4rem; background: linear-gradient(135deg, #030201 0%, #0e1007 60%, #0a0703 100%); overflow: hidden; margin-bottom: var(--space-2xl); }
-  .banner-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,166,84,0.07) 0%, transparent 70%); }
-  .banner-content { position: relative; z-index: 1; text-align: center; max-width: 700px; margin-inline: auto; }
-  .banner-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
-  .banner-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.75; }
-  .formulator-layout { padding-bottom: var(--space-2xl); }
+  .formulator-page {
+    padding-bottom: var(--space-4xl);
+  }
+
+  .page-banner {
+    position: relative;
+    padding-block: 3.5rem 1.25rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #030201 0%, #0e1007 60%, #0a0703 100%);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-xl);
+  }
+
+  .banner-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,166,84,0.07) 0%, transparent 70%);
+  }
+
+  .banner-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 700px;
+    margin-inline: auto;
+  }
+
+  .banner-title {
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--color-text);
+  }
+
+  /* ── Reference Section ── */
+  .reference-section {
+    margin-top: var(--space-xl);
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border-strong), transparent);
+    margin-bottom: var(--space-xl);
+  }
+
+  .reference-header {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+  }
+
+  .reference-card {
+    padding: var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    transition: transform var(--transition-base), border-color var(--transition-base);
+  }
+
+  .reference-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-border-strong);
+  }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+  }
+
+  .card-text {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .equation-block {
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 2px solid var(--color-primary);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    color: var(--color-primary-light);
+    font-size: 0.875rem;
+    overflow-x: auto;
+  }
+
+  /* ── FAQ Section ── */
+  .faq-container {
+    margin-top: var(--space-3xl);
+    max-width: 800px;
+    margin-inline: auto;
+  }
+
+  .faq-section-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: var(--space-xl);
+    color: var(--color-text);
+  }
+
+  .faq-item {
+    padding-block: var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-item:last-child {
+    border-bottom: none;
+  }
+
+  .faq-question {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-primary-light);
+    margin-bottom: var(--space-sm);
+  }
+
+  .faq-answer {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
 </style>

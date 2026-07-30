@@ -46,6 +46,15 @@ const stdFormula = ref('');
 const stdOperation = ref('');
 const stdError = ref('');
 
+// Computed active result display for C1V1
+const stdResultDisplay = computed(() => {
+  if (target.value === 'c1') return { val: c1.value, unit: c1Unit.value, label: 'Stock Concentration (C₁)' };
+  if (target.value === 'v1') return { val: v1.value, unit: v1Unit.value, label: 'Stock Volume to Transfer (V₁)' };
+  if (target.value === 'c2') return { val: c2.value, unit: c2Unit.value, label: 'Final Concentration (C₂)' };
+  if (target.value === 'v2') return { val: v2.value, unit: v2Unit.value, label: 'Final Solution Volume (V₂)' };
+  return { val: '0', unit: '', label: '' };
+});
+
 // ==========================================
 // STATE: SERIAL DILUTION
 // ==========================================
@@ -85,13 +94,6 @@ const formatResult = (num: number): string => {
   return parseFloat(num.toFixed(4)).toString();
 };
 
-const handleStdFocus = (field: 'c1' | 'v1' | 'c2' | 'v2') => {
-  if (target.value === field) {
-    const fields: ('c1' | 'v1' | 'c2' | 'v2')[] = ['c1', 'v1', 'c2', 'v2'];
-    target.value = fields.find(f => f !== field) || 'v1';
-  }
-};
-
 const convertConcToBase = (value: number, unit: string, mwVal: number): number => {
   const unitInfo = CONC_UNITS.find(u => u.label === unit);
   if (!unitInfo) return value;
@@ -127,7 +129,7 @@ const calculateStandard = () => {
   const isMixedSystem = uC1 && uC2 && (uC1.type !== uC2.type);
 
   if (isMixedSystem && (!mwVal || isNaN(mwVal) || mwVal <= 0)) {
-    stdError.value = 'Valid Molecular Weight must be provided for cross-system concentration conversion.';
+    stdError.value = 'Valid Molecular Weight required for cross-system molar/mass conversions.';
     return;
   }
 
@@ -147,14 +149,14 @@ const calculateStandard = () => {
       const v1_target = v1L / fV1;
 
       if (v1_target > v2Val * (fV2 / fV1)) {
-        throw new Error('Calculated initial volume (V₁) is greater than final volume (V₂). Dilution ratio is illogical.');
+        throw new Error('Initial stock volume (V₁) cannot exceed final volume (V₂). Check ratios.');
       }
 
       v1.value = formatResult(v1_target);
-      stdFormula.value = `V₁ = (C₂ × V₂) / C₁ = (${c2Val} ${c2Unit.value} × ${v2Val} ${v2Unit.value}) / ${c1Val} ${c1Unit.value}`;
+      stdFormula.value = `V₁ = (C₂ × V₂) / C₁\n= (${c2Val} ${c2Unit.value} × ${v2Val} ${v2Unit.value}) / ${c1Val} ${c1Unit.value}`;
       
       const solvent_vol = (v2L - v1L) / fV2;
-      stdOperation.value = `Transfer ${formatResult(v1_target)} ${v1Unit.value} of initial solution into ${formatResult(solvent_vol)} ${v2Unit.value} of diluent.`;
+      stdOperation.value = `Transfer ${formatResult(v1_target)} ${v1Unit.value} of stock solution into ${formatResult(solvent_vol)} ${v2Unit.value} of diluent (Total Volume: ${v2Val} ${v2Unit.value}).`;
     }
     else if (target.value === 'v2') {
       if (isNaN(c1Val) || isNaN(v1Val) || isNaN(c2Val)) return;
@@ -168,14 +170,14 @@ const calculateStandard = () => {
       const v2_target = v2L / fV2;
 
       if (v2_target < v1Val * (fV1 / fV2)) {
-        throw new Error('Calculated final volume (V₂) is smaller than initial volume (V₁). No dilution needed.');
+        throw new Error('Calculated final volume (V₂) is smaller than initial volume (V₁).');
       }
 
       v2.value = formatResult(v2_target);
-      stdFormula.value = `V₂ = (C₁ × V₁) / C₂ = (${c1Val} ${c1Unit.value} × ${v1Val} ${v1Unit.value}) / ${c2Val} ${c2Unit.value}`;
+      stdFormula.value = `V₂ = (C₁ × V₁) / C₂\n= (${c1Val} ${c1Unit.value} × ${v1Val} ${v1Unit.value}) / ${c2Val} ${c2Unit.value}`;
       
       const solvent_vol = (v2L - v1L) / fV2;
-      stdOperation.value = `Transfer ${v1Val} ${v1Unit.value} of initial solution into ${formatResult(solvent_vol)} ${v2Unit.value} of diluent (total volume: ${formatResult(v2_target)} ${v2Unit.value}).`;
+      stdOperation.value = `Transfer ${v1Val} ${v1Unit.value} of stock solution into ${formatResult(solvent_vol)} ${v2Unit.value} of diluent.`;
     }
     else if (target.value === 'c1') {
       if (isNaN(v1Val) || isNaN(c2Val) || isNaN(v2Val)) return;
@@ -189,8 +191,8 @@ const calculateStandard = () => {
       const c1_target = convertConcFromBase(c1Base, c1Unit.value, mwVal);
 
       c1.value = formatResult(c1_target);
-      stdFormula.value = `C₁ = (C₂ × V₂) / V₁ = (${c2Val} ${c2Unit.value} × ${v2Val} ${v2Unit.value}) / ${v1Val} ${v1Unit.value}`;
-      stdOperation.value = `Use stock solution with concentration of ${formatResult(c1_target)} ${c1Unit.value}.`;
+      stdFormula.value = `C₁ = (C₂ × V₂) / V₁\n= (${c2Val} ${c2Unit.value} × ${v2Val} ${v2Unit.value}) / ${v1Val} ${v1Unit.value}`;
+      stdOperation.value = `Required stock solution concentration is ${formatResult(c1_target)} ${c1Unit.value}.`;
     }
     else if (target.value === 'c2') {
       if (isNaN(c1Val) || isNaN(v1Val) || isNaN(v2Val)) return;
@@ -204,10 +206,10 @@ const calculateStandard = () => {
       const c2_target = convertConcFromBase(c2Base, c2Unit.value, mwVal);
 
       c2.value = formatResult(c2_target);
-      stdFormula.value = `C₂ = (C₁ × V₁) / V₂ = (${c1Val} ${c1Unit.value} × ${v1Val} ${v1Unit.value}) / ${v2Val} ${v2Unit.value}`;
+      stdFormula.value = `C₂ = (C₁ × V₁) / V₂\n= (${c1Val} ${c1Unit.value} × ${v1Val} ${v1Unit.value}) / ${v2Val} ${v2Unit.value}`;
       
       const solvent_vol = (v2L - v1L) / fV2;
-      stdOperation.value = `The final solution concentration will be ${formatResult(c2_target)} ${c2Unit.value}. Operation: Mix ${v1Val} ${v1Unit.value} of initial solution into ${formatResult(solvent_vol)} ${v2Unit.value} of diluent.`;
+      stdOperation.value = `Final diluted concentration will be ${formatResult(c2_target)} ${c2Unit.value}. Add ${formatResult(solvent_vol)} ${v2Unit.value} of diluent to ${v1Val} ${v1Unit.value} stock.`;
     }
   } catch (e: any) {
     stdError.value = e.message;
@@ -238,8 +240,8 @@ const calculateSerial = () => {
       concentration: parseFloat(currentConc.toFixed(5)),
       logConc: parseFloat(logVal.toFixed(4)),
       operation: i === 1 
-        ? `Pipette ${formatResult(transferVol)} ${volUnit.value} of stock (C0) into Tube 1 containing ${formatResult(solventVol)} ${volUnit.value} of diluent and mix.`
-        : `Pipette ${formatResult(transferVol)} ${volUnit.value} of preceding (C${i-1}) into Tube ${i} containing ${formatResult(solventVol)} ${volUnit.value} of diluent and mix.`
+        ? `Pipette ${formatResult(transferVol)} ${volUnit.value} of C0 stock into Tube 1 with ${formatResult(solventVol)} ${volUnit.value} diluent.`
+        : `Pipette ${formatResult(transferVol)} ${volUnit.value} from Tube C${i-1} into Tube ${i} with ${formatResult(solventVol)} ${volUnit.value} diluent.`
     });
   }
   serialResults.value = results;
@@ -261,7 +263,7 @@ const calculateScaling = () => {
     if (matchedLimitKey) {
       const limitInfo = REGULATORY_LIMITS[matchedLimitKey];
       if (pct > limitInfo.maxUsagePct) {
-        warnings.push(`[Regulatory Warning] Ingredient [${ing.name}] at ${pct}% exceeds the safety threshold of ${limitInfo.maxUsagePct}% (${limitInfo.ref}).`);
+        warnings.push(`Ingredient [${ing.name}] at ${pct}% exceeds maximum limit of ${limitInfo.maxUsagePct}% (${limitInfo.ref}).`);
       }
     }
   });
@@ -280,11 +282,10 @@ const handleResetSerial = () => {
   calculateSerial();
 };
 
-// SVG semi-log line chart generation
 const chartPoints = computed(() => {
   if (serialResults.value.length === 0) return [];
   const width = 450;
-  const height = 240;
+  const height = 220;
   const paddingLeft = 50;
   const paddingRight = 20;
   const paddingTop = 20;
@@ -328,7 +329,6 @@ const formatWeight = (valueInGram: number, targetUnit: string): string => {
   return `${valueInGram.toFixed(2).replace(/\.?0+$/, '')} g`;
 };
 
-// Scaling Presets loaders
 const loadScalingPreset = (type: 'serum' | 'cream') => {
   if (type === 'serum') {
     scalingIngredients.value = [
@@ -364,23 +364,16 @@ const removeScalingIngredient = (id: string) => {
   scalingIngredients.value = scalingIngredients.value.filter(x => x.id !== id);
 };
 
-// Setup watchers
 watch([c1, c1Unit, v1, v1Unit, c2, c2Unit, v2, v2Unit, target, mw, activeTab], () => {
-  if (activeTab.value === 'standard') {
-    calculateStandard();
-  }
+  if (activeTab.value === 'standard') calculateStandard();
 });
 
 watch([c0, c0Unit, dilutionFactor, steps, totalVol, volUnit, activeTab], () => {
-  if (activeTab.value === 'serial') {
-    calculateSerial();
-  }
+  if (activeTab.value === 'serial') calculateSerial();
 });
 
 watch([scalingIngredients, baseBatchSize, baseBatchUnit, targetBatchSize, targetBatchUnit, activeTab], () => {
-  if (activeTab.value === 'scaling') {
-    calculateScaling();
-  }
+  if (activeTab.value === 'scaling') calculateScaling();
 }, { deep: true });
 
 onMounted(() => {
@@ -391,393 +384,454 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="calculator-wrapper flex flex-col gap-6">
-    <!-- Header -->
-    <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+  <div class="dilution-calc-container flex flex-col gap-6">
+    <!-- Header & Sub-tabs -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[var(--color-border)]">
       <div>
-        <h2 class="text-2xl font-bold font-display gradient-text--gold">Dilution & Scaling</h2>
-        <p class="text-sm text-[var(--color-text-secondary)] mt-1">
-          Perform Stock Dilutions, Series Titration Curves, or Formula Scaling with regulatory limits
+        <h3 class="text-lg font-bold font-display text-[var(--color-text)]">Dilution & Batch Scaling Console</h3>
+        <p class="text-xs text-[var(--color-text-secondary)] mt-0.5">
+          Compute C1V1 stock dilutions, serial titration log curves, or production batch scaling with safety checks.
         </p>
       </div>
 
       <!-- Tab Buttons -->
-      <div class="mode-toggle-switch">
+      <div class="inline-flex p-1 bg-black/40 border border-[var(--color-border)] rounded-xl self-start sm:self-auto">
         <button
           @click="activeTab = 'standard'"
-          :class="['mode-toggle-btn', activeTab === 'standard' ? 'mode-toggle-btn--active' : '']"
+          :class="[
+            'px-3 py-1.5 text-xs font-semibold rounded-lg transition-all',
+            activeTab === 'standard'
+              ? 'bg-[var(--color-primary)] text-[var(--color-bg)] font-bold shadow'
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
+          ]"
         >
-          Standard (C1V1)
+          Standard (C₁V₁)
         </button>
         <button
           @click="activeTab = 'serial'"
-          :class="['mode-toggle-btn', activeTab === 'serial' ? 'mode-toggle-btn--active' : '']"
+          :class="[
+            'px-3 py-1.5 text-xs font-semibold rounded-lg transition-all',
+            activeTab === 'serial'
+              ? 'bg-[var(--color-primary)] text-[var(--color-bg)] font-bold shadow'
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
+          ]"
         >
-          Serial Dilution
+          Serial Curve
         </button>
         <button
           @click="activeTab = 'scaling'"
-          :class="['mode-toggle-btn', activeTab === 'scaling' ? 'mode-toggle-btn--active' : '']"
+          :class="[
+            'px-3 py-1.5 text-xs font-semibold rounded-lg transition-all',
+            activeTab === 'scaling'
+              ? 'bg-[var(--color-primary)] text-[var(--color-bg)] font-bold shadow'
+              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
+          ]"
         >
-          Formula Scaling
+          Batch Scaling
         </button>
       </div>
     </div>
 
-    <!-- TAB 1: STANDARD DILUTION (C1V1) -->
-    <div v-if="activeTab === 'standard'" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="glass p-6 border border-[var(--color-border)] flex flex-col gap-6">
-        <h3 class="text-lg font-semibold text-[var(--color-primary-light)] flex items-center gap-2">
-          📉 Standard Dilution Parameters
-        </h3>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <!-- Stock C1 -->
-          <div :class="['p-4 rounded-xl border transition-all', target === 'c1' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
-            <div class="flex justify-between items-center mb-2">
-              <label class="form-label font-semibold text-xs uppercase tracking-wider">Stock Concentration (C₁)</label>
-              <button @click="target = 'c1'" :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'c1' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']">
-                {{ target === 'c1' ? '⚡ Result' : 'Set Target' }}
-              </button>
-            </div>
-            <div class="flex gap-2">
-              <input type="number" step="any" class="form-input font-mono" v-model="c1" @focus="handleStdFocus('c1')" />
-              <select class="form-input form-select w-28" v-model="c1Unit">
-                <option v-for="u in CONC_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
-              </select>
-            </div>
+    <!-- ── TAB 1: STANDARD DILUTION (C1V1 = C2V2) ── -->
+    <div v-if="activeTab === 'standard'" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <!-- Left (7/12): Inputs Panel -->
+      <div class="lg:col-span-7 flex flex-col gap-5">
+        <div class="p-5 rounded-2xl bg-black/20 border border-[var(--color-border)] flex flex-col gap-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-[var(--color-primary-light)]">
+              📥 Dilution Parameters (C₁ × V₁ = C₂ × V₂)
+            </span>
+            <span class="text-[11px] text-[var(--color-text-muted)]">
+              Select <strong class="text-[var(--color-primary-light)]">Solve Target</strong> below
+            </span>
           </div>
 
-          <!-- Stock V1 -->
-          <div :class="['p-4 rounded-xl border transition-all', target === 'v1' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
-            <div class="flex justify-between items-center mb-2">
-              <label class="form-label font-semibold text-xs uppercase tracking-wider">Stock Volume (V₁)</label>
-              <button @click="target = 'v1'" :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'v1' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']">
-                {{ target === 'v1' ? '⚡ Result' : 'Set Target' }}
-              </button>
-            </div>
-            <div class="flex gap-2">
-              <input type="number" step="any" class="form-input font-mono" v-model="v1" @focus="handleStdFocus('v1')" />
-              <select class="form-input form-select w-28" v-model="v1Unit">
-                <option v-for="u in VOL_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Target C2 -->
-          <div :class="['p-4 rounded-xl border transition-all', target === 'c2' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
-            <div class="flex justify-between items-center mb-2">
-              <label class="form-label font-semibold text-xs uppercase tracking-wider">Final Concentration (C₂)</label>
-              <button @click="target = 'c2'" :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'c2' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']">
-                {{ target === 'c2' ? '⚡ Result' : 'Set Target' }}
-              </button>
-            </div>
-            <div class="flex gap-2">
-              <input type="number" step="any" class="form-input font-mono" v-model="c2" @focus="handleStdFocus('c2')" />
-              <select class="form-input form-select w-28" v-model="c2Unit">
-                <option v-for="u in CONC_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Target V2 -->
-          <div :class="['p-4 rounded-xl border transition-all', target === 'v2' ? 'border-[var(--color-primary)] bg-[var(--color-primary-glow)]' : 'border-[var(--color-border)] bg-black/20']">
-            <div class="flex justify-between items-center mb-2">
-              <label class="form-label font-semibold text-xs uppercase tracking-wider">Final Volume (V₂)</label>
-              <button @click="target = 'v2'" :class="['px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wider', target === 'v2' ? 'bg-[var(--color-primary)] text-[var(--color-bg)]' : 'bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10']">
-                {{ target === 'v2' ? '⚡ Result' : 'Set Target' }}
-              </button>
-            </div>
-            <div class="flex gap-2">
-              <input type="number" step="any" class="form-input font-mono" v-model="v2" @focus="handleStdFocus('v2')" />
-              <select class="form-input form-select w-28" v-model="v2Unit">
-                <option v-for="u in VOL_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex flex-col gap-3">
-          <label class="form-label text-xs font-semibold">Molecular Weight (for Molar ↔ Mass conversion)</label>
-          <div class="flex gap-2 items-center">
-            <input type="number" class="form-input font-mono w-40" v-model="mw" />
-            <span class="text-xs text-[var(--color-text-muted)]">g/mol</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Action Card -->
-      <div class="glass p-6 border border-[var(--color-border)] flex flex-col justify-between gap-6">
-        <h3 class="text-lg font-semibold text-[var(--color-primary-light)]">📋 Prep Guide & Formula</h3>
-
-        <div class="flex flex-col gap-4">
-          <div v-if="stdError" class="p-3 bg-[var(--color-error)]/10 border border-[var(--color-error)]/30 rounded-lg text-sm text-[var(--color-error)] flex items-center gap-2">
-            <span>⚠️</span>
-            <span>{{ stdError }}</span>
-          </div>
-
-          <template v-else>
-            <div class="p-4 bg-white/[0.02] border border-[var(--color-border)] rounded-xl">
-              <span class="text-xs text-[var(--color-text-secondary)] uppercase tracking-wider font-bold mb-1 block">Formula</span>
-              <div class="font-mono text-sm text-[var(--color-primary-light)]">{{ stdFormula }}</div>
-            </div>
-
-            <div class="p-4 bg-white/[0.02] border border-[var(--color-border)] rounded-xl">
-              <span class="text-xs text-[var(--color-text-secondary)] uppercase tracking-wider font-bold mb-1 block">Preparation Steps</span>
-              <p class="text-sm text-[var(--color-text)] leading-relaxed">{{ stdOperation }}</p>
-            </div>
-          </template>
-        </div>
-
-        <div class="text-xs text-[var(--color-text-muted)] italic">
-          * C₁V₁ = C₂V₂ holds true for both molar concentrations and mass percentage solutions as long as density is constant.
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 2: SERIAL DILUTION -->
-    <div v-if="activeTab === 'serial'" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="glass p-6 border border-[var(--color-border)] flex flex-col gap-6">
-        <h3 class="text-lg font-semibold text-[var(--color-primary-light)]">📈 Input Serial Dilution Conditions</h3>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="form-label text-xs uppercase tracking-wider mb-2 block">Initial Concentration (C₀)</label>
-            <div class="flex gap-2">
-              <input type="number" class="form-input font-mono" v-model="c0" />
-              <select class="form-input form-select w-28" v-model="c0Unit">
-                <option v-for="u in CONC_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label class="form-label text-xs uppercase tracking-wider mb-2 block">Dilution Factor (e.g. 10 for 1:10)</label>
-            <input type="number" class="form-input font-mono" v-model="dilutionFactor" />
-          </div>
-
-          <div>
-            <label class="form-label text-xs uppercase tracking-wider mb-2 block">Volume per Tube (V_total)</label>
-            <div class="flex gap-2">
-              <input type="number" class="form-input font-mono" v-model="totalVol" />
-              <select class="form-input form-select w-28" v-model="volUnit">
-                <option v-for="u in VOL_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label class="form-label text-xs uppercase tracking-wider mb-2 block font-semibold">Dilution Steps (2 - 12)</label>
-            <div class="flex items-center gap-4">
-              <input type="range" min="2" max="12" class="flex-1 accent-[var(--color-primary)]" v-model.number="steps" />
-              <span class="form-input font-mono text-center w-12 py-1 px-0">{{ steps }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Scrollable checklist steps -->
-        <div class="flex flex-col gap-2 max-h-60 overflow-y-auto custom-scrollbar pr-2 mt-4">
-          <span class="form-label text-xs font-bold uppercase tracking-wider mb-1">Serial Dilution Steps Checklist</span>
-          <div
-            v-for="r in serialResults"
-            :key="r.step"
-            class="p-3 rounded-lg border border-[var(--color-border)] bg-black/10 text-xs flex flex-col gap-1"
-          >
-            <div class="flex justify-between items-center">
-              <strong class="text-[var(--color-primary-light)] font-bold text-sm">{{ r.step }} Tube</strong>
-              <div>
-                <span class="font-mono text-sm">{{ r.concentration }} {{ c0Unit }}</span>
-                <span class="text-[10px] text-[var(--color-text-muted)] ml-3">Log: {{ r.logConc }}</span>
+          <div class="flex flex-col gap-3.5">
+            <!-- C1 Stock Conc -->
+            <div :class="['input-row-card', target === 'c1' ? 'input-row-card--target' : '']">
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="d-c1" class="text-xs font-bold text-[var(--color-text)]">Stock Concentration (C₁)</label>
+                <button @click="target = 'c1'" :class="['target-btn', target === 'c1' ? 'target-btn--active' : '']">
+                  {{ target === 'c1' ? '⚡ Solving Target' : 'Solve Target' }}
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <input id="d-c1" type="number" step="any" v-model="c1" :disabled="target === 'c1'" class="calc-input" placeholder="Stock C1" />
+                <select v-model="c1Unit" class="calc-unit-select">
+                  <option v-for="u in CONC_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
+                </select>
               </div>
             </div>
-            <div class="text-[var(--color-text-secondary)] mt-1 font-mono text-[11px]">{{ r.operation }}</div>
+
+            <!-- V1 Stock Volume -->
+            <div :class="['input-row-card', target === 'v1' ? 'input-row-card--target' : '']">
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="d-v1" class="text-xs font-bold text-[var(--color-text)]">Stock Volume to Transfer (V₁)</label>
+                <button @click="target = 'v1'" :class="['target-btn', target === 'v1' ? 'target-btn--active' : '']">
+                  {{ target === 'v1' ? '⚡ Solving Target' : 'Solve Target' }}
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <input id="d-v1" type="number" step="any" v-model="v1" :disabled="target === 'v1'" class="calc-input" placeholder="Stock V1" />
+                <select v-model="v1Unit" class="calc-unit-select">
+                  <option v-for="u in VOL_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- C2 Target Conc -->
+            <div :class="['input-row-card', target === 'c2' ? 'input-row-card--target' : '']">
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="d-c2" class="text-xs font-bold text-[var(--color-text)]">Final Diluted Concentration (C₂)</label>
+                <button @click="target = 'c2'" :class="['target-btn', target === 'c2' ? 'target-btn--active' : '']">
+                  {{ target === 'c2' ? '⚡ Solving Target' : 'Solve Target' }}
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <input id="d-c2" type="number" step="any" v-model="c2" :disabled="target === 'c2'" class="calc-input" placeholder="Final C2" />
+                <select v-model="c2Unit" class="calc-unit-select">
+                  <option v-for="u in CONC_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- V2 Final Volume -->
+            <div :class="['input-row-card', target === 'v2' ? 'input-row-card--target' : '']">
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="d-v2" class="text-xs font-bold text-[var(--color-text)]">Final Total Volume (V₂)</label>
+                <button @click="target = 'v2'" :class="['target-btn', target === 'v2' ? 'target-btn--active' : '']">
+                  {{ target === 'v2' ? '⚡ Solving Target' : 'Solve Target' }}
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <input id="d-v2" type="number" step="any" v-model="v2" :disabled="target === 'v2'" class="calc-input" placeholder="Final V2" />
+                <select v-model="v2Unit" class="calc-unit-select">
+                  <option v-for="u in VOL_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- MW Input for mixed molar/mass conversions -->
+            <div class="p-3.5 rounded-xl border border-[var(--color-border)] bg-black/10 flex items-center justify-between">
+              <label for="d-mw" class="text-xs font-semibold text-[var(--color-text-secondary)]">Molecular Weight (MW for molar ↔ mass conversion):</label>
+              <div class="flex items-center gap-1.5 w-36">
+                <input id="d-mw" type="number" v-model="mw" class="calc-input text-xs" />
+                <span class="text-[10px] text-[var(--color-text-muted)]">g/mol</span>
+              </div>
+            </div>
           </div>
         </div>
-
-        <button @click="handleResetSerial" class="btn btn--secondary self-start py-2 text-xs flex items-center gap-1.5 mt-2">
-          🔄 Reset Parameters
-        </button>
       </div>
 
-      <!-- Dilution SVG Plot card -->
-      <div class="glass p-6 border border-[var(--color-border)] flex flex-col gap-5 justify-between">
-        <div>
-          <h3 class="text-lg font-semibold text-[var(--color-primary-light)] mb-2 flex items-center gap-2">
-            📉 Semi-Log Dilution Curve (Log₁₀ C vs Step)
-          </h3>
-          <p class="text-xs text-[var(--color-text-secondary)]">
-            A linear decline on a semi-log scale verifies exponential dilution scaling.
-          </p>
-        </div>
+      <!-- Right (5/12): Hero Result Board -->
+      <div class="lg:col-span-5 flex flex-col gap-5">
+        <div class="p-6 rounded-2xl border border-[var(--color-primary)]/40 bg-gradient-to-b from-[#1c160c] to-[#0d0a05] shadow-xl relative overflow-hidden">
+          <div class="glow-ambient"></div>
+          
+          <div class="relative z-10 flex flex-col gap-4">
+            <div v-if="stdError" class="p-4 rounded-xl bg-red-950/40 border border-red-500/30 text-xs text-red-300">
+              <strong>⚠️ Error:</strong> {{ stdError }}
+            </div>
 
-        <div class="w-full h-[260px] bg-black/20 border border-[var(--color-border)] rounded-xl flex items-center justify-center p-3">
-          <template v-if="serialResults.length > 0">
-            <svg width="100%" height="100%" viewBox="0 0 450 240" class="overflow-visible font-mono">
+            <div v-else class="flex flex-col gap-1 my-1">
+              <span class="text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider">
+                {{ stdResultDisplay.label }}
+              </span>
+              <div class="flex items-baseline gap-2 flex-wrap">
+                <span class="text-4xl sm:text-5xl font-black font-mono text-[var(--color-primary-light)] tracking-tight drop-shadow">
+                  {{ stdResultDisplay.val }}
+                </span>
+                <span class="text-lg font-bold font-mono text-[var(--color-accent-light)]">
+                  {{ stdResultDisplay.unit }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Prep Instructions SOP Card -->
+            <div v-if="!stdError" class="p-3.5 rounded-xl bg-black/50 border border-white/10 flex flex-col gap-2">
+              <span class="text-[10px] uppercase font-bold text-[var(--color-primary-light)] tracking-wider">🧪 Laboratory Preparation SOP:</span>
+              <p class="text-xs text-[var(--color-text)] leading-relaxed font-sans">{{ stdOperation }}</p>
+            </div>
+
+            <!-- Formula -->
+            <div v-if="!stdError" class="p-3 rounded-xl bg-white/[0.03] border border-white/5 font-mono text-xs text-[var(--color-text-secondary)] leading-relaxed whitespace-pre-line">
+              {{ stdFormula }}
+            </div>
+
+            <!-- Disclaimer & Contact Link -->
+            <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] flex-wrap gap-1">
+              <span class="text-[var(--color-text-muted)] italic">
+                * Note: Results are estimates and may contain minor variances.
+              </span>
+              <a href="/contact" class="text-[var(--color-primary-light)] font-bold hover:underline flex items-center gap-1">
+                Contact Ginkvora Formulators →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB 2: SERIAL DILUTION ── -->
+    <div v-if="activeTab === 'serial'" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <!-- Left (5/12): Controls -->
+      <div class="lg:col-span-5 flex flex-col gap-5">
+        <div class="p-5 rounded-2xl bg-black/20 border border-[var(--color-border)] flex flex-col gap-4">
+          <span class="text-xs font-bold uppercase tracking-wider text-[var(--color-primary-light)]">
+            ⚙️ Serial Titration Conditions
+          </span>
+
+          <div class="flex flex-col gap-3.5">
+            <div>
+              <label class="text-xs font-semibold text-[var(--color-text-secondary)] mb-1 block">Initial Conc (C₀)</label>
+              <div class="flex gap-2">
+                <input type="number" v-model="c0" class="calc-input" />
+                <select v-model="c0Unit" class="calc-unit-select">
+                  <option v-for="u in CONC_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-xs font-semibold text-[var(--color-text-secondary)] mb-1 block">Dilution Factor (1:X ratio)</label>
+              <input type="number" v-model="dilutionFactor" class="calc-input" />
+            </div>
+
+            <div>
+              <label class="text-xs font-semibold text-[var(--color-text-secondary)] mb-1 block">Total Tube Volume</label>
+              <div class="flex gap-2">
+                <input type="number" v-model="totalVol" class="calc-input" />
+                <select v-model="volUnit" class="calc-unit-select">
+                  <option v-for="u in VOL_UNITS" :key="u.label" :value="u.label">{{ u.label }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-xs font-semibold text-[var(--color-text-secondary)] mb-1 flex justify-between">
+                <span>Number of Tubes:</span>
+                <span class="font-mono font-bold text-[var(--color-primary-light)]">{{ steps }} Tubes</span>
+              </label>
+              <input type="range" min="2" max="12" class="w-full accent-[var(--color-primary)] cursor-pointer" v-model.number="steps" />
+            </div>
+          </div>
+
+          <button @click="handleResetSerial" class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] self-start mt-2">
+            🔄 Reset Conditions
+          </button>
+        </div>
+      </div>
+
+      <!-- Right (7/12): Plot & Steps checklist -->
+      <div class="lg:col-span-7 flex flex-col gap-5">
+        <!-- SVG Curve Card -->
+        <div class="p-5 rounded-2xl bg-black/30 border border-[var(--color-border)] flex flex-col gap-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-[var(--color-primary-light)]">
+            📈 Log₁₀ Concentration Curve
+          </span>
+          
+          <div class="w-full h-52 bg-black/40 border border-white/10 rounded-xl p-2 flex items-center justify-center">
+            <svg width="100%" height="100%" viewBox="0 0 450 220" class="overflow-visible font-mono">
               <defs>
-                <linearGradient id="curveGradient" x1="0" y1="0" x2="1" y2="0">
+                <linearGradient id="serGradient" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0%" stop-color="var(--color-primary)" />
                   <stop offset="100%" stop-color="var(--color-accent)" />
                 </linearGradient>
               </defs>
-              <!-- Grid lines -->
-              <g stroke="rgba(212,166,84,0.06)" stroke-width="1">
-                <line v-for="i in 5" :key="i" :x1="50" :y1="20 + i * 32" :x2="430" :y2="20 + i * 32" />
+              <g stroke="rgba(255,255,255,0.06)" stroke-width="1">
+                <line v-for="i in 4" :key="i" :x1="50" :y1="20 + i * 36" :x2="430" :y2="20 + i * 36" />
               </g>
-
-              <!-- Plot path line -->
-              <path :d="svgLinePath" fill="none" stroke="url(#curveGradient)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-
-              <!-- Y Labels -->
-              <text :x="10" :y="26" fill="var(--color-text-secondary)" font-size="9">Max</text>
-              <text :x="10" :y="200" fill="var(--color-text-secondary)" font-size="9">Min</text>
-
-              <!-- Points -->
+              <path :d="svgLinePath" fill="none" stroke="url(#serGradient)" stroke-width="3" stroke-linecap="round" />
               <g v-for="pt in chartPoints" :key="pt.step">
-                <circle :cx="pt.x" :cy="pt.y" r="5" fill="var(--color-primary-light)" stroke="#060503" stroke-width="2" />
-                <!-- Tooltip values shown above dot -->
+                <circle :cx="pt.x" :cy="pt.y" r="4.5" fill="var(--color-primary-light)" stroke="#060503" stroke-width="2" />
                 <text :x="pt.x" :y="pt.y - 8" fill="var(--color-primary-light)" font-size="8" text-anchor="middle">
                   {{ pt.logConc }}
                 </text>
-                <!-- X labels -->
-                <text :x="pt.x" :y="228" fill="var(--color-text-secondary)" font-size="9" text-anchor="middle">
+                <text :x="pt.x" :y="210" fill="var(--color-text-secondary)" font-size="9" text-anchor="middle">
                   {{ pt.step }}
                 </text>
               </g>
             </svg>
-          </template>
-          <div v-else class="text-xs text-[var(--color-text-muted)]">
-            Enter valid parameters to plot the curve
           </div>
         </div>
 
-        <div class="text-[10px] text-[var(--color-text-muted)] leading-relaxed italic">
-          * Dilution Curve represents concentration decay. The values on dots show the log₁₀ concentration of each step.
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 3: FORMULA SCALING & SAFE ALARMS -->
-    <div v-if="activeTab === 'scaling'" class="grid grid-cols-1 lg:grid-cols-5 gap-6">
-      <!-- Left side: List editor (3 cols) -->
-      <div class="lg:col-span-3 glass p-6 border border-[var(--color-border)] flex flex-col gap-4">
-        <div class="flex justify-between items-center border-b border-[var(--color-border)] pb-3">
-          <h3 class="text-lg font-semibold text-[var(--color-primary-light)]">Formula Component Editor</h3>
-          <div class="flex gap-2">
-            <button class="btn btn--secondary py-1 px-2.5 text-[11px]" @click="loadScalingPreset('serum')">Load Serum</button>
-            <button class="btn btn--secondary py-1 px-2.5 text-[11px]" @click="loadScalingPreset('cream')">Load Cream</button>
-          </div>
-        </div>
-
-        <!-- Scale ratios configuration -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-black/10 border border-[var(--color-border)] p-4 rounded-xl">
-          <div>
-            <label class="form-label text-[11px] mb-1.5 uppercase font-bold tracking-wider">Base Batch Size</label>
-            <div class="flex gap-2">
-              <input type="number" class="form-input font-mono py-1 text-xs" v-model="baseBatchSize" />
-              <select class="form-input form-select w-20 py-1 text-xs" v-model="baseBatchUnit">
-                <option value="g">g</option>
-                <option value="kg">kg</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label class="form-label text-[11px] mb-1.5 uppercase font-bold tracking-wider">Target Batch Size</label>
-            <div class="flex gap-2">
-              <input type="number" class="form-input font-mono py-1 text-xs" v-model="targetBatchSize" />
-              <select class="form-input form-select w-20 py-1 text-xs" v-model="targetBatchUnit">
-                <option value="g">g</option>
-                <option value="kg">kg</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- Table list header -->
-        <div class="grid grid-cols-12 gap-3 px-2 text-[10px] uppercase font-bold tracking-wider text-[var(--color-text-secondary)]">
-          <span class="col-span-8">Ingredient / Component Name</span>
-          <span class="col-span-3">Percentage (%)</span>
-          <span class="col-span-1 text-center">Del</span>
-        </div>
-
-        <!-- Table rows scrollable -->
-        <div class="flex flex-col gap-2 max-h-[300px] overflow-y-auto custom-scrollbar pr-1">
+        <!-- Scrollable Tubes checklist -->
+        <div class="p-4 rounded-2xl bg-black/20 border border-[var(--color-border)] flex flex-col gap-2 max-h-64 overflow-y-auto custom-scrollbar">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-[var(--color-text-secondary)] mb-1">
+            Pipetting Protocol Steps Checklist
+          </span>
           <div
-            v-for="(ing, idx) in scalingIngredients"
-            :key="ing.id"
-            class="grid grid-cols-12 gap-2 items-center"
+            v-for="r in serialResults"
+            :key="r.step"
+            class="p-2.5 rounded-xl border border-[var(--color-border)] bg-black/20 text-xs flex flex-col gap-1"
           >
-            <div class="col-span-8">
-              <input type="text" class="form-input py-1.5 text-xs" v-model="ing.name" placeholder="Component Name" />
+            <div class="flex justify-between items-center font-mono">
+              <strong class="text-[var(--color-primary-light)]">{{ r.step }} Tube</strong>
+              <span class="font-bold text-[var(--color-text)]">{{ r.concentration }} {{ c0Unit }}</span>
             </div>
-            <div class="col-span-3 flex gap-1 items-center">
-              <input type="number" class="form-input font-mono py-1.5 text-xs" v-model="ing.percentage" placeholder="%" />
-            </div>
-            <button @click="removeScalingIngredient(ing.id)" class="col-span-1 flex items-center justify-center text-[var(--color-error)] hover:bg-white/5 rounded-lg py-1">
-              🗑️
-            </button>
-          </div>
-        </div>
-
-        <div class="flex justify-between items-center border-t border-[var(--color-border)] pt-4 mt-2">
-          <button @click="addScalingIngredient" class="btn btn--secondary py-1.5 px-3 text-xs flex items-center gap-1">
-            ➕ Add Component
-          </button>
-          <div class="text-xs">
-            Sum: <span :class="[Math.abs(scalingTotalPct - 100) > 0.01 ? 'text-[var(--color-warning)] font-bold' : 'text-[var(--color-success)] font-bold']">{{ scalingTotalPct }} %</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right side: Calculation output checklist & warnings (2 cols) -->
-      <div class="lg:col-span-2 glass p-6 border border-[var(--color-border)] flex flex-col justify-between gap-5">
-        <div>
-          <h3 class="text-lg font-semibold text-[var(--color-primary-light)] mb-3">📋 Scaled Formula output</h3>
-          
-          <div v-if="Math.abs(scalingTotalPct - 100) > 0.01" class="p-3 bg-[var(--color-warning)]/10 border border-[var(--color-warning)]/30 rounded-lg text-xs text-[var(--color-text)] flex items-center gap-2 mb-4 leading-relaxed">
-            <span>⚠️</span>
-            <span>Current total percentage is {{ scalingTotalPct }}% (should equal 100% for batch logic).</span>
-          </div>
-
-          <!-- Output lists -->
-          <div class="flex flex-col gap-2 max-h-[280px] overflow-y-auto custom-scrollbar pr-1">
-            <div
-              v-for="ing in scalingIngredients"
-              :key="ing.id"
-              class="p-2.5 rounded-lg border border-[var(--color-border)] bg-black/10 text-xs flex justify-between items-center"
-            >
-              <div class="flex flex-col">
-                <span class="font-bold text-[var(--color-text)]">{{ ing.name }}</span>
-                <span class="text-[10px] text-[var(--color-text-secondary)]">{{ ing.percentage }}%</span>
-              </div>
-              <span class="font-mono text-xs text-[var(--color-primary-light)] font-bold">
-                {{ 
-                  formatWeight(
-                    getWeightInGram(parseFloat(targetBatchSize) || 0, targetBatchUnit) * ((parseFloat(ing.percentage) || 0) / 100),
-                    targetBatchUnit
-                  ) 
-                }}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Safe regulations alarm box -->
-        <div v-if="scalingWarnings.length > 0" class="p-4 bg-[var(--color-error)]/10 border border-[var(--color-error)]/30 rounded-xl flex flex-col gap-1.5">
-          <div class="text-xs uppercase tracking-wider font-bold text-[var(--color-error)] flex items-center gap-1.5">
-            🚨 Regulatory Limit Warnings
-          </div>
-          <div class="flex flex-col gap-1 mt-1">
-            <div
-              v-for="(w, idx) in scalingWarnings"
-              :key="idx"
-              class="text-[11px] text-[var(--color-text)] leading-relaxed"
-            >
-              {{ w }}
-            </div>
+            <p class="text-[11px] text-[var(--color-text-muted)] font-mono">{{ r.operation }}</p>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- ── TAB 3: BATCH FORMULA SCALING ── -->
+    <div v-if="activeTab === 'scaling'" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <!-- Left List Editor (7/12) -->
+      <div class="lg:col-span-7 p-5 rounded-2xl bg-black/20 border border-[var(--color-border)] flex flex-col gap-4">
+        <div class="flex justify-between items-center border-b border-[var(--color-border)] pb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-[var(--color-primary-light)]">
+            📋 Formula Recipe Ingredients (%)
+          </span>
+          <div class="flex gap-1.5">
+            <button class="btn btn--secondary py-1 px-2 text-[10px]" @click="loadScalingPreset('serum')">Load Serum</button>
+            <button class="btn btn--secondary py-1 px-2 text-[10px]" @click="loadScalingPreset('cream')">Load Cream</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 bg-black/30 p-3 rounded-xl border border-[var(--color-border)]">
+          <div>
+            <label class="text-[10px] uppercase font-bold text-[var(--color-text-muted)] mb-1 block">Base Batch</label>
+            <div class="flex gap-1">
+              <input type="number" class="calc-input text-xs py-1" v-model="baseBatchSize" />
+              <select v-model="baseBatchUnit" class="calc-unit-select text-xs py-1">
+                <option value="g">g</option>
+                <option value="kg">kg</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="text-[10px] uppercase font-bold text-[var(--color-text-muted)] mb-1 block">Target Batch</label>
+            <div class="flex gap-1">
+              <input type="number" class="calc-input text-xs py-1" v-model="targetBatchSize" />
+              <select v-model="targetBatchUnit" class="calc-unit-select text-xs py-1">
+                <option value="g">g</option>
+                <option value="kg">kg</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2 max-h-64 overflow-y-auto custom-scrollbar">
+          <div v-for="ing in scalingIngredients" :key="ing.id" class="flex gap-2 items-center">
+            <input type="text" v-model="ing.name" class="calc-input text-xs flex-1" placeholder="Ingredient Name" />
+            <input type="number" v-model="ing.percentage" class="calc-input text-xs w-20 font-mono" placeholder="%" />
+            <button @click="removeScalingIngredient(ing.id)" class="text-red-400 hover:text-red-300 p-1 text-sm">🗑️</button>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-3 border-t border-[var(--color-border)]">
+          <button @click="addScalingIngredient" class="btn btn--secondary py-1 px-3 text-xs">➕ Add Ingredient</button>
+          <span class="text-xs">
+            Sum: <strong :class="Math.abs(scalingTotalPct - 100) > 0.01 ? 'text-amber-400' : 'text-emerald-400'">{{ scalingTotalPct }} %</strong>
+          </span>
+        </div>
+      </div>
+
+      <!-- Right Output Output (5/12) -->
+      <div class="lg:col-span-5 p-5 rounded-2xl bg-black/20 border border-[var(--color-border)] flex flex-col gap-4">
+        <span class="text-xs font-bold uppercase tracking-wider text-[var(--color-primary-light)]">
+          ⚖️ Scaled Production Weights
+        </span>
+
+        <div class="flex flex-col gap-1.5 max-h-64 overflow-y-auto custom-scrollbar">
+          <div
+            v-for="ing in scalingIngredients"
+            :key="ing.id"
+            class="p-2.5 rounded-xl border border-[var(--color-border)] bg-black/30 flex justify-between items-center text-xs"
+          >
+            <div>
+              <div class="font-bold text-[var(--color-text)]">{{ ing.name }}</div>
+              <div class="text-[10px] text-[var(--color-text-muted)]">{{ ing.percentage }}%</div>
+            </div>
+            <span class="font-mono font-bold text-[var(--color-primary-light)] text-sm">
+              {{ formatWeight(getWeightInGram(parseFloat(targetBatchSize) || 0, targetBatchUnit) * ((parseFloat(ing.percentage) || 0) / 100), targetBatchUnit) }}
+            </span>
+          </div>
+        </div>
+
+        <div v-if="scalingWarnings.length > 0" class="p-3 rounded-xl bg-red-950/40 border border-red-500/30 flex flex-col gap-1 text-xs text-red-300">
+          <strong class="font-bold uppercase tracking-wider text-[10px]">🚨 Regulatory Warnings:</strong>
+          <div v-for="(w, idx) in scalingWarnings" :key="idx">{{ w }}</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
+
+<style scoped>
+.input-row-card {
+  padding: 0.75rem 0.875rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-border);
+  background: rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.input-row-card--target {
+  border-color: rgba(212, 166, 84, 0.5) !important;
+  background: rgba(212, 166, 84, 0.05) !important;
+}
+
+.target-btn {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.375rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.target-btn--active {
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-bg) !important;
+}
+
+.calc-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.45rem 0.65rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  color: var(--color-text);
+  font-family: monospace;
+  font-size: 0.875rem;
+}
+
+.calc-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.calc-input:disabled {
+  background: rgba(212, 166, 84, 0.08);
+  color: var(--color-primary-light);
+  font-weight: 700;
+}
+
+.calc-unit-select {
+  padding: 0.45rem 0.5rem;
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  color: var(--color-text);
+  font-size: 0.75rem;
+}
+
+.glow-ambient {
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(212, 166, 84, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+</style>
