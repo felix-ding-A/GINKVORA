@@ -1,26 +1,18 @@
 # geo-check — GINKVORA (ginkvora.com) GEO Citability 闸门
 # ====================================================================
-# 站点实况：Astro SSR (output: 'server' + Vercel adapter)，4 语言 (en/ru/ar/es)
-# 因为 SSR 不产出静态 dist/*.html，本 workflow 抓取线上渲染后的页面（AI 爬虫
+# 站点实况：Astro SSR (output: 'server' + Vercel adapter)，仅审计英文页面 (en)
+# 因为 SSR 不产出静态 dist/*.html，本 workflow 抓取线上渲染后的英文页面（AI 爬虫
 # 看到的也是这个），再跑 citability 审计。
 #
-# 触发：每天 14:00 北京时间自动跑 + 手动 dispatch（可选语言/页面类型/阈值）
+# 触发：仅手动触发 workflow_dispatch（可选页面类型/阈值）
 # 失败行为：自动开/更新 GitHub Issue，不阻塞 Vercel 部署
 # ====================================================================
 
 name: GEO Citability Audit
 
 on:
-  schedule:
-    # 每天 UTC 06:00 = 北京时间 14:00
-    - cron: '0 6 * * *'
   workflow_dispatch:
     inputs:
-      locale:
-        description: '审计语言 (en/ru/ar/es/all)'
-        default: 'en'
-        type: choice
-        options: ['en', 'ru', 'ar', 'es', 'all']
       page_types:
         description: '页面类型 (insights/products/landing/all)'
         default: 'insights'
@@ -76,8 +68,8 @@ jobs:
           import xml.etree.ElementTree as ET
           import os, json
 
-          # 输入参数
-          locale_input = "${{ inputs.locale || 'en' }}"
+          # 输入参数 (固定仅英文 en 审计)
+          locale_input = "en"
           types_input = "${{ inputs.page_types || 'insights' }}"
           max_pages = int("${{ inputs.max_pages || '0' }}")
 
@@ -103,15 +95,10 @@ jobs:
                   tree = fetch_xml(sm)
                   for loc in tree.findall('.//sm:loc', NS):
                       u = loc.text.strip()
-                      # 按语言过滤
+                      # 仅保留英文页面 (过滤掉 /ru/, /ar/, /es/ 等非英文路径)
                       path = u.replace(SITE_URL, '')
-                      if locale_input != 'all':
-                          if locale_input == 'en':
-                              if path.startswith('/ru/') or path.startswith('/ar/') or path.startswith('/es/'):
-                                  continue
-                          else:
-                              if not path.startswith(f'/{locale_input}/'):
-                                  continue
+                      if path.startswith('/ru/') or path.startswith('/ar/') or path.startswith('/es/'):
+                          continue
                       # 按页面类型过滤
                       if types_input != 'all':
                           target_types = types_input.split(',')
@@ -266,7 +253,7 @@ jobs:
               console.log(`Created new Issue`);
             }
         env:
-          LOCALE: ${{ inputs.locale || 'en' }}
+          LOCALE: 'en'
           MIN_SCORE: ${{ inputs.min_score || '50' }}
           MIN_OPTIMAL: ${{ inputs.min_optimal || '1' }}
 

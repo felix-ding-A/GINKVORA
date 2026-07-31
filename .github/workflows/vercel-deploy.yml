@@ -2,8 +2,8 @@ name: Scheduled Vercel Deployment
 
 on:
   schedule:
-    # 协调世界时 (UTC) 每 6 小时触发一次 (对应北京时间 02:00, 08:00, 14:00, 20:00)
-    - cron: '0 */6 * * *'
+    # 协调世界时 (UTC) 每 12 小时触发一次 (对应北京时间 08:00, 20:00)
+    - cron: '0 */12 * * *'
   workflow_dispatch: # 支持在 GitHub 页面上手动点击运行
 
 jobs:
