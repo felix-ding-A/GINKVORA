@@ -36,6 +36,32 @@ const appSchema = {
   "provider": { "@type": "Organization", "name": "GINKVORA", "url": siteUrl }
 };
 
+// HowTo schema (C1V1 dilution protocol)
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Prepare a Serial Dilution (C1V1 = C2V2)",
+  "description": "Step-by-step protocol for calculating and preparing accurate laboratory serial dilutions using concentrated stock solutions.",
+  "totalTime": "PT5M",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Determine Target Concentration & Volume",
+      "text": "Identify your desired final concentration (C2) and target working volume (V2) for your assay or formulation."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Calculate Required Stock Volume (V1)",
+      "text": "Apply the dilution equation V1 = (C2 × V2) / C1 using known stock concentration C1."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Pipette Stock & Diluent",
+      "text": "Pipette volume V1 of stock solution into volumetric container, then add solvent/diluent until total volume equals V2."
+    }
+  ]
+};
+
 // FAQPage schema (for rich results in Google)
 const faqSchema = {
   "@context": "https://schema.org",
@@ -79,7 +105,8 @@ const faqSchema = {
 
 <BaseLayout
   title="Online Lab & Chemical Formulation Calculator"
-  description="Free interactive laboratory calculator tool: molarity solver, serial dilution planner, molecular weight parser, HLB emulsion calculator, and supplement/cosmetic recipe builder."
+  description="Free interactive lab calculator tool: molarity solver, serial dilution planner, molecular weight calculator, HLB emulsion & formulation scaling."
+  keywords="molarity calculator, serial dilution calculator, molecular weight calculator, HLB emulsifier calculator, C1V1 formula solver, chemical formulation tools"
 >
   <link rel="alternate" hreflang="en" href={`${siteUrl}/calculator`} slot="head" />
   <link rel="alternate" hreflang="es" href={`${siteUrl}/es/calculator`} slot="head" />
@@ -88,6 +115,7 @@ const faqSchema = {
   <link rel="alternate" hreflang="x-default" href={`${siteUrl}/calculator`} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(formulatorSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 
   <main class="formulator-page bg-noise">
@@ -110,9 +138,9 @@ const faqSchema = {
       
       <div class="reference-header">
         <span class="section-label">Documentation & Reference</span>
-        <h2 id="reference-title" class="section-title">Lab Calculator & Formulation Reference Guide</h2>
+        <h2 id="reference-title" class="section-title">Scientific Laboratory Calculator Reference Guide & Protocol SOPs</h2>
         <p class="section-desc">
-          Technical specifications, mathematical equations, and standard operating procedures (SOP) used in our calculators.
+          Technical specifications, mathematical equations, and standard operating procedures (SOP) for molarity, dilutions, molecular weights, and emulsion balancing.
         </p>
       </div>
 
@@ -122,7 +150,7 @@ const faqSchema = {
           <div class="card-icon-wrapper w-10 h-10 rounded-xl bg-[var(--color-primary-glow)] border border-[var(--color-primary)]/30 flex items-center justify-center text-[var(--color-primary-light)] shrink-0">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v7.31L4.75 18.15A2 2 0 0 0 6.46 21h11.08a2 2 0 0 0 1.71-2.85L14 9.31V2"/><line x1="8.5" y1="2" x2="15.5" y2="2"/></svg>
           </div>
-          <h3 class="card-title">Molarity & Percentage w/w Calculations</h3>
+          <h3 id="molarity-calculator" class="card-title">Molarity & Percentage w/w Calculations</h3>
           <p class="card-text">
             Molarity (M) defines the concentration of a solute in a solution as moles of solute per liter of solution (mol/L).
           </p>
@@ -130,7 +158,7 @@ const faqSchema = {
             Mass (g) = Concentration (M) × Volume (L) × Molecular Weight (g/mol)
           </div>
           <p class="card-text mt-3">
-            Weight-in-Weight (% w/w) represents the mass of a solute divided by the total mass of the formulation, multiplied by 100.
+            Weight-in-Weight (% w/w) represents the mass of a solute divided by the total mass of the formulation, multiplied by 100%. Useful when formulating active botanical ingredients such as <a href="/products/egcg-epigallocatechin-gallate" class="text-[var(--color-primary-light)] underline hover:text-white">EGCG (Epigallocatechin Gallate)</a> or <a href="/products/nmn-nicotinamide-mononucleotide" class="text-[var(--color-primary-light)] underline hover:text-white">NMN</a>.
           </p>
           <div class="equation-block font-mono text-sm">
             % w/w = (Solute Mass / Total Formula Mass) × 100%
@@ -142,7 +170,7 @@ const faqSchema = {
           <div class="card-icon-wrapper w-10 h-10 rounded-xl bg-[var(--color-primary-glow)] border border-[var(--color-primary)]/30 flex items-center justify-center text-[var(--color-primary-light)] shrink-0">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
           </div>
-          <h3 class="card-title">Dilution & Scaling (C₁V₁ = C₂V₂)</h3>
+          <h3 id="dilution-calculator" class="card-title">Dilution & Scaling (C₁V₁ = C₂V₂)</h3>
           <p class="card-text">
             The dilution equation relates the concentration and volume of a stock solution to the desired final concentration and volume.
           </p>
@@ -150,7 +178,7 @@ const faqSchema = {
             C₁ × V₁ = C₂ × V₂
           </div>
           <p class="card-text mt-3">
-            To prepare a dilution, calculate the required stock volume (V₁ = (C₂ × V₂) / C₁), transfer this volume to your container, and add diluent until the final volume (V₂) is reached.
+            To prepare a dilution (e.g., preparing a working solution of <a href="/products/ghk-cu" class="text-[var(--color-primary-light)] underline hover:text-white">GHK-Cu Copper Tripeptide-1</a>), calculate stock volume V₁ = (C₂ × V₂) / C₁, transfer V₁ to your container, and top up with solvent until final volume V₂.
           </p>
         </div>
 
@@ -159,15 +187,15 @@ const faqSchema = {
           <div class="card-icon-wrapper w-10 h-10 rounded-xl bg-[var(--color-primary-glow)] border border-[var(--color-primary)]/30 flex items-center justify-center text-[var(--color-primary-light)] shrink-0">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 21a9 9 0 0 0 9-9 9 9 0 0 0-9-9 9 9 0 0 0-9 9 9 9 0 0 0 9 9z"/><path d="M2 12h20"/></svg>
           </div>
-          <h3 class="card-title">Molecular Weight & Chemical Formulas</h3>
+          <h3 id="molecular-weight-calculator" class="card-title">Molecular Weight & Chemical Formulas</h3>
           <p class="card-text">
-            Molecular weight (MW) is calculated by summing the atomic weights of all constituent atoms in a chemical formula. Our system parses standard chemical symbols, nested parentheses, and hydrates.
+            Molecular weight (MW) is calculated by summing atomic weights. Essential for precise stoichiometry when dosing high-purity actives like <a href="/products/glabridin" class="text-[var(--color-primary-light)] underline hover:text-white">Glabridin</a> or polyphenols.
           </p>
           <div class="equation-block font-mono text-sm">
             Example: CuSO₄·5H₂O (Copper Sulfate Pentahydrate)
           </div>
           <p class="card-text mt-3">
-            The parser matches element symbols against standard IUPAC values (e.g., Ca = 40.078, O = 15.999, H = 1.008) and resolves stoichiometry dynamically.
+            Our parser matches symbols against IUPAC standard atomic weights and accounts for hydrate water molecules to avoid mass dosing errors.
           </p>
         </div>
 
@@ -176,15 +204,15 @@ const faqSchema = {
           <div class="card-icon-wrapper w-10 h-10 rounded-xl bg-[var(--color-primary-glow)] border border-[var(--color-primary)]/30 flex items-center justify-center text-[var(--color-primary-light)] shrink-0">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
           </div>
-          <h3 class="card-title">HLB & Disintegration Kinetics</h3>
+          <h3 id="hlb-calculator" class="card-title">HLB & Disintegration Kinetics</h3>
           <p class="card-text">
-            The Hydrophilic-Lipophilic Balance (HLB) is a measure of the degree to which a surfactant is hydrophilic or lipophilic. Ideal emulsions require balancing surfactant HLB with the required HLB (rHLB) of the oil phase.
+            Hydrophilic-Lipophilic Balance (HLB) determines surfactant affinity. Essential for stabilizing lipid-soluble cosmetic actives in emulsion matrices.
           </p>
           <div class="equation-block font-mono text-sm">
             Required Emulsifier A% = (rHLB - HLB_B) / (HLB_A - HLB_B) × 100%
           </div>
           <p class="card-text mt-3">
-            Tablet formulation models evaluate disintegration times based on the ratio of superdisintegrants (e.g. Croscarmellose Sodium) and compression binder profiles.
+            Explore advanced cosmetic formulations and recipes in our <a href="/featured-formulas" class="text-[var(--color-primary-light)] underline hover:text-white">Featured Scientific Formulas Hub</a>.
           </p>
         </div>
       </div>

@@ -12,6 +12,7 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
 interface Props {
   title: string;
   description?: string;
+  keywords?: string;
   image?: string;
   lang?: string;
   dir?: 'ltr' | 'rtl';
@@ -25,6 +26,7 @@ interface Props {
 const {
   title,
   description = 'GINKVORA — Premium B2B plant extract supplier. PQQ, NMN, EGCG, Glabridin, Luteolin and specialized high-purity botanical ingredients for nutraceutical, cosmetic and pet health industries.',
+  keywords = 'plant extract supplier, botanical ingredients, PQQ supplier, NMN bulk, EGCG extract, Glabridin, Luteolin, Flavone, nutraceutical ingredients, cosmetic actives, pet supplement ingredients, B2B botanical extracts',
   image,
   lang = 'en',
   dir,
@@ -238,7 +240,7 @@ const organizationSchema = {
     )}
 
     <!-- Keywords (B2B SEO) -->
-    <meta name="keywords" content="plant extract supplier, botanical ingredients, PQQ supplier, NMN bulk, EGCG extract, Glabridin, Luteolin, Flavone, nutraceutical ingredients, cosmetic actives, pet supplement ingredients, B2B botanical extracts" />
+    <meta name="keywords" content={keywords} />
 
     <!-- Business meta -->
     <meta name="author" content="GINKVORA" />

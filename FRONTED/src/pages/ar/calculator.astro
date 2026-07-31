@@ -67,11 +67,43 @@ const faqSchema = {
       }
     },
     {
+// HowTo schema (C1V1 dilution protocol)
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "كيفية تحضير تخفيف متسلسل (C1V1 = C2V2)",
+  "description": "بروتوكول خطوة بخطوة لحساب وتحضير تخفيفات مختبرية دقيقة باستخدام المحاليل المركزة.",
+  "totalTime": "PT5M",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "تحديد التركيز والحجم المستهدف",
+      "text": "حدد التركيز النهائي المطلوب (C2) والحجم المستهدف (V2)."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "حساب حجم المحلول المركز (V1)",
+      "text": "استخدم المعادلة V1 = (C2 × V2) / C1."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "السحب والإكمال",
+      "text": "اسحب الحجم V1 من المحلول المركز وأضف المذيب حتى الوصول إلى الحجم V2."
+    }
+  ]
+};
+
+// FAQPage schema (for rich results in Google)
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
       "@type": "Question",
-      "name": "كيف يمكنني حساب الكتلة اللازمة لتحضير محلول مولي؟",
+      "name": "ما هو المحلول المركز (Stock Solution)؟",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "لتحضير محلول مولي: الكتلة (جرام) = التركيز (M) × الحجم (لتر) × الوزن الجزيئي (جرام/مول). على سبيل المثال، لتحضير 10 مل من محلول فيتامين سي بتركيز 50 ملي مولار (الوزن الجزيئي = 176.12): 0.05 مول/لتر × 0.01 لتر × 176.12 جرام/مول = 0.08806 جرام = 88.06 ملي جرام."
+        "text": "المحلول المركز هو محلول عالي التركيز يتم تخفيفه إلى تركيزات أقل للاستخدام المختبري الفعلي."
       }
     }
   ]
@@ -82,6 +114,7 @@ const faqSchema = {
   lang={lang}
   title="حاسبة التركيبات العلمية والمختبرية | GINKVORA"
   description="أداة حاسبة تفاعلية مجانية للمختبرات: حل الموولارية، وتخطيط التخفيف المتسلسل C1V1، وتحليل الوزن الجزيئي، وحساب مستحلبات HLB والتركيبات."
+  keywords="حاسبة المولارية, حاسبة التخفيف C1V1, حساب الوزن الجزيئي, حاسبة HLB, أدوات التركيبات الكيميائية"
 >
   <link rel="alternate" hreflang="en" href={`${siteUrl}/calculator`} slot="head" />
   <link rel="alternate" hreflang="es" href={`${siteUrl}/es/calculator`} slot="head" />
@@ -91,6 +124,7 @@ const faqSchema = {
 
   <script type="application/ld+json" set:html={JSON.stringify(formulatorSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 
   <main class="formulator-page bg-noise">

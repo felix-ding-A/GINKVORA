@@ -67,11 +67,43 @@ const faqSchema = {
       }
     },
     {
+// HowTo schema (C1V1 dilution protocol)
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Cómo preparar una dilución en serie (C1V1 = C2V2)",
+  "description": "Protocolo paso a paso para calcular y preparar diluciones precisas de laboratorio a partir de soluciones madre.",
+  "totalTime": "PT5M",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Determinar concentración y volumen objetivo",
+      "text": "Identifique la concentración final deseada (C2) y el volumen de trabajo objetivo (V2)."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Calcular volumen de solución madre (V1)",
+      "text": "Aplique la fórmula V1 = (C2 × V2) / C1."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Pipetear y enrasar",
+      "text": "Pipetee el volumen V1 de solución madre y añada disolvente hasta alcanzar el volumen V2."
+    }
+  ]
+};
+
+// FAQPage schema (for rich results in Google)
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
       "@type": "Question",
-      "name": "¿Cómo calcular la masa necesaria para una solución molar?",
+      "name": "¿Qué es una solución madre en laboratorio?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Para preparar una solución molar: Masa (g) = Concentración (M) × Volumen (L) × Peso Molecular (g/mol). Por ejemplo, para preparar 10 mL de una solución de vitamina C (PM=176.12) a una concentración de 50 mM: 0.05 mol/L × 0.01 L × 176.12 g/mol = 0.08806 g = 88.06 mg."
+        "text": "Una solución madre es una solución concentrada que se diluirá a una concentración menor para uso práctico."
       }
     }
   ]
@@ -82,6 +114,7 @@ const faqSchema = {
   lang={lang}
   title="Calculadora de Formulación Científica y Laboratorio | GINKVORA"
   description="Herramienta gratuita para calcular molaridad química, diluciones C1V1, masa molecular y escala de formulaciones. Diseñada para investigadores y R&D."
+  keywords="calculadora de molaridad, calculadora de dilución C1V1, peso molecular, calculadora HLB, herramientas de formulación química"
 >
   <link rel="alternate" hreflang="en" href={`${siteUrl}/calculator`} slot="head" />
   <link rel="alternate" hreflang="es" href={`${siteUrl}/es/calculator`} slot="head" />
@@ -91,6 +124,7 @@ const faqSchema = {
 
   <script type="application/ld+json" set:html={JSON.stringify(formulatorSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(appSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 
   <main class="formulator-page bg-noise">
