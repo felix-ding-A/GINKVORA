@@ -150,24 +150,41 @@ const itemListSchema = {
             "Premium raw materials tested under strict USP/EP quality standards for supplement, cosmetic, and functional food manufacturers."
           )}
         </p>
+
+        <!-- Prominent Hero Search Area -->
+        <div class="hero-search-wrapper">
+          <div class="hero-search-box">
+            <svg class="hero-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input
+              type="search"
+              id="hero-product-search"
+              placeholder="Search ingredients by name, CAS number (e.g. 13749-38-7), or purity..."
+              aria-label="Search catalog ingredients"
+            />
+            <button type="button" class="hero-search-btn" id="hero-search-trigger">
+              Search Catalog
+            </button>
+          </div>
+          <!-- Hot Search Keyword Tags -->
+          <div class="hero-hot-tags">
+            <button type="button" class="hero-tag-btn" data-search="Proxylane">🔥 Proxylane</button>
+            <button type="button" class="hero-tag-btn" data-search="NMN">⚡ NMN</button>
+            <button type="button" class="hero-tag-btn" data-search="PQQ">🌟 PQQ</button>
+            <button type="button" class="hero-tag-btn" data-search="Glabridin">🌿 Glabridin</button>
+            <button type="button" class="hero-tag-btn" data-search="EGCG">🍃 EGCG</button>
+            <button type="button" class="hero-tag-btn" data-search="Liposomal">🧬 Liposomal</button>
+            <button type="button" class="hero-tag-btn" data-search="13749-38-7">🧪 CAS 13749-38-7</button>
+          </div>
+        </div>
       </div>
     </header>
 
     <div class="container catalog-container">
-      <!-- Filter and search bar -->
-      <section class="controls-section glass" aria-label="Filters and Search">
-        <div class="search-box">
-          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.3-4.3"/>
-          </svg>
-          <input
-            type="search"
-            id="product-search"
-            placeholder="Search ingredients by name, CAS number, or description..."
-            aria-label="Search ingredients"
-          />
-        </div>
+      <!-- Filter bar -->
+      <section class="controls-section glass" aria-label="Filters">
 
         <div class="filter-row">
           <span class="filter-label">Filter by Category:</span>
@@ -384,6 +401,108 @@ const itemListSchema = {
     padding-left: 1rem;
     font-size: 1.125rem;
     line-height: 1.5;
+  }
+
+  /* ── Hero Search Widget ── */
+  .hero-search-wrapper {
+    margin-top: 2rem;
+    max-width: 860px;
+  }
+
+  .hero-search-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 8px 6px 18px;
+    background: rgba(12, 14, 12, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(212, 166, 84, 0.4);
+    border-radius: 9999px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 166, 84, 0.15);
+    transition: all 0.3s ease;
+  }
+
+  .hero-search-box:focus-within {
+    border-color: rgba(212, 166, 84, 0.8);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(212, 166, 84, 0.3);
+  }
+
+  .hero-search-icon {
+    color: #d4a654;
+    flex-shrink: 0;
+  }
+
+  .hero-search-box input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1.05rem;
+    color: #fff;
+    font-family: inherit;
+  }
+
+  .hero-search-box input::placeholder {
+    color: rgba(245, 239, 224, 0.45);
+  }
+
+  .hero-search-btn {
+    padding: 0.65rem 1.4rem;
+    background: linear-gradient(135deg, #d4a654 0%, #b8860b 100%);
+    border: none;
+    border-radius: 9999px;
+    color: #060503;
+    font-weight: 700;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .hero-search-btn:hover {
+    background: linear-gradient(135deg, #f0c878 0%, #d4a654 100%);
+    box-shadow: 0 4px 15px rgba(212, 166, 84, 0.4);
+  }
+
+  .hero-hot-tags {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .hot-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #d4a654;
+    margin-right: 4px;
+  }
+
+  .hero-tag-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(212, 166, 84, 0.2);
+    color: #e0d8c3;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .hero-tag-btn:hover {
+    background: rgba(212, 166, 84, 0.2);
+    border-color: rgba(212, 166, 84, 0.5);
+    color: #f0c878;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 640px) {
+    .hero-search-btn { display: none; }
+    .hero-search-box { padding-right: 14px; }
   }
 
   /* ── Controls Section ── */
@@ -853,22 +972,56 @@ const itemListSchema = {
     }
 
     // Cache original count text
-    if (countLabel) countLabel.setAttribute('data-original', countLabel.textContent || '');
+    const heroSearchInput = (document.getElementById('hero-product-search') || document.getElementById('product-search')) as HTMLInputElement;
+    const heroSearchBtn = document.getElementById('hero-search-trigger');
+    const heroTagBtns = document.querySelectorAll('.hero-tag-btn');
 
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        currentSearch = (e.target as HTMLInputElement).value.toLowerCase().trim();
-        filterProducts();
+    function updateSearchTerm(term: string) {
+      currentSearch = term.toLowerCase().trim();
+      if (heroSearchInput) heroSearchInput.value = term;
+      filterProducts();
+    }
+
+    if (heroSearchInput) {
+      heroSearchInput.addEventListener('input', (e) => {
+        updateSearchTerm((e.target as HTMLInputElement).value);
       });
+    }
+
+    if (heroSearchBtn) {
+      heroSearchBtn.addEventListener('click', () => {
+        const term = heroSearchInput ? heroSearchInput.value : '';
+        updateSearchTerm(term);
+        const catalogContainer = document.querySelector('.catalog-container');
+        if (catalogContainer) {
+          catalogContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+
+    heroTagBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const searchKeyword = btn.getAttribute('data-search') || '';
+        updateSearchTerm(searchKeyword);
+        const catalogContainer = document.querySelector('.catalog-container');
+        if (catalogContainer) {
+          catalogContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Handle URL search parameter (e.g. /products?search=NMN)
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchParam = urlParams.get('search');
+    if (searchParam) {
+      updateSearchTerm(searchParam);
     }
 
     // Reset button inside empty state
     const resetButton = document.getElementById('reset-filters');
     if (resetButton) {
       resetButton.addEventListener('click', () => {
-        if (searchInput) searchInput.value = '';
-        currentSearch = '';
-        filterProducts();
+        updateSearchTerm('');
       });
     }
 

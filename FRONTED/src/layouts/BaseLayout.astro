@@ -8,6 +8,7 @@ import { stripLangPrefix, getDir } from '../i18n/utils';
 import type { Lang } from '../i18n/ui';
 
 const gtmId = import.meta.env.PUBLIC_GTM_ID as string | undefined;
+const fbAppId = import.meta.env.PUBLIC_FB_APP_ID as string | undefined;
 
 interface Props {
   title: string;
@@ -198,6 +199,7 @@ const organizationSchema = {
     </style>
 
     <!-- Open Graph -->
+    {fbAppId && <meta property="fb:app_id" content={fbAppId} />}
     <meta property="og:type" content={type} />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={fullTitle} />

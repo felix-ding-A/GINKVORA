@@ -2,7 +2,8 @@
 // Navbar.astro — Responsive navigation with language switcher
 import { useTranslations, getLocalePath, getAlternatePaths, languages } from '../../i18n/utils';
 import type { Lang } from '../../i18n/utils';
-import { getAllCategories } from '../../lib/sanity';
+import { getAllCategories, getAllProducts, getAllPosts } from '../../lib/sanity';
+import SearchModal from './SearchModal.vue';
 
 interface Props {
   lang?: string;
@@ -15,8 +16,10 @@ const t = useTranslations(typedLang);
 // Build localized nav link hrefs
 const lp = (path: string) => getLocalePath(typedLang, path);
 
-// Fetch categories dynamically
+// Fetch data dynamically
 const categories = await getAllCategories();
+const allProducts = await getAllProducts();
+const allPosts = await getAllPosts();
 
 const categoryTranslations: Record<string, string> = {
   'superfood': 'footer.link_supplements',
@@ -169,6 +172,22 @@ const alternatePaths = getAlternatePaths(Astro.url, typedLang);
 
       <!-- Right side actions -->
       <div class="nav-actions">
+        <!-- Global Search Trigger Button -->
+        <button
+          type="button"
+          class="global-search-btn"
+          id="global-search-btn"
+          aria-label="Open search"
+          onclick="window.dispatchEvent(new CustomEvent('open-global-search'))"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+          <span class="search-btn-text">{typedLang === 'ar' ? 'بحث...' : typedLang === 'ru' ? 'Поиск...' : typedLang === 'es' ? 'Buscar...' : 'Search...'}</span>
+          <kbd class="search-kbd">⌘K</kbd>
+        </button>
+
         <!-- Language Switcher -->
         <div class="lang-switcher" id="lang-switcher">
           <button class="lang-trigger" id="lang-btn" aria-expanded="false" aria-haspopup="true" aria-label={`Switch language. Current: ${lang.toUpperCase()}`}>
@@ -252,6 +271,9 @@ const alternatePaths = getAlternatePaths(Astro.url, typedLang);
       </a>
     </div>
   </div>
+
+  <!-- Search Modal Component -->
+  <SearchModal client:idle products={allProducts} posts={allPosts} lang={typedLang} />
 </header>
 
 <style>
@@ -489,6 +511,44 @@ const alternatePaths = getAlternatePaths(Astro.url, typedLang);
     color: var(--color-text-muted);
     padding: 0.1rem 0.4rem;
     border-radius: var(--radius-full);
+  }
+
+  /* Global Search Trigger Button */
+  .global-search-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.85rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(212, 166, 84, 0.25);
+    border-radius: 9999px;
+    color: #e0d8c3;
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .global-search-btn:hover {
+    background: rgba(212, 166, 84, 0.15);
+    border-color: rgba(212, 166, 84, 0.5);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(212, 166, 84, 0.2);
+  }
+
+  .search-kbd {
+    background: rgba(212, 166, 84, 0.15);
+    border: 1px solid rgba(212, 166, 84, 0.3);
+    color: #d4a654;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-family: monospace;
+  }
+
+  @media (max-width: 768px) {
+    .search-kbd { display: none; }
+    .search-btn-text { display: none; }
+    .global-search-btn { padding: 0.45rem; }
   }
 
   /* CTA */
