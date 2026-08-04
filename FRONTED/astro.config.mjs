@@ -55,5 +55,8 @@ export default defineConfig({
     optimizeDeps: {
       include: ['vue'],
     },
+    ssr: {
+      external: ['@resvg/resvg-js', 'sharp'],
+    },
   },
 });
