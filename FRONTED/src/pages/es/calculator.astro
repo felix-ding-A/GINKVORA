@@ -37,36 +37,6 @@ const appSchema = {
   "provider": { "@type": "Organization", "name": "GINKVORA", "url": siteUrl }
 };
 
-// FAQPage schema
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "¿Qué es una solución madre en diluciones de laboratorio?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Una solución madre es una solución concentrada que se diluirá a una concentración menor para su uso real en el laboratorio. El uso de soluciones madre ahorra tiempo en la preparación, reduce el desperdicio de materiales y mejora la precisión al trabajar con microcomponentes."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Cómo afectan los hidratos al cálculo del peso molecular?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Los compuestos hidratados contienen moléculas de agua unidas químicamente en su estructura cristalina (por ejemplo, CuSO₄·5H₂O). Al pesar la sustancia química seca, el peso de las moléculas de agua debe incluirse en el cálculo del peso molecular para garantizar una dosificación molar precisa."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Qué es el HLB en las formulaciones cosméticas?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "HLB significa equilibrio hidrófilo-lipófilo. Es un valor de 0 a 20 que indica la afinidad de un emulsionante por el agua (hidrófilo) o el aceite (lipófilo). Los emulsionantes con HLB bajo (3-6) forman emulsiones de agua en aceite (W/O), mientras que los emulsionantes con HLB alto (8-16) forman emulsiones de aceite en agua (O/W)."
-      }
-    },
-    {
 // HowTo schema (C1V1 dilution protocol)
 const howToSchema = {
   "@context": "https://schema.org",
@@ -100,10 +70,26 @@ const faqSchema = {
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "¿Qué es una solución madre en laboratorio?",
+      "name": "¿Qué es una solución madre en diluciones de laboratorio?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Una solución madre es una solución concentrada que se diluirá a una concentración menor para uso práctico."
+        "text": "Una solución madre es una solución concentrada que se diluirá a una concentración menor para su uso real en el laboratorio. El uso de soluciones madre ahorra tiempo en la preparación, reduce el desperdicio de materiales y mejora la precisión al trabajar con microcomponentes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo afectan los hidratos al cálculo del peso molecular?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los compuestos hidratados contienen moléculas de agua unidas químicamente en su estructura cristalina (por ejemplo, CuSO₄·5H₂O). Al pesar la sustancia química seca, el peso de las moléculas de agua debe incluirse en el cálculo del peso molecular para garantizar una dosificación molar precisa."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es el HLB en las formulaciones cosméticas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "HLB significa equilibrio hidrófilo-lipófilo. Es un valor de 0 a 20 que indica la afinidad de un emulsionante por el agua (hidrófilo) o el aceite (lipófilo). Los emulsionantes con HLB bajo (3-6) forman emulsiones de agua en aceite (W/O), mientras que los emulsionantes con HLB alto (8-16) forman emulsiones de aceite en agua (O/W)."
       }
     }
   ]
