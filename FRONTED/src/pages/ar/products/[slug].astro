@@ -204,6 +204,7 @@ const faqSchema = {
 <BaseLayout lang={lang}
   title={localSeoTitle || `${product.name} ${product.purity || ''} Manufacturer & Supplier | GINKVORA`}
   description={localSeoDesc || localShortDesc || `Purchase high purity ${product.name}. Quality guaranteed under GMP certifications. Request COA, MSDS, or sample.`}
+  image={product.heroImage ? urlFor(product.heroImage).width(1200).height(630).format('jpg').url() : undefined}
 >
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />

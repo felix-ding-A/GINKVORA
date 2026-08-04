@@ -128,6 +128,7 @@ const breadcrumbSchema = {
 <BaseLayout
   title={pageTitle}
   description={pageDescription}
+  image={post.mainImage ? urlFor(post.mainImage).width(1200).height(630).format('jpg').url() : undefined}
 >
   <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} slot="head" />
   {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />}

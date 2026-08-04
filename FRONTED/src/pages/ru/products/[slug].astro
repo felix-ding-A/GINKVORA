@@ -197,6 +197,7 @@ const breadcrumbSchema = {
   lang={lang}
   title={localSeoTitle || `${localName} ${product.purity || ''} ${t('product.breadcrumb_list')} | GINKVORA`}
   description={localSeoDesc || localShortDesc || `Купить высокочистый ${localName}. Качество гарантировано в соответствии с GMP. Запросить COA, MSDS или образец.`}
+  image={product.heroImage ? urlFor(product.heroImage).width(1200).height(630).format('jpg').url() : undefined}
 >
   <script type="application/ld+json" set:html={JSON.stringify(productSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
