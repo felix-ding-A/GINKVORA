@@ -1,6 +1,6 @@
 ---
 // InsightsPreviewSection.astro — Homepage blog preview with 3 mock/live posts
-import { sanityClient, POST_FIELDS, MOCK_POSTS, urlFor } from '../../lib/sanity';
+import { cachedFetch, POST_FIELDS, MOCK_POSTS, urlFor } from '../../lib/sanity';
 import { useTranslations, getLocalePath } from '../../i18n/utils';
 import type { Lang } from '../../i18n/utils';
 interface Props { lang?: string; }
@@ -10,7 +10,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
 
 let previewPosts: any[] = [];
 try {
-  previewPosts = await sanityClient.fetch(`
+  previewPosts = await cachedFetch(`
     *[_type == "post"] | order(featured desc, publishedAt desc) [0...3] {
       ${POST_FIELDS}
     }

@@ -1,6 +1,6 @@
 // src/lib/sanity.ts — Sanity client and query helpers (with robust Mock Data fallback)
 import { createClient } from '@sanity/client';
-import createImageUrlBuilder from '@sanity/image-url';
+import { createImageUrlBuilder } from '@sanity/image-url';
 import { MOCK_PRODUCTS, MOCK_CATEGORIES, MOCK_POSTS, MOCK_SITE_SETTINGS, MOCK_AUTHORS } from './mockData';
 
 // ---------------------------------------------------------------------------
@@ -13,6 +13,24 @@ export const sanityClient = createClient({
   useCdn: import.meta.env.PROD ? true : false,
   token: import.meta.env.SANITY_API_TOKEN,
 });
+
+// ---------------------------------------------------------------------------
+// In-Memory Query Cache for Astro Static Prerendering Optimization
+// ---------------------------------------------------------------------------
+const fetchCache = new Map<string, Promise<any>>();
+
+export async function cachedFetch(query: string, params: Record<string, any> = {}) {
+  const key = `${query}::${JSON.stringify(params)}`;
+  if (fetchCache.has(key)) {
+    return fetchCache.get(key);
+  }
+  const promise = sanityClient.fetch(query, params).catch((err) => {
+    fetchCache.delete(key);
+    throw err;
+  });
+  fetchCache.set(key, promise);
+  return promise;
+}
 
 
 // ---------------------------------------------------------------------------
@@ -221,7 +239,7 @@ export async function getAllProducts(category: string | null = null, mechanism: 
   `;
 
   try {
-    const data = await sanityClient.fetch(query, queryParams);
+    const data = await cachedFetch(query, queryParams);
     if (data && data.length > 0) return data;
     return filterMockProducts(MOCK_PRODUCTS, category, mechanism);
   } catch (err) {
@@ -240,7 +258,7 @@ function filterMockProducts(products: any[], category: string | null, mechanism:
 
 export async function getFeaturedProducts() {
   try {
-    const data = await sanityClient.fetch(`
+    const data = await cachedFetch(`
       *[_type == "product" && featured == true] | order(name asc) [0...6] {
         ${PRODUCT_FIELDS}
       }
@@ -255,7 +273,7 @@ export async function getFeaturedProducts() {
 
 export async function getProductBySlug(slug: string) {
   try {
-    const data = await sanityClient.fetch(
+    const data = await cachedFetch(
       `*[_type == "product" && slug.current == $slug][0] {
         ${PRODUCT_DETAIL_FIELDS}
       }`,
@@ -279,7 +297,7 @@ export async function getProductBySlug(slug: string) {
 
 export async function getProductsByCategory(categorySlug: string) {
   try {
-    const data = await sanityClient.fetch(
+    const data = await cachedFetch(
       `*[_type == "product" && category->slug.current == $categorySlug] | order(name asc) {
         ${PRODUCT_FIELDS}
       }`,
@@ -296,7 +314,7 @@ export async function getProductsByCategory(categorySlug: string) {
 // Categories
 export async function getAllCategories() {
   try {
-    const data = await sanityClient.fetch(`
+    const data = await cachedFetch(`
       *[_type == "category"] | order(order asc) {
         _id, name, "slug": slug.current, description, icon, color
       }
@@ -342,7 +360,7 @@ export const POST_FIELDS = `
 
 export async function getAllPosts(limit = 10) {
   try {
-    const data = await sanityClient.fetch(`
+    const data = await cachedFetch(`
       *[_type == "post"] | order(publishedAt desc) [0...${limit}] {
         ${POST_FIELDS}
       }
@@ -391,8 +409,8 @@ export async function getPostsPaginated({
   const countQuery = `count(${filter})`;
 
   try {
-    const posts = await sanityClient.fetch(query, params);
-    const total = await sanityClient.fetch(countQuery, params);
+    const posts = await cachedFetch(query, params);
+    const total = await cachedFetch(countQuery, params);
     return { posts, total };
   } catch (err) {
     console.warn('Sanity API connection failed, using fallback blog posts.');
@@ -424,7 +442,7 @@ export async function getPostsPaginated({
 
 export async function getPostBySlug(slug: string) {
   try {
-    const data = await sanityClient.fetch(
+    const data = await cachedFetch(
       `*[_type == "post" && slug.current == $slug][0] {
         ${POST_FIELDS},
         body,
@@ -484,7 +502,7 @@ export async function getSiteSettings() {
 
 export async function getAllAuthors() {
   try {
-    const data = await sanityClient.fetch(`
+    const data = await cachedFetch(`
       *[_type == "author"] | order(name asc) {
         _id,
         name,
@@ -652,7 +670,7 @@ export async function getRelatedProductsForProduct(productId: string, categorySl
     )][0...3] {
       ${PRODUCT_FIELDS}
     }`;
-    const data = await sanityClient.fetch(query, { productId: productId || '', cslug, cref });
+    const data = await cachedFetch(query, { productId: productId || '', cslug, cref });
     if (data && data.length > 0) return data;
     return MOCK_PRODUCTS.filter(p => p._id !== productId && (!categorySlug || p.category?.slug === categorySlug || (p.mainCategories && p.mainCategories.includes(categorySlug)))).slice(0, 3);
   } catch (err) {
@@ -669,7 +687,7 @@ export async function getRelatedPostsForProduct(productId: string, categorySlug?
     const reverseQuery = `*[_type == "post" && relatedProduct._ref == $productId] | order(publishedAt desc)[0...3] {
       ${POST_FIELDS}
     }`;
-    let posts = await sanityClient.fetch(reverseQuery, { productId: productId || '' });
+    let posts = await cachedFetch(reverseQuery, { productId: productId || '' });
     
     if (!posts) posts = [];
 
@@ -681,7 +699,7 @@ export async function getRelatedPostsForProduct(productId: string, categorySlug?
       )] | order(publishedAt desc)[0...3] {
         ${POST_FIELDS}
       }`;
-      const fallbackPosts = await sanityClient.fetch(fallbackQuery, { productId: productId || '', cslug, cref });
+      const fallbackPosts = await cachedFetch(fallbackQuery, { productId: productId || '', cslug, cref });
       const existingIds = new Set(posts.map((p: any) => p._id));
       const extra = (fallbackPosts || []).filter((p: any) => !existingIds.has(p._id));
       posts = [...posts, ...extra].slice(0, 3);
@@ -693,7 +711,7 @@ export async function getRelatedPostsForProduct(productId: string, categorySlug?
       const latestQuery = `*[_type == "post" && !(_id in $existingIds)] | order(publishedAt desc)[0...3] {
         ${POST_FIELDS}
       }`;
-      const latestPosts = await sanityClient.fetch(latestQuery, { existingIds });
+      const latestPosts = await cachedFetch(latestQuery, { existingIds });
       const currentIds = new Set(posts.map((p: any) => p._id));
       const extraLatest = (latestPosts || []).filter((p: any) => !currentIds.has(p._id));
       posts = [...posts, ...extraLatest].slice(0, 3);
