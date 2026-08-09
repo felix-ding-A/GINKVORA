@@ -1,5 +1,5 @@
 ---
-export const prerender = true;
+export const prerender = false; // Disable prerendering so SSR handles searchParams (category, mechanism, page)
 
 const lang = 'ar';
 // src/pages/products/index.astro — Products listing page with search and category filters
@@ -931,7 +931,11 @@ const itemListSchema = {
     const paginationNav = document.getElementById('pagination-nav');
 
     let currentSearch = '';
-    const currentPage = parseInt(grid?.getAttribute('data-current-page') || '1');
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageFromUrl = parseInt(urlParams.get('page') || '');
+    const currentPage = !isNaN(pageFromUrl) && pageFromUrl > 0
+      ? pageFromUrl
+      : parseInt(grid?.getAttribute('data-current-page') || '1');
 
     function filterProducts() {
       let visibleCount = 0;

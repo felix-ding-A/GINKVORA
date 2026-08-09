@@ -1,6 +1,6 @@
 ---
 // src/pages/ru/products/index.astro — Russian products listing page
-export const prerender = true;
+export const prerender = false; // Disable prerendering so SSR handles searchParams (category, mechanism, page)
 
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getAllProducts, urlFor, getLocalizedField } from '../../../lib/sanity';
@@ -685,7 +685,11 @@ const breadcrumbsSchema = {
     const paginationNav = document.getElementById('pagination-nav');
 
     let searchTerm     = '';
-    const currentPage = parseInt(grid?.getAttribute('data-current-page') || '1');
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageFromUrl = parseInt(urlParams.get('page') || '');
+    const currentPage = !isNaN(pageFromUrl) && pageFromUrl > 0
+      ? pageFromUrl
+      : parseInt(grid?.getAttribute('data-current-page') || '1');
 
     function filterProducts() {
       let visible = 0;

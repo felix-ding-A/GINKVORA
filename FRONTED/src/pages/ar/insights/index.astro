@@ -1,5 +1,5 @@
 ---
-export const prerender = true;
+export const prerender = false; // Disable prerendering so SSR handles searchParams (category, q, page)
 
 const lang = 'ar';
 // src/pages/insights/index.astro — B2B Industry Insights & Ingredient Research Blog
@@ -10,7 +10,6 @@ const siteUrl = 'https://ginkvora.com/ar';
 const selectedCategory = Astro.url.searchParams.get('category');
 const searchQuery = Astro.url.searchParams.get('q') || '';
 const pageParam = Astro.url.searchParams.get('page');
-const currentPage = Math.max(1, pageParam ? parseInt(pageParam, 10) : 1);
 const pageSize = 6;
 
 const categoryTranslations: Record<string, string> = {
@@ -23,20 +22,27 @@ const categoryTranslations: Record<string, string> = {
   'Industry News': 'أخبار الصناعة'
 };
 
-const { posts, total } = await getPostsPaginated({
+const { posts: allPosts, total } = await getPostsPaginated({
   category: selectedCategory,
   search: searchQuery,
-  page: currentPage,
-  pageSize,
+  page: 1,
+  pageSize: 100,
 });
 
-const totalPages = Math.ceil(total / pageSize);
+const totalPages = Math.max(1, Math.ceil(total / pageSize));
+const rawPage = parseInt(pageParam ?? '1', 10);
+const currentPage = Math.min(Math.max(1, isNaN(rawPage) ? 1 : rawPage), totalPages);
 
 // Helper function to build page URLs while preserving category query params
 function getPageHref(pageNum: number) {
   const url = new URL(Astro.url.href);
-  url.searchParams.set('page', pageNum.toString());
-  return url.pathname + url.search;
+  if (pageNum <= 1) {
+    url.searchParams.delete('page');
+  } else {
+    url.searchParams.set('page', pageNum.toString());
+  }
+  const q = url.searchParams.toString();
+  return url.pathname + (q ? '?' + q : '');
 }
 
 // Breadcrumb structured data
@@ -160,14 +166,20 @@ const itemListSchema = {
 
     <!-- Blog Grid -->
     <div class="container insights-container">
-      {posts.length > 0 ? (
-        <section class="insights-grid" aria-label="قائمة مقالات المدونة">
-          {posts.map((post) => {
+      {allPosts.length > 0 ? (
+        <section class="insights-grid" id="insights-grid" data-current-page={currentPage} aria-label="قائمة مقالات المدونة">
+          {allPosts.map((post, index) => {
+            const pageIndex = Math.floor(index / pageSize) + 1;
+            const isVisible = pageIndex === currentPage;
             const localTitle = getLocalizedField(post, 'title', lang) ?? post.title;
             const localExcerpt = getLocalizedField(post, 'excerpt', lang) ?? post.excerpt;
             const translatedTag = post.tags && post.tags.length > 0 ? (categoryTranslations[post.tags[0]] || post.tags[0]) : null;
             return (
-              <article class="blog-card glass reveal">
+              <article
+                class="blog-card glass reveal"
+                data-page-index={pageIndex}
+                style={isVisible ? "display: flex;" : "display: none;"}
+              >
                 <div class="card-image-box">
                   <a href={`/ar/insights/${post.slug}`} class="card-image-link" aria-label={`اقرأ ${localTitle}`}>
                     <picture style="display: contents;">
@@ -721,4 +733,39 @@ const itemListSchema = {
       }
     });
   });
+
+  function initInsightsPagination() {
+    const grid = document.getElementById('insights-grid');
+    const paginationNav = document.querySelector('.insights-container .pagination');
+    if (!grid) return;
+
+    const cards = grid.querySelectorAll('.blog-card');
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageFromUrl = parseInt(urlParams.get('page') || '');
+    const currentPage = !isNaN(pageFromUrl) && pageFromUrl > 0
+      ? pageFromUrl
+      : parseInt(grid.getAttribute('data-current-page') || '1');
+
+    cards.forEach((card) => {
+      const pageIndex = parseInt(card.getAttribute('data-page-index') || '1');
+      (card as HTMLElement).style.display = pageIndex === currentPage ? 'flex' : 'none';
+    });
+
+    if (paginationNav) {
+      const pageButtons = paginationNav.querySelectorAll('.page-numbers .page-btn');
+      pageButtons.forEach((btn) => {
+        const pageNum = parseInt(btn.textContent || '1');
+        if (pageNum === currentPage) {
+          btn.classList.add('page-btn--active', 'active');
+          btn.setAttribute('aria-current', 'page');
+        } else {
+          btn.classList.remove('page-btn--active', 'active');
+          btn.removeAttribute('aria-current');
+        }
+      });
+    }
+  }
+
+  initInsightsPagination();
+  document.addEventListener('astro:page-load', initInsightsPagination);
 </script>

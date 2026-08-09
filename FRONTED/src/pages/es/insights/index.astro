@@ -1,6 +1,6 @@
 ---
 // src/pages/es/insights/index.astro — Spanish insights listing
-export const prerender = true;
+export const prerender = false; // Disable prerendering so SSR handles searchParams (category, q, page)
 
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getPostsPaginated, urlFor, getLocalizedField } from '../../../lib/sanity';
@@ -9,17 +9,27 @@ import { useTranslations } from '../../../i18n/utils';
 const lang = 'es';
 const t = useTranslations(lang);
 
-const page = Number(Astro.url.searchParams.get('page') || '1');
+const pageParam = Astro.url.searchParams.get('page');
 const category = Astro.url.searchParams.get('category') || null;
 const searchQuery = Astro.url.searchParams.get('q') || '';
-const { posts, total } = await getPostsPaginated({ category, search: searchQuery, page, pageSize: 9 });
-const totalPages = Math.ceil(total / 9);
+const pageSize = 9;
+
+const { posts: allPosts, total } = await getPostsPaginated({ category, search: searchQuery, page: 1, pageSize: 100 });
+const totalPages = Math.max(1, Math.ceil(total / pageSize));
+const rawPage = parseInt(pageParam ?? '1', 10);
+const currentPage = Math.min(Math.max(1, isNaN(rawPage) ? 1 : rawPage), totalPages);
+const page = currentPage;
 
 // Helper function to build page URLs while preserving category query params
 function getPageHref(pageNum: number) {
   const url = new URL(Astro.url.href);
-  url.searchParams.set('page', pageNum.toString());
-  return url.pathname + url.search;
+  if (pageNum <= 1) {
+    url.searchParams.delete('page');
+  } else {
+    url.searchParams.set('page', pageNum.toString());
+  }
+  const q = url.searchParams.toString();
+  return url.pathname + (q ? '?' + q : '');
 }
 
 const siteUrl = 'https://ginkvora.com';
@@ -111,13 +121,19 @@ const itemListSchema = {
     </header>
 
     <div class="container">
-      {posts.length > 0 ? (
-        <div class="posts-grid">
-          {posts.map((post: any) => {
+      {allPosts.length > 0 ? (
+        <div class="posts-grid" id="insights-grid" data-current-page={currentPage}>
+          {allPosts.map((post: any, index: number) => {
+            const pageIndex = Math.floor(index / pageSize) + 1;
+            const isVisible = pageIndex === currentPage;
             const localTitle   = (getLocalizedField(post, 'title', lang)   ?? post.title)   as string;
             const localExcerpt = (getLocalizedField(post, 'excerpt', lang)  ?? post.excerpt) as string | undefined;
             return (
-              <article class="post-card glass reveal">
+              <article
+                class="post-card glass reveal"
+                data-page-index={pageIndex}
+                style={isVisible ? "display: flex;" : "display: none;"}
+              >
                 <a href={`/es/insights/${post.slug}`} class="card-image-link" aria-label={localTitle}>
                   <picture>
                     <source srcset={urlFor(post.coverImage).width(600).format('webp').url()} type="image/webp" />
@@ -457,4 +473,39 @@ const itemListSchema = {
       }
     });
   });
+
+  function initInsightsPagination() {
+    const grid = document.getElementById('insights-grid');
+    const paginationNav = document.querySelector('.container .pagination');
+    if (!grid) return;
+
+    const cards = grid.querySelectorAll('.post-card');
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageFromUrl = parseInt(urlParams.get('page') || '');
+    const currentPage = !isNaN(pageFromUrl) && pageFromUrl > 0
+      ? pageFromUrl
+      : parseInt(grid.getAttribute('data-current-page') || '1');
+
+    cards.forEach((card) => {
+      const pageIndex = parseInt(card.getAttribute('data-page-index') || '1');
+      (card as HTMLElement).style.display = pageIndex === currentPage ? 'flex' : 'none';
+    });
+
+    if (paginationNav) {
+      const pageButtons = paginationNav.querySelectorAll('.page-numbers .page-btn');
+      pageButtons.forEach((btn) => {
+        const pageNum = parseInt(btn.textContent || '1');
+        if (pageNum === currentPage) {
+          btn.classList.add('page-btn--active', 'active');
+          btn.setAttribute('aria-current', 'page');
+        } else {
+          btn.classList.remove('page-btn--active', 'active');
+          btn.removeAttribute('aria-current');
+        }
+      });
+    }
+  }
+
+  initInsightsPagination();
+  document.addEventListener('astro:page-load', initInsightsPagination);
 </script>
