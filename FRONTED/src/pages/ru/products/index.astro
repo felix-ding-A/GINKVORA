@@ -774,7 +774,6 @@ const breadcrumbsSchema = {
     });
 
     // Handle URL search parameter (e.g. /ru/products?search=NMN)
-    const urlParams = new URLSearchParams(window.location.search);
     const searchParam = urlParams.get('search');
     if (searchParam) {
       updateSearchTerm(searchParam);
