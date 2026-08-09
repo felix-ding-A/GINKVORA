@@ -54,18 +54,13 @@ async function main() {
 
     console.log(`🔍 Found ${normalizedUrls.length} normalized URLs in sitemap. Submitting to IndexNow & Bing API...`);
 
-    // 2. Pre-flight check: ensure the verification key file is publicly reachable
+    // 2. Pre-flight check: ensure key file exists locally in public/ or dist/client/
+    const localKeyPath = path.join(__dirname, `../public/${KEY}.txt`);
+    const distKeyPath = path.join(__dirname, `../dist/client/${KEY}.txt`);
     const keyUrl = `https://${HOST}/${KEY}.txt`;
-    try {
-      const keyCheck = await fetch(keyUrl, { method: 'HEAD', signal: AbortSignal.timeout(8000) });
-      if (!keyCheck.ok) {
-        console.warn(`⚠️ IndexNow key file not reachable at ${keyUrl} (status ${keyCheck.status}).`);
-        console.warn('   Skipping IndexNow submission for this build — key file must be deployed first.');
-        return;
-      }
-    } catch (e) {
-      console.warn(`⚠️ Could not reach key file at ${keyUrl}: ${e.message}`);
-      console.warn('   Skipping IndexNow submission.');
+
+    if (!fs.existsSync(localKeyPath) && !fs.existsSync(distKeyPath)) {
+      console.warn(`⚠️ IndexNow key file not found locally at ${localKeyPath}. Skipping IndexNow submission.`);
       return;
     }
 
