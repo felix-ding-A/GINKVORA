@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const KEY = '75f84d6b9a8c4c1e8f237b60a2b5e0c2';
+const KEY = 'c906fef8759c414e8c55c7393fa38f35';
 const HOST = 'ginkvora.com';
 const SITEMAP_PATH = path.join(__dirname, '../dist/client/sitemap-0.xml');
 
@@ -52,7 +52,7 @@ async function main() {
       })
     ));
 
-    console.log(`🔍 Found ${normalizedUrls.length} normalized URLs in sitemap. Submitting to IndexNow...`);
+    console.log(`🔍 Found ${normalizedUrls.length} normalized URLs in sitemap. Submitting to IndexNow & Bing API...`);
 
     // 2. Pre-flight check: ensure the verification key file is publicly reachable
     const keyUrl = `https://${HOST}/${KEY}.txt`;
@@ -69,7 +69,7 @@ async function main() {
       return;
     }
 
-    // 3. Batch submit in chunks of 50 URLs
+    // 3. Batch submit via IndexNow (chunks of 50)
     const BATCH_SIZE = 50;
     for (let i = 0; i < normalizedUrls.length; i += BATCH_SIZE) {
       const batch = normalizedUrls.slice(i, i + BATCH_SIZE);
@@ -93,13 +93,11 @@ async function main() {
           if (response.ok) {
             console.log(`✅ IndexNow batch (${batch.length} URLs) successfully sent to ${endpoint}! Status: ${response.status}`);
           } else if (response.status === 403) {
-            // 403 means site ownership not verified in Bing Webmaster Tools yet — abort early to avoid log spam
             const errorBody = await response.text();
             let reason = 'Site not verified';
             try { reason = JSON.parse(errorBody)?.message ?? reason; } catch {}
             console.warn(`⚠️ IndexNow skipped: Bing returned 403 — "${reason}"`);
-            console.warn('   ➜ Complete site verification at https://www.bing.com/webmasters and ensure the IndexNow key matches your verified site.');
-            return; // Exit entirely — no point retrying other batches or endpoints
+            return;
           } else {
             const errorText = await response.text();
             console.warn(`⚠️ IndexNow batch sent to ${endpoint} returned status ${response.status}: ${errorText}`);
@@ -109,6 +107,26 @@ async function main() {
         }
       }
     }
+
+    // 4. Direct Bing Webmaster API Batch Submission
+    try {
+      const bingApiUrl = `https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlBatch?apikey=${KEY}`;
+      const bingPayload = {
+        siteUrl: `https://${HOST}/`,
+        urlList: normalizedUrls.slice(0, 100) // Submit top URLs within quota
+      };
+      const bingRes = await fetch(bingApiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        body: JSON.stringify(bingPayload)
+      });
+      if (bingRes.ok) {
+        console.log(`✅ Direct Bing Webmaster API submission successful! Submitting ${bingPayload.urlList.length} URLs.`);
+      }
+    } catch (bingErr) {
+      console.warn(`⚠️ Bing Webmaster Direct API submission note: ${bingErr.message}`);
+    }
+
   } catch (err) {
     console.warn('⚠️ IndexNow submission encountered an error (non-fatal):', err.message);
   }
