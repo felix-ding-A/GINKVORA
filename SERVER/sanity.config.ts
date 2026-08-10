@@ -33,7 +33,8 @@ export default defineConfig({
                       .icon(() => '🌿')
                       .child(
                         S.documentTypeList('product')
-                          .title('All Products')
+                          .title('All Products (Sorted by Weight)')
+                          .defaultOrdering([{ field: 'weight', direction: 'desc' }, { field: '_updatedAt', direction: 'desc' }])
                       ),
                     S.listItem()
                       .title('Products by Category')

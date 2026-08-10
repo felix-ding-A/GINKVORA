@@ -25,6 +25,7 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
       { _type: 'block', style: 'normal', children: [{ _type: 'span', text: 'PQQ stimulates the activation of CREB and PGC-1α, key regulators of mitochondrial biogenesis. This results in the growth of new mitochondria within aging cells, effectively reversing mitochondrial decline.' }] }
     ],
     featured: true,
+    weight: 9999,
     applications: ['Dietary Supplements', 'Sports Nutrition', 'Longevity Formulations'],
     certifications: ['GMP', 'ISO 9001:2015', 'Halal', 'Kosher'],
     specifications: [
@@ -78,6 +79,7 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
       { _type: 'block', style: 'normal', children: [{ _type: 'span', text: 'NMN is the direct precursor to NAD+, the vital coenzyme required for sirtuin activation, DNA repair, and energy metabolism. As we age, cellular NAD+ levels decline drastically, leading to age-associated physiological decline.' }] }
     ],
     featured: true,
+    weight: 9900,
     applications: ['Dietary Supplements', 'Anti-Aging Formulas', 'Nutraceuticals'],
     certifications: ['GMP', 'ISO 9001:2015', 'Vegan', 'Non-GMO'],
     specifications: [
@@ -130,6 +132,7 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
       { _type: 'block', style: 'normal', children: [{ _type: 'span', text: 'Glabridin is a premium cosmetic active renowned as "the gold of whitening". It is extracted from the roots of Glycyrrhiza glabra and provides powerful melanin inhibition, skin lightening, and anti-inflammatory properties.' }] }
     ],
     featured: true,
+    weight: 9000,
     applications: ['Cosmetics & Skincare', 'Creams & Serums', 'Skin Brightening'],
     certifications: ['Organic', 'ISO 9001:2015', 'Vegan'],
     specifications: [

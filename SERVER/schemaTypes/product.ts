@@ -104,6 +104,15 @@ export const productType = defineType({
       initialValue: false,
     }),
     defineField({
+      name: 'weight',
+      title: 'Product Weight / Priority (0 - 9999)',
+      type: 'number',
+      group: 'basic',
+      description: '产品权重分值（0 - 9999），数字越大在前端产品列表页和后台列表中排列越靠前。默认 0。',
+      initialValue: 0,
+      validation: (Rule) => Rule.min(0).max(9999).integer(),
+    }),
+    defineField({
       name: 'shortDescription',
       title: 'Short Description',
       type: 'text',
@@ -570,6 +579,14 @@ export const productType = defineType({
 
   orderings: [
     {
+      title: 'Weight (High -> Low)',
+      name: 'weightDesc',
+      by: [
+        { field: 'weight', direction: 'desc' },
+        { field: '_updatedAt', direction: 'desc' }
+      ]
+    },
+    {
       title: 'Category',
       name: 'categoryAsc',
       by: [
@@ -588,18 +605,21 @@ export const productType = defineType({
   preview: {
     select: {
       title: 'name',
+      weight: 'weight',
       cat0Name: 'category.0.name',
       cat1Name: 'category.1.name',
       subtitle: 'purity',
       media: 'heroImage',
     },
-    prepare({ title, cat0Name, cat1Name, subtitle, media }) {
+    prepare({ title, weight, cat0Name, cat1Name, subtitle, media }) {
+      const wScore = typeof weight === 'number' ? weight : 0;
+      const wBadge = wScore > 0 ? `[W: ${wScore}] ` : '[W: 0] ';
       const subtitleParts = []
       const catNames = [cat0Name, cat1Name].filter(Boolean)
       if (catNames.length > 0) subtitleParts.push(catNames.join(', '))
       if (subtitle) subtitleParts.push(`Purity: ${subtitle}`)
       return {
-        title: title || 'Untitled Product',
+        title: `${wBadge}${title || 'Untitled Product'}`,
         subtitle: subtitleParts.join(' | ') || 'No category or purity set',
         media,
       }

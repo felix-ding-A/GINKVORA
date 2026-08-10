@@ -181,6 +181,7 @@ export const PRODUCT_FIELDS = `
   shortDescription_ar,
   shortDescription_es,
   featured,
+  weight,
   heroImage,
   applications,
   applications_ru,
@@ -233,7 +234,7 @@ export async function getAllProducts(category: string | null = null, mechanism: 
     *[_type == "product"
       && ($category == "" || $category in mainCategories)
       && ($mechanism == "" || $mechanism in antiAgingMechanisms)
-    ] | order(_updatedAt desc) {
+    ] | order(coalesce(weight, 0) desc, _updatedAt desc) {
       ${PRODUCT_FIELDS}
     }
   `;
@@ -249,25 +250,26 @@ export async function getAllProducts(category: string | null = null, mechanism: 
 }
 
 function filterMockProducts(products: any[], category: string | null, mechanism: string | null) {
-  return products.filter(prod => {
+  const filtered = products.filter(prod => {
     const matchCat = !category || (prod.mainCategories && prod.mainCategories.includes(category));
     const matchMech = !mechanism || (prod.antiAgingMechanisms && prod.antiAgingMechanisms.includes(mechanism));
     return matchCat && matchMech;
   });
+  return filtered.sort((a, b) => (b.weight || 0) - (a.weight || 0));
 }
 
 export async function getFeaturedProducts() {
   try {
     const data = await cachedFetch(`
-      *[_type == "product" && featured == true] | order(name asc) [0...6] {
+      *[_type == "product" && (featured == true || coalesce(weight, 0) > 0)] | order(coalesce(weight, 0) desc, _updatedAt desc) [0...6] {
         ${PRODUCT_FIELDS}
       }
     `);
     if (data && data.length > 0) return data;
-    return MOCK_PRODUCTS.filter(p => p.featured);
+    return MOCK_PRODUCTS.filter(p => p.featured || (p.weight && p.weight > 0)).sort((a, b) => (b.weight || 0) - (a.weight || 0));
   } catch (err) {
     console.warn('Sanity API connection failed, using fallback mock data for featured products.');
-    return MOCK_PRODUCTS.filter(p => p.featured);
+    return MOCK_PRODUCTS.filter(p => p.featured || (p.weight && p.weight > 0)).sort((a, b) => (b.weight || 0) - (a.weight || 0));
   }
 }
 
@@ -298,13 +300,13 @@ export async function getProductBySlug(slug: string) {
 export async function getProductsByCategory(categorySlug: string) {
   try {
     const data = await cachedFetch(
-      `*[_type == "product" && category->slug.current == $categorySlug] | order(name asc) {
+      `*[_type == "product" && category->slug.current == $categorySlug] | order(coalesce(weight, 0) desc, _updatedAt desc) {
         ${PRODUCT_FIELDS}
       }`,
       { categorySlug }
     );
     if (data && data.length > 0) return data;
-    return MOCK_PRODUCTS.filter(p => p.category.slug === categorySlug);
+    return MOCK_PRODUCTS.filter(p => p.category.slug === categorySlug).sort((a, b) => (b.weight || 0) - (a.weight || 0));
   } catch (err) {
     console.warn(`Sanity API connection failed, getting fallback products by category: ${categorySlug}`);
     return MOCK_PRODUCTS.filter(p => p.category.slug === categorySlug);
@@ -560,6 +562,7 @@ export type SanityProduct = {
   description_ru?: any;
   description_ar?: any;
   featured?: boolean;
+  weight?: number;
   heroImage?: any;
   applications?: any;
   applications_ru?: any;
