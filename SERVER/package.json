@@ -19,7 +19,7 @@
     "sanity-plugin-markdown": "^8.0.5",
     "sanity-plugin-media": "*",
     "sanity-plugin-mux-input": "*",
-    "styled-components": "^6.1.14"
+    "styled-components": "^6.1.15"
   },
   "devDependencies": {
     "@types/hast": "^3.0.4",
