@@ -1,16 +1,9 @@
 ---
-// src/pages/insights/[slug].astro — Detailed Blog Post View
-export const prerender = true;
+// src/pages/insights/[slug].astro — Detailed Blog Post View (ISR / Edge SSR)
+export const prerender = false;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllPosts, getPostBySlug, urlFor, getLocalizedField } from '../../lib/sanity';
-
-export async function getStaticPaths() {
-  const posts = await getAllPosts(100);
-  return posts.map((post: any) => ({
-    params: { slug: post.slug },
-  }));
-}
 import PortableText from '../../components/PortableText.astro';
 import { useTranslations, getLocalePath } from '../../i18n/utils';
 import type { Lang } from '../../i18n/utils';
@@ -19,6 +12,13 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import TagBadge from '../../components/TagBadge.astro';
 
 const { slug } = Astro.params;
+
+// Set Vercel CDN Cache-Control header: Cache at edge for 1 year, stale-while-revalidate for 1 day
+Astro.response.headers.set(
+  'Cache-Control',
+  'public, max-age=0, s-maxage=31536000, stale-while-revalidate=86400'
+);
+
 const post = await getPostBySlug(slug);
 const posts = await getAllPosts(10);
 
