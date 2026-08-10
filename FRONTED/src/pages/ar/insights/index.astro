@@ -72,8 +72,8 @@ const itemListSchema = {
   "name": "أبحاث وتقارير صناعة GINKVORA",
   "description": "تحديثات البحوث العلمية، واتجاهات السوق، والتحديثات التنظيمية للمكونات النباتية النشطة.",
   "url": `${siteUrl}/insights`,
-  "numberOfItems": posts.length,
-  "itemListElement": posts.map((post, i) => {
+  "numberOfItems": allPosts.length,
+  "itemListElement": allPosts.map((post, i) => {
     const localTitle = getLocalizedField(post, 'title', lang) ?? post.title;
     return {
       "@type": "ListItem",

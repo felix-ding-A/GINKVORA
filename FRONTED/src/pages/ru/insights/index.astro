@@ -61,8 +61,8 @@ const itemListSchema = {
   "name": "Отраслевой блог GINKVORA",
   "description": "Исследования по ингредиентам, нормативные обновления и экспертиза рецептур от научной команды GINKVORA.",
   "url": `${siteUrl}/ru/insights`,
-  "numberOfItems": posts.length,
-  "itemListElement": posts.map((post: any, i: number) => {
+  "numberOfItems": allPosts.length,
+  "itemListElement": allPosts.map((post: any, i: number) => {
     const localTitle = getLocalizedField(post, 'title', lang) ?? post.title;
     return {
       "@type": "ListItem",

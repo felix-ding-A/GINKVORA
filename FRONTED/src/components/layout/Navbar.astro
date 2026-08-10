@@ -269,6 +269,17 @@ const alternatePaths = getAlternatePaths(Astro.url, typedLang);
       <a href={lp('/contact')} class="btn btn--primary" id="mobile-cta-btn" style="width: 100%; justify-content: center; margin-top: 1rem;">
         {t('nav.cta')}
       </a>
+
+      <!-- Mobile Language Switcher -->
+      <div class="mobile-lang-section">
+        <span class="mobile-lang-label">{typedLang === 'ar' ? 'اللغة' : typedLang === 'ru' ? 'Язык' : typedLang === 'es' ? 'Idioma' : 'Language'}</span>
+        <div class="mobile-lang-options">
+          <a href={alternatePaths.en} class:list={['mobile-lang-btn', { 'mobile-lang-btn--active': typedLang === 'en' }]}>🇬🇧 EN</a>
+          <a href={alternatePaths.ru} class:list={['mobile-lang-btn', { 'mobile-lang-btn--active': typedLang === 'ru' }]}>🇷🇺 RU</a>
+          <a href={alternatePaths.es} class:list={['mobile-lang-btn', { 'mobile-lang-btn--active': typedLang === 'es' }]}>🇪🇸 ES</a>
+          <a href={alternatePaths.ar} class:list={['mobile-lang-btn', { 'mobile-lang-btn--active': typedLang === 'ar' }]}>🇸🇦 AR</a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -661,14 +672,56 @@ const alternatePaths = getAlternatePaths(Astro.url, typedLang);
     transition: color var(--transition-fast);
   }
 
-  .mobile-sublink:hover {
+  /* Mobile Language Selector */
+  .mobile-lang-section {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--color-border);
+  }
+
+  .mobile-lang-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .mobile-lang-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+
+  .mobile-lang-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.25rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .mobile-lang-btn--active {
     color: var(--color-primary-light);
+    border-color: var(--color-primary);
+    background: rgba(212, 166, 84, 0.12);
   }
 
   /* Responsive */
   @media (max-width: 900px) {
     .nav-links { display: none; }
     .nav-cta { display: none; }
+    .lang-switcher { display: none; }
     .nav-toggle { display: flex; }
   }
 </style>

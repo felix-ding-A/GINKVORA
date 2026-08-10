@@ -61,8 +61,8 @@ const itemListSchema = {
   "name": "Blog de la Industria GINKVORA",
   "description": "Investigaciones sobre ingredientes, actualizaciones regulatorias y experiencia en formulación de la mano del equipo científico de GINKVORA.",
   "url": `${siteUrl}/es/insights`,
-  "numberOfItems": posts.length,
-  "itemListElement": posts.map((post: any, i: number) => {
+  "numberOfItems": allPosts.length,
+  "itemListElement": allPosts.map((post: any, i: number) => {
     const localTitle = getLocalizedField(post, 'title', lang) ?? post.title;
     return {
       "@type": "ListItem",

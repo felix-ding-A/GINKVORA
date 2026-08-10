@@ -64,8 +64,8 @@ const itemListSchema = {
   "name": "GINKVORA Industry Insights",
   "description": "Scientific research updates, market trends, and regulatory updates on plant active ingredients.",
   "url": `${siteUrl}/insights`,
-  "numberOfItems": posts.length,
-  "itemListElement": posts.map((post, i) => ({
+  "numberOfItems": allPosts.length,
+  "itemListElement": allPosts.map((post, i) => ({
     "@type": "ListItem",
     "position": i + 1,
     "url": `${siteUrl}/insights/${post.slug}`,
