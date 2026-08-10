@@ -5,6 +5,7 @@ import { useClient } from 'sanity'
 interface ProductItem {
   _id: string
   name: string
+  cname?: string
   weight: number
   categoryName?: string
   heroImageUrl?: string
@@ -25,6 +26,7 @@ export function QuickWeightEditor() {
         *[_type == "product"] | order(coalesce(weight, 0) desc, _updatedAt desc) {
           _id,
           name,
+          cname,
           weight,
           "categoryName": category[0]->name,
           "heroImageUrl": heroImage.asset->url
@@ -71,7 +73,8 @@ export function QuickWeightEditor() {
   }
 
   const filteredProducts = products.filter((p) =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (p.cname && p.cname.toLowerCase().includes(searchTerm.toLowerCase()))
   )
 
   const highPriorityCount = products.filter((p) => p.weight > 0).length
@@ -170,6 +173,11 @@ export function QuickWeightEditor() {
                           <Flex align="center" gap={2}>
                             <Text weight="bold" size={2}>
                               {product.name}
+                              {product.cname && (
+                                <Text as="span" weight="regular" size={2} muted style={{ marginLeft: '6px' }}>
+                                  ({product.cname})
+                                </Text>
+                              )}
                             </Text>
                             {product.weight >= 9000 && <Badge tone="critical">爆款明星</Badge>}
                             {product.weight > 0 && product.weight < 9000 && (

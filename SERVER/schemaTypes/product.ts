@@ -605,21 +605,23 @@ export const productType = defineType({
   preview: {
     select: {
       title: 'name',
+      cname: 'cname',
       weight: 'weight',
       cat0Name: 'category.0.name',
       cat1Name: 'category.1.name',
       subtitle: 'purity',
       media: 'heroImage',
     },
-    prepare({ title, weight, cat0Name, cat1Name, subtitle, media }) {
+    prepare({ title, cname, weight, cat0Name, cat1Name, subtitle, media }) {
       const wScore = typeof weight === 'number' ? weight : 0;
       const wBadge = wScore > 0 ? `[W: ${wScore}] ` : '[W: 0] ';
+      const cnSuffix = cname ? ` (${cname})` : '';
       const subtitleParts = []
       const catNames = [cat0Name, cat1Name].filter(Boolean)
       if (catNames.length > 0) subtitleParts.push(catNames.join(', '))
       if (subtitle) subtitleParts.push(`Purity: ${subtitle}`)
       return {
-        title: `${wBadge}${title || 'Untitled Product'}`,
+        title: `${wBadge}${title || 'Untitled Product'}${cnSuffix}`,
         subtitle: subtitleParts.join(' | ') || 'No category or purity set',
         media,
       }
