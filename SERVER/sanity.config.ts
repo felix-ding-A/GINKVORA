@@ -7,6 +7,7 @@ import { media } from 'sanity-plugin-media'
 import { muxInput } from 'sanity-plugin-mux-input'
 import { schemaTypes } from './schemaTypes'
 import { GenerateWithAIAction } from './actions/generateWithAI'
+import { QuickWeightEditor } from './schemaTypes/components/QuickWeightEditor'
 
 export default defineConfig({
   name: 'default',
@@ -15,6 +16,16 @@ export default defineConfig({
   // ✅ GINKVORA Sanity Project
   projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'h5gs7zpr',
   dataset: process.env.SANITY_STUDIO_DATASET || 'production',
+
+  tools: (prev) => [
+    ...prev,
+    {
+      name: 'quick-weight-editor',
+      title: '⚡ 快捷权重修改',
+      icon: () => '⚡',
+      component: QuickWeightEditor,
+    },
+  ],
 
   plugins: [
     structureTool({
@@ -28,6 +39,13 @@ export default defineConfig({
                 S.list()
                   .title('Products')
                   .items([
+                    S.listItem()
+                      .title('⚡ 快捷权重编辑 (Quick Weight Editor)')
+                      .icon(() => '⚡')
+                      .child(
+                        S.component(QuickWeightEditor)
+                          .title('⚡ 快捷权重编辑 (Quick Weight Editor)')
+                      ),
                     S.listItem()
                       .title('All Products')
                       .icon(() => '🌿')
