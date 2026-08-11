@@ -52,7 +52,6 @@ try {
             <div class="article-content-wrapper">
               <div class="article-image-box">
                 <picture style="display: contents;">
-                  <source srcset={urlFor(recommendedPost.coverImage).width(800).format('avif').url()} type="image/avif" />
                   <source srcset={urlFor(recommendedPost.coverImage).width(800).format('webp').url()} type="image/webp" />
                   <img
                     src={urlFor(recommendedPost.coverImage).width(800).url()}

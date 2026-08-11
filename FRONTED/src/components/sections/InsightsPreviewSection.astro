@@ -56,7 +56,6 @@ if (!previewPosts || previewPosts.length === 0) {
           <a href={lp(`/insights/${post.slug}`)} class="card-image-link" aria-label={post.title}>
             <div class="card-image">
               <picture style="display: contents;">
-                <source srcset={urlFor(post.coverImage).width(600).format('avif').url()} type="image/avif" />
                 <source srcset={urlFor(post.coverImage).width(600).format('webp').url()} type="image/webp" />
                 <img
                   src={urlFor(post.coverImage).width(600).url()}

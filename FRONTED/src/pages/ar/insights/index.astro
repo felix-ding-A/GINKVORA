@@ -183,7 +183,6 @@ const itemListSchema = {
                 <div class="card-image-box">
                   <a href={`/ar/insights/${post.slug}`} class="card-image-link" aria-label={`اقرأ ${localTitle}`}>
                     <picture style="display: contents;">
-                      <source srcset={urlFor(post.coverImage).width(800).format('avif').url()} type="image/avif" />
                       <source srcset={urlFor(post.coverImage).width(800).format('webp').url()} type="image/webp" />
                       <img
                         src={urlFor(post.coverImage).width(800).url()}
