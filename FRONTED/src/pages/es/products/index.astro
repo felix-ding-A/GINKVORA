@@ -233,6 +233,7 @@ const breadcrumbsSchema = {
                 <div class="card-image">
                   <a href={`/es/products/${product.slug}`} aria-label={`Más detalles sobre ${product.name}`}>
                     <picture>
+                      <source srcset={urlFor(product.heroImage).width(400).format('avif').url()} type="image/avif" />
                       <source srcset={urlFor(product.heroImage).width(400).format('webp').url()} type="image/webp" />
                       <img
                         src={urlFor(product.heroImage).width(400).url()}

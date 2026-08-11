@@ -198,8 +198,8 @@ const faqSchema = {
   <link
     rel="preload"
     as="image"
-    href={urlFor(product.heroImage).width(1200).format('webp').url()}
-    type="image/webp"
+    href={urlFor(product.heroImage).width(1200).format('avif').url()}
+    type="image/avif"
     slot="head"
   />
 
@@ -221,6 +221,15 @@ const faqSchema = {
         <section class="gallery-section" aria-label="Product Images">
           <div class="main-image-box glass">
             <picture style="display: contents;">
+              <source 
+                srcset={`
+                  ${urlFor(product.heroImage).width(600).format('avif').url()} 600w,
+                  ${urlFor(product.heroImage).width(900).format('avif').url()} 900w,
+                  ${urlFor(product.heroImage).width(1200).format('avif').url()} 1200w
+                `} 
+                sizes="(max-width: 600px) 100vw, (max-width: 900px) 90vw, 1200px"
+                type="image/avif" 
+              />
               <source 
                 srcset={`
                   ${urlFor(product.heroImage).width(600).format('webp').url()} 600w,
