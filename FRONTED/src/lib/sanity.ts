@@ -363,7 +363,7 @@ export const POST_FIELDS = `
 export async function getAllPosts(limit = 10) {
   try {
     const data = await cachedFetch(`
-      *[_type == "post"] | order(publishedAt desc) [0...${limit}] {
+      *[_type == "post" && !(_id in path("drafts.**"))] | order(publishedAt desc) [0...${limit}] {
         ${POST_FIELDS}
       }
     `);
@@ -389,7 +389,7 @@ export async function getPostsPaginated({
   const start = (page - 1) * pageSize;
   const end = page * pageSize;
 
-  const filterConditions = ['_type == "post"'];
+  const filterConditions = ['_type == "post"', '!(_id in path("drafts.**"))'];
   const params: any = { start, end };
 
   if (category) {
@@ -445,7 +445,7 @@ export async function getPostsPaginated({
 export async function getPostBySlug(slug: string) {
   try {
     const data = await cachedFetch(
-      `*[_type == "post" && slug.current == $slug][0] {
+      `*[_type == "post" && !(_id in path("drafts.**")) && slug.current == $slug][0] {
         ${POST_FIELDS},
         body,
         body_ru,

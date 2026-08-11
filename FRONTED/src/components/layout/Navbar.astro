@@ -18,8 +18,40 @@ const lp = (path: string) => getLocalePath(typedLang, path);
 
 // Fetch data dynamically
 const categories = await getAllCategories();
-const allProducts = await getAllProducts();
-const allPosts = await getAllPosts();
+const rawProducts = await getAllProducts();
+const rawPosts = await getAllPosts();
+
+const allProducts = (rawProducts || []).map((p: any) => ({
+  _id: p._id,
+  slug: typeof p.slug === 'object' ? (p.slug?.current || '') : (p.slug || ''),
+  name: p.name || '',
+  name_ru: p.name_ru || '',
+  name_ar: p.name_ar || '',
+  name_es: p.name_es || '',
+  purity: p.purity || '',
+  casNumber: p.casNumber || '',
+  botanicalName: p.botanicalName || '',
+  shortDescription: p.shortDescription ? p.shortDescription.slice(0, 120) : '',
+  shortDescription_ru: p.shortDescription_ru ? p.shortDescription_ru.slice(0, 120) : '',
+  shortDescription_ar: p.shortDescription_ar ? p.shortDescription_ar.slice(0, 120) : '',
+  shortDescription_es: p.shortDescription_es ? p.shortDescription_es.slice(0, 120) : '',
+  heroImage: p.heroImage || null
+}));
+
+const allPosts = (rawPosts || []).map((p: any) => ({
+  _id: p._id,
+  slug: typeof p.slug === 'object' ? (p.slug?.current || '') : (p.slug || ''),
+  title: p.title || '',
+  title_ru: p.title_ru || '',
+  title_ar: p.title_ar || '',
+  title_es: p.title_es || '',
+  excerpt: p.excerpt ? p.excerpt.slice(0, 120) : '',
+  excerpt_ru: p.excerpt_ru ? p.excerpt_ru.slice(0, 120) : '',
+  excerpt_ar: p.excerpt_ar ? p.excerpt_ar.slice(0, 120) : '',
+  excerpt_es: p.excerpt_es ? p.excerpt_es.slice(0, 120) : '',
+  tags: p.tags || [],
+  mainImage: p.mainImage || p.coverImage || null
+}));
 
 const categoryTranslations: Record<string, string> = {
   'superfood': 'footer.link_supplements',
