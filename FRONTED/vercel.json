@@ -116,6 +116,11 @@
     { "source": "/es/insights/licorice-extract-vs-purified-glabridin", "destination": "/es/insights/licorice-extract-vs-glabridin", "permanent": true },
     { "source": "/ar/insights/licorice-extract-vs-purified-glabridin", "destination": "/ar/insights/licorice-extract-vs-glabridin", "permanent": true },
 
+    { "source": "/insights/glabridin-timeline", "destination": "/insights/licorice-extract-vs-glabridin", "permanent": true },
+    { "source": "/ru/insights/glabridin-timeline", "destination": "/ru/insights/licorice-extract-vs-glabridin", "permanent": true },
+    { "source": "/es/insights/glabridin-timeline", "destination": "/es/insights/licorice-extract-vs-glabridin", "permanent": true },
+    { "source": "/ar/insights/glabridin-timeline", "destination": "/ar/insights/licorice-extract-vs-glabridin", "permanent": true },
+
     { "source": "/insights/author/:path*", "destination": "/insights", "permanent": true },
     { "source": "/ru/insights/author/:path*", "destination": "/ru/insights", "permanent": true },
     { "source": "/es/insights/author/:path*", "destination": "/es/insights", "permanent": true },

@@ -45,9 +45,18 @@ const fullTitle = title.includes('GINKVORA') ? title : `${title} | GINKVORA`;
 const canonical = canonicalUrl || new URL(Astro.url.pathname, siteUrl).toString();
 const basePath = stripLangPrefix(Astro.url.pathname);
 
-// Auto-detect query parameters and force noindex if URL has search parameters
-const hasQueryParams = Boolean(Astro.url.search && Astro.url.search.trim().length > 0);
-const shouldNoindex = noindex || hasQueryParams;
+// Auto-detect tracking/search parameters and force noindex only for tracking/search query strings
+const rawSearch = Astro.url.search ? Astro.url.search.trim() : '';
+const isTrackingOrSearch = Boolean(
+  rawSearch && (
+    rawSearch.includes('utm_') ||
+    rawSearch.includes('gclid=') ||
+    rawSearch.includes('fbclid=') ||
+    rawSearch.includes('ref=') ||
+    rawSearch.includes('search=')
+  )
+);
+const shouldNoindex = noindex || isTrackingOrSearch;
 
 
 // Use dynamic OG image generator if no explicit image is provided

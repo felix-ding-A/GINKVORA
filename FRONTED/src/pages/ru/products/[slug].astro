@@ -1222,6 +1222,29 @@ const breadcrumbSchema = {
 </style>
 
 <script>
+  const siteKey = '6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid';
+  let recaptchaPromise: Promise<any> | null = null;
+  const loadRecaptcha = (): Promise<any> => {
+    if (recaptchaPromise) return recaptchaPromise;
+    recaptchaPromise = new Promise((resolve) => {
+      if ((window as any).grecaptcha && (window as any).grecaptcha.execute) {
+        resolve((window as any).grecaptcha);
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+      script.async = true;
+      script.onload = () => {
+        if ((window as any).grecaptcha) {
+          (window as any).grecaptcha.ready(() => resolve((window as any).grecaptcha));
+        } else resolve(null);
+      };
+      script.onerror = () => resolve(null);
+      document.head.appendChild(script);
+    });
+    return recaptchaPromise;
+  };
+
   function initTabs() {
     const descSection = document.querySelector('.description-section');
     document.querySelectorAll('.detail-tab').forEach(tab => {
@@ -1301,6 +1324,8 @@ const breadcrumbSchema = {
     });
 
     if (form) {
+      form.addEventListener('focusin', () => loadRecaptcha(), { once: true });
+
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -1380,21 +1405,19 @@ const breadcrumbSchema = {
           }
         };
 
-        // @ts-ignore
-        if (typeof grecaptcha !== 'undefined') {
-          // @ts-ignore
-          grecaptcha.ready(() => {
-            // @ts-ignore
-            grecaptcha.execute('6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid', { action: 'submit_coa' })
-              .then((token) => {
-                submitCoa(token);
-              })
-              .catch((err) => {
+        try {
+          const grecaptcha = await loadRecaptcha();
+          if (grecaptcha) {
+            grecaptcha.execute(siteKey, { action: 'submit_coa' })
+              .then((token: string) => submitCoa(token))
+              .catch((err: any) => {
                 console.error('reCAPTCHA execution failed:', err);
                 submitCoa();
               });
-          });
-        } else {
+          } else {
+            submitCoa();
+          }
+        } catch (e) {
           submitCoa();
         }
       });

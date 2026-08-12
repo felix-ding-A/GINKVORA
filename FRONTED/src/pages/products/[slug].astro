@@ -1593,13 +1593,29 @@ const faqSchema = {
           if (rect.top < navbarOffset) {
             const targetY = window.scrollY + rect.top - navbarOffset;
             window.scrollTo({
-              top: Math.max(0, targetY),
-              behavior: 'smooth'
-            });
-          }
+              top: Math.max(    // Shared reCAPTCHA Loader
+    const siteKey = '6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid';
+    let recaptchaPromise: Promise<any> | null = null;
+    const loadRecaptcha = (): Promise<any> => {
+      if (recaptchaPromise) return recaptchaPromise;
+      recaptchaPromise = new Promise((resolve) => {
+        if ((window as any).grecaptcha && (window as any).grecaptcha.execute) {
+          resolve((window as any).grecaptcha);
+          return;
         }
+        const script = document.createElement('script');
+        script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+        script.async = true;
+        script.onload = () => {
+          if ((window as any).grecaptcha) {
+            (window as any).grecaptcha.ready(() => resolve((window as any).grecaptcha));
+          } else resolve(null);
+        };
+        script.onerror = () => resolve(null);
+        document.head.appendChild(script);
       });
-    });
+      return recaptchaPromise;
+    };
 
     // Inquiry submission handler
     const rfqForm = document.getElementById('product-rfq-form') as HTMLFormElement;
@@ -1607,6 +1623,8 @@ const faqSchema = {
     const submitBtn = document.getElementById('rfq-submit-btn') as HTMLButtonElement;
 
     if (rfqForm) {
+      rfqForm.addEventListener('focusin', () => loadRecaptcha(), { once: true });
+
       rfqForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -1667,189 +1685,176 @@ const faqSchema = {
           }
         };
 
-        const siteKey = '6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid';
-        const loadRecaptcha = () => new Promise<any>((resolve) => {
-          if ((window as any).grecaptcha) {
-            (window as any).grecaptcha.ready(() => resolve((window as any).grecaptcha));
-            return;
-          }
-          const script = document.createElement('script');
-          script.src = `https://www.recaptcha.net/recaptcha/api.js?render=${siteKey}`;
-          script.async = true;
-          script.onload = () => {
-            if ((window as any).grecaptcha) {
-              (window as any).grecaptcha.ready(() => resolve((window as any).grecaptcha));
-            } else resolve(null);
-          };
-          script.onerror = () => resolve(null);
-          document.head.appendChild(script);
-        });
-
-        loadRecaptcha().then((grecaptcha) => {
+        try {
+          const grecaptcha = await loadRecaptcha();
           if (grecaptcha) {
             grecaptcha.execute(siteKey, { action: 'submit_rfq' })
               .then((token: string) => submitRfq(token))
-              .catch(() => submitRfq());
+              .catch((err: any) => {
+                console.error('reCAPTCHA execution failed:', err);
+                submitRfq();
+              });
           } else {
             submitRfq();
           }
-        });
+        } catch (e) {
+          submitRfq();
+        }
       });
     }
-  }
 
-  function initCOAModal() {
-    const coaBtn = document.getElementById('download-coa-btn');
-    const modal = document.getElementById('coa-modal');
-    const closeBtn = document.getElementById('coa-modal-close');
-    const form = document.getElementById('coa-lead-form') as HTMLFormElement;
-    const formState = document.getElementById('coa-form-state');
-    const successState = document.getElementById('coa-success-state');
-    const fallbackLink = document.getElementById('coa-fallback-link') as HTMLAnchorElement;
-    const successClose = document.getElementById('coa-success-close');
-    const submitBtn = document.getElementById('coa-submit-btn') as HTMLButtonElement;
+    function initCOAModal() {
+      const coaBtn = document.getElementById('download-coa-btn');
+      const modal = document.getElementById('coa-modal');
+      const closeBtn = document.getElementById('coa-modal-close');
+      const form = document.getElementById('coa-lead-form') as HTMLFormElement;
+      const formState = document.getElementById('coa-form-state');
+      const successState = document.getElementById('coa-success-state');
+      const fallbackLink = document.getElementById('coa-fallback-link') as HTMLAnchorElement;
+      const successClose = document.getElementById('coa-success-close');
+      const submitBtn = document.getElementById('coa-submit-btn') as HTMLButtonElement;
 
-    if (!coaBtn || !modal) return;
+      if (!coaBtn || !modal) return;
 
-    const productName = coaBtn.getAttribute('data-product-name') || '';
-    const coaUrl = coaBtn.getAttribute('data-coa-url') || '';
+      const productName = coaBtn.getAttribute('data-product-name') || '';
+      const coaUrl = coaBtn.getAttribute('data-coa-url') || '';
 
-    coaBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      
-      // Reset form and states
-      if (form) form.reset();
-      if (formState) formState.style.display = 'block';
-      if (successState) successState.style.display = 'none';
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Submit & Instant Download';
-      }
-      
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
-    });
-
-    const closeModal = () => {
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden', 'true');
-    };
-
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    if (successClose) successClose.addEventListener('click', closeModal);
-
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeModal();
-      }
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('open')) {
-        closeModal();
-      }
-    });
-
-    if (form) {
-      form.addEventListener('submit', async (e) => {
+      coaBtn.addEventListener('click', (e) => {
         e.preventDefault();
-
+        
+        // Reset form and states
+        if (form) form.reset();
+        if (formState) formState.style.display = 'block';
+        if (successState) successState.style.display = 'none';
         if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.textContent = 'Processing...';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit & Instant Download';
         }
+        
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+      });
 
-        const formData = new FormData(form);
+      const closeModal = () => {
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+      };
 
-        // Honeypot check
-        if (formData.get('b_website')) {
-          console.warn('Bot detected.');
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (successClose) successClose.addEventListener('click', closeModal);
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
           closeModal();
-          return;
         }
+      });
 
-        const applications: string[] = [];
-        form.querySelectorAll('input[name="application"]:checked').forEach((el) => {
-          applications.push((el as HTMLInputElement).value);
-        });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) {
+          closeModal();
+        }
+      });
 
-        const submitCoa = async (token?: string) => {
-          const data = {
-            name: formData.get('name'),
-            company: formData.get('company') || 'None',
-            email: formData.get('email'),
-            phone: formData.get('phone'),
-            role: formData.get('role'),
-            demand: formData.get('demand'),
-            application: applications,
-            productName,
-            coaUrl,
-            b_website: formData.get('b_website'),
-            recaptchaToken: token || null,
-          };
+      if (form) {
+        form.addEventListener('focusin', () => loadRecaptcha(), { once: true });
 
-          try {
-            const res = await fetch('/api/coa-lead', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(data),
-            });
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
 
-            if (res.ok) {
-              if (formState) formState.style.display = 'none';
-              if (successState) successState.style.display = 'block';
-              
-              if (fallbackLink) {
-                fallbackLink.href = coaUrl;
-              }
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+          }
 
-              // Push custom event to dataLayer for GTM tracking
-              window.dataLayer = window.dataLayer || [];
-              window.dataLayer.push({
-                event: 'coa_lead_submit',
-                productName: productName,
-                coaUrl: coaUrl
+          const formData = new FormData(form);
+
+          // Honeypot check
+          if (formData.get('b_website')) {
+            console.warn('Bot detected.');
+            closeModal();
+            return;
+          }
+
+          const applications: string[] = [];
+          form.querySelectorAll('input[name="application"]:checked').forEach((el) => {
+            applications.push((el as HTMLInputElement).value);
+          });
+
+          const submitCoa = async (token?: string) => {
+            const data = {
+              name: formData.get('name'),
+              company: formData.get('company') || 'None',
+              email: formData.get('email'),
+              phone: formData.get('phone'),
+              role: formData.get('role'),
+              demand: formData.get('demand'),
+              application: applications,
+              productName,
+              coaUrl,
+              b_website: formData.get('b_website'),
+              recaptchaToken: token || null,
+            };
+
+            try {
+              const res = await fetch('/api/coa-lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
               });
 
-              // Trigger the download in a new window
-              window.open(coaUrl, '_blank');
-            } else {
-              const errData = await res.json();
-              alert(errData.error || 'Failed to submit form. Please try again.');
+              if (res.ok) {
+                if (formState) formState.style.display = 'none';
+                if (successState) successState.style.display = 'block';
+                
+                if (fallbackLink) {
+                  fallbackLink.href = coaUrl;
+                }
+
+                // Push custom event to dataLayer for GTM tracking
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                  event: 'coa_lead_submit',
+                  productName: productName,
+                  coaUrl: coaUrl
+                });
+
+                // Trigger the download in a new window
+                window.open(coaUrl, '_blank');
+              } else {
+                const errData = await res.json();
+                alert(errData.error || 'Failed to submit form. Please try again.');
+                if (submitBtn) {
+                  submitBtn.disabled = false;
+                  submitBtn.textContent = 'Submit & Instant Download';
+                }
+              }
+            } catch (err) {
+              alert('Network error. Please check your connection and try again.');
               if (submitBtn) {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Submit & Instant Download';
               }
             }
-          } catch (err) {
-            alert('Network error. Please check your connection and try again.');
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.textContent = 'Submit & Instant Download';
-            }
-          }
-        };
+          };
 
-        // @ts-ignore
-        if (typeof grecaptcha !== 'undefined') {
-          // @ts-ignore
-          grecaptcha.ready(() => {
-            // @ts-ignore
-            grecaptcha.execute('6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid', { action: 'submit_coa' })
-              .then((token) => {
-                submitCoa(token);
-              })
-              .catch((err) => {
-                console.error('reCAPTCHA execution failed:', err);
-                submitCoa();
-              });
-          });
-        } else {
-          submitCoa();
-        }
-      });
+          try {
+            const grecaptcha = await loadRecaptcha();
+            if (grecaptcha) {
+              grecaptcha.execute(siteKey, { action: 'submit_coa' })
+                .then((token: string) => submitCoa(token))
+                .catch((err: any) => {
+                  console.error('reCAPTCHA execution failed:', err);
+                  submitCoa();
+                });
+            } else {
+              submitCoa();
+            }
+          } catch (e) {
+            submitCoa();
+          }
+        });
+      }
     }
-  }
 
   function initSocialShare() {
     const shareFacebook = document.getElementById('share-facebook');
