@@ -21,10 +21,6 @@ const fetchCache = new Map<string, Promise<any>>();
 let isSanityOffline = false;
 
 export async function cachedFetch(query: string, params: Record<string, any> = {}) {
-  if (isSanityOffline) {
-    throw new Error('Sanity API offline (circuit breaker active)');
-  }
-
   const key = `${query}::${JSON.stringify(params)}`;
   if (fetchCache.has(key)) {
     return fetchCache.get(key);
@@ -40,10 +36,7 @@ export async function cachedFetch(query: string, params: Record<string, any> = {
       return result;
     } catch (err: any) {
       clearTimeout(timer);
-      if (!isSanityOffline) {
-        console.warn('⚠️ [Sanity API] Connection timed out or failed. Activating instant mock data fallback for remaining routes.');
-        isSanityOffline = true;
-      }
+      console.warn(`⚠️ [Sanity API] Query failed or timed out (${err?.message || err}). Falling back to local data.`);
       fetchCache.delete(key);
       throw err;
     }
@@ -80,9 +73,11 @@ function removeUrlParam(urlStr: string, param: string): string {
 }
 
 export function urlFor(source: any) {
-  // If source is already a direct URL string (used in mock data), return it directly
+  // If source is already a direct URL string (used in mock data or direct fetched URLs), return it directly
   if (typeof source === 'string' && source.startsWith('http')) {
-    let currentUrl = source;
+    let currentUrl = source.includes('cdn.sanity.io') 
+      ? source.replace('https://cdn.sanity.io', '/media/images') 
+      : source;
     const mockBuilder = {
       url: () => currentUrl,
       width: (w: number) => {
@@ -569,6 +564,7 @@ export type SanityProduct = {
   name: string;
   name_ru?: string;
   name_ar?: string;
+  name_es?: string;
   slug: string;
   category: { name: string; slug: string };
   categories?: { name: string; slug: string }[];
@@ -579,15 +575,18 @@ export type SanityProduct = {
   shortDescription?: string;
   shortDescription_ru?: string;
   shortDescription_ar?: string;
+  shortDescription_es?: string;
   description?: any;
   description_ru?: any;
   description_ar?: any;
+  description_es?: any;
   featured?: boolean;
   weight?: number;
   heroImage?: any;
   applications?: any;
   applications_ru?: any;
   applications_ar?: any;
+  applications_es?: any;
   certifications?: string[];
   updatedAt?: string;
   application?: string[];
@@ -595,12 +594,15 @@ export type SanityProduct = {
   complianceNote?: string;
   complianceNote_ru?: string;
   complianceNote_ar?: string;
+  complianceNote_es?: string;
   meta_title?: string;
   meta_description?: string;
   meta_title_ru?: string;
   meta_description_ru?: string;
   meta_title_ar?: string;
   meta_description_ar?: string;
+  meta_title_es?: string;
+  meta_description_es?: string;
   mainCategories?: string[];
   antiAgingMechanisms?: string[];
   applicationDisplay?: 'topical' | 'oral' | 'dual';
