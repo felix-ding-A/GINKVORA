@@ -1586,17 +1586,25 @@ const faqSchema = {
           targetContent.style.display = 'block';
         }
 
-        // Auto-scroll to top of tab section if user is scrolled down into tab content
         if (descSection) {
           const rect = descSection.getBoundingClientRect();
           const navbarOffset = 70;
           if (rect.top < navbarOffset) {
             const targetY = window.scrollY + rect.top - navbarOffset;
             window.scrollTo({
-              top: Math.max(    // Shared reCAPTCHA Loader
-    const siteKey = '6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid';
-    let recaptchaPromise: Promise<any> | null = null;
-    const loadRecaptcha = (): Promise<any> => {
+              top: Math.max(0, targetY),
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
+    });
+  }
+
+  // Shared reCAPTCHA Loader
+  const siteKey = '6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid';
+  let recaptchaPromise: Promise<any> | null = null;
+  const loadRecaptcha = (): Promise<any> => {
       if (recaptchaPromise) return recaptchaPromise;
       recaptchaPromise = new Promise((resolve) => {
         if ((window as any).grecaptcha && (window as any).grecaptcha.execute) {
