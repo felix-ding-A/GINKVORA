@@ -169,7 +169,10 @@ const itemListSchema = {
                     <img
                       src={urlFor(post.coverImage).width(800).url()}
                       alt={post.title}
+                      width="800"
+                      height="450"
                       loading="lazy"
+                      decoding="async"
                       class="card-img"
                     />
                   </picture>

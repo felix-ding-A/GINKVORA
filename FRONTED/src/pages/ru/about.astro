@@ -195,7 +195,10 @@ const aboutSchema = {
                 src={urlFor(author.avatar).width(160).height(160).fit('crop').url()}
                 alt={author.name}
                 class="author-avatar"
+                width="160"
+                height="160"
                 loading="lazy"
+                decoding="async"
               />
             </div>
             <div class="author-info">

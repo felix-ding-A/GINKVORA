@@ -137,7 +137,7 @@ const itemListSchema = {
                 <a href={`/es/insights/${post.slug}`} class="card-image-link" aria-label={localTitle}>
                   <picture>
                     <source srcset={urlFor(post.coverImage).width(600).format('webp').url()} type="image/webp" />
-                    <img src={urlFor(post.coverImage).width(600).url()} alt={localTitle} loading="lazy" class="card-cover" />
+                    <img src={urlFor(post.coverImage).width(600).url()} alt={localTitle} width="600" height="338" loading="lazy" decoding="async" class="card-cover" />
                   </picture>
                 </a>
                 <div class="card-body">

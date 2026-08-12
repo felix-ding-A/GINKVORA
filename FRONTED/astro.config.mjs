@@ -20,17 +20,6 @@ export default defineConfig({
 
   integrations: [
     vue(),
-    sitemap({
-      i18n: {
-        defaultLocale: 'en',
-        locales: {
-          en: 'en-US',
-          ru: 'ru-RU',
-          ar: 'ar-SA',
-          es: 'es-ES',
-        },
-      },
-    }),
     mdx(),
   ],
 
