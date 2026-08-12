@@ -339,6 +339,42 @@ export const MOCK_POSTS: SanityPost[] = [
     },
     meta_title: 'What Is NMN? The Mechanism, Honestly',
     meta_description: "NMN is a direct NAD+ precursor. A raw-material scientist explains how it's absorbed, what human trials prove, and how to choose raw material."
+  },
+  {
+    _id: 'quercetin-senolytic-anti-aging-id',
+    title: 'Quercetin as a Senolytic: How It Clears Zombie Cells to Slow Biological Aging',
+    slug: 'quercetin-senolytic-anti-aging',
+    excerpt: 'Quercetin selectively targets senescent cells, downregulating anti-apoptotic pathways (BCL-2, PI3K/AKT) and mitigating the harmful SASP secretory profile.',
+    coverImage: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&auto=format&fit=crop&q=80' as any,
+    featured: true,
+    publishedAt: '2026-06-15T01:00:00.000Z',
+    updatedAt: '2026-06-15T01:00:00.000Z',
+    tags: ['Ingredient Spotlight', 'Research', 'Longevity', 'Senolytics'],
+    readTime: 10,
+    author: {
+      name: 'Clara Wang',
+      credentials: 'M.S.'
+    },
+    meta_title: 'Quercetin Senolytic Mechanism & Cellular Rejuvenation',
+    meta_description: 'Discover how Quercetin acts as a natural senolytic compound to eliminate senescent zombie cells and mitigate SASP inflammation.'
+  },
+  {
+    _id: 'quercetin-safety-dosage-id',
+    title: 'Quercetin Safety Profile: Dosage, Drug Interactions, and Who Should Avoid It',
+    slug: 'quercetin-safety-dosage',
+    excerpt: 'Comprehensive safety assessment for B2B formulators: dosage guidelines, CYP3A4 drug interactions, renal considerations, and GRAS status.',
+    coverImage: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?w=600&auto=format&fit=crop&q=80' as any,
+    featured: false,
+    publishedAt: '2026-06-20T01:00:00.000Z',
+    updatedAt: '2026-06-20T01:00:00.000Z',
+    tags: ['Safety & Regulatory', 'Formulation Tips', 'Dosage'],
+    readTime: 9,
+    author: {
+      name: 'Clara Wang',
+      credentials: 'M.S.'
+    },
+    meta_title: 'Quercetin Safety Profile & Dosage Guidelines',
+    meta_description: 'Evidence-based safety guide for Quercetin supplementation: recommended daily dosage, drug-interaction risks, and regulatory compliance.'
   }
 ];
 
