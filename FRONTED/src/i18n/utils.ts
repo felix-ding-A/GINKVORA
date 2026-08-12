@@ -95,11 +95,10 @@ export function getAlternatePaths(currentUrl: URL, currentLang: Lang): Record<La
  *      → product.shortDescription_ru ?? product.shortDescription
  */
 export function getLocalizedField<T>(
-  doc: Record<string, any> | undefined | null,
+  doc: Record<string, any>,
   field: string,
   lang: Lang
 ): T | undefined {
-  if (!doc) return undefined;
   if (lang !== defaultLang) {
     const localizedKey = `${field}_${lang}`;
     if (doc[localizedKey] !== undefined && doc[localizedKey] !== null && doc[localizedKey] !== '') {

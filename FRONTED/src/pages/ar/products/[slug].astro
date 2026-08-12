@@ -31,9 +31,6 @@ const categorySlug = Array.isArray(product.category)
 const categoryRef = Array.isArray(product.category)
   ? product.category[0]?._ref
   : (product.category?._ref || product.categories?.[0]?._ref);
-const categoryName = Array.isArray(product.category)
-  ? product.category[0]?.name
-  : (product.category?.name || product.categories?.[0]?.name || 'Botanical Extract');
 
 const relatedProducts = await getRelatedProductsForProduct(product._id, categorySlug, categoryRef);
 const relatedPosts = await getRelatedPostsForProduct(product._id, categorySlug, categoryRef);
@@ -57,7 +54,7 @@ const productSchema = {
   "@type": "Product",
   "name": product.name,
   "description": localSeoDesc || localShortDesc,
-  "category": categoryName,
+  "category": product.category.name,
   "image": urlFor(product.heroImage).url(),
   "sku": product.casNumber || product._id || slug,
   "mpn": product.casNumber || product._id || slug,
@@ -265,7 +262,7 @@ const faqSchema = {
               ? product.categories.map(cat => (
                   <span class="badge badge--gold">{cat.name}</span>
                 ))
-              : <span class="badge badge--gold">{categoryName}</span>
+              : <span class="badge badge--gold">{product.category?.name}</span>
             }
             {product.applicationDisplay && (
               <span class={`card-app-badge app--${product.applicationDisplay}`}>

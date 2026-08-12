@@ -11,11 +11,7 @@ export default defineConfig({
   site: 'https://ginkvora.com',
   trailingSlash: 'never',
   output: 'server',
-  adapter: vercel({
-    isr: {
-      expiration: 86400,
-    },
-  }),
+  adapter: vercel(),
 
   build: {
     inlineStylesheets: 'always',

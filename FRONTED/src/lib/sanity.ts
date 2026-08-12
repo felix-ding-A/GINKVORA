@@ -17,34 +17,17 @@ export const sanityClient = createClient({
 // ---------------------------------------------------------------------------
 // In-Memory Query Cache for Astro Static Prerendering Optimization
 // ---------------------------------------------------------------------------
-const isSanityConfigured = Boolean(
-  import.meta.env.SANITY_PROJECT_ID &&
-  import.meta.env.SANITY_PROJECT_ID !== 'placeholder' &&
-  import.meta.env.SANITY_PROJECT_ID.trim() !== ''
-);
-
 const fetchCache = new Map<string, Promise<any>>();
-const DEFAULT_TIMEOUT_MS = 6000;
 
-export async function cachedFetch(query: string, params: Record<string, any> = {}, timeoutMs = DEFAULT_TIMEOUT_MS) {
-  if (!isSanityConfigured) {
-    throw new Error('Sanity project ID is placeholder or unconfigured');
-  }
-
+export async function cachedFetch(query: string, params: Record<string, any> = {}) {
   const key = `${query}::${JSON.stringify(params)}`;
   if (fetchCache.has(key)) {
     return fetchCache.get(key);
   }
-
-  const timeoutPromise = new Promise((_, reject) => {
-    setTimeout(() => reject(new Error(`Sanity fetch timeout (${timeoutMs}ms)`)), timeoutMs);
-  });
-
-  const promise = Promise.race([sanityClient.fetch(query, params), timeoutPromise]).catch((err) => {
+  const promise = sanityClient.fetch(query, params).catch((err) => {
     fetchCache.delete(key);
     throw err;
   });
-
   fetchCache.set(key, promise);
   return promise;
 }
@@ -323,10 +306,10 @@ export async function getProductsByCategory(categorySlug: string) {
       { categorySlug }
     );
     if (data && data.length > 0) return data;
-    return MOCK_PRODUCTS.filter(p => (Array.isArray(p.category) ? p.category[0]?.slug === categorySlug : p.category?.slug === categorySlug)).sort((a, b) => (b.weight || 0) - (a.weight || 0));
+    return MOCK_PRODUCTS.filter(p => p.category.slug === categorySlug).sort((a, b) => (b.weight || 0) - (a.weight || 0));
   } catch (err) {
     console.warn(`Sanity API connection failed, getting fallback products by category: ${categorySlug}`);
-    return MOCK_PRODUCTS.filter(p => (Array.isArray(p.category) ? p.category[0]?.slug === categorySlug : p.category?.slug === categorySlug));
+    return MOCK_PRODUCTS.filter(p => p.category.slug === categorySlug);
   }
 }
 
@@ -504,7 +487,7 @@ export async function getPostBySlug(slug: string) {
 // Site settings
 export async function getSiteSettings() {
   try {
-    const data = await cachedFetch(`
+    const data = await sanityClient.fetch(`
       *[_type == "siteSettings"][0] {
         siteName, tagline, contactEmail, phone, address, socialLinks,
         certifications[]{name, logo, href},
