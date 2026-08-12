@@ -89,6 +89,16 @@ const organizationSchema = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+    <!-- Performance: Critical Font & Hero Preloads (Placed at top of head for zero LCP delay) -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond-normal-700.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/dm-sans-normal-400.woff2" crossorigin />
+    {preloadHeroImage && (
+      <>
+        <link rel="preload" as="image" href="/images/hero-bg-mobile.webp" media="(max-width: 768px)" type="image/webp" fetchpriority="high" />
+        <link rel="preload" as="image" href="/images/hero-bg.webp" media="(min-width: 769px)" type="image/webp" fetchpriority="high" />
+      </>
+    )}
+
     <!-- Google Consent Mode v2 Default Settings -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
@@ -113,8 +123,6 @@ const organizationSchema = {
       }
     </script>
 
-
-
     <!-- Primary Meta -->
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
@@ -131,11 +139,28 @@ const organizationSchema = {
       ╚══════════════════════════════════════════════════════════╝
     -->
     <style is:inline>
+      /* Critical: Fallback Font Metrics to eliminate CLS layout shift on font swap */
+      @font-face {
+        font-family: 'Cormorant Fallback';
+        src: local('Georgia'), local('Times New Roman'), local('serif');
+        size-adjust: 108%;
+        ascent-override: 90%;
+        descent-override: 20%;
+        line-gap-override: 0%;
+      }
+      @font-face {
+        font-family: 'DM Sans Fallback';
+        src: local('Helvetica Neue'), local('Arial'), local('sans-serif');
+        size-adjust: 98%;
+        ascent-override: 95%;
+        descent-override: 22%;
+        line-gap-override: 0%;
+      }
       /* Critical: body background + text color (prevents white flash) */
-      body{margin:0;background-color:#060503;color:#f5efe0;font-family:'DM Sans','Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased}
+      body{margin:0;background-color:#060503;color:#f5efe0;font-family:'DM Sans','DM Sans Fallback','Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased}
       /* Critical: H1 sizing and font for LCP element */
-      h1,h2,h3{font-family:'Cormorant Garamond','Georgia',serif;font-weight:600;line-height:1.15;color:#f5efe0}
-      h1{font-size:clamp(2.5rem,6vw,5rem);font-weight:700}
+      h1,h2,h3{font-family:'Cormorant Garamond','Cormorant Fallback','Georgia',serif;font-weight:600;line-height:1.15;color:#f5efe0}
+      h1{font-size:clamp(2.5rem,6vw,5rem);font-weight:700;min-height:1.15em}
       /* Critical: container + hero layout for first paint */
       .container{width:100%;max-width:1440px;margin-inline:auto;padding-inline:clamp(1rem,4vw,3rem)}
       /* Critical: gradient text for hero title gold highlight */
@@ -202,20 +227,7 @@ const organizationSchema = {
     <meta name="author" content="GINKVORA" />
     <meta name="copyright" content="GINKVORA" />
 
-    <!--
-      Performance: Font Preloads
-      Preload primary body and heading font weights to eliminate FOIT while keeping network sockets free for Hero image.
-    -->
-    <link rel="preload" as="font" type="font/woff2" href="/fonts/dm-sans-normal-400.woff2" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond-normal-700.woff2" crossorigin />
 
-    <!-- Performance: Preload Critical Hero Background Image (Responsive Mobile & Desktop) -->
-    {preloadHeroImage && (
-      <>
-        <link rel="preload" as="image" href="/images/hero-bg-mobile.webp" media="(max-width: 768px)" type="image/webp" fetchpriority="high" />
-        <link rel="preload" as="image" href="/images/hero-bg.webp" media="(min-width: 769px)" type="image/webp" fetchpriority="high" />
-      </>
-    )}
 
     <!-- Performance: Third-party DNS Prefetch & Preconnect -->
     <link rel="preconnect" href="https://chat.ginkvora.com" crossorigin />

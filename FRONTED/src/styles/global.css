@@ -6,7 +6,25 @@
 
 @import "tailwindcss";
 
-/* ── Local Font Declarations ── */
+/* ── Local Font Declarations & Metric Fallbacks for CLS Optimization ── */
+@font-face {
+  font-family: 'Cormorant Fallback';
+  src: local('Georgia'), local('Times New Roman'), local('serif');
+  size-adjust: 108%;
+  ascent-override: 90%;
+  descent-override: 20%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'DM Sans Fallback';
+  src: local('Helvetica Neue'), local('Arial'), local('sans-serif');
+  size-adjust: 98%;
+  ascent-override: 95%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
 @font-face {
   font-family: 'Cormorant Garamond';
   font-style: normal;

@@ -315,8 +315,8 @@ const alternatePaths = getAlternatePaths(Astro.url, typedLang);
     </div>
   </div>
 
-  <!-- Search Modal Component -->
-  <SearchModal client:idle products={allProducts} posts={allPosts} lang={typedLang} />
+  <!-- Search Modal Component (Hydrated on viewport visibility to avoid idle waterfall delay) -->
+  <SearchModal client:visible products={allProducts} posts={allPosts} lang={typedLang} />
 </header>
 
 <style>

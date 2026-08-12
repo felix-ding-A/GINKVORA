@@ -52,6 +52,11 @@ export default defineConfig({
   // Vite config — Tailwind 4 uses Vite plugin
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      modulePreload: {
+        polyfill: true
+      }
+    },
     optimizeDeps: {
       include: ['vue'],
     },
