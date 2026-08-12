@@ -215,9 +215,9 @@ button { cursor: pointer; font-family: var(--font-body); }
 
 /* ── Glass ── */
 .glass {
-  background: rgba(22, 24, 26, 0.85); /* Slightly more opaque for mobile */
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: #16181a; /* Solid background for mobile to eliminate GPU blur overhead */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
 }
