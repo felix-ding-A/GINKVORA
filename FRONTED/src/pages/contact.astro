@@ -178,8 +178,7 @@ const localBusinessSchema = {
     </div>
   </main>
   
-  <!-- Google reCAPTCHA v3 -->
-  <script is:inline src={`https://www.recaptcha.net/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}></script>
+
 </BaseLayout>
 
 <style>
@@ -375,11 +374,36 @@ const localBusinessSchema = {
       productInput.value = targetProduct;
     }
 
+    const siteKey = '6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid';
+    const loadRecaptcha = () => {
+      return new Promise<any>((resolve) => {
+        if ((window as any).grecaptcha) {
+          (window as any).grecaptcha.ready(() => resolve((window as any).grecaptcha));
+          return;
+        }
+        const script = document.createElement('script');
+        script.src = `https://www.recaptcha.net/recaptcha/api.js?render=${siteKey}`;
+        script.async = true;
+        script.onload = () => {
+          if ((window as any).grecaptcha) {
+            (window as any).grecaptcha.ready(() => resolve((window as any).grecaptcha));
+          } else {
+            resolve(null);
+          }
+        };
+        script.onerror = () => resolve(null);
+        document.head.appendChild(script);
+      });
+    };
+
     const form = document.getElementById('contact-full-form') as HTMLFormElement;
     const successMsg = document.getElementById('success-msg');
     const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
 
     if (form) {
+      // Lazy load recaptcha on user focus
+      form.addEventListener('focusin', () => loadRecaptcha(), { once: true });
+
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -441,21 +465,19 @@ const localBusinessSchema = {
           }
         };
 
-        // @ts-ignore
-        if (typeof grecaptcha !== 'undefined') {
-          // @ts-ignore
-          grecaptcha.ready(() => {
-            // @ts-ignore
-            grecaptcha.execute('6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid', { action: 'submit_rfq' })
-              .then((token) => {
-                submitData(token);
-              })
-              .catch((err) => {
+        try {
+          const grecaptcha = await loadRecaptcha();
+          if (grecaptcha) {
+            grecaptcha.execute(siteKey, { action: 'submit_rfq' })
+              .then((token: string) => submitData(token))
+              .catch((err: any) => {
                 console.error('reCAPTCHA execution failed:', err);
                 submitData();
               });
-          });
-        } else {
+          } else {
+            submitData();
+          }
+        } catch (e) {
           submitData();
         }
       });

@@ -14,7 +14,7 @@ export default defineConfig({
   adapter: vercel(),
 
   build: {
-    inlineStylesheets: 'always',
+    inlineStylesheets: 'auto',
     assets: 'assets',
   },
 

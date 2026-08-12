@@ -240,59 +240,112 @@ export const MOCK_PRODUCTS: (SanityProduct & { description?: any; specifications
 
 export const MOCK_POSTS: SanityPost[] = [
   {
-    _id: 'post-1',
-    title: 'Mitochondrial Health: The Science Behind PQQ and Healthy Aging',
-    slug: 'mitochondrial-health-pqq-science',
-    excerpt: 'Explore how Pyrroloquinoline Quinone (PQQ) triggers mitochondrial biogenesis and its potential as a cornerstone ingredient for longevity formulas.',
+    _id: '6a54175c-2ba3-40e9-8482-0907920d4a48',
+    title: 'NMN, NMNH, NAD+: Navigating the Global NAD Precursor Market',
+    slug: 'nmn-nmnh-nad-global-market-trends',
+    excerpt: 'The global NMN market earned about $380M in 2025, but the real story is regulatory fragmentation reshaping supply chains. My market analysis across the US, China, Japan, and EU, and where NMNH fits into the next cycle.',
+    coverImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80' as any,
+    featured: true,
+    publishedAt: '2026-06-09T05:41:00.000Z',
+    updatedAt: '2026-06-09T05:41:00.000Z',
+    tags: ['Market Trends', 'Research', 'Regulatory'],
+    readTime: 17,
+    author: {
+      name: 'Zhang Zhilin',
+      credentials: 'B.S.'
+    },
+    meta_title: 'NMN NMNH NAD+ Market: NR vs NMN, Purity & Strategy',
+    meta_description: 'NMN global market $380M. NR vs NMN comparison, purity benchmarks (HPLC, heavy metals, endotoxin), NMNH next-gen NAD+ precursor, resveratrol synergy.'
+  },
+  {
+    _id: '78115189-c9c5-4b3b-ba42-cd494048d5e5',
+    title: "PQQ: The Market's Most Underrated Mitochondrial Molecule",
+    slug: 'pqq-mitochondrial-health-market-trend',
+    excerpt: 'PQQ is rare among mitochondrial actives — it both protects existing mitochondria and triggers new mitochondrial biogenesis. At $47.7M, the PQQ market is 1/16th the size of CoQ10. That ratio is not a failure — it is a timing signal.',
     coverImage: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?w=600&auto=format&fit=crop&q=80' as any,
     featured: true,
-    publishedAt: '2026-05-15T12:00:00Z',
-    updatedAt: '2026-05-18T14:30:00Z',
-    tags: ['Ingredient Spotlight', 'Research', 'Market Trends'],
-    readTime: 5,
+    publishedAt: '2026-06-05T01:21:00.000Z',
+    updatedAt: '2026-06-05T01:25:00.000Z',
+    tags: ['Market Trends', 'Ingredient Spotlight'],
+    readTime: 14,
     author: {
-      name: 'Dr. Evelyn Carter',
-      credentials: 'PhD (Biochemistry)'
+      name: 'Zhang Zhilin',
+      credentials: 'B.S.'
     },
-    meta_title: 'Mitochondrial Health & PQQ Science | GINKVORA',
-    meta_description: 'Discover how PQQ promotes mitochondrial biogenesis, enhances cellular energy, and supports healthy longevity pathways.',
-    faqItems: [
-      {
-        question: 'What is PQQ Disodium Salt?',
-        answer: 'PQQ (Pyrroloquinoline Quinone) disodium salt is a water-soluble salt form of PQQ, a vitamin-like compound that serves as a powerful antioxidant and cofactor in cellular growth.'
-      },
-      {
-        question: 'How does PQQ promote mitochondrial biogenesis?',
-        answer: 'PQQ stimulates the activation of CREB and PGC-1α, which are critical master regulators that signal the replication and growth of new mitochondria inside cells.'
-      }
-    ],
-    relatedProduct: {
-      name: 'PQQ Disodium Salt',
-      slug: 'pqq-disodium-salt',
-      shortDescription: 'Premium mitochondrial biogenesis promoter that enhances cognitive function, cardiovascular health, and cellular longevity.',
-      purity: '≥ 99%'
-    }
+    meta_title: 'PQQ Mitochondrial Health: Market Opportunity Analysis | GINKVORA',
+    meta_description: 'PQQ triggers mitochondrial biogenesis via PGC-1α and protects via Nrf2. Market analysis with verified data: $47.7M PQQ vs $760M CoQ10. Strategy for brand owners.'
   },
   {
-    _id: 'post-2',
-    title: 'Global Nutraceutical Regulatory Trends: What Brands Need to Know',
-    slug: 'global-nutraceutical-regulatory-trends',
-    excerpt: 'An overview of shifting import regulations, purity certifications, and compliance standards for botanicals in USA, EU, and China markets.',
-    coverImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80' as any,
-    publishedAt: '2026-05-10T12:00:00Z',
-    tags: ['Regulatory', 'Industry News'],
-    readTime: 7
-  },
-  {
-    _id: 'post-3',
-    title: 'Why Glabridin is Leading the Natural Skin Brightening Market',
-    slug: 'why-glabridin-leads-natural-skin-brightening',
-    excerpt: 'Often called "the gold of whitening", Glabridin has become the preferred active for premium clean cosmetics. Here is why.',
+    _id: '55dfc21f-4df2-4237-a440-052d8026ec73',
+    title: 'Glabridin Before and After: A 12-Week Transformation Timeline',
+    slug: 'glabridin-12-week-timeline',
+    excerpt: "Glabridin doesn't work overnight — that's exactly why it's effective. Week-by-week timeline of melanin, inflammation, and collagen changes, so you can set accurate customer expectations and keep them using your product past week 3.",
     coverImage: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&auto=format&fit=crop&q=80' as any,
     featured: true,
-    publishedAt: '2026-05-02T12:00:00Z',
-    tags: ['Ingredient Spotlight', 'Formulation Tips'],
-    readTime: 4
+    publishedAt: '2025-12-04T04:45:00.000Z',
+    updatedAt: '2025-12-04T04:45:00.000Z',
+    tags: ['Industry News', 'Ingredient Spotlight', 'Research', 'Quality & Testing', 'Formulation Tips'],
+    readTime: 12,
+    author: {
+      name: 'Clara Wang',
+      credentials: 'M.S.'
+    },
+    meta_title: 'Glabridin Before and After: 12-Week Brightening Timeline',
+    meta_description: 'What happens to melanin, inflammation, and collagen each week when glabridin enters a formula. Week-by-week biological timeline for cosmetic formulators.'
+  },
+  {
+    _id: '9e03963f-b30e-47b7-a409-de2ffb4dd554',
+    title: "GHK-Cu Copper Peptide: A Formulator's Technical Guide",
+    slug: 'ghk-cu-formulation-technical-guide',
+    excerpt: 'GHK-Cu looks simple — until you formulate it. My lab-level guide to keeping this copper peptide stable across serums, creams, gels, eye creams, and scalp products.',
+    coverImage: 'https://images.unsplash.com/photo-1512290900676-26c2a4d0b5ae?w=600&auto=format&fit=crop&q=80' as any,
+    featured: true,
+    publishedAt: '2026-06-08T02:32:00.000Z',
+    updatedAt: '2026-06-08T02:32:00.000Z',
+    tags: ['Ingredient Spotlight', 'Formulation Tips', 'Research'],
+    readTime: 17,
+    author: {
+      name: 'Clara Wang',
+      credentials: 'M.S.'
+    },
+    meta_title: "GHK-Cu Copper Peptide: Formulator's Technical Guide",
+    meta_description: 'GHK-Cu formulation: serums, creams, gels, eye creams, hair growth products. pH control, ingredient compatibility, copper verification, sourcing checklist.'
+  },
+  {
+    _id: '05f06e32-255c-41e9-a430-83decd96add8',
+    title: 'Free Radicals vs. Quercetin: The Antioxidant Mechanism Explained for Non-Scientists',
+    slug: 'quercetin-antioxidant-free-radicals',
+    excerpt: 'Free radicals cause 10,000+ daily oxidative strikes, accelerating aging. Quercetin combats this by directly scavenging reactive molecules and activating the Nrf2 pathway—outperforming Vitamin C and E in ORAC capacity.',
+    coverImage: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&auto=format&fit=crop&q=80' as any,
+    featured: true,
+    publishedAt: '2026-05-14T01:18:00.000Z',
+    updatedAt: '2026-07-02T01:12:43.000Z',
+    tags: ['Ingredient Spotlight', 'Research', 'Formulation Tips'],
+    readTime: 8,
+    author: {
+      name: 'Clara Wang',
+      credentials: 'M.S.'
+    },
+    meta_title: 'Quercetin Antioxidant Benefits: Free Radical & Nrf2 Defense…',
+    meta_description: 'Quercetin combats oxidative stress by scavenging free radicals and activating the Nrf2 pathway. Outperforms Vitamins C and E in ORAC capacity.'
+  },
+  {
+    _id: '08fa644d-8c46-42a5-9e85-0dbde5147508',
+    title: 'What Is NMN? A Raw-Material Scientist Breaks Down the Mechanism',
+    slug: 'nmn-mechanism',
+    excerpt: "NMN is a direct NAD+ precursor with real mechanism but honest limits. A raw-material scientist explains what it is, how it's absorbed, what the data prove, and how to buy it well.",
+    coverImage: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80' as any,
+    featured: true,
+    publishedAt: '2026-07-08T01:59:00.000Z',
+    updatedAt: '2026-07-08T01:59:00.000Z',
+    tags: ['Ingredient Spotlight', 'Research', 'Longevity', 'NAD+', 'Formulation Tips'],
+    readTime: 8,
+    author: {
+      name: 'Clara Wang',
+      credentials: 'M.S.'
+    },
+    meta_title: 'What Is NMN? The Mechanism, Honestly',
+    meta_description: "NMN is a direct NAD+ precursor. A raw-material scientist explains how it's absorbed, what human trials prove, and how to choose raw material."
   }
 ];
 
@@ -324,23 +377,43 @@ export const MOCK_SITE_SETTINGS = {
 export const MOCK_AUTHORS = [
   {
     _id: 'author-1',
-    name: 'Dr. Evelyn Carter',
-    title: 'Chief Scientific Advisor',
-    title_ru: 'Главный научный консультант',
-    credentials: 'PhD (Biochemistry)',
+    name: 'Clara Wang',
+    title: 'Lead Scientific Formulation Specialist',
+    title_ru: 'Ведущий специалист по научным рецептурам',
+    credentials: 'M.S.',
     avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80',
-    bio: 'Over 15 years of experience in cellular health, mitochondrial cofactor research, and botanical drug discovery pipelines.',
-    bio_ru: 'Более 15 лет опыта в области клеточного здоровья, исследований митохондриальных кофакторов и разработки растительных препаратов.'
+    bio: 'Specializing in bioactive extraction, cellular delivery mechanisms, and anti-aging ingredient formulation.',
+    bio_ru: 'Специализируется на экстракции биоактивных веществ, механизмах клеточной доставки и рецептурах антивозрастных ингредиентов.'
   },
   {
     _id: 'author-2',
-    name: 'Sarah Lindqvist',
-    title: 'Head of Quality Assurance',
-    title_ru: 'Руководитель отдела контроля качества',
-    credentials: 'MSc (Pharmacognosy)',
+    name: 'Zhang Zhilin',
+    title: 'Senior Ingredient & Market Analyst',
+    title_ru: 'Старший аналитик ингредиентов и рынка',
+    credentials: 'B.S.',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80',
+    bio: 'Focusing on global botanical ingredient supply chains, market trends, and regulatory compliance.',
+    bio_ru: 'Фокусируется на глобальных цепочках поставок растительных ингредиентов, рыночных тенденциях и нормативном соответствии.'
+  },
+  {
+    _id: 'author-3',
+    name: 'Atwood Wang',
+    title: 'Global Regulatory & Compliance Director',
+    title_ru: 'Директор по глобальному регулированию и комплаенсу',
+    credentials: 'RAC, MS in Global Regulatory Affairs',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80',
+    bio: 'Expert in FDA GRAS, EU Novel Food, REACH compliance, and global supplement regulations.',
+    bio_ru: 'Эксперт в области FDA GRAS, EU Novel Food, соответствия REACH и глобального регулирования пищевых добавок.'
+  },
+  {
+    _id: 'author-4',
+    name: 'Dr. Mia Chen',
+    title: 'Head of Quality Assurance & Purity Validation',
+    title_ru: 'Руководитель отдела контроля качества и валидации чистоты',
+    credentials: 'PhD in Analytical Chemistry, CQE',
     avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&auto=format&fit=crop&q=80',
-    bio: 'Dedicated to implementing strict global certifications, cGMP audits, and high-precision chromatography testing standards.',
-    bio_ru: 'Специализируется на внедрении строгих международных сертификаций, аудитов cGMP и стандартов высокоточной хроматографии.'
+    bio: 'Specializing in HPLC chromatography, heavy metal testing, and cGMP quality control standards.',
+    bio_ru: 'Специализируется на ВЭЖХ хроматографии, тестировании тяжелых металлов и стандартах контроля качества cGMP.'
   }
 ];
 

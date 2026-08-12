@@ -15,19 +15,40 @@ export const sanityClient = createClient({
 });
 
 // ---------------------------------------------------------------------------
-// In-Memory Query Cache for Astro Static Prerendering Optimization
+// In-Memory Query Cache & Circuit Breaker for Astro Build Optimization
 // ---------------------------------------------------------------------------
 const fetchCache = new Map<string, Promise<any>>();
+let isSanityOffline = false;
 
 export async function cachedFetch(query: string, params: Record<string, any> = {}) {
+  if (isSanityOffline) {
+    throw new Error('Sanity API offline (circuit breaker active)');
+  }
+
   const key = `${query}::${JSON.stringify(params)}`;
   if (fetchCache.has(key)) {
     return fetchCache.get(key);
   }
-  const promise = sanityClient.fetch(query, params).catch((err) => {
-    fetchCache.delete(key);
-    throw err;
-  });
+
+  const promise = (async () => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 2000);
+
+    try {
+      const result = await sanityClient.fetch(query, params, { signal: controller.signal });
+      clearTimeout(timer);
+      return result;
+    } catch (err: any) {
+      clearTimeout(timer);
+      if (!isSanityOffline) {
+        console.warn('⚠️ [Sanity API] Connection timed out or failed. Activating instant mock data fallback for remaining routes.');
+        isSanityOffline = true;
+      }
+      fetchCache.delete(key);
+      throw err;
+    }
+  })();
+
   fetchCache.set(key, promise);
   return promise;
 }
@@ -487,7 +508,7 @@ export async function getPostBySlug(slug: string) {
 // Site settings
 export async function getSiteSettings() {
   try {
-    const data = await sanityClient.fetch(`
+    const data = await cachedFetch(`
       *[_type == "siteSettings"][0] {
         siteName, tagline, contactEmail, phone, address, socialLinks,
         certifications[]{name, logo, href},

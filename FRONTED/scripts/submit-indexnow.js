@@ -16,6 +16,14 @@ const ENDPOINTS = [
 ];
 
 async function main() {
+  const isProd = process.env.VERCEL_ENV === 'production' || process.env.CI === 'true';
+  const forceSubmit = process.env.SUBMIT_INDEXNOW === 'true';
+
+  if (!isProd && !forceSubmit) {
+    console.log('ℹ️ Local build detected. Skipping IndexNow submission.');
+    return;
+  }
+
   console.log('🚀 Starting IndexNow URL submission...');
   
   if (!fs.existsSync(SITEMAP_PATH)) {
