@@ -235,6 +235,8 @@ const faqSchema = {
                 alt={product.name}
                 id="main-product-image"
                 class="main-image"
+                width="600"
+                height="450"
                 fetchpriority="high"
                 loading="eager"
               />
@@ -719,8 +721,7 @@ const faqSchema = {
     </div>
   </div>
   
-  <!-- Google reCAPTCHA v3 -->
-  <script is:inline src={`https://www.recaptcha.net/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}></script>
+
 </BaseLayout>
 
 <style>
@@ -1666,23 +1667,33 @@ const faqSchema = {
           }
         };
 
-        // @ts-ignore
-        if (typeof grecaptcha !== 'undefined') {
-          // @ts-ignore
-          grecaptcha.ready(() => {
-            // @ts-ignore
-            grecaptcha.execute('6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid', { action: 'submit_rfq' })
-              .then((token) => {
-                submitRfq(token);
-              })
-              .catch((err) => {
-                console.error('reCAPTCHA execution failed:', err);
-                submitRfq();
-              });
-          });
-        } else {
-          submitRfq();
-        }
+        const siteKey = '6LfauEktAAAAAMqxmIliI2O9cby28DZr-cQyhLid';
+        const loadRecaptcha = () => new Promise<any>((resolve) => {
+          if ((window as any).grecaptcha) {
+            (window as any).grecaptcha.ready(() => resolve((window as any).grecaptcha));
+            return;
+          }
+          const script = document.createElement('script');
+          script.src = `https://www.recaptcha.net/recaptcha/api.js?render=${siteKey}`;
+          script.async = true;
+          script.onload = () => {
+            if ((window as any).grecaptcha) {
+              (window as any).grecaptcha.ready(() => resolve((window as any).grecaptcha));
+            } else resolve(null);
+          };
+          script.onerror = () => resolve(null);
+          document.head.appendChild(script);
+        });
+
+        loadRecaptcha().then((grecaptcha) => {
+          if (grecaptcha) {
+            grecaptcha.execute(siteKey, { action: 'submit_rfq' })
+              .then((token: string) => submitRfq(token))
+              .catch(() => submitRfq());
+          } else {
+            submitRfq();
+          }
+        });
       });
     }
   }
