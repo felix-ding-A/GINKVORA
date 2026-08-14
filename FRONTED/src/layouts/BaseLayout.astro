@@ -164,29 +164,20 @@ const organizationSchema = {
       ╚══════════════════════════════════════════════════════════╝
     -->
     <style is:inline>
-      /* Critical: Fallback Font Metrics to eliminate CLS layout shift on font swap */
+      /* Critical: Fallback Font Metrics */
       @font-face {
         font-family: 'Cormorant Fallback';
         src: local('Georgia'), local('Times New Roman'), local('serif');
-        size-adjust: 108%;
-        ascent-override: 90%;
-        descent-override: 20%;
-        line-gap-override: 0%;
       }
       @font-face {
         font-family: 'DM Sans Fallback';
         src: local('Helvetica Neue'), local('Arial'), local('sans-serif');
-        size-adjust: 98%;
-        ascent-override: 95%;
-        descent-override: 22%;
-        line-gap-override: 0%;
       }
       /* Critical: body background + text color (prevents white flash) */
-      body{margin:0;background-color:#060503;color:#f5efe0;font-family:'DM Sans','DM Sans Fallback','Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased}
-      /* Critical: H1 sizing and font for LCP element */
-      h1,h2,h3{font-family:'Cormorant Garamond','Cormorant Fallback','Georgia',serif;font-weight:600;line-height:1.15;color:#f5efe0}
-      h1{font-size:clamp(2.5rem,6vw,5rem);font-weight:700;min-height:1.15em}
-      /* Critical: container + hero layout for first paint */
+      body{margin:0;background-color:#0b0c0d;color:#ffffff;font-family:'DM Sans','DM Sans Fallback','Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased}
+      /* Critical: Base typography */
+      h1,h2,h3{font-family:'Cormorant Garamond','Cormorant Fallback','Georgia',serif;font-weight:700;line-height:1.2;color:#ffffff}
+      /* Critical: container + layout */
       .container{width:100%;max-width:1440px;margin-inline:auto;padding-inline:clamp(1rem,4vw,3rem)}
       /* Critical: gradient text for hero title gold highlight */
       .gradient-text--gold{background:linear-gradient(135deg,#f0c878 0%,#d4a654 60%,#a07830 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
@@ -194,8 +185,6 @@ const organizationSchema = {
       .section-label{font-size:0.8125rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#e07830}
       .badge{display:inline-flex;align-items:center;gap:0.375rem;padding:0.3rem 0.875rem;border-radius:9999px;font-size:0.8125rem;font-weight:500}
       .badge--gold{background:rgba(212,166,84,0.15);color:#f0c878;border:1px solid rgba(212,166,84,0.3)}
-      /* Critical: fade-in-up initial state (prevents layout shift) */
-      .fade-in-up{opacity:0}
       /* Critical: skip-link accessibility hiding to prevent FOUC */
       .skip-link{position:absolute;top:-100px;left:1rem;z-index:9999}
       .skip-link:focus{top:0}
@@ -308,23 +297,32 @@ const organizationSchema = {
     <BackToTop lang={lang} />
 
     <!-- Reveal animation script -->
-    <script>
-      // Intersection Observer for scroll reveal animations
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
-      );
+    <script is:inline>
+      function initScrollReveal() {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+        );
 
-      document.querySelectorAll('.reveal').forEach((el) => {
-        observer.observe(el);
-      });
+        document.querySelectorAll('.reveal:not(.visible)').forEach((el) => {
+          observer.observe(el);
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initScrollReveal);
+      } else {
+        initScrollReveal();
+      }
+      document.addEventListener('astro:page-load', initScrollReveal);
+      document.addEventListener('astro:after-swap', initScrollReveal);
     </script>
 
     <!--

@@ -34,9 +34,9 @@ const aboutSchema = {
     <header class="page-banner" aria-label="Page Header">
       <div class="banner-gradient"></div>
       <div class="container banner-content">
-        <span class="section-label">Our Company</span>
-        <h1 class="banner-title">Pioneering Pure Plant Bioactives</h1>
-        <p class="banner-desc">
+        <span class="section-label fade-in-up">Our Company</span>
+        <h1 class="banner-title fade-in-up delay-1">Pioneering Pure Plant Bioactives</h1>
+        <p class="banner-desc fade-in-up delay-2">
           Connecting pristine botanical sources with advanced laboratory isolation to supply pharmaceutical-grade active ingredients to global industries.
         </p>
       </div>
@@ -204,7 +204,7 @@ const aboutSchema = {
   /* ── Banner ── */
   .page-banner {
     position: relative;
-    padding-block: 8rem 4rem;
+    padding-block: 7rem 3.5rem;
     overflow: hidden;
     background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
     border-bottom: 1px solid var(--color-border);
@@ -217,8 +217,9 @@ const aboutSchema = {
   }
 
   .banner-title {
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-size: clamp(2rem, 3.8vw, 3.1rem);
     font-weight: 700;
+    line-height: 1.15;
     margin-top: 0.5rem;
     color: var(--color-text);
   }

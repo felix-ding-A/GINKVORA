@@ -51,59 +51,65 @@ if (!previewPosts || previewPosts.length === 0) {
     </div>
 
     <div class="posts-grid">
-      {previewPosts.map((post, i) => (
-        <article class={`post-card glass reveal ${i === 0 ? 'post-card--featured' : ''} reveal-delay-${i}`}>
-          <a href={lp(`/insights/${post.slug}`)} class="card-image-link" aria-label={post.title}>
-            <div class="card-image">
-              <picture style="display: contents;">
-                <source srcset={urlFor(post.coverImage).width(600).format('webp').url()} type="image/webp" />
-                <img
-                  src={urlFor(post.coverImage).width(600).url()}
-                  alt={post.title}
-                  loading="lazy"
-                  width="600"
-                  height="340"
-                />
-              </picture>
-              {post.tags && post.tags.length > 0 && (
-                <span class="card-badge">{post.tags[0]}</span>
-              )}
-            </div>
-          </a>
+      {previewPosts.map((post, i) => {
+        const postTitle = (lang === 'ru' && post.title_ru) ? post.title_ru : (lang === 'ar' && post.title_ar) ? post.title_ar : (lang === 'es' && post.title_es) ? post.title_es : post.title;
+        const postExcerpt = (lang === 'ru' && post.excerpt_ru) ? post.excerpt_ru : (lang === 'ar' && post.excerpt_ar) ? post.excerpt_ar : (lang === 'es' && post.excerpt_es) ? post.excerpt_es : post.excerpt;
+        const postSlug = typeof post.slug === 'object' ? post.slug?.current : post.slug;
 
-          <div class="card-body">
-            <div class="card-meta">
-              <time datetime={post.publishedAt}>
-                {post.publishedAt
-                  ? new Date(post.publishedAt).toLocaleDateString(lang === 'ru' ? 'ru-RU' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-                  : 'May 2026'}
-              </time>
-              {post.readTime && (
-                <>
-                  <span class="dot">·</span>
-                  <span>{post.readTime} {t('insights.min_read')}</span>
-                </>
-              )}
-            </div>
-
-            <h3 class="card-title">
-              <a href={lp(`/insights/${post.slug}`)}>{post.title}</a>
-            </h3>
-
-            {i === 0 && (
-              <p class="card-excerpt">{post.excerpt}</p>
-            )}
-
-            <a href={lp(`/insights/${post.slug}`)} class="card-link">
-              {t('insights.read_more')}
-              <span class="sr-only"> about {post.title}</span>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-              </svg>
+        return (
+          <article class={`post-card glass reveal ${i === 0 ? 'post-card--featured' : ''} reveal-delay-${i}`}>
+            <a href={lp(`/insights/${postSlug}`)} class="card-image-link" aria-label={postTitle}>
+              <div class="card-image">
+                <picture style="display: contents;">
+                  <source srcset={urlFor(post.coverImage).width(600).format('webp').url()} type="image/webp" />
+                  <img
+                    src={urlFor(post.coverImage).width(600).url()}
+                    alt={postTitle}
+                    loading="lazy"
+                    width="600"
+                    height="340"
+                  />
+                </picture>
+                {post.tags && post.tags.length > 0 && (
+                  <span class="card-badge">{post.tags[0]}</span>
+                )}
+              </div>
             </a>
-          </div>
-        </article>
-      ))}
+
+            <div class="card-body">
+              <div class="card-meta">
+                <time datetime={post.publishedAt}>
+                  {post.publishedAt
+                    ? new Date(post.publishedAt).toLocaleDateString(lang === 'ru' ? 'ru-RU' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+                    : 'May 2026'}
+                </time>
+                {post.readTime && (
+                  <>
+                    <span class="dot">·</span>
+                    <span>{post.readTime} {t('insights.min_read')}</span>
+                  </>
+                )}
+              </div>
+
+              <h3 class="card-title">
+                <a href={lp(`/insights/${postSlug}`)}>{postTitle}</a>
+              </h3>
+
+              {i === 0 && (
+                <p class="card-excerpt">{postExcerpt}</p>
+              )}
+
+              <a href={lp(`/insights/${postSlug}`)} class="card-link">
+                {t('insights.read_more')}
+                <span class="sr-only"> about {postTitle}</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </a>
+            </div>
+          </article>
+        );
+      })}
     </div>
   </div>
 </section>

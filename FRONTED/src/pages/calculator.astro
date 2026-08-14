@@ -123,7 +123,11 @@ const faqSchema = {
     <header class="page-banner" aria-label="Page Header">
       <div class="banner-gradient"></div>
       <div class="container banner-content">
-        <h1 class="banner-title">Scientific Lab & Formulation Calculator</h1>
+        <span class="section-label fade-in-up">Scientific Utilities</span>
+        <h1 class="banner-title fade-in-up delay-1">Scientific Lab & Formulation Calculator</h1>
+        <p class="banner-desc fade-in-up delay-2">
+          Professional laboratory suite for molarity solvers, serial dilution protocols (C1V1), molecular weight analysis, and HLB emulsion balancing.
+        </p>
       </div>
     </header>
 
@@ -254,7 +258,7 @@ const faqSchema = {
   /* ── Banner ── */
   .page-banner {
     position: relative;
-    padding-block: 3.5rem 1.25rem;
+    padding-block: 7rem 3.5rem;
     overflow: hidden;
     background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
     border-bottom: 1px solid var(--color-border);
@@ -280,8 +284,9 @@ const faqSchema = {
   }
 
   .banner-title {
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-size: clamp(2rem, 3.8vw, 3.1rem);
     font-weight: 700;
+    line-height: 1.15;
     margin-top: 0.5rem;
     color: var(--color-text);
   }
