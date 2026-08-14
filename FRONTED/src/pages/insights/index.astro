@@ -14,16 +14,16 @@ const searchQuery = Astro.url.searchParams.get('q') || '';
 const pageParam = Astro.url.searchParams.get('page');
 const pageSize = 6;
 
+const requestedPage = Math.max(1, parseInt(pageParam ?? '1', 10) || 1);
 const { posts: allPosts, total } = await getPostsPaginated({
   category: selectedCategory,
   search: searchQuery,
-  page: 1,
-  pageSize: 100,
+  page: requestedPage,
+  pageSize,
 });
 
 const totalPages = Math.max(1, Math.ceil(total / pageSize));
-const rawPage = parseInt(pageParam ?? '1', 10);
-const currentPage = Math.min(Math.max(1, isNaN(rawPage) ? 1 : rawPage), totalPages);
+const currentPage = Math.min(requestedPage, totalPages);
 
 // Helper function to build page URLs while preserving category and search query params
 function getPageHref(pageNum: number) {
@@ -153,14 +153,12 @@ const itemListSchema = {
     <div class="container insights-container">
       {allPosts.length > 0 ? (
         <section class="insights-grid" id="insights-grid" data-current-page={currentPage} aria-label="Blog posts list">
-          {allPosts.map((post, index) => {
-            const pageIndex = Math.floor(index / pageSize) + 1;
-            const isVisible = pageIndex === currentPage;
+          {allPosts.map((post) => {
             return (
               <article
                 class="blog-card glass reveal"
-                data-page-index={pageIndex}
-                style={isVisible ? "display: flex;" : "display: none;"}
+                data-page-index={currentPage}
+                style="display: flex;"
               >
               <div class="card-image-box">
                 <a href={`/insights/${post.slug}`} class="card-image-link" aria-label={`Read ${post.title}`}>
@@ -732,8 +730,7 @@ const itemListSchema = {
       : parseInt(grid.getAttribute('data-current-page') || '1');
 
     cards.forEach((card) => {
-      const pageIndex = parseInt(card.getAttribute('data-page-index') || '1');
-      (card as HTMLElement).style.display = pageIndex === currentPage ? 'flex' : 'none';
+      (card as HTMLElement).style.display = 'flex';
     });
 
     if (paginationNav) {

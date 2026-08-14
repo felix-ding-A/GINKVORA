@@ -265,6 +265,47 @@ export async function getAllProducts(category: string | null = null, mechanism: 
   }
 }
 
+export async function getProductsPaginated({
+  category = null,
+  mechanism = null,
+  page = 1,
+  pageSize = 12,
+}: {
+  category?: string | null;
+  mechanism?: string | null;
+  page?: number;
+  pageSize?: number;
+} = {}) {
+  const safePage = Math.max(1, Math.floor(page));
+  const safePageSize = Math.max(1, Math.min(100, Math.floor(pageSize)));
+  const start = (safePage - 1) * safePageSize;
+  const end = start + safePageSize;
+  const params = {
+    category: category || '',
+    mechanism: mechanism || '',
+    start,
+    end,
+  };
+  const filter = `*[_type == "product"
+    && ($category == "" || $category in mainCategories)
+    && ($mechanism == "" || $mechanism in antiAgingMechanisms)
+  ]`;
+
+  try {
+    const [products, total] = await Promise.all([
+      cachedFetch(`${filter} | order(coalesce(weight, 0) desc, _updatedAt desc) [$start...$end] { ${PRODUCT_FIELDS} }`, params),
+      cachedFetch(`count(${filter})`, params),
+    ]);
+    return { products: products || [], total: total || 0 };
+  } catch (err) {
+    if (import.meta.env.DEV) {
+      const products = filterMockProducts(MOCK_PRODUCTS, category, mechanism);
+      return { products: products.slice(start, end), total: products.length };
+    }
+    throw err;
+  }
+}
+
 function filterMockProducts(products: any[], category: string | null, mechanism: string | null) {
   const filtered = products.filter(prod => {
     const matchCat = !category || (prod.mainCategories && prod.mainCategories.includes(category));
@@ -431,6 +472,9 @@ export async function getPostsPaginated({
     const total = await cachedFetch(countQuery, params);
     return { posts, total };
   } catch (err) {
+    if (!import.meta.env.DEV) {
+      throw err;
+    }
     console.warn('Sanity API connection failed, using fallback blog posts.');
     let allMock = MOCK_POSTS;
     if (category) {
