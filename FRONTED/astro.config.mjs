@@ -13,14 +13,14 @@ export default defineConfig({
   output: 'server',
   adapter: vercel({
     isr: {
-      // Preview PoC: existing public dynamic routes stay on their current path.
+      // Phased rollout: only the English insights detail route uses ISR for now.
       expiration: 60 * 60 * 24 * 7,
       bypassToken: process.env.ISR_BYPASS_TOKEN,
       exclude: [
         '/products', '/es/products', '/ru/products', '/ar/products',
         '/insights', '/es/insights', '/ru/insights', '/ar/insights',
         '/products/[slug]', '/es/products/[slug]', '/ru/products/[slug]', '/ar/products/[slug]',
-        '/insights/[slug]', '/es/insights/[slug]', '/ru/insights/[slug]', '/ar/insights/[slug]',
+        '/es/insights/[slug]', '/ru/insights/[slug]', '/ar/insights/[slug]',
         '/contact', '/es/contact', '/ru/contact', '/ar/contact',
         '/thank-you', '/es/thank-you', '/ru/thank-you', '/ar/thank-you',
         '/sitemap.xml', '/sitemap-index.xml', '/sitemap-static.xml',
