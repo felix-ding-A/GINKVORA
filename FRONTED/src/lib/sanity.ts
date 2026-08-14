@@ -43,7 +43,7 @@ export async function cachedFetch(query: string, params: Record<string, any> = {
       return result;
     } catch (err: any) {
       clearTimeout(timer);
-      console.warn(`⚠️ [Sanity API] Query failed or timed out (${err?.message || err}). Falling back to local data.`);
+      console.warn(`⚠️ [Sanity API] Query failed or timed out (${err?.message || err}).`);
       fetchCache.delete(key);
       throw err;
     }

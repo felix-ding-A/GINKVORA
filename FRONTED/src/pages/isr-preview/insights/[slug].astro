@@ -1,0 +1,29 @@
+---
+// Isolated ISR proof of concept. This route is intentionally not linked or indexed.
+export const prerender = false;
+
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PortableText from '../../../components/PortableText.astro';
+import { getPostBySlug, urlFor } from '../../../lib/sanity';
+
+const { slug } = Astro.params;
+const post = await getPostBySlug(slug);
+
+if (!post) Astro.response.status = 404;
+---
+
+<BaseLayout
+  title={post ? `ISR Preview: ${post.title}` : 'ISR Preview: Not Found'}
+  description={post?.excerpt || 'ISR preview'}
+  image={post?.coverImage ? urlFor(post.coverImage).width(1200).height(630).format('jpg').url() : undefined}
+>
+  <meta name="robots" content="noindex, nofollow" slot="head" />
+  <main class="container" style="padding-block: 8rem 4rem; max-width: 900px;">
+    <p style="font-family: var(--font-mono); color: var(--color-primary-light);">ISR PREVIEW — not indexed</p>
+    <h1>{post?.title || 'Not found'}</h1>
+    {post?.coverImage && (
+      <img src={urlFor(post.coverImage).width(1200).format('webp').url()} alt={post.title} width="1200" height="675" style="width: 100%; height: auto; border-radius: var(--radius-lg);" />
+    )}
+    {post?.body && <PortableText value={post.body} />}
+  </main>
+</BaseLayout>

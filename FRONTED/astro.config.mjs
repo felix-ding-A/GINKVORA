@@ -11,7 +11,24 @@ export default defineConfig({
   site: 'https://ginkvora.com',
   trailingSlash: 'never',
   output: 'server',
-  adapter: vercel(),
+  adapter: vercel({
+    isr: {
+      // Preview PoC: existing public dynamic routes stay on their current path.
+      expiration: 60 * 60 * 24 * 7,
+      bypassToken: process.env.ISR_BYPASS_TOKEN,
+      exclude: [
+        '/products', '/es/products', '/ru/products', '/ar/products',
+        '/insights', '/es/insights', '/ru/insights', '/ar/insights',
+        '/products/[slug]', '/es/products/[slug]', '/ru/products/[slug]', '/ar/products/[slug]',
+        '/insights/[slug]', '/es/insights/[slug]', '/ru/insights/[slug]', '/ar/insights/[slug]',
+        '/contact', '/es/contact', '/ru/contact', '/ar/contact',
+        '/thank-you', '/es/thank-you', '/ru/thank-you', '/ar/thank-you',
+        '/sitemap.xml', '/sitemap-index.xml', '/sitemap-static.xml',
+        '/sitemap-products.xml', '/sitemap-posts.xml',
+        /^\/api\/.+/,
+      ],
+    },
+  }),
 
   build: {
     inlineStylesheets: 'auto',
