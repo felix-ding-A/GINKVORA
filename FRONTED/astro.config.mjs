@@ -11,7 +11,24 @@ export default defineConfig({
   site: 'https://ginkvora.com',
   trailingSlash: 'never',
   output: 'server',
-  adapter: vercel(),
+  adapter: vercel({
+    isr: {
+      // Phased rollout: only the English insights detail route uses ISR for now.
+      expiration: 60 * 60 * 24 * 7,
+      bypassToken: process.env.ISR_BYPASS_TOKEN,
+      exclude: [
+        '/products', '/es/products', '/ru/products', '/ar/products',
+        '/insights', '/es/insights', '/ru/insights', '/ar/insights',
+        '/products/[slug]', '/es/products/[slug]', '/ru/products/[slug]', '/ar/products/[slug]',
+        '/es/insights/[slug]', '/ru/insights/[slug]', '/ar/insights/[slug]',
+        '/contact', '/es/contact', '/ru/contact', '/ar/contact',
+        '/thank-you', '/es/thank-you', '/ru/thank-you', '/ar/thank-you',
+        '/sitemap.xml', '/sitemap-index.xml', '/sitemap-static.xml',
+        '/sitemap-products.xml', '/sitemap-posts.xml',
+        /^\/api\/.+/,
+      ],
+    },
+  }),
 
   build: {
     inlineStylesheets: 'auto',

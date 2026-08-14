@@ -14,10 +14,10 @@ const category = Astro.url.searchParams.get('category') || null;
 const searchQuery = Astro.url.searchParams.get('q') || '';
 const pageSize = 9;
 
-const { posts: allPosts, total } = await getPostsPaginated({ category, search: searchQuery, page: 1, pageSize: 100 });
+const requestedPage = Math.max(1, parseInt(pageParam ?? '1', 10) || 1);
+const { posts: allPosts, total } = await getPostsPaginated({ category, search: searchQuery, page: requestedPage, pageSize });
 const totalPages = Math.max(1, Math.ceil(total / pageSize));
-const rawPage = parseInt(pageParam ?? '1', 10);
-const currentPage = Math.min(Math.max(1, isNaN(rawPage) ? 1 : rawPage), totalPages);
+const currentPage = Math.min(requestedPage, totalPages);
 const page = currentPage;
 
 // Helper function to build page URLs while preserving category query params
@@ -123,16 +123,14 @@ const itemListSchema = {
     <div class="container">
       {allPosts.length > 0 ? (
         <div class="posts-grid" id="insights-grid" data-current-page={currentPage}>
-          {allPosts.map((post: any, index: number) => {
-            const pageIndex = Math.floor(index / pageSize) + 1;
-            const isVisible = pageIndex === currentPage;
+          {allPosts.map((post: any) => {
             const localTitle   = (getLocalizedField(post, 'title', lang)   ?? post.title)   as string;
             const localExcerpt = (getLocalizedField(post, 'excerpt', lang)  ?? post.excerpt) as string | undefined;
             return (
               <article
                 class="post-card glass reveal"
-                data-page-index={pageIndex}
-                style={isVisible ? "display: flex;" : "display: none;"}
+                data-page-index={currentPage}
+                style="display: flex;"
               >
                 <a href={`/es/insights/${post.slug}`} class="card-image-link" aria-label={localTitle}>
                   <picture>
@@ -487,8 +485,7 @@ const itemListSchema = {
       : parseInt(grid.getAttribute('data-current-page') || '1');
 
     cards.forEach((card) => {
-      const pageIndex = parseInt(card.getAttribute('data-page-index') || '1');
-      (card as HTMLElement).style.display = pageIndex === currentPage ? 'flex' : 'none';
+      (card as HTMLElement).style.display = 'flex';
     });
 
     if (paginationNav) {

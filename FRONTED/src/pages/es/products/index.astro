@@ -3,7 +3,7 @@
 export const prerender = false; // Disable prerendering so SSR handles searchParams (category, mechanism, page)
 
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getAllProducts, urlFor, getLocalizedField } from '../../../lib/sanity';
+import { getProductsPaginated, urlFor, getLocalizedField } from '../../../lib/sanity';
 import { useTranslations } from '../../../i18n/utils';
 
 const lang = 'es';
@@ -13,16 +13,13 @@ const category = Astro.url.searchParams.get('category');
 const mechanism = Astro.url.searchParams.get('mechanism');
 const pageParam = Astro.url.searchParams.get('page');
 
-// Fetch products based on filters
-const allProducts = await getAllProducts(category, mechanism);
-
 // Pagination config
 const PRODUCTS_PER_PAGE = 12;
-const totalProducts = allProducts.length;
+const requestedPage = Math.max(1, parseInt(pageParam ?? '1') || 1);
+const { products, total: totalProducts } = await getProductsPaginated({ category, mechanism, page: requestedPage, pageSize: PRODUCTS_PER_PAGE });
 const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE));
-const currentPage = Math.min(Math.max(1, parseInt(pageParam ?? '1') || 1), totalPages);
+const currentPage = Math.min(requestedPage, totalPages);
 const pageStart = (currentPage - 1) * PRODUCTS_PER_PAGE;
-const products = allProducts.slice(pageStart, pageStart + PRODUCTS_PER_PAGE);
 
 const siteUrl = 'https://ginkvora.com';
 
@@ -214,9 +211,7 @@ const breadcrumbsSchema = {
         </div>
 
         <div id="product-grid" class="product-grid" data-current-page={currentPage}>
-          {allProducts.map((product: any, index) => {
-            const pageIndex = Math.floor(index / PRODUCTS_PER_PAGE) + 1;
-            const isInitiallyVisible = pageIndex === currentPage;
+          {products.map((product: any) => {
             const localShortDesc = (getLocalizedField(product, 'shortDescription', lang) ?? product.shortDescription) as string | undefined;
             return (
               <article
@@ -224,8 +219,8 @@ const breadcrumbsSchema = {
                 data-name={product.name.toLowerCase()}
                 data-cas={product.casNumber ? product.casNumber.toLowerCase() : ''}
                 data-desc={localShortDesc ? localShortDesc.toLowerCase() : ''}
-                data-page-index={pageIndex}
-                style={isInitiallyVisible ? "display: flex;" : "display: none;"}
+                data-page-index={currentPage}
+                style="display: flex;"
               >
                 {product.featured && (
                   <div class="card-featured-badge">{t('products.featured_badge')}</div>
