@@ -7,10 +7,10 @@ import { MOCK_PRODUCTS, MOCK_CATEGORIES, MOCK_POSTS, MOCK_SITE_SETTINGS, MOCK_AU
 // Client Configuration
 // ---------------------------------------------------------------------------
 export const sanityClient = createClient({
-  projectId: import.meta.env.SANITY_PROJECT_ID || 'placeholder',
+  projectId: import.meta.env.SANITY_PROJECT_ID || 'h5gs7zpr',
   dataset: import.meta.env.SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
-  useCdn: import.meta.env.PROD ? true : false,
+  useCdn: true,
   token: import.meta.env.SANITY_API_TOKEN,
 });
 
@@ -18,7 +18,6 @@ export const sanityClient = createClient({
 // In-Memory Query Cache & Circuit Breaker for Astro Build Optimization
 // ---------------------------------------------------------------------------
 const fetchCache = new Map<string, Promise<any>>();
-let isSanityOffline = false;
 
 export async function cachedFetch(query: string, params: Record<string, any> = {}) {
   const key = `${query}::${JSON.stringify(params)}`;
@@ -28,7 +27,8 @@ export async function cachedFetch(query: string, params: Record<string, any> = {
 
   const promise = (async () => {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 2000);
+    const timeoutMs = 10000; // 10 seconds for reliable global CDN / Sanity API responses
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
       const result = await sanityClient.fetch(query, params, { signal: controller.signal });
@@ -45,7 +45,6 @@ export async function cachedFetch(query: string, params: Record<string, any> = {
   fetchCache.set(key, promise);
   return promise;
 }
-
 
 // ---------------------------------------------------------------------------
 // Image URL Builder
@@ -599,7 +598,6 @@ export async function getAllAuthors() {
 // ---------------------------------------------------------------------------
 export { getLocalizedField } from '../i18n/utils';
 
-
 // ---------------------------------------------------------------------------
 // Utility Types (for TypeScript)
 // ---------------------------------------------------------------------------
@@ -793,6 +791,3 @@ export async function getRelatedPostsForProduct(productId: string, categorySlug?
     return MOCK_POSTS.slice(0, 3);
   }
 }
-
-
-

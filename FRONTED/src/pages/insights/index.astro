@@ -85,9 +85,9 @@ const itemListSchema = {
     <header class="page-banner" aria-label="Page Header">
       <div class="banner-gradient"></div>
       <div class="container banner-content">
-        <span class="section-label">Industry Insights</span>
-        <h1 class="banner-title">ECM-Targeted Anti-Aging Research & Ingredient Insights</h1>
-        <p class="banner-desc">
+        <span class="section-label fade-in-up">Industry Insights</span>
+        <h1 class="banner-title fade-in-up delay-1">ECM-Targeted Anti-Aging Research & Ingredient Insights</h1>
+        <p class="banner-desc fade-in-up delay-2">
           In-depth technical spotlights, scientific whitepapers, and regulatory updates for health brand formulary and procurement officers.
         </p>
 
@@ -301,7 +301,7 @@ const itemListSchema = {
   /* ── Banner ── */
   .page-banner {
     position: relative;
-    padding-block: 8rem 4rem;
+    padding-block: 7rem 3.5rem;
     overflow: hidden;
     background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%);
     border-bottom: 1px solid var(--color-border);
@@ -314,8 +314,9 @@ const itemListSchema = {
   }
 
   .banner-title {
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-size: clamp(2rem, 3.8vw, 3.1rem);
     font-weight: 700;
+    line-height: 1.15;
     margin-top: 0.5rem;
     color: var(--color-text);
   }
