@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
-
-const SITE_URL = 'https://ginkvora.com';
+import { SITE_URL, xmlResponse } from '../lib/sitemap';
 
 export const GET: APIRoute = async () => {
   const now = new Date().toISOString();
@@ -8,16 +7,18 @@ export const GET: APIRoute = async () => {
   const indexXml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>${SITE_URL}/sitemap.xml</loc>
+    <loc>${SITE_URL}/sitemap-static.xml</loc>
+    <lastmod>${now}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>${SITE_URL}/sitemap-products.xml</loc>
+    <lastmod>${now}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>${SITE_URL}/sitemap-posts.xml</loc>
     <lastmod>${now}</lastmod>
   </sitemap>
 </sitemapindex>`;
 
-  return new Response(indexXml.trim(), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/xml',
-      'Cache-Control': 'public, max-age=3600'
-    }
-  });
+  return xmlResponse(indexXml);
 };

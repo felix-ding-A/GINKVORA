@@ -18,6 +18,13 @@ export const sanityClient = createClient({
 // In-Memory Query Cache & Circuit Breaker for Astro Build Optimization
 // ---------------------------------------------------------------------------
 const fetchCache = new Map<string, Promise<any>>();
+const canUseMockFallback = import.meta.env.DEV;
+
+function mockOrThrow<T>(fallback: () => T, message: string, cause?: unknown): T {
+  if (canUseMockFallback) return fallback();
+  console.error(`[Sanity API] ${message}`, cause);
+  throw new Error(message);
+}
 
 export async function cachedFetch(query: string, params: Record<string, any> = {}) {
   const key = `${query}::${JSON.stringify(params)}`;
@@ -257,10 +264,9 @@ export async function getAllProducts(category: string | null = null, mechanism: 
   try {
     const data = await cachedFetch(query, queryParams);
     if (data && data.length > 0) return data;
-    return filterMockProducts(MOCK_PRODUCTS, category, mechanism);
+    return mockOrThrow(() => filterMockProducts(MOCK_PRODUCTS, category, mechanism), 'Product catalog returned no published products.');
   } catch (err) {
-    console.warn('Sanity API connection failed, filtering mock data locally.');
-    return filterMockProducts(MOCK_PRODUCTS, category, mechanism);
+    return mockOrThrow(() => filterMockProducts(MOCK_PRODUCTS, category, mechanism), 'Unable to load product catalog.', err);
   }
 }
 
@@ -322,10 +328,9 @@ export async function getFeaturedProducts() {
       }
     `);
     if (data && data.length > 0) return data;
-    return MOCK_PRODUCTS.filter(p => p.featured || (p.weight && p.weight > 0)).sort((a, b) => (b.weight || 0) - (a.weight || 0));
+    return mockOrThrow(() => MOCK_PRODUCTS.filter(p => p.featured || (p.weight && p.weight > 0)).sort((a, b) => (b.weight || 0) - (a.weight || 0)), 'Featured products returned no published data.');
   } catch (err) {
-    console.warn('Sanity API connection failed, using fallback mock data for featured products.');
-    return MOCK_PRODUCTS.filter(p => p.featured || (p.weight && p.weight > 0)).sort((a, b) => (b.weight || 0) - (a.weight || 0));
+    return mockOrThrow(() => MOCK_PRODUCTS.filter(p => p.featured || (p.weight && p.weight > 0)).sort((a, b) => (b.weight || 0) - (a.weight || 0)), 'Unable to load featured products.', err);
   }
 }
 
@@ -346,10 +351,9 @@ export async function getProductBySlug(slug: string) {
       }
       return data;
     }
-    return MOCK_PRODUCTS.find(p => p.slug === slug) || null;
+    return canUseMockFallback ? MOCK_PRODUCTS.find(p => p.slug === slug) || null : null;
   } catch (err) {
-    console.warn(`Sanity API connection failed, looking up fallback product: ${slug}`);
-    return MOCK_PRODUCTS.find(p => p.slug === slug) || null;
+    return mockOrThrow(() => MOCK_PRODUCTS.find(p => p.slug === slug) || null, `Unable to load product ${slug}.`, err);
   }
 }
 
@@ -362,10 +366,9 @@ export async function getProductsByCategory(categorySlug: string) {
       { categorySlug }
     );
     if (data && data.length > 0) return data;
-    return MOCK_PRODUCTS.filter(p => p.category.slug === categorySlug).sort((a, b) => (b.weight || 0) - (a.weight || 0));
+    return mockOrThrow(() => MOCK_PRODUCTS.filter(p => p.category.slug === categorySlug).sort((a, b) => (b.weight || 0) - (a.weight || 0)), 'Product category returned no published data.');
   } catch (err) {
-    console.warn(`Sanity API connection failed, getting fallback products by category: ${categorySlug}`);
-    return MOCK_PRODUCTS.filter(p => p.category.slug === categorySlug);
+    return mockOrThrow(() => MOCK_PRODUCTS.filter(p => p.category.slug === categorySlug), `Unable to load product category ${categorySlug}.`, err);
   }
 }
 
@@ -378,10 +381,9 @@ export async function getAllCategories() {
       }
     `);
     if (data && data.length > 0) return data;
-    return MOCK_CATEGORIES;
+    return mockOrThrow(() => MOCK_CATEGORIES, 'Categories returned no published data.');
   } catch (err) {
-    console.warn('Sanity API connection failed, using fallback mock categories.');
-    return MOCK_CATEGORIES;
+    return mockOrThrow(() => MOCK_CATEGORIES, 'Unable to load categories.', err);
   }
 }
 
@@ -424,10 +426,9 @@ export async function getAllPosts(limit = 10) {
       }
     `);
     if (data && data.length > 0) return data;
-    return MOCK_POSTS.slice(0, limit);
+    return mockOrThrow(() => MOCK_POSTS.slice(0, limit), 'Posts returned no published data.');
   } catch (err) {
-    console.warn('Sanity API connection failed, using fallback blog posts.');
-    return MOCK_POSTS.slice(0, limit);
+    return mockOrThrow(() => MOCK_POSTS.slice(0, limit), 'Unable to load posts.', err);
   }
 }
 
@@ -536,10 +537,9 @@ export async function getPostBySlug(slug: string) {
       { slug }
     );
     if (data) return data;
-    return MOCK_POSTS.find(p => p.slug === slug) || null;
+    return canUseMockFallback ? MOCK_POSTS.find(p => p.slug === slug) || null : null;
   } catch (err) {
-    console.warn(`Sanity API connection failed, finding fallback blog post: ${slug}`);
-    return MOCK_POSTS.find(p => p.slug === slug) || null;
+    return mockOrThrow(() => MOCK_POSTS.find(p => p.slug === slug) || null, `Unable to load post ${slug}.`, err);
   }
 }
 
@@ -554,10 +554,9 @@ export async function getSiteSettings() {
       }
     `);
     if (data) return data;
-    return MOCK_SITE_SETTINGS;
+    return mockOrThrow(() => MOCK_SITE_SETTINGS, 'Site settings returned no published data.');
   } catch (err) {
-    console.warn('Sanity API connection failed, using fallback site settings.');
-    return MOCK_SITE_SETTINGS;
+    return mockOrThrow(() => MOCK_SITE_SETTINGS, 'Unable to load site settings.', err);
   }
 }
 
@@ -586,10 +585,9 @@ export async function getAllAuthors() {
       }
     `);
     if (data && data.length > 0) return data;
-    return MOCK_AUTHORS;
+    return mockOrThrow(() => MOCK_AUTHORS, 'Authors returned no published data.');
   } catch (err) {
-    console.warn('Sanity API connection failed, using fallback mock authors.');
-    return MOCK_AUTHORS;
+    return mockOrThrow(() => MOCK_AUTHORS, 'Unable to load authors.', err);
   }
 }
 
@@ -740,9 +738,9 @@ export async function getRelatedProductsForProduct(productId: string, categorySl
     }`;
     const data = await cachedFetch(query, { productId: productId || '', cslug, cref });
     if (data && data.length > 0) return data;
-    return MOCK_PRODUCTS.filter(p => p._id !== productId && (!categorySlug || p.category?.slug === categorySlug || (p.mainCategories && p.mainCategories.includes(categorySlug)))).slice(0, 3);
+    return mockOrThrow(() => MOCK_PRODUCTS.filter(p => p._id !== productId && (!categorySlug || p.category?.slug === categorySlug || (p.mainCategories && p.mainCategories.includes(categorySlug)))).slice(0, 3), 'Related products returned no published data.');
   } catch (err) {
-    return MOCK_PRODUCTS.filter(p => p._id !== productId).slice(0, 3);
+    return mockOrThrow(() => MOCK_PRODUCTS.filter(p => p._id !== productId).slice(0, 3), 'Unable to load related products.', err);
   }
 }
 
@@ -786,8 +784,8 @@ export async function getRelatedPostsForProduct(productId: string, categorySlug?
     }
 
     if (posts && posts.length > 0) return posts;
-    return MOCK_POSTS.slice(0, 3);
+    return mockOrThrow(() => MOCK_POSTS.slice(0, 3), 'Related posts returned no published data.');
   } catch (err) {
-    return MOCK_POSTS.slice(0, 3);
+    return mockOrThrow(() => MOCK_POSTS.slice(0, 3), 'Unable to load related posts.', err);
   }
 }
