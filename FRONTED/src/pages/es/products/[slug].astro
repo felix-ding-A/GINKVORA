@@ -34,8 +34,16 @@ const categoryRef = Array.isArray(product.category)
   ? product.category[0]?._ref
   : (product.category?._ref || product.categories?.[0]?._ref);
 
-const relatedProducts = await getRelatedProductsForProduct(product._id, categorySlug, categoryRef);
-const relatedPosts = await getRelatedPostsForProduct(product._id, categorySlug, categoryRef);
+const [relatedProductsResult, relatedPostsResult] = await Promise.allSettled([
+  getRelatedProductsForProduct(product._id, categorySlug, categoryRef),
+  getRelatedPostsForProduct(product._id, categorySlug, categoryRef),
+]);
+const relatedProducts = relatedProductsResult.status === 'fulfilled' ? relatedProductsResult.value : [];
+const relatedPosts = relatedPostsResult.status === 'fulfilled' ? relatedPostsResult.value : [];
+
+if (relatedProductsResult.status === 'rejected' || relatedPostsResult.status === 'rejected') {
+  console.warn('[Product page] Related content unavailable; rendering the primary product without it.');
+}
 
 const siteUrl = 'https://ginkvora.com';
 

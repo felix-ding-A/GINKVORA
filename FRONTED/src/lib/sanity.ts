@@ -776,39 +776,20 @@ export async function getRelatedPostsForProduct(productId: string, categorySlug?
     const cslug = categorySlug || '';
     const cref = categoryRef || '';
 
-    // 1. Reverse lookup via relatedProduct._ref
-    const reverseQuery = `*[_type == "post" && relatedProduct._ref == $productId] | order(publishedAt desc)[0...3] {
+    // A single ordered query replaces up to three sequential requests. Exact
+    // product references win, then category matches, then recent posts.
+    const query = `*[_type == "post" && !(_id in path("drafts.**"))] | order(
+      select(
+        relatedProduct._ref == $productId => 0,
+        (($cref != "" && ($cref == category._ref || $cref in category[]._ref))
+          || ($cslug != "" && ($cslug == category->slug.current || $cslug in category[]->slug.current || $cslug in tags))) => 1,
+        2
+      ) asc,
+      publishedAt desc
+    )[0...3] {
       ${POST_FIELDS}
     }`;
-    let posts = await cachedFetch(reverseQuery, { productId: productId || '' });
-    
-    if (!posts) posts = [];
-
-    // 2. Fallback lookup via shared category reference or slug
-    if (posts.length < 3) {
-      const fallbackQuery = `*[_type == "post" && (relatedProduct._ref != $productId || !defined(relatedProduct)) && (
-        ($cref != "" && ($cref == category._ref || $cref in category[]._ref))
-        || ($cslug != "" && ($cslug == category->slug.current || $cslug in category[]->slug.current || $cslug in tags))
-      )] | order(publishedAt desc)[0...3] {
-        ${POST_FIELDS}
-      }`;
-      const fallbackPosts = await cachedFetch(fallbackQuery, { productId: productId || '', cslug, cref });
-      const existingIds = new Set(posts.map((p: any) => p._id));
-      const extra = (fallbackPosts || []).filter((p: any) => !existingIds.has(p._id));
-      posts = [...posts, ...extra].slice(0, 3);
-    }
-
-    // 3. Option B: If still less than 3 posts, fill remaining slots with the latest published Sanity posts
-    if (posts.length < 3) {
-      const existingIds = Array.from(new Set(posts.map((p: any) => p._id).filter(Boolean)));
-      const latestQuery = `*[_type == "post" && !(_id in $existingIds)] | order(publishedAt desc)[0...3] {
-        ${POST_FIELDS}
-      }`;
-      const latestPosts = await cachedFetch(latestQuery, { existingIds });
-      const currentIds = new Set(posts.map((p: any) => p._id));
-      const extraLatest = (latestPosts || []).filter((p: any) => !currentIds.has(p._id));
-      posts = [...posts, ...extraLatest].slice(0, 3);
-    }
+    const posts = await cachedFetch(query, { productId: productId || '', cslug, cref });
 
     if (posts && posts.length > 0) return posts;
     return mockOrThrow(() => MOCK_POSTS.slice(0, 3), 'Related posts returned no published data.');
