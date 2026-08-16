@@ -14,10 +14,35 @@ export const sanityClient = createClient({
   token: import.meta.env.SANITY_API_TOKEN,
 });
 
+// Detail pages are already protected by Vercel ISR. When an ISR regeneration
+// happens, correctness is more important than adding another CDN/cache layer:
+// a just-deleted document or a newly assigned slug must be visible immediately.
+const sanityFreshClient = createClient({
+  projectId: import.meta.env.SANITY_PROJECT_ID || 'h5gs7zpr',
+  dataset: import.meta.env.SANITY_DATASET || 'production',
+  apiVersion: '2024-01-01',
+  useCdn: false,
+  token: import.meta.env.SANITY_API_TOKEN,
+});
+
 // ---------------------------------------------------------------------------
 // In-Memory Query Cache & Circuit Breaker for Astro Build Optimization
 // ---------------------------------------------------------------------------
-const fetchCache = new Map<string, Promise<any>>();
+type FetchCacheEntry = {
+  promise: Promise<any>;
+  expiresAt: number;
+};
+
+// A production build reuses the same catalog queries across many prerendered
+// locale pages, so keep those results for the duration of the build. Runtime
+// serverless instances use a short TTL and therefore cannot retain stale CMS
+// data indefinitely.
+const isBuildProcess = process.env.npm_lifecycle_event === 'build';
+const DEFAULT_FETCH_CACHE_TTL_MS = isBuildProcess
+  ? 30 * 60_000
+  : 60_000;
+const MAX_FETCH_CACHE_ENTRIES = 500;
+const fetchCache = new Map<string, FetchCacheEntry>();
 const canUseMockFallback = import.meta.env.DEV;
 
 function mockOrThrow<T>(fallback: () => T, message: string, cause?: unknown): T {
@@ -26,10 +51,30 @@ function mockOrThrow<T>(fallback: () => T, message: string, cause?: unknown): T 
   throw new Error(message);
 }
 
-export async function cachedFetch(query: string, params: Record<string, any> = {}) {
+export async function cachedFetch(
+  query: string,
+  params: Record<string, any> = {},
+  ttlMs = DEFAULT_FETCH_CACHE_TTL_MS
+) {
   const key = `${query}::${JSON.stringify(params)}`;
-  if (fetchCache.has(key)) {
-    return fetchCache.get(key);
+  const now = Date.now();
+  const cached = fetchCache.get(key);
+
+  if (cached && cached.expiresAt > now) {
+    return cached.promise;
+  }
+
+  fetchCache.delete(key);
+
+  // Remove expired entries and cap the cache so high-cardinality pagination
+  // parameters cannot grow a warm serverless instance without bounds.
+  for (const [cachedKey, entry] of fetchCache) {
+    if (entry.expiresAt <= now) fetchCache.delete(cachedKey);
+  }
+  while (fetchCache.size >= MAX_FETCH_CACHE_ENTRIES) {
+    const oldestKey = fetchCache.keys().next().value;
+    if (typeof oldestKey !== 'string') break;
+    fetchCache.delete(oldestKey);
   }
 
   const promise = (async () => {
@@ -49,8 +94,22 @@ export async function cachedFetch(query: string, params: Record<string, any> = {
     }
   })();
 
-  fetchCache.set(key, promise);
+  fetchCache.set(key, {
+    promise,
+    expiresAt: now + Math.max(0, ttlMs),
+  });
   return promise;
+}
+
+async function freshFetch(query: string, params: Record<string, any> = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 10_000);
+
+  try {
+    return await sanityFreshClient.fetch(query, params, { signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -531,7 +590,10 @@ export async function getPostsPaginated({
 
 export async function getPostBySlug(slug: string) {
   try {
-    const data = await cachedFetch(
+    // Do not use the process-level query cache here. Vercel ISR is the durable
+    // page cache; bypassing Sanity CDN and local memory during regeneration
+    // prevents deleted posts and newly assigned slugs from staying stale.
+    const data = await freshFetch(
       `*[_type == "post" && !(_id in path("drafts.**")) && slug.current == $slug][0] {
         ${POST_FIELDS},
         body,
