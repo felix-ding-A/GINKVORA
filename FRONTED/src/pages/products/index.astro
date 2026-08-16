@@ -251,13 +251,18 @@ const itemListSchema = {
                 <div class="card-image-wrapper">
                   <a href={`/products/${prod.slug}`} class="card-image-link" aria-label={`View details of ${prod.name}`}>
                     <picture style="display: contents;">
-                      <source srcset={urlFor(prod.heroImage).width(800).format('webp').url()} type="image/webp" />
+                      <source
+                        srcset={`${urlFor(prod.heroImage).width(400).format('webp').url()} 400w, ${urlFor(prod.heroImage).width(800).format('webp').url()} 800w`}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+                        type="image/webp"
+                      />
                       <img
-                        src={urlFor(prod.heroImage).width(800).url()}
+                        src={urlFor(prod.heroImage).width(400).url()}
                         alt={prod.name}
                         loading="lazy"
                         width="400"
                         height="300"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
                         class="card-image"
                       />
                     </picture>

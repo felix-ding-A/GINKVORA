@@ -218,6 +218,33 @@ export const PRODUCT_FIELDS = `
   "updatedAt": _updatedAt
 `;
 
+// Catalog routes render only cards, so avoid fetching detail-only fields and
+// all locale payloads beyond the short descriptions used by those cards.
+export const PRODUCT_CARD_FIELDS = `
+  _id,
+  name,
+  "slug": slug.current,
+  "categories": select(
+    defined(category[0]) => category[]->{name, "slug": slug.current},
+    defined(category) => [category->{name, "slug": slug.current}]
+  ),
+  "category": select(
+    defined(category[0]) => category[0]->{name, "slug": slug.current},
+    defined(category) => category->{name, "slug": slug.current}
+  ),
+  botanicalName,
+  purity,
+  casNumber,
+  shortDescription,
+  shortDescription_ru,
+  shortDescription_ar,
+  shortDescription_es,
+  heroImage,
+  mainCategories,
+  antiAgingMechanisms,
+  applicationDisplay
+`;
+
 export const PRODUCT_DETAIL_FIELDS = `
   ${PRODUCT_FIELDS},
   description,
@@ -298,7 +325,7 @@ export async function getProductsPaginated({
 
   try {
     const [products, total] = await Promise.all([
-      cachedFetch(`${filter} | order(coalesce(weight, 0) desc, _updatedAt desc) [$start...$end] { ${PRODUCT_FIELDS} }`, params),
+      cachedFetch(`${filter} | order(coalesce(weight, 0) desc, _updatedAt desc) [$start...$end] { ${PRODUCT_CARD_FIELDS} }`, params),
       cachedFetch(`count(${filter})`, params),
     ]);
     return { products: products || [], total: total || 0 };
