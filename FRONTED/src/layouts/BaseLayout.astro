@@ -4,6 +4,8 @@ import '../styles/global.css';
 import Navbar from '../components/layout/Navbar.astro';
 import Footer from '../components/layout/Footer.astro';
 import BackToTop from '../components/layout/BackToTop.astro';
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import { stripLangPrefix, getDir } from '../i18n/utils';
 import type { Lang } from '../i18n/ui';
 
@@ -147,10 +149,6 @@ const organizationSchema = {
         })(window,document,'script','dataLayer',gtmId);
       </script>
     )}
-
-    <!-- Vercel real-user monitoring: page analytics and Core Web Vitals. -->
-    <script defer src="/_vercel/insights/script.js"></script>
-    <script defer src="/_vercel/speed-insights/script.js"></script>
 
     <!-- Primary Meta -->
     <title>{fullTitle}</title>
@@ -553,6 +551,10 @@ const organizationSchema = {
         });
       })();
     </script>
+
+    <!-- Vercel real-user monitoring, using the Astro-specific integrations. -->
+    <Analytics />
+    <SpeedInsights />
   </body>
 </html>
 
