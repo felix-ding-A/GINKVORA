@@ -20,6 +20,7 @@ const json = (body: Record<string, unknown>, status = 200) =>
 export const POST: APIRoute = async ({ request }) => {
   const secret = import.meta.env.SANITY_REVALIDATE_SECRET;
   const bypassToken = import.meta.env.ISR_BYPASS_TOKEN;
+  const protectionBypass = import.meta.env.REVALIDATE_PROTECTION_BYPASS;
 
   if (!secret || !bypassToken) {
     console.error('[Revalidate] Missing SANITY_REVALIDATE_SECRET or ISR_BYPASS_TOKEN.');
@@ -56,7 +57,10 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     const response = await fetch(target, {
-      headers: { 'x-prerender-revalidate': bypassToken },
+      headers: {
+        'x-prerender-revalidate': bypassToken,
+        ...(protectionBypass ? { 'x-vercel-protection-bypass': protectionBypass } : {}),
+      },
       cache: 'no-store',
       signal: AbortSignal.timeout(10_000),
     });
