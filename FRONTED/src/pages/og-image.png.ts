@@ -1,12 +1,16 @@
 // src/pages/og-image.png.ts — Dynamic OG image generator using Satori
 import type { APIRoute } from 'astro';
 import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 
 // Satori runs without system fonts in Vercel Functions, so load bundled fonts.
-const regularFont = readFile(new URL('../../public/fonts/dm-sans-normal-400.ttf', import.meta.url));
-const semiboldFont = readFile(new URL('../../public/fonts/dm-sans-normal-600.ttf', import.meta.url));
+// Vercel exposes files forced through `includeFiles` from the function root,
+// whereas the compiled server chunks live under `dist/server`.
+const fontDirectory = join(process.cwd(), 'public', 'fonts');
+const regularFont = readFile(join(fontDirectory, 'dm-sans-normal-400.ttf'));
+const semiboldFont = readFile(join(fontDirectory, 'dm-sans-normal-600.ttf'));
 
 export const GET: APIRoute = async ({ url }) => {
   const title = url.searchParams.get('title') || 'GINKVORA';
