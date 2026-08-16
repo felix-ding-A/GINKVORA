@@ -1,7 +1,12 @@
 // src/pages/og-image.png.ts — Dynamic OG image generator using Satori
 import type { APIRoute } from 'astro';
+import { readFile } from 'node:fs/promises';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
+
+// Satori runs without system fonts in Vercel Functions, so load bundled fonts.
+const regularFont = readFile(new URL('../../public/fonts/dm-sans-normal-400.ttf', import.meta.url));
+const semiboldFont = readFile(new URL('../../public/fonts/dm-sans-normal-600.ttf', import.meta.url));
 
 export const GET: APIRoute = async ({ url }) => {
   const title = url.searchParams.get('title') || 'GINKVORA';
@@ -10,6 +15,7 @@ export const GET: APIRoute = async ({ url }) => {
 
   // Truncate long titles
   const displayTitle = title.length > 60 ? title.slice(0, 57) + '…' : title;
+  const [regularFontData, semiboldFontData] = await Promise.all([regularFont, semiboldFont]);
 
   const svg = await satori(
     {
@@ -24,7 +30,7 @@ export const GET: APIRoute = async ({ url }) => {
           padding: '60px 72px',
           backgroundColor: '#060503',
           backgroundImage: 'radial-gradient(ellipse at 80% 20%, rgba(212,166,84,0.12) 0%, transparent 60%)',
-          fontFamily: 'sans-serif',
+          fontFamily: 'DM Sans',
           position: 'relative',
         },
         children: [
@@ -54,8 +60,8 @@ export const GET: APIRoute = async ({ url }) => {
                       {
                         type: 'span',
                         props: {
-                          style: { fontSize: '20px' },
-                          children: '🌿',
+                          style: { fontSize: '20px', fontWeight: '600', color: '#060503' },
+                          children: 'G',
                         },
                       },
                     ],
@@ -66,7 +72,7 @@ export const GET: APIRoute = async ({ url }) => {
                   props: {
                     style: {
                       fontSize: '22px',
-                      fontWeight: '700',
+                      fontWeight: '600',
                       color: '#d4a654',
                       letterSpacing: '0.06em',
                     },
@@ -93,12 +99,12 @@ export const GET: APIRoute = async ({ url }) => {
                   type: 'div',
                   props: {
                     style: {
-                      display: 'inline-flex',
+                      display: 'flex',
+                      alignSelf: 'flex-start',
                       padding: '6px 16px',
                       backgroundColor: 'rgba(212,166,84,0.12)',
                       border: '1px solid rgba(212,166,84,0.3)',
                       borderRadius: '4px',
-                      width: 'fit-content',
                     },
                     children: [
                       {
@@ -122,7 +128,7 @@ export const GET: APIRoute = async ({ url }) => {
                   props: {
                     style: {
                       fontSize: displayTitle.length > 40 ? '48px' : '60px',
-                      fontWeight: '700',
+                      fontWeight: '600',
                       color: '#f0e8d8',
                       lineHeight: '1.15',
                       margin: '0',
@@ -185,7 +191,10 @@ export const GET: APIRoute = async ({ url }) => {
     {
       width: 1200,
       height: 630,
-      fonts: [], // using system sans-serif fallback
+      fonts: [
+        { name: 'DM Sans', data: regularFontData, weight: 400, style: 'normal' },
+        { name: 'DM Sans', data: semiboldFontData, weight: 600, style: 'normal' },
+      ],
     }
   );
 
