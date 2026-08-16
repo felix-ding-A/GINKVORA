@@ -12,6 +12,10 @@ export default defineConfig({
   trailingSlash: 'never',
   output: 'server',
   adapter: vercel({
+    includeFiles: [
+      'public/fonts/dm-sans-normal-400.ttf',
+      'public/fonts/dm-sans-normal-600.ttf',
+    ],
     isr: {
       // Phased rollout: only the English insights detail route uses ISR for now.
       expiration: 60 * 60 * 24 * 7,
