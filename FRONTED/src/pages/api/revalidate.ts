@@ -22,6 +22,8 @@ type RevalidationTarget = {
   expectedToBeMissing: boolean;
 };
 
+const POST_LOCALE_PREFIXES = ['', '/ru', '/ar', '/es'] as const;
+
 const normalizeSlug = (value?: string | { current?: string }) =>
   typeof value === 'string' ? value : value?.current;
 
@@ -98,14 +100,13 @@ export const POST: APIRoute = async ({ request }) => {
     }
   }
 
-  const targetsBySlug = new Map<string, RevalidationTarget>();
+  const targetsByPathname = new Map<string, RevalidationTarget>();
   const addTarget = (slug: string | undefined, expectedToBeMissing: boolean) => {
     if (!isValidSlug(slug)) return;
-    targetsBySlug.set(slug, {
-      slug,
-      pathname: `/insights/${encodeURIComponent(slug)}`,
-      expectedToBeMissing,
-    });
+    for (const localePrefix of POST_LOCALE_PREFIXES) {
+      const pathname = `${localePrefix}/insights/${encodeURIComponent(slug)}`;
+      targetsByPathname.set(pathname, { slug, pathname, expectedToBeMissing });
+    }
   };
 
   if (beforeSlug || afterSlug) {
@@ -115,7 +116,7 @@ export const POST: APIRoute = async ({ request }) => {
     addTarget(legacySlug, false);
   }
 
-  const targets = [...targetsBySlug.values()];
+  const targets = [...targetsByPathname.values()];
   if (targets.length === 0) {
     return json({ ok: false, error: 'At least one valid post slug is required.' }, 422);
   }
@@ -125,7 +126,9 @@ export const POST: APIRoute = async ({ request }) => {
   const removed: string[] = [];
 
   try {
-    for (const item of targets) {
+    // Each localized route has its own ISR entry. Refresh them concurrently so
+    // a four-language slug change does not turn into eight sequential waits.
+    const results = await Promise.all(targets.map(async (item) => {
       const target = new URL(item.pathname, origin);
       const response = await fetch(target, {
         headers: {
@@ -137,6 +140,10 @@ export const POST: APIRoute = async ({ request }) => {
         signal: AbortSignal.timeout(10_000),
       });
 
+      return { item, response };
+    }));
+
+    for (const { item, response } of results) {
       if (response.ok) {
         revalidated.push(item.pathname);
         console.info(`[Revalidate] Revalidated ${item.pathname}.`);

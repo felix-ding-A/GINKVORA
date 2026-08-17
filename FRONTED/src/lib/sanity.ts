@@ -668,13 +668,20 @@ export async function rememberPostPreviousSlug(
     { documentId: publishedId }
   );
 
-  if (existing?.includes(beforeSlug)) return false;
+  // If an editor reuses a historical slug, it becomes current again and must
+  // be removed from redirect history. All older slugs still redirect directly
+  // to the latest current slug, avoiding redirect chains.
+  const previousSlugs = [...new Set([
+    ...(existing || []).filter((slug) => slug !== afterSlug),
+    beforeSlug,
+  ])];
+
+  if (JSON.stringify(previousSlugs) === JSON.stringify(existing || [])) return false;
 
   await sanityFreshClient
     .withConfig({ token: writeToken, useCdn: false })
     .patch(publishedId)
-    .setIfMissing({ previousSlugs: [] })
-    .append('previousSlugs', [beforeSlug])
+    .set({ previousSlugs })
     .commit();
 
   return true;
