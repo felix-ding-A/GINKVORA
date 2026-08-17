@@ -1,9 +1,13 @@
 import type { APIRoute } from 'astro';
 import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
+import { rememberPostPreviousSlug } from '../../lib/sanity';
 
 export const prerender = false;
 
 type RevalidationPayload = {
+  // Sanity webhook Projection must include the published document ID so a
+  // slug change can be persisted as a durable redirect before ISR refreshes.
+  _id?: string;
   _type?: string;
   beforeSlug?: string | { current?: string };
   afterSlug?: string | { current?: string };
@@ -75,6 +79,24 @@ export const POST: APIRoute = async ({ request }) => {
             ? 'create'
             : 'update'
       );
+
+  if (operation === 'slug-change') {
+    if (!payload._id || !beforeSlug || !afterSlug) {
+      return json({ ok: false, error: 'Slug changes require _id, beforeSlug and afterSlug.' }, 422);
+    }
+
+    try {
+      const recorded = await rememberPostPreviousSlug(payload._id, beforeSlug, afterSlug);
+      console.info(
+        recorded
+          ? `[Revalidate] Recorded previous slug ${beforeSlug} for ${afterSlug}.`
+          : `[Revalidate] Previous slug ${beforeSlug} was already recorded.`
+      );
+    } catch (error) {
+      console.error('[Revalidate] Unable to record the previous slug in Sanity.', error);
+      return json({ ok: false, error: 'Unable to persist the previous slug redirect.' }, 502);
+    }
+  }
 
   const targetsBySlug = new Map<string, RevalidationTarget>();
   const addTarget = (slug: string | undefined, expectedToBeMissing: boolean) => {

@@ -3,7 +3,7 @@
 export const prerender = false;
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getAllPosts, getPostBySlug, urlFor, getLocalizedField } from '../../lib/sanity';
+import { getAllPosts, getPostBySlug, getPostRedirectByPreviousSlug, urlFor, getLocalizedField } from '../../lib/sanity';
 import PortableText from '../../components/PortableText.astro';
 import { useTranslations, getLocalePath } from '../../i18n/utils';
 import type { Lang } from '../../i18n/utils';
@@ -20,6 +20,15 @@ Astro.response.headers.set(
 );
 
 const post = await getPostBySlug(slug);
+
+if (!post) {
+  const redirect = slug ? await getPostRedirectByPreviousSlug(slug) : null;
+  if (redirect?.slug && redirect.slug !== slug) {
+    return Astro.redirect(`/insights/${redirect.slug}`, 308);
+  }
+  return Astro.redirect('/404');
+}
+
 const posts = await getAllPosts(10);
 
 // Filter related posts sharing tags with current post, or fallback to latest posts
@@ -34,10 +43,6 @@ const relatedPosts = posts
 const finalRelatedPosts = relatedPosts.length >= 2
   ? relatedPosts
   : posts.filter((p: any) => p && p.slug !== slug).slice(0, 3);
-
-if (!post) {
-  return Astro.redirect('/404');
-}
 
 const lang = 'en';
 const t = useTranslations(lang as Lang);
@@ -1194,4 +1199,3 @@ const breadcrumbSchema = {
     }
   });
 </script>
-
