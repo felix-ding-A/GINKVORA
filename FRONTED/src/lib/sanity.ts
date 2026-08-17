@@ -657,6 +657,11 @@ export async function rememberPostPreviousSlug(
 ) {
   if (!documentId || !beforeSlug || beforeSlug === afterSlug) return false;
 
+  const writeToken = import.meta.env.SANITY_REDIRECT_WRITE_TOKEN;
+  if (!writeToken) {
+    throw new Error('SANITY_REDIRECT_WRITE_TOKEN is not configured.');
+  }
+
   const publishedId = documentId.replace(/^drafts\./, '');
   const existing = await sanityFreshClient.fetch<string[] | null>(
     `*[_id == $documentId][0].previousSlugs`,
@@ -666,6 +671,7 @@ export async function rememberPostPreviousSlug(
   if (existing?.includes(beforeSlug)) return false;
 
   await sanityFreshClient
+    .withConfig({ token: writeToken, useCdn: false })
     .patch(publishedId)
     .setIfMissing({ previousSlugs: [] })
     .append('previousSlugs', [beforeSlug])
