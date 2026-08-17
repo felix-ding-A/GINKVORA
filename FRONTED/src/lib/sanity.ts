@@ -632,6 +632,48 @@ export async function getPostBySlug(slug: string) {
   }
 }
 
+export async function getPostRedirectByPreviousSlug(slug: string) {
+  try {
+    return await freshFetch(
+      `*[
+        _type == "post" &&
+        !(_id in path("drafts.**")) &&
+        $slug in coalesce(previousSlugs, [])
+      ][0] {
+        "slug": slug.current
+      }`,
+      { slug }
+    ) as { slug?: string } | null;
+  } catch (err) {
+    console.error(`[Sanity] Unable to resolve previous post slug "${slug}".`, err);
+    return null;
+  }
+}
+
+export async function rememberPostPreviousSlug(
+  documentId: string,
+  beforeSlug: string,
+  afterSlug: string
+) {
+  if (!documentId || !beforeSlug || beforeSlug === afterSlug) return false;
+
+  const publishedId = documentId.replace(/^drafts\./, '');
+  const existing = await sanityFreshClient.fetch<string[] | null>(
+    `*[_id == $documentId][0].previousSlugs`,
+    { documentId: publishedId }
+  );
+
+  if (existing?.includes(beforeSlug)) return false;
+
+  await sanityFreshClient
+    .patch(publishedId)
+    .setIfMissing({ previousSlugs: [] })
+    .append('previousSlugs', [beforeSlug])
+    .commit();
+
+  return true;
+}
+
 // Site settings
 export async function getSiteSettings() {
   try {

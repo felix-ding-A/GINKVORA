@@ -30,6 +30,17 @@ export const postType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'previousSlugs',
+      title: 'Previous Slugs (Automatic SEO Redirects)',
+      type: 'array',
+      group: 'seo',
+      readOnly: true,
+      hidden: ({ value }) => !Array.isArray(value) || value.length === 0,
+      description: 'Automatically maintained after publishing a slug change. Every old URL permanently redirects to the current slug.',
+      of: [defineArrayMember({ type: 'string' })],
+      validation: (Rule) => Rule.unique(),
+    }),
+    defineField({
       name: 'author',
       title: 'Author',
       type: 'reference',
