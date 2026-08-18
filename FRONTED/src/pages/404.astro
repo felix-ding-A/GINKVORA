@@ -1,6 +1,8 @@
 ---
 // src/pages/404.astro — Premium B2B 404 Error Page
-export const prerender = true;
+// Keep this route on-demand so missing ISR pages can rewrite to it while
+// preserving a true HTTP 404 status on the original URL.
+export const prerender = false;
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
