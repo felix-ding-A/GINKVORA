@@ -27,6 +27,7 @@ export default defineConfig({
         '/es/insights/[slug]', '/ru/insights/[slug]', '/ar/insights/[slug]',
         '/contact', '/es/contact', '/ru/contact', '/ar/contact',
         '/thank-you', '/es/thank-you', '/ru/thank-you', '/ar/thank-you',
+        '/404',
         '/sitemap.xml', '/sitemap-index.xml', '/sitemap-static.xml',
         '/sitemap-products.xml', '/sitemap-posts.xml',
         /^\/api\/.+/,

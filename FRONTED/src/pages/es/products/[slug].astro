@@ -27,7 +27,7 @@ if (!product) {
   if (redirect?.slug && redirect.slug !== slug) {
     return Astro.redirect(`/es/products/${redirect.slug}`, 308);
   }
-  return Astro.redirect('/404');
+  return Astro.rewrite('/404');
 }
 
 const categorySlug = Array.isArray(product.category)
