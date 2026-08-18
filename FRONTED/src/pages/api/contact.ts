@@ -1,6 +1,7 @@
 // src/pages/api/contact.ts — Contact form API endpoint (Resend)
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
+import { waitUntil } from '@vercel/functions';
 import { persistLead, updateLeadDelivery } from '../../lib/leadStorage';
 
 export const prerender = false; // SSR endpoint
@@ -75,7 +76,11 @@ export const POST: APIRoute = async ({ request }) => {
     // Fetch real location from ip-api via HTTPS if it is a public IP
     if (ip !== 'Unknown' && ip !== '127.0.0.1' && ip !== '::1' && !ip.startsWith('192.168.') && !ip.startsWith('10.')) {
       try {
-        const geoRes = await fetch(`https://ip-api.com/json/${ip}`);
+        // Geo enrichment is optional. Never let a slow third-party lookup
+        // delay a valid RFQ; Vercel/Cloudflare headers remain the fallback.
+        const geoRes = await fetch(`https://ip-api.com/json/${ip}`, {
+          signal: AbortSignal.timeout(1200),
+        });
         if (geoRes.ok) {
           const geoData = await geoRes.json();
           if (geoData.status === 'success') {
@@ -174,8 +179,7 @@ export const POST: APIRoute = async ({ request }) => {
     await persistLead({ submissionId, formType: 'contact', name, email, phone, company, sourcePage: referer, interest, message, industry, productName, quantity });
 
     // --- Send notification to GINKVORA team ---
-    try {
-    await resend.emails.send({
+    const teamEmailPromise = resend.emails.send({
       from: FROM_EMAIL,
       to: TO_EMAIL,
       replyTo: email,
@@ -248,17 +252,9 @@ export const POST: APIRoute = async ({ request }) => {
         </html>
       `,
     });
-      await updateLeadDelivery(submissionId, { teamEmailStatus: 'sent' });
-    } catch (notificationError) {
-      console.error(`[Lead] Team notification failed for ${submissionId}:`, notificationError);
-      await updateLeadDelivery(submissionId, { status: 'email_failed', teamEmailStatus: 'failed' }).catch(console.error);
-      return new Response(JSON.stringify({ success: true, pending: true, message: 'Inquiry received and queued for follow-up.' }), { status: 202, headers: { 'Content-Type': 'application/json' } });
-    }
 
     // --- Send auto-reply to the customer ---
-    let autoReplySent = false;
-    try {
-      await resend.emails.send({
+    const autoReplyPromise = resend.emails.send({
         from: FROM_EMAIL,
         to: email,
         subject: `We received your inquiry — GINKVORA`,
@@ -301,13 +297,23 @@ export const POST: APIRoute = async ({ request }) => {
           </html>
         `,
       });
-      autoReplySent = true;
-    } catch (autoReplyError) {
-      console.warn('Auto-reply email failed to send (likely due to Resend sandbox/domain verification limits):', autoReplyError);
-      await updateLeadDelivery(submissionId, { autoReplyStatus: 'failed' }).catch(console.error);
-    }
 
-    if (autoReplySent) await updateLeadDelivery(submissionId, { autoReplyStatus: 'sent' }).catch(console.error);
+    const deliveryTask = Promise.allSettled([teamEmailPromise, autoReplyPromise]).then(async ([teamEmailResult, autoReplyResult]) => {
+      if (teamEmailResult.status === 'rejected') {
+        console.error(`[Lead] Team notification failed for ${submissionId}:`, teamEmailResult.reason);
+        await updateLeadDelivery(submissionId, { status: 'email_failed', teamEmailStatus: 'failed' }).catch(console.error);
+      } else {
+        await updateLeadDelivery(submissionId, { teamEmailStatus: 'sent' }).catch(console.error);
+      }
+      if (autoReplyResult.status === 'rejected') {
+        console.warn('Auto-reply email failed to send:', autoReplyResult.reason);
+        await updateLeadDelivery(submissionId, { autoReplyStatus: 'failed' }).catch(console.error);
+      } else {
+        await updateLeadDelivery(submissionId, { autoReplyStatus: 'sent' }).catch(console.error);
+      }
+    });
+    if (waitUntil) waitUntil(deliveryTask);
+    else await deliveryTask;
 
     return new Response(
       JSON.stringify({ success: true, message: 'Inquiry received!' }),

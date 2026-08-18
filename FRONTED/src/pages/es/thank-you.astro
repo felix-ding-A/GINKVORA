@@ -1,6 +1,7 @@
 ---
 // src/pages/es/thank-you.astro — Spanish B2B Thank-You Page
-export const prerender = false; // Disable prerendering to support dynamic content updates
+// This confirmation page is shared by all visitors, so serve a static response.
+export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPostsPaginated, urlFor, getLocalizedField, MOCK_POSTS } from '../../lib/sanity';
 
