@@ -63,12 +63,16 @@
     { "source": "/media/files/:path*", "destination": "https://files.sanity.io/:path*" }
   ],
   "redirects": [
+    { "source": "/blog/egcg-98-percent-green-tea-extract", "destination": "/insights/green-tea-extract-egcg-98-percent-ingredient", "permanent": true },
+    { "source": "/blog/glabridin-complete-guide-benefits-mechanism", "destination": "/insights/glabridin-complete-guide", "permanent": true },
+    { "source": "/blog/palmitoyl-tripeptide-38-matrixyl-synthe-6", "destination": "/products/palmitoyl-tripeptide-38", "permanent": true },
+    { "source": "/blog/phloretin", "destination": "/products/phloretin", "permanent": true },
     { "source": "/blog/:path*", "destination": "/insights/:path*", "permanent": true },
-    { "source": "/es/ru/:path*", "destination": "/ru/:path*", "permanent": true },
-    { "source": "/ar/ru/:path*", "destination": "/ru/:path*", "permanent": true },
+    { "source": "/es/ru/:path*", "destination": "/es/:path*", "permanent": true },
+    { "source": "/ar/ru/:path*", "destination": "/ar/:path*", "permanent": true },
     { "source": "/ru/ru/:path*", "destination": "/ru/:path*", "permanent": true },
-    { "source": "/es/ru", "destination": "/ru", "permanent": true },
-    { "source": "/ar/ru", "destination": "/ru", "permanent": true },
+    { "source": "/es/ru", "destination": "/es", "permanent": true },
+    { "source": "/ar/ru", "destination": "/ar", "permanent": true },
     { "source": "/ru/ru", "destination": "/ru", "permanent": true },
     { "source": "/formulator", "destination": "/calculator", "permanent": true },
     { "source": "/es/formulator", "destination": "/es/calculator", "permanent": true },
@@ -98,6 +102,14 @@
     { "source": "/es/products/glabridin-40", "destination": "/es/products/glabridin", "permanent": true },
     { "source": "/ar/products/glabridin-40", "destination": "/ar/products/glabridin", "permanent": true },
     { "source": "/insights/quercetin-senolytic-aging", "destination": "/insights/quercetin-senolytic-anti-aging", "permanent": true },
+
+    { "source": "/insights/glabridin-12-week-transformation-timeline", "destination": "/insights/glabridin-12-week-timeline", "permanent": true },
+    { "source": "/insights/glabridin-benefits-whitening-mechanism-clinical-evidence", "destination": "/insights/glabridin-complete-guide", "permanent": true },
+
+    { "source": "/insights/mitochondrial-health-pqq-science", "destination": "/insights/pqq-mitochondrial-health-market-trend", "permanent": true },
+    { "source": "/ru/insights/mitochondrial-health-pqq-science", "destination": "/ru/insights/pqq-mitochondrial-health-market-trend", "permanent": true },
+    { "source": "/es/insights/mitochondrial-health-pqq-science", "destination": "/es/insights/pqq-mitochondrial-health-market-trend", "permanent": true },
+    { "source": "/ar/insights/mitochondrial-health-pqq-science", "destination": "/ar/insights/pqq-mitochondrial-health-market-trend", "permanent": true },
 
     { "source": "/Featured%20Formulas", "destination": "/featured-formulas", "permanent": true },
     { "source": "/ru/Featured%20Formulas", "destination": "/ru/featured-formulas", "permanent": true },
@@ -137,11 +149,6 @@
     { "source": "/products/luteolin-98", "destination": "/products/luteolin", "permanent": true },
     { "source": "/ru/products/luteolin-98", "destination": "/ru/products/luteolin", "permanent": true },
     { "source": "/es/products/luteolin-98", "destination": "/es/products/luteolin", "permanent": true },
-    { "source": "/ar/products/luteolin-98", "destination": "/ar/products/luteolin", "permanent": true },
-
-    { "source": "/blog/phloretin", "destination": "/insights", "permanent": true },
-    { "source": "/blog/glabridin-complete-guide-benefits-mechanism", "destination": "/insights", "permanent": true },
-    { "source": "/blog/palmitoyl-tripeptide-38-matrixyl-synthe-6", "destination": "/insights", "permanent": true },
-    { "source": "/blog/egcg-98-percent-green-tea-extract", "destination": "/insights", "permanent": true }
+    { "source": "/ar/products/luteolin-98", "destination": "/ar/products/luteolin", "permanent": true }
   ]
 }
