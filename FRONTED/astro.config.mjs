@@ -17,13 +17,13 @@ export default defineConfig({
       'public/fonts/dm-sans-normal-600.ttf',
     ],
     isr: {
-      // Phased rollout: only the English insights detail route uses ISR for now.
+      // Detail pages are generated on demand and refreshed through the signed
+      // Sanity webhook. Keep listing, utility, and API routes out of ISR.
       expiration: 60 * 60 * 24 * 7,
       bypassToken: process.env.ISR_BYPASS_TOKEN,
       exclude: [
         '/products', '/es/products', '/ru/products', '/ar/products',
         '/insights', '/es/insights', '/ru/insights', '/ar/insights',
-        '/products/[slug]', '/es/products/[slug]', '/ru/products/[slug]', '/ar/products/[slug]',
         '/es/insights/[slug]', '/ru/insights/[slug]', '/ar/insights/[slug]',
         '/contact', '/es/contact', '/ru/contact', '/ar/contact',
         '/thank-you', '/es/thank-you', '/ru/thank-you', '/ar/thank-you',
