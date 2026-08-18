@@ -13,9 +13,10 @@ export function sitemapUrl(path: string, locale: string) {
 }
 
 export function alternateLinks(path: string) {
-  return LOCALES.map((locale) =>
+  return [...LOCALES.map((locale) =>
     `<xhtml:link rel="alternate" hreflang="${locale}" href="${sitemapUrl(path, locale)}" />`,
-  ).join('\n    ');
+  ), `<xhtml:link rel="alternate" hreflang="x-default" href="${sitemapUrl(path, 'en')}" />`]
+    .join('\n    ');
 }
 
 export function xmlResponse(xml: string) {

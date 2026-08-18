@@ -356,6 +356,22 @@ export async function getAllProducts(category: string | null = null, mechanism: 
   }
 }
 
+// Sitemap queries stay deliberately small and only expose URLs that can be
+// indexed. Explicit filters keep authenticated Sanity clients from ever
+// leaking drafts, incomplete documents, or future-scheduled posts.
+export async function getSitemapProducts() {
+  return cachedFetch(`
+    *[
+      _type == "product" &&
+      !(_id in path("drafts.**")) &&
+      defined(slug.current)
+    ] | order(_updatedAt desc) {
+      "slug": slug.current,
+      "updatedAt": _updatedAt
+    }
+  `);
+}
+
 export async function getProductsPaginated({
   category = null,
   mechanism = null,
@@ -590,6 +606,21 @@ export async function getAllPosts(limit = 10) {
   } catch (err) {
     return mockOrThrow(() => MOCK_POSTS.slice(0, limit), 'Unable to load posts.', err);
   }
+}
+
+export async function getSitemapPosts(limit = 10_000) {
+  return cachedFetch(`
+    *[
+      _type == "post" &&
+      !(_id in path("drafts.**")) &&
+      defined(slug.current) &&
+      (!defined(publishedAt) || publishedAt <= now())
+    ] | order(publishedAt desc) [0...${limit}] {
+      "slug": slug.current,
+      publishedAt,
+      "updatedAt": coalesce(updatedAt, _updatedAt)
+    }
+  `);
 }
 
 export async function getPostsPaginated({
