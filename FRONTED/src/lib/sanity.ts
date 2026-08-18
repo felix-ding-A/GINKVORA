@@ -494,6 +494,59 @@ export async function getAllCategories() {
   }
 }
 
+export async function getNavigationData() {
+  try {
+    const data = await cachedFetch(`{
+      "categories": *[_type == "category"] | order(order asc) {
+        _id, name, "slug": slug.current
+      },
+      "products": *[_type == "product" && !(_id in path("drafts.**"))] {
+        _id,
+        "slug": slug.current,
+        name,
+        name_ru,
+        name_ar,
+        name_es,
+        purity,
+        casNumber,
+        botanicalName,
+        shortDescription,
+        shortDescription_ru,
+        shortDescription_ar,
+        shortDescription_es,
+        heroImage
+      },
+      "posts": *[_type == "post" && !(_id in path("drafts.**"))]
+        | order(publishedAt desc) [0...10] {
+          _id,
+          "slug": slug.current,
+          title,
+          title_ru,
+          title_ar,
+          title_es,
+          excerpt,
+          excerpt_ru,
+          excerpt_ar,
+          excerpt_es,
+          tags,
+          mainImage,
+          coverImage
+        }
+    }`);
+
+    return {
+      categories: Array.isArray(data?.categories) ? data.categories : [],
+      products: Array.isArray(data?.products) ? data.products : [],
+      posts: Array.isArray(data?.posts) ? data.posts : [],
+    };
+  } catch (err) {
+    // Navigation search is optional UI. A temporary CMS outage must not turn
+    // an otherwise valid cached content page into a 500 response.
+    console.warn('[Navigation] Sanity data unavailable; rendering without dynamic search data.', err);
+    return { categories: [], products: [], posts: [] };
+  }
+}
+
 // Blog Posts
 export const POST_FIELDS = `
   _id,

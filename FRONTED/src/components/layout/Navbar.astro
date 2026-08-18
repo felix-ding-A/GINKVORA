@@ -2,7 +2,7 @@
 // Navbar.astro — Responsive navigation with language switcher
 import { useTranslations, getLocalePath, getAlternatePaths, languages } from '../../i18n/utils';
 import type { Lang } from '../../i18n/utils';
-import { getAllCategories, getAllProducts, getAllPosts } from '../../lib/sanity';
+import { getNavigationData } from '../../lib/sanity';
 import SearchModal from './SearchModal.vue';
 
 interface Props {
@@ -16,10 +16,10 @@ const t = useTranslations(typedLang);
 // Build localized nav link hrefs
 const lp = (path: string) => getLocalePath(typedLang, path);
 
-// Fetch data dynamically
-const categories = await getAllCategories();
-const rawProducts = await getAllProducts();
-const rawPosts = await getAllPosts();
+// One lightweight query replaces three sequential full-content queries. The
+// helper degrades safely if Sanity is temporarily unavailable, so navigation
+// search never blocks the primary page content.
+const { categories, products: rawProducts, posts: rawPosts } = await getNavigationData();
 
 const allProducts = (rawProducts || []).map((p: any) => ({
   _id: p._id,
