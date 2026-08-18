@@ -194,8 +194,7 @@ export const POST: APIRoute = async ({ request }) => {
     await persistLead({ submissionId, formType: 'coa', name, email, phone, company, sourcePage: referer, productName, role, demand, application: Array.isArray(application) ? application : [], coaUrl });
 
     // --- Send notification to GINKVORA team ---
-    try {
-    await resend.emails.send({
+    const teamEmailPromise = resend.emails.send({
       from: FROM_EMAIL,
       to: TO_EMAIL,
       replyTo: email,
@@ -296,17 +295,9 @@ export const POST: APIRoute = async ({ request }) => {
         </html>
       `,
     });
-      await updateLeadDelivery(submissionId, { teamEmailStatus: 'sent' });
-    } catch (notificationError) {
-      console.error(`[Lead] Team notification failed for ${submissionId}:`, notificationError);
-      await updateLeadDelivery(submissionId, { status: 'email_failed', teamEmailStatus: 'failed' }).catch(console.error);
-      return new Response(JSON.stringify({ success: true, pending: true, message: 'Lead captured and queued for follow-up.' }), { status: 202, headers: { 'Content-Type': 'application/json' } });
-    }
 
     // --- Send auto-reply to the customer with direct COA download link ---
-    let autoReplySent = false;
-    try {
-      await resend.emails.send({
+    const autoReplyPromise = resend.emails.send({
         from: FROM_EMAIL,
         to: email,
         subject: `Your requested COA for ${escapeHtml(productName)} — GINKVORA`,
@@ -352,13 +343,20 @@ export const POST: APIRoute = async ({ request }) => {
           </html>
         `,
       });
-      autoReplySent = true;
-    } catch (autoReplyError) {
-      console.warn('Auto-reply email failed to send (likely due to Resend sandbox/domain verification limits):', autoReplyError);
-      await updateLeadDelivery(submissionId, { autoReplyStatus: 'failed' }).catch(console.error);
-    }
 
-    if (autoReplySent) await updateLeadDelivery(submissionId, { autoReplyStatus: 'sent' }).catch(console.error);
+    const [teamEmailResult, autoReplyResult] = await Promise.allSettled([teamEmailPromise, autoReplyPromise]);
+    if (teamEmailResult.status === 'rejected') {
+      console.error(`[Lead] Team notification failed for ${submissionId}:`, teamEmailResult.reason);
+      await updateLeadDelivery(submissionId, { status: 'email_failed', teamEmailStatus: 'failed' }).catch(console.error);
+      return new Response(JSON.stringify({ success: true, pending: true, message: 'Lead captured and queued for follow-up.' }), { status: 202, headers: { 'Content-Type': 'application/json' } });
+    }
+    await updateLeadDelivery(submissionId, { teamEmailStatus: 'sent' }).catch(console.error);
+    if (autoReplyResult.status === 'rejected') {
+      console.warn('Auto-reply email failed to send:', autoReplyResult.reason);
+      await updateLeadDelivery(submissionId, { autoReplyStatus: 'failed' }).catch(console.error);
+    } else {
+      await updateLeadDelivery(submissionId, { autoReplyStatus: 'sent' }).catch(console.error);
+    }
 
     return new Response(
       JSON.stringify({ success: true, message: 'Lead captured successfully!' }),
