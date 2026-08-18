@@ -1,6 +1,7 @@
 // src/pages/api/contact.ts — Contact form API endpoint (Resend)
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
+import { persistLead, updateLeadDelivery } from '../../lib/leadStorage';
 
 export const prerender = false; // SSR endpoint
 
@@ -170,7 +171,10 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    await persistLead({ submissionId, formType: 'contact', name, email, phone, company, sourcePage: referer, interest, message, industry, productName, quantity });
+
     // --- Send notification to GINKVORA team ---
+    try {
     await resend.emails.send({
       from: FROM_EMAIL,
       to: TO_EMAIL,
@@ -244,8 +248,15 @@ export const POST: APIRoute = async ({ request }) => {
         </html>
       `,
     });
+      await updateLeadDelivery(submissionId, { teamEmailStatus: 'sent' });
+    } catch (notificationError) {
+      console.error(`[Lead] Team notification failed for ${submissionId}:`, notificationError);
+      await updateLeadDelivery(submissionId, { status: 'email_failed', teamEmailStatus: 'failed' }).catch(console.error);
+      return new Response(JSON.stringify({ success: true, pending: true, message: 'Inquiry received and queued for follow-up.' }), { status: 202, headers: { 'Content-Type': 'application/json' } });
+    }
 
     // --- Send auto-reply to the customer ---
+    let autoReplySent = false;
     try {
       await resend.emails.send({
         from: FROM_EMAIL,
@@ -290,9 +301,13 @@ export const POST: APIRoute = async ({ request }) => {
           </html>
         `,
       });
+      autoReplySent = true;
     } catch (autoReplyError) {
       console.warn('Auto-reply email failed to send (likely due to Resend sandbox/domain verification limits):', autoReplyError);
+      await updateLeadDelivery(submissionId, { autoReplyStatus: 'failed' }).catch(console.error);
     }
+
+    if (autoReplySent) await updateLeadDelivery(submissionId, { autoReplyStatus: 'sent' }).catch(console.error);
 
     return new Response(
       JSON.stringify({ success: true, message: 'Inquiry received!' }),
