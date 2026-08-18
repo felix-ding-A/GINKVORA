@@ -422,8 +422,11 @@ export async function getFeaturedProducts() {
 
 export async function getProductBySlug(slug: string) {
   try {
-    const data = await cachedFetch(
-      `*[_type == "product" && slug.current == $slug][0] {
+    // Product detail pages use Vercel ISR as their durable cache. Always read
+    // the authoritative Sanity API during regeneration so publish/delete/slug
+    // changes cannot be masked by Sanity CDN or process-memory cache entries.
+    const data = await freshFetch(
+      `*[_type == "product" && !(_id in path("drafts.**")) && slug.current == $slug][0] {
         ${PRODUCT_DETAIL_FIELDS}
       }`,
       { slug }
@@ -440,6 +443,24 @@ export async function getProductBySlug(slug: string) {
     return canUseMockFallback ? MOCK_PRODUCTS.find(p => p.slug === slug) || null : null;
   } catch (err) {
     return mockOrThrow(() => MOCK_PRODUCTS.find(p => p.slug === slug) || null, `Unable to load product ${slug}.`, err);
+  }
+}
+
+export async function getProductRedirectByPreviousSlug(slug: string) {
+  try {
+    return await freshFetch(
+      `*[
+        _type == "product" &&
+        !(_id in path("drafts.**")) &&
+        $slug in coalesce(previousSlugs, [])
+      ][0] {
+        "slug": slug.current
+      }`,
+      { slug }
+    ) as { slug?: string } | null;
+  } catch (err) {
+    console.error(`[Sanity] Unable to resolve previous product slug "${slug}".`, err);
+    return null;
   }
 }
 
@@ -650,7 +671,7 @@ export async function getPostRedirectByPreviousSlug(slug: string) {
   }
 }
 
-export async function rememberPostPreviousSlug(
+export async function rememberDocumentPreviousSlug(
   documentId: string,
   beforeSlug: string,
   afterSlug: string
