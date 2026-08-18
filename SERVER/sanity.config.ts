@@ -89,6 +89,9 @@ export default defineConfig({
                 S.documentTypeList('author')
                   .title('Authors')
               ),
+            S.listItem()
+              .title('📨 Leads')
+              .child(S.documentTypeList('lead').title('Leads')),
             S.divider(),
             S.listItem()
               .title('⚙️ Site Settings')
