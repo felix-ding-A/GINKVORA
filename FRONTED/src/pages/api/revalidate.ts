@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
-import { rememberPostPreviousSlug } from '../../lib/sanity';
+import { rememberDocumentPreviousSlug } from '../../lib/sanity';
 
 export const prerender = false;
 
@@ -22,7 +22,11 @@ type RevalidationTarget = {
   expectedToBeMissing: boolean;
 };
 
-const POST_LOCALE_PREFIXES = ['', '/ru', '/ar', '/es'] as const;
+const CONTENT_LOCALE_PREFIXES = ['', '/ru', '/ar', '/es'] as const;
+const CONTENT_ROUTE_SEGMENTS = {
+  post: 'insights',
+  product: 'products',
+} as const;
 
 const normalizeSlug = (value?: string | { current?: string }) =>
   typeof value === 'string' ? value : value?.current;
@@ -64,10 +68,11 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: false, error: 'Invalid JSON payload.' }, 400);
   }
 
-  // This first rollout deliberately covers only the route currently using ISR.
-  if (payload._type !== 'post') {
+  if (payload._type !== 'post' && payload._type !== 'product') {
     return json({ ok: true, skipped: true, reason: 'Unsupported document type.' });
   }
+
+  const routeSegment = CONTENT_ROUTE_SEGMENTS[payload._type];
 
   const beforeSlug = normalizeSlug(payload.beforeSlug);
   const afterSlug = normalizeSlug(payload.afterSlug);
@@ -88,7 +93,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     try {
-      const recorded = await rememberPostPreviousSlug(payload._id, beforeSlug, afterSlug);
+      const recorded = await rememberDocumentPreviousSlug(payload._id, beforeSlug, afterSlug);
       console.info(
         recorded
           ? `[Revalidate] Recorded previous slug ${beforeSlug} for ${afterSlug}.`
@@ -103,8 +108,8 @@ export const POST: APIRoute = async ({ request }) => {
   const targetsByPathname = new Map<string, RevalidationTarget>();
   const addTarget = (slug: string | undefined, expectedToBeMissing: boolean) => {
     if (!isValidSlug(slug)) return;
-    for (const localePrefix of POST_LOCALE_PREFIXES) {
-      const pathname = `${localePrefix}/insights/${encodeURIComponent(slug)}`;
+    for (const localePrefix of CONTENT_LOCALE_PREFIXES) {
+      const pathname = `${localePrefix}/${routeSegment}/${encodeURIComponent(slug)}`;
       targetsByPathname.set(pathname, { slug, pathname, expectedToBeMissing });
     }
   };
@@ -118,7 +123,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const targets = [...targetsByPathname.values()];
   if (targets.length === 0) {
-    return json({ ok: false, error: 'At least one valid post slug is required.' }, 422);
+    return json({ ok: false, error: 'At least one valid content slug is required.' }, 422);
   }
 
   const origin = import.meta.env.REVALIDATE_BASE_URL || 'https://ginkvora.com';
