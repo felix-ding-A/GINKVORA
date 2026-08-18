@@ -1,7 +1,8 @@
 ---
 const lang = 'ar';
 // src/pages/thank-you.astro — English B2B Thank-You Page
-export const prerender = false; // Disable prerendering so that it can dynamically fetch current posts if updated in Sanity CMS
+// This confirmation page is shared by all visitors, so serve a static response.
+export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPostsPaginated, urlFor, MOCK_POSTS } from '../../lib/sanity';
 
