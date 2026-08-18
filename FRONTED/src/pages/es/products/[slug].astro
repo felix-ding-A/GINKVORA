@@ -15,11 +15,6 @@ const lp = (path: string) => getLocalePath(lang, path);
 
 const { slug } = Astro.params;
 
-Astro.response.headers.set(
-  'Cache-Control',
-  'public, max-age=0, s-maxage=31536000, stale-while-revalidate=86400'
-);
-
 const product = await getProductBySlug(slug);
 
 if (!product) {

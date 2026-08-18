@@ -13,12 +13,6 @@ import TagBadge from '../../components/TagBadge.astro';
 
 const { slug } = Astro.params;
 
-// Set Vercel CDN Cache-Control header: Cache at edge for 1 year, stale-while-revalidate for 1 day
-Astro.response.headers.set(
-  'Cache-Control',
-  'public, max-age=0, s-maxage=31536000, stale-while-revalidate=86400'
-);
-
 const post = await getPostBySlug(slug);
 
 if (!post) {
