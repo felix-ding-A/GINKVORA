@@ -27,6 +27,7 @@ const CONTENT_ROUTE_SEGMENTS = {
   post: 'insights',
   product: 'products',
 } as const;
+const INDEXNOW_KEY = 'c906fef8759c414e8c55c7393fa38f35';
 
 const normalizeSlug = (value?: string | { current?: string }) =>
   typeof value === 'string' ? value : value?.current;
@@ -42,6 +43,26 @@ const json = (body: Record<string, unknown>, status = 200) =>
       'Cache-Control': 'no-store',
     },
   });
+
+async function submitIndexNow(origin: string, paths: string[]) {
+  if (import.meta.env.VERCEL_ENV !== 'production' || paths.length === 0) return;
+
+  const site = new URL(origin);
+  const urlList = paths.map((pathname) => new URL(pathname, site).toString());
+  const response = await fetch('https://api.indexnow.org/indexnow', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    body: JSON.stringify({
+      host: site.host,
+      key: INDEXNOW_KEY,
+      keyLocation: `${site.origin}/${INDEXNOW_KEY}.txt`,
+      urlList,
+    }),
+    signal: AbortSignal.timeout(10_000),
+  });
+
+  if (!response.ok) throw new Error(`IndexNow returned ${response.status}.`);
+}
 
 export const POST: APIRoute = async ({ request }) => {
   const secret = import.meta.env.SANITY_REVALIDATE_SECRET;
@@ -170,6 +191,27 @@ export const POST: APIRoute = async ({ request }) => {
         revalidated,
         removed,
       }, 502);
+    }
+
+    // IndexNow is incremental: submit only new/current URLs after Vercel has
+    // refreshed them. Deleted URLs are deliberately omitted.
+    if (operation !== 'delete') {
+      const currentSlug = afterSlug || legacySlug;
+      if (isValidSlug(currentSlug)) {
+        const currentPaths = CONTENT_LOCALE_PREFIXES.map(
+          (localePrefix) => `${localePrefix}/${routeSegment}/${encodeURIComponent(currentSlug)}`,
+        );
+        try {
+          await submitIndexNow(origin, currentPaths);
+          if (import.meta.env.VERCEL_ENV === 'production') {
+            console.info(`[Revalidate] Submitted ${currentPaths.length} URLs to IndexNow.`);
+          }
+        } catch (error) {
+          // Search engine notification must never make a successfully
+          // published page unavailable. The sitemap remains the fallback.
+          console.warn('[Revalidate] IndexNow submission failed (non-fatal).', error);
+        }
+      }
     }
 
     return json({ ok: true, operation, revalidated, removed });
