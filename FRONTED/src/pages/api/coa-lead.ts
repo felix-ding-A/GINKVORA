@@ -1,6 +1,7 @@
 // src/pages/api/coa-lead.ts — COA Lead Capture API endpoint (Resend)
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
+import { waitUntil } from '@vercel/functions';
 import { persistLead, updateLeadDelivery } from '../../lib/leadStorage';
 
 export const prerender = false; // SSR endpoint
@@ -344,19 +345,22 @@ export const POST: APIRoute = async ({ request }) => {
         `,
       });
 
-    const [teamEmailResult, autoReplyResult] = await Promise.allSettled([teamEmailPromise, autoReplyPromise]);
-    if (teamEmailResult.status === 'rejected') {
-      console.error(`[Lead] Team notification failed for ${submissionId}:`, teamEmailResult.reason);
-      await updateLeadDelivery(submissionId, { status: 'email_failed', teamEmailStatus: 'failed' }).catch(console.error);
-      return new Response(JSON.stringify({ success: true, pending: true, message: 'Lead captured and queued for follow-up.' }), { status: 202, headers: { 'Content-Type': 'application/json' } });
-    }
-    await updateLeadDelivery(submissionId, { teamEmailStatus: 'sent' }).catch(console.error);
-    if (autoReplyResult.status === 'rejected') {
-      console.warn('Auto-reply email failed to send:', autoReplyResult.reason);
-      await updateLeadDelivery(submissionId, { autoReplyStatus: 'failed' }).catch(console.error);
-    } else {
-      await updateLeadDelivery(submissionId, { autoReplyStatus: 'sent' }).catch(console.error);
-    }
+    const deliveryTask = Promise.allSettled([teamEmailPromise, autoReplyPromise]).then(async ([teamEmailResult, autoReplyResult]) => {
+      if (teamEmailResult.status === 'rejected') {
+        console.error(`[Lead] Team notification failed for ${submissionId}:`, teamEmailResult.reason);
+        await updateLeadDelivery(submissionId, { status: 'email_failed', teamEmailStatus: 'failed' }).catch(console.error);
+      } else {
+        await updateLeadDelivery(submissionId, { teamEmailStatus: 'sent' }).catch(console.error);
+      }
+      if (autoReplyResult.status === 'rejected') {
+        console.warn('Auto-reply email failed to send:', autoReplyResult.reason);
+        await updateLeadDelivery(submissionId, { autoReplyStatus: 'failed' }).catch(console.error);
+      } else {
+        await updateLeadDelivery(submissionId, { autoReplyStatus: 'sent' }).catch(console.error);
+      }
+    });
+    if (waitUntil) waitUntil(deliveryTask);
+    else await deliveryTask;
 
     return new Response(
       JSON.stringify({ success: true, message: 'Lead captured successfully!' }),
