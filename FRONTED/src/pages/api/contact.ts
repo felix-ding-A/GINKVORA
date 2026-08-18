@@ -75,7 +75,11 @@ export const POST: APIRoute = async ({ request }) => {
     // Fetch real location from ip-api via HTTPS if it is a public IP
     if (ip !== 'Unknown' && ip !== '127.0.0.1' && ip !== '::1' && !ip.startsWith('192.168.') && !ip.startsWith('10.')) {
       try {
-        const geoRes = await fetch(`https://ip-api.com/json/${ip}`);
+        // Geo enrichment is optional. Never let a slow third-party lookup
+        // delay a valid RFQ; Vercel/Cloudflare headers remain the fallback.
+        const geoRes = await fetch(`https://ip-api.com/json/${ip}`, {
+          signal: AbortSignal.timeout(1200),
+        });
         if (geoRes.ok) {
           const geoData = await geoRes.json();
           if (geoData.status === 'success') {
