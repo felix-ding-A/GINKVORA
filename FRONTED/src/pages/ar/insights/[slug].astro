@@ -26,7 +26,7 @@ if (!post) {
   if (redirect?.slug && redirect.slug !== slug) {
     return Astro.redirect(`/ar/insights/${redirect.slug}`, 308);
   }
-  return Astro.redirect('/404');
+  return Astro.rewrite('/404');
 }
 
 const posts = await getAllPosts(10);
