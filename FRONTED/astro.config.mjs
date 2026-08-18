@@ -24,7 +24,6 @@ export default defineConfig({
       exclude: [
         '/products', '/es/products', '/ru/products', '/ar/products',
         '/insights', '/es/insights', '/ru/insights', '/ar/insights',
-        '/es/insights/[slug]', '/ru/insights/[slug]', '/ar/insights/[slug]',
         '/contact', '/es/contact', '/ru/contact', '/ar/contact',
         '/thank-you', '/es/thank-you', '/ru/thank-you', '/ar/thank-you',
         '/404',
