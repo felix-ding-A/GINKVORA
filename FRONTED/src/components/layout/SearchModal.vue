@@ -100,8 +100,24 @@
             </div>
           </div>
 
+          <div v-else-if="query.trim().length < 2" class="no-results" aria-live="polite">
+            <div class="no-results-icon">⌨️</div>
+            <h3>{{ t('min_chars') }}</h3>
+          </div>
+
+          <div v-else-if="loading" class="no-results" role="status" aria-live="polite">
+            <div class="search-spinner" aria-hidden="true"></div>
+            <h3>{{ t('loading') }}</h3>
+          </div>
+
+          <div v-else-if="errorMessage" class="no-results" role="alert">
+            <div class="no-results-icon">⚠️</div>
+            <h3>{{ t('search_error') }}</h3>
+            <p>{{ t('search_error_sub') }}</p>
+          </div>
+
           <!-- No Results State -->
-          <div v-else-if="filteredProducts.length === 0 && filteredPosts.length === 0" class="no-results">
+          <div v-else-if="products.length === 0 && posts.length === 0" class="no-results" aria-live="polite">
             <div class="no-results-icon">🔍</div>
             <h3>{{ t('no_results') }} "{{ query }}"</h3>
             <p>{{ t('no_results_sub') }}</p>
@@ -110,21 +126,21 @@
           <!-- Results List -->
           <div v-else class="results-container">
             <!-- Products Section -->
-            <div v-if="filteredProducts.length > 0" class="result-group">
+            <div v-if="products.length > 0" class="result-group">
               <div class="group-title">
                 <span>📦 {{ t('products_heading') }}</span>
-                <span class="count-badge">{{ filteredProducts.length }}</span>
+                <span class="count-badge">{{ products.length }}</span>
               </div>
               <a
-                v-for="(item, idx) in filteredProducts"
+                v-for="(item, idx) in products"
                 :key="item._id || item.slug"
                 :href="getProductUrl(item)"
                 class="result-item"
                 :class="{ active: activeIndex === idx }"
                 @mouseenter="activeIndex = idx"
               >
-                <div class="item-thumb" v-if="getImgUrl(item.heroImage)">
-                  <img :src="getImgUrl(item.heroImage)" :alt="item.name" loading="lazy" />
+                <div class="item-thumb" v-if="item.imageUrl">
+                  <img :src="item.imageUrl" :alt="item.name" loading="lazy" />
                 </div>
                 <div class="item-thumb placeholder-thumb" v-else>
                   🌿
@@ -145,21 +161,21 @@
             </div>
 
             <!-- Posts / Insights Section -->
-            <div v-if="filteredPosts.length > 0" class="result-group">
+            <div v-if="posts.length > 0" class="result-group">
               <div class="group-title">
                 <span>📚 {{ t('insights_heading') }}</span>
-                <span class="count-badge">{{ filteredPosts.length }}</span>
+                <span class="count-badge">{{ posts.length }}</span>
               </div>
               <a
-                v-for="(post, pIdx) in filteredPosts"
+                v-for="(post, pIdx) in posts"
                 :key="post._id || post.slug"
                 :href="getPostUrl(post)"
                 class="result-item"
-                :class="{ active: activeIndex === (filteredProducts.length + pIdx) }"
-                @mouseenter="activeIndex = filteredProducts.length + pIdx"
+                :class="{ active: activeIndex === (products.length + pIdx) }"
+                @mouseenter="activeIndex = products.length + pIdx"
               >
-                <div class="item-thumb" v-if="getImgUrl(post.mainImage)">
-                  <img :src="getImgUrl(post.mainImage)" :alt="post.title" loading="lazy" />
+                <div class="item-thumb" v-if="post.imageUrl">
+                  <img :src="post.imageUrl" :alt="post.title" loading="lazy" />
                 </div>
                 <div class="item-thumb placeholder-thumb" v-else>
                   📄
@@ -194,8 +210,6 @@
 import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
-  products: { type: Array, default: () => [] },
-  posts: { type: Array, default: () => [] },
   lang: { type: String, default: 'en' }
 });
 
@@ -203,6 +217,13 @@ const isOpen = ref(false);
 const query = ref('');
 const activeIndex = ref(0);
 const searchInputRef = ref(null);
+const products = ref([]);
+const posts = ref([]);
+const loading = ref(false);
+const errorMessage = ref('');
+const resultCache = new Map();
+let debounceTimer;
+let activeController;
 
 const hotTags = ['Proxylane', 'NMN', 'PQQ', 'Glabridin', 'EGCG', 'Liposomal', 'CAS 13749-38-7'];
 
@@ -225,7 +246,11 @@ const i18n = {
     close_key: 'to close',
     view_all_products: 'Browse Full B2B Catalog',
     search_btn: 'Search',
-    close_btn: 'Close'
+    close_btn: 'Close',
+    min_chars: 'Enter at least 2 characters',
+    loading: 'Searching...',
+    search_error: 'Search is temporarily unavailable',
+    search_error_sub: 'Please wait a moment and try again.'
   },
   ru: {
     search_title: 'Поиск по каталогу GINKVORA',
@@ -245,7 +270,11 @@ const i18n = {
     close_key: 'закрыть',
     view_all_products: 'Весь каталог B2B',
     search_btn: 'Искать',
-    close_btn: 'Закрыть'
+    close_btn: 'Закрыть',
+    min_chars: 'Введите не менее 2 символов',
+    loading: 'Поиск...',
+    search_error: 'Поиск временно недоступен',
+    search_error_sub: 'Подождите немного и повторите попытку.'
   },
   es: {
     search_title: 'Buscar en el catálogo GINKVORA',
@@ -265,7 +294,11 @@ const i18n = {
     close_key: 'para cerrar',
     view_all_products: 'Ver catálogo completo B2B',
     search_btn: 'Buscar',
-    close_btn: 'Cerrar'
+    close_btn: 'Cerrar',
+    min_chars: 'Introduzca al menos 2 caracteres',
+    loading: 'Buscando...',
+    search_error: 'La búsqueda no está disponible temporalmente',
+    search_error_sub: 'Espere un momento e inténtelo de nuevo.'
   },
   ar: {
     search_title: 'البحث في كتالوج GINKVORA',
@@ -285,7 +318,11 @@ const i18n = {
     close_key: 'للإغلاق',
     view_all_products: 'استعرض الكتالوج الكامل',
     search_btn: 'بحث',
-    close_btn: 'إغلاق'
+    close_btn: 'إغلاق',
+    min_chars: 'أدخل حرفين على الأقل',
+    loading: 'جارٍ البحث...',
+    search_error: 'البحث غير متاح مؤقتاً',
+    search_error_sub: 'يرجى الانتظار قليلاً والمحاولة مرة أخرى.'
   }
 };
 
@@ -309,48 +346,82 @@ function getPostUrl(post) {
   return `${getLocalePath('/insights')}/${slug}`;
 }
 
-function getImgUrl(img) {
-  if (!img) return null;
-  if (typeof img === 'string') return img;
-  if (img.asset && img.asset.url) return img.asset.url;
-  return null;
-}
-
 function truncate(str, maxLen) {
   if (!str) return '';
   return str.length > maxLen ? str.slice(0, maxLen) + '…' : str;
 }
 
-const filteredProducts = computed(() => {
-  const q = query.value.trim().toLowerCase();
-  if (!q) return [];
-  return props.products.filter(p => {
-    const nameMatch = p.name && p.name.toLowerCase().includes(q);
-    const casMatch = p.casNumber && p.casNumber.toLowerCase().includes(q);
-    const botMatch = p.botanicalName && p.botanicalName.toLowerCase().includes(q);
-    const inciMatch = p.inciName && p.inciName.toLowerCase().includes(q);
-    const purityMatch = p.purity && p.purity.toLowerCase().includes(q);
-    const descMatch = p.shortDescription && p.shortDescription.toLowerCase().includes(q);
-    return nameMatch || casMatch || botMatch || inciMatch || purityMatch || descMatch;
-  }).slice(0, 8);
-});
-
-const filteredPosts = computed(() => {
-  const q = query.value.trim().toLowerCase();
-  if (!q) return [];
-  return props.posts.filter(p => {
-    const titleMatch = p.title && p.title.toLowerCase().includes(q);
-    const excerptMatch = p.excerpt && p.excerpt.toLowerCase().includes(q);
-    return titleMatch || excerptMatch;
-  }).slice(0, 4);
-});
-
 const totalResultCount = computed(() => {
-  return filteredProducts.value.length + filteredPosts.value.length;
+  return products.value.length + posts.value.length;
 });
 
-watch(query, () => {
+async function runSearch(searchQuery) {
+  const normalized = searchQuery.trim().replace(/\s+/g, ' ');
   activeIndex.value = 0;
+  errorMessage.value = '';
+
+  if (normalized.length < 2) {
+    activeController?.abort();
+    products.value = [];
+    posts.value = [];
+    loading.value = false;
+    return;
+  }
+
+  const cacheKey = `${props.lang}:${normalized.toLocaleLowerCase()}`;
+  const cached = resultCache.get(cacheKey);
+  if (cached) {
+    products.value = cached.products;
+    posts.value = cached.posts;
+    loading.value = false;
+    return;
+  }
+
+  activeController?.abort();
+  const controller = new AbortController();
+  activeController = controller;
+  loading.value = true;
+
+  try {
+    const params = new URLSearchParams({ q: normalized, lang: props.lang });
+    const response = await fetch(`/api/search?${params}`, {
+      signal: controller.signal,
+      headers: { Accept: 'application/json' }
+    });
+    const data = await response.json();
+    if (!response.ok || !data.ok) throw new Error(data.error || `Search returned ${response.status}`);
+    const results = {
+      products: Array.isArray(data.products) ? data.products : [],
+      posts: Array.isArray(data.posts) ? data.posts : []
+    };
+    resultCache.set(cacheKey, results);
+    if (resultCache.size > 30) resultCache.delete(resultCache.keys().next().value);
+    products.value = results.products;
+    posts.value = results.posts;
+  } catch (error) {
+    if (error?.name === 'AbortError') return;
+    products.value = [];
+    posts.value = [];
+    errorMessage.value = error?.message || 'Search failed';
+  } finally {
+    if (activeController === controller) {
+      loading.value = false;
+      activeController = undefined;
+    }
+  }
+}
+
+watch(query, (value) => {
+  clearTimeout(debounceTimer);
+  activeController?.abort();
+  errorMessage.value = '';
+  const canSearch = value.trim().length >= 2;
+  loading.value = canSearch;
+  if (!canSearch) {
+    products.value = [];
+    posts.value = [];
+  }
+  debounceTimer = setTimeout(() => runSearch(value), 250);
 });
 
 function setQuery(val) {
@@ -371,6 +442,10 @@ function open() {
 function close() {
   isOpen.value = false;
   query.value = '';
+  products.value = [];
+  posts.value = [];
+  errorMessage.value = '';
+  activeController?.abort();
   document.body.style.overflow = '';
 }
 
@@ -385,25 +460,27 @@ function navigateResults(dir) {
 }
 
 function selectActiveResult() {
-  const pCount = filteredProducts.value.length;
+  const pCount = products.value.length;
   if (activeIndex.value < pCount) {
-    const targetProduct = filteredProducts.value[activeIndex.value];
+    const targetProduct = products.value[activeIndex.value];
     if (targetProduct) {
       window.location.href = getProductUrl(targetProduct);
     }
   } else {
-    const targetPost = filteredPosts.value[activeIndex.value - pCount];
+    const targetPost = posts.value[activeIndex.value - pCount];
     if (targetPost) {
       window.location.href = getPostUrl(targetPost);
     }
   }
 }
 
-function selectActiveResultOrNavigate() {
+async function selectActiveResultOrNavigate() {
   if (totalResultCount.value > 0) {
     selectActiveResult();
-  } else if (query.value.trim()) {
-    window.location.href = `${getLocalePath('/products')}?search=${encodeURIComponent(query.value.trim())}`;
+  } else if (query.value.trim().length >= 2) {
+    clearTimeout(debounceTimer);
+    await runSearch(query.value);
+    if (totalResultCount.value > 0) selectActiveResult();
   }
 }
 
@@ -424,6 +501,8 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  clearTimeout(debounceTimer);
+  activeController?.abort();
   window.removeEventListener('keydown', handleGlobalKeydown);
   window.removeEventListener('open-global-search', open);
 });
@@ -605,6 +684,20 @@ defineExpose({ open, close });
   padding: 16px 20px;
   min-height: 240px;
   max-height: 52vh;
+}
+
+.search-spinner {
+  width: 32px;
+  height: 32px;
+  margin: 0 auto 12px;
+  border: 3px solid rgba(212, 166, 84, 0.2);
+  border-top-color: #d4a654;
+  border-radius: 50%;
+  animation: search-spin 0.8s linear infinite;
+}
+
+@keyframes search-spin {
+  to { transform: rotate(360deg); }
 }
 
 .search-tips {

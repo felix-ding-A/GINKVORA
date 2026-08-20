@@ -5,8 +5,15 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   const url = new URL(context.request.url);
   const isApi = url.pathname.startsWith('/api/');
+  const isCacheableSearch = context.request.method === 'GET' && url.pathname === '/api/search';
 
-  // API responses may contain validation outcomes or webhook results. They must
+  // Search responses contain only public, published CMS fields. Preserve the
+  // endpoint's bounded CDN cache instead of applying the private API policy.
+  if (isCacheableSearch) {
+    return response;
+  }
+
+  // Other API responses may contain validation outcomes or webhook results. They must
   // never be stored by a browser, Cloudflare, or Vercel's CDN.
   if (isApi) {
     response.headers.set('Cache-Control', 'no-store');
