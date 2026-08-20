@@ -5,6 +5,7 @@ const lang = 'ar';
 // src/pages/products/index.astro — Products listing page with search and category filters
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getProductsPaginated, urlFor, getLocalizedField } from '../../../lib/sanity';
+import { buildListingCanonical } from '../../../lib/seo';
 import { useTranslations, getLocalePath } from '../../../i18n/utils';
 
 const t = useTranslations(lang);
@@ -23,6 +24,9 @@ const currentPage = Math.min(requestedPage, totalPages);
 const pageStart = (currentPage - 1) * PRODUCTS_PER_PAGE;
 
 const siteUrl = 'https://ginkvora.com/ar';
+const canonicalUrl = buildListingCanonical({
+  pathname: '/ar/products', category, mechanism, page: currentPage,
+});
 
 const categoriesList = [
   { slug: 'liposomal', name: 'ليبوستومال', icon: '🧬' },
@@ -133,6 +137,7 @@ const itemListSchema = {
 <BaseLayout lang={lang}
   title={pageTitle}
   description={pageDescription}
+  canonicalUrl={canonicalUrl}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />

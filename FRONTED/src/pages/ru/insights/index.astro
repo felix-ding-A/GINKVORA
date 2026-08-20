@@ -3,6 +3,7 @@
 export const prerender = false; // Disable prerendering so SSR handles searchParams (category, q, page)
 
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { buildListingCanonical } from '../../../lib/seo';
 import { getPostsPaginated, urlFor, getLocalizedField } from '../../../lib/sanity';
 import { useTranslations } from '../../../i18n/utils';
 
@@ -19,6 +20,9 @@ const { posts: allPosts, total } = await getPostsPaginated({ category, search: s
 const totalPages = Math.max(1, Math.ceil(total / pageSize));
 const currentPage = Math.min(requestedPage, totalPages);
 const page = currentPage;
+const canonicalUrl = buildListingCanonical({
+  pathname: '/ru/insights', category, page: currentPage,
+});
 
 // Helper function to build page URLs while preserving category query params
 function getPageHref(pageNum: number) {
@@ -78,6 +82,8 @@ const itemListSchema = {
   lang={lang}
   title="Блог GINKVORA — Исследования, рецептуры и аналитика активов ECM"
   description="Исследования и статьи GINKVORA: научные обзоры дозировок, руководства по рецептурам PDRN, NMN, Glabridin и антивозрастным биоактивам ECM."
+  canonicalUrl={canonicalUrl}
+  noindex={Boolean(searchQuery)}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />

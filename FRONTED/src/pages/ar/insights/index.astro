@@ -5,6 +5,7 @@ const lang = 'ar';
 // src/pages/insights/index.astro — B2B Industry Insights & Ingredient Research Blog
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getPostsPaginated, urlFor, getLocalizedField } from '../../../lib/sanity';
+import { buildListingCanonical } from '../../../lib/seo';
 
 const siteUrl = 'https://ginkvora.com/ar';
 const selectedCategory = Astro.url.searchParams.get('category');
@@ -32,6 +33,9 @@ const { posts: allPosts, total } = await getPostsPaginated({
 
 const totalPages = Math.max(1, Math.ceil(total / pageSize));
 const currentPage = Math.min(requestedPage, totalPages);
+const canonicalUrl = buildListingCanonical({
+  pathname: '/ar/insights', category: selectedCategory, page: currentPage,
+});
 
 // Helper function to build page URLs while preserving category query params
 function getPageHref(pageNum: number) {
@@ -92,6 +96,8 @@ const itemListSchema = {
 <BaseLayout lang={lang}
   title={selectedCategory ? `${categoryTranslations[selectedCategory] || selectedCategory} أبحاث وتقارير | GINKVORA` : "أبحاث مستخلصات النباتات B2B والبحوث العلمية | GINKVORA"}
   description={selectedCategory ? `تصفح أبحاث خبرائنا، واتجاهات السوق، وتقارير الجودة حول ${categoryTranslations[selectedCategory] || selectedCategory}.` : "اقرأ أبحاث GINKVORA للمقالات البحثية، ودراسات الجرعات السريرية وأدلة الصياغة حول PDRN، NMN، Glabridin ومكونات مكافحة الشيخوخة النشطة لـ ECM."}
+  canonicalUrl={canonicalUrl}
+  noindex={Boolean(searchQuery)}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />

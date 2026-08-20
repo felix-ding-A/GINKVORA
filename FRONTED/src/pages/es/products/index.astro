@@ -3,6 +3,7 @@
 export const prerender = false; // Disable prerendering so SSR handles searchParams (category, mechanism, page)
 
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { buildListingCanonical } from '../../../lib/seo';
 import { getProductsPaginated, urlFor, getLocalizedField } from '../../../lib/sanity';
 import { useTranslations } from '../../../i18n/utils';
 
@@ -22,6 +23,9 @@ const currentPage = Math.min(requestedPage, totalPages);
 const pageStart = (currentPage - 1) * PRODUCTS_PER_PAGE;
 
 const siteUrl = 'https://ginkvora.com';
+const canonicalUrl = buildListingCanonical({
+  pathname: '/es/products', category, mechanism, page: currentPage,
+});
 
 const categoriesList = [
   { slug: 'liposomal', name: 'Liposomales', icon: '🧬' },
@@ -103,6 +107,7 @@ const breadcrumbsSchema = {
   lang={lang}
   title={pageTitle}
   description={pageDescription}
+  canonicalUrl={canonicalUrl}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
 

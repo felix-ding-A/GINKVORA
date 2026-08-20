@@ -3,6 +3,7 @@
 export const prerender = false; // Disable prerendering so SSR handles searchParams (category, q, page)
 
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { buildListingCanonical } from '../../../lib/seo';
 import { getPostsPaginated, urlFor, getLocalizedField } from '../../../lib/sanity';
 import { useTranslations } from '../../../i18n/utils';
 
@@ -19,6 +20,9 @@ const { posts: allPosts, total } = await getPostsPaginated({ category, search: s
 const totalPages = Math.max(1, Math.ceil(total / pageSize));
 const currentPage = Math.min(requestedPage, totalPages);
 const page = currentPage;
+const canonicalUrl = buildListingCanonical({
+  pathname: '/es/insights', category, page: currentPage,
+});
 
 // Helper function to build page URLs while preserving category query params
 function getPageHref(pageNum: number) {
@@ -78,6 +82,8 @@ const itemListSchema = {
   lang={lang}
   title="Blog de GINKVORA — Investigaciones, formulación y análisis de activos de la matriz extracelular (ECM)"
   description="Investigaciones y artículos de GINKVORA: revisiones científicas de dosis, guías de formulación de PDRN, NMN, glabridina y bioactivos antienvejecimiento de la ECM."
+  canonicalUrl={canonicalUrl}
+  noindex={Boolean(searchQuery)}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />
