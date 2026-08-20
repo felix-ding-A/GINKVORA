@@ -558,7 +558,15 @@ export async function searchProductsAndPosts(query: string, lang: SearchLanguage
         shortDescription match $term || shortDescription_ru match $term ||
         shortDescription_es match $term || shortDescription_ar match $term
       )
-    ] | order(coalesce(weight, 0) desc, _updatedAt desc) [0...8] {
+    ] | order(
+      select(
+        name match $term || name_ru match $term || name_es match $term || name_ar match $term => 0,
+        casNumber match $term || botanicalName match $term || inciName match $term => 1,
+        2
+      ) asc,
+      coalesce(weight, 0) desc,
+      _updatedAt desc
+    ) [0...8] {
       _id,
       "slug": slug.current,
       "name": ${localizedProductName},
@@ -578,7 +586,15 @@ export async function searchProductsAndPosts(query: string, lang: SearchLanguage
         excerpt match $term || excerpt_ru match $term || excerpt_es match $term || excerpt_ar match $term ||
         tags match $term
       )
-    ] | order(publishedAt desc, _updatedAt desc) [0...4] {
+    ] | order(
+      select(
+        title match $term || title_ru match $term || title_es match $term || title_ar match $term => 0,
+        tags match $term => 1,
+        2
+      ) asc,
+      publishedAt desc,
+      _updatedAt desc
+    ) [0...4] {
       _id,
       "slug": slug.current,
       "title": ${localizedPostTitle},
