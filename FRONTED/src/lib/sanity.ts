@@ -521,57 +521,92 @@ export async function getAllCategories() {
   }
 }
 
-export async function getNavigationData() {
+export async function getNavigationCategories() {
   try {
-    const data = await cachedFetch(`{
-      "categories": *[_type == "category"] | order(order asc) {
+    const data = await cachedFetch(`
+      *[_type == "category"] | order(order asc) {
         _id, name, "slug": slug.current
-      },
-      "products": *[_type == "product" && !(_id in path("drafts.**"))] {
-        _id,
-        "slug": slug.current,
-        name,
-        name_ru,
-        name_ar,
-        name_es,
-        purity,
-        casNumber,
-        botanicalName,
-        shortDescription,
-        shortDescription_ru,
-        shortDescription_ar,
-        shortDescription_es,
-        heroImage
-      },
-      "posts": *[_type == "post" && !(_id in path("drafts.**"))]
-        | order(publishedAt desc) [0...10] {
-          _id,
-          "slug": slug.current,
-          title,
-          title_ru,
-          title_ar,
-          title_es,
-          excerpt,
-          excerpt_ru,
-          excerpt_ar,
-          excerpt_es,
-          tags,
-          mainImage,
-          coverImage
-        }
-    }`);
-
-    return {
-      categories: Array.isArray(data?.categories) ? data.categories : [],
-      products: Array.isArray(data?.products) ? data.products : [],
-      posts: Array.isArray(data?.posts) ? data.posts : [],
-    };
+      }
+    `);
+    return Array.isArray(data) ? data : [];
   } catch (err) {
-    // Navigation search is optional UI. A temporary CMS outage must not turn
-    // an otherwise valid cached content page into a 500 response.
-    console.warn('[Navigation] Sanity data unavailable; rendering without dynamic search data.', err);
-    return { categories: [], products: [], posts: [] };
+    // A temporary CMS outage must not turn an otherwise valid content page
+    // into a 500 response; the fixed navigation links remain available.
+    console.warn('[Navigation] Sanity categories unavailable.', err);
+    return [];
   }
+}
+
+export type SearchLanguage = 'en' | 'ru' | 'es' | 'ar';
+
+export async function searchProductsAndPosts(query: string, lang: SearchLanguage) {
+  const localizedProductName = lang === 'en' ? 'name' : `coalesce(name_${lang}, name)`;
+  const localizedProductDescription = lang === 'en'
+    ? 'shortDescription'
+    : `coalesce(shortDescription_${lang}, shortDescription)`;
+  const localizedPostTitle = lang === 'en' ? 'title' : `coalesce(title_${lang}, title)`;
+  const localizedPostExcerpt = lang === 'en' ? 'excerpt' : `coalesce(excerpt_${lang}, excerpt)`;
+
+  const data = await cachedFetch(`{
+    "products": *[
+      _type == "product" &&
+      !(_id in path("drafts.**")) &&
+      defined(slug.current) &&
+      (
+        name match $term || name_ru match $term || name_es match $term || name_ar match $term ||
+        casNumber match $term || botanicalName match $term || inciName match $term || purity match $term ||
+        shortDescription match $term || shortDescription_ru match $term ||
+        shortDescription_es match $term || shortDescription_ar match $term
+      )
+    ] | order(
+      select(
+        name match $term || name_ru match $term || name_es match $term || name_ar match $term => 0,
+        casNumber match $term || botanicalName match $term || inciName match $term => 1,
+        2
+      ) asc,
+      coalesce(weight, 0) desc,
+      _updatedAt desc
+    ) [0...8] {
+      _id,
+      "slug": slug.current,
+      "name": ${localizedProductName},
+      purity,
+      casNumber,
+      botanicalName,
+      "shortDescription": ${localizedProductDescription},
+      "imageUrl": heroImage.asset->url
+    },
+    "posts": *[
+      _type == "post" &&
+      !(_id in path("drafts.**")) &&
+      defined(slug.current) &&
+      (!defined(publishedAt) || publishedAt <= now()) &&
+      (
+        title match $term || title_ru match $term || title_es match $term || title_ar match $term ||
+        excerpt match $term || excerpt_ru match $term || excerpt_es match $term || excerpt_ar match $term ||
+        tags match $term
+      )
+    ] | order(
+      select(
+        title match $term || title_ru match $term || title_es match $term || title_ar match $term => 0,
+        tags match $term => 1,
+        2
+      ) asc,
+      publishedAt desc,
+      _updatedAt desc
+    ) [0...4] {
+      _id,
+      "slug": slug.current,
+      "title": ${localizedPostTitle},
+      "excerpt": ${localizedPostExcerpt},
+      "imageUrl": coalesce(mainImage.asset->url, coverImage.asset->url)
+    }
+  }`, { term: `${query}*` }, 5 * 60_000);
+
+  return {
+    products: Array.isArray(data?.products) ? data.products : [],
+    posts: Array.isArray(data?.posts) ? data.posts : [],
+  };
 }
 
 // Blog Posts

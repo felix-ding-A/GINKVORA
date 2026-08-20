@@ -2,7 +2,7 @@
 // Navbar.astro — Responsive navigation with language switcher
 import { useTranslations, getLocalePath, getAlternatePaths, languages } from '../../i18n/utils';
 import type { Lang } from '../../i18n/utils';
-import { getNavigationData } from '../../lib/sanity';
+import { getNavigationCategories } from '../../lib/sanity';
 import SearchModal from './SearchModal.vue';
 
 interface Props {
@@ -16,42 +16,9 @@ const t = useTranslations(typedLang);
 // Build localized nav link hrefs
 const lp = (path: string) => getLocalePath(typedLang, path);
 
-// One lightweight query replaces three sequential full-content queries. The
-// helper degrades safely if Sanity is temporarily unavailable, so navigation
-// search never blocks the primary page content.
-const { categories, products: rawProducts, posts: rawPosts } = await getNavigationData();
-
-const allProducts = (rawProducts || []).map((p: any) => ({
-  _id: p._id,
-  slug: typeof p.slug === 'object' ? (p.slug?.current || '') : (p.slug || ''),
-  name: p.name || '',
-  name_ru: p.name_ru || '',
-  name_ar: p.name_ar || '',
-  name_es: p.name_es || '',
-  purity: p.purity || '',
-  casNumber: p.casNumber || '',
-  botanicalName: p.botanicalName || '',
-  shortDescription: p.shortDescription ? p.shortDescription.slice(0, 120) : '',
-  shortDescription_ru: p.shortDescription_ru ? p.shortDescription_ru.slice(0, 120) : '',
-  shortDescription_ar: p.shortDescription_ar ? p.shortDescription_ar.slice(0, 120) : '',
-  shortDescription_es: p.shortDescription_es ? p.shortDescription_es.slice(0, 120) : '',
-  heroImage: p.heroImage || null
-}));
-
-const allPosts = (rawPosts || []).map((p: any) => ({
-  _id: p._id,
-  slug: typeof p.slug === 'object' ? (p.slug?.current || '') : (p.slug || ''),
-  title: p.title || '',
-  title_ru: p.title_ru || '',
-  title_ar: p.title_ar || '',
-  title_es: p.title_es || '',
-  excerpt: p.excerpt ? p.excerpt.slice(0, 120) : '',
-  excerpt_ru: p.excerpt_ru ? p.excerpt_ru.slice(0, 120) : '',
-  excerpt_ar: p.excerpt_ar ? p.excerpt_ar.slice(0, 120) : '',
-  excerpt_es: p.excerpt_es ? p.excerpt_es.slice(0, 120) : '',
-  tags: p.tags || [],
-  mainImage: p.mainImage || p.coverImage || null
-}));
+// The shared navbar only needs the small category list. Search results are
+// requested on demand so catalog content is not serialized into every page.
+const categories = await getNavigationCategories();
 
 const categoryTranslations: Record<string, string> = {
   'superfood': 'footer.link_supplements',
@@ -315,8 +282,8 @@ const alternatePaths = getAlternatePaths(Astro.url, typedLang);
     </div>
   </div>
 
-  <!-- Search Modal Component (Hydrated on viewport visibility to avoid idle waterfall delay) -->
-  <SearchModal client:visible products={allProducts} posts={allPosts} lang={typedLang} />
+  <!-- Hydrate during browser idle time so the global button and Cmd/Ctrl+K are ready. -->
+  <SearchModal client:idle lang={typedLang} />
 </header>
 
 <style>
