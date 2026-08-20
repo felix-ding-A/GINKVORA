@@ -6,7 +6,11 @@ export const prerender = false;
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Page Not Found | GINKVORA" description="The page you are looking for does not exist. Please contact our commercial support desk for assistance.">
+<BaseLayout
+  title="Page Not Found | GINKVORA"
+  description="The page you are looking for does not exist. Please contact our commercial support desk for assistance."
+  noindex={true}
+>
   <main class="error-page bg-noise">
     <div class="container error-container">
       <div class="error-card glass">
