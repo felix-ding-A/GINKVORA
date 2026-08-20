@@ -43,7 +43,14 @@ const {
 const resolvedDir = dir || getDir(lang as Lang);
 
 const siteUrl = 'https://ginkvora.com';
-const fullTitle = title.includes('GINKVORA') ? title : `${title} | GINKVORA`;
+// Normalize a CMS-provided brand suffix before applying the site-wide suffix.
+// This avoids both duplicate branding and inconsistent "Ginkvora" casing.
+const brandSuffixPattern = /\s*\|\s*ginkvora\s*$/i;
+const fullTitle = brandSuffixPattern.test(title)
+  ? title.replace(brandSuffixPattern, ' | GINKVORA')
+  : /\bGINKVORA\b/i.test(title)
+    ? title
+    : `${title} | GINKVORA`;
 const canonical = canonicalUrl || new URL(Astro.url.pathname, siteUrl).toString();
 const basePath = stripLangPrefix(Astro.url.pathname);
 
