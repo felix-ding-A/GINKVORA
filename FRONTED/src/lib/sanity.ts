@@ -462,9 +462,17 @@ export async function getProductBySlug(slug: string) {
   }
 }
 
+// Known product URLs that predate automatic `previousSlugs` tracking. Keep
+// this list intentionally small and evidence-based; new slug changes are
+// stored in Sanity and resolved by the query below.
+const LEGACY_PRODUCT_SLUG_REDIRECTS: Record<string, string> = {
+  'quercetin-98': 'quercetin',
+  niacinamida: 'niacinamide',
+};
+
 export async function getProductRedirectByPreviousSlug(slug: string) {
   try {
-    return await freshFetch(
+    const redirect = await freshFetch(
       `*[
         _type == "product" &&
         !(_id in path("drafts.**")) &&
@@ -474,10 +482,13 @@ export async function getProductRedirectByPreviousSlug(slug: string) {
       }`,
       { slug }
     ) as { slug?: string } | null;
+    if (redirect?.slug) return redirect;
   } catch (err) {
     console.error(`[Sanity] Unable to resolve previous product slug "${slug}".`, err);
-    return null;
   }
+
+  const legacySlug = LEGACY_PRODUCT_SLUG_REDIRECTS[slug];
+  return legacySlug ? { slug: legacySlug } : null;
 }
 
 export async function getProductsByCategory(categorySlug: string) {
