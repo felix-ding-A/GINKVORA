@@ -1,13 +1,22 @@
-User-agent: *
-User-agent: GPTBot
+# ==============================================================================
+# Robots.txt for GINKVORA (https://ginkvora.com)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. AI Search & Real-Time Retrieval Crawlers
+#    (Allow AI search engines & assistants to crawl, index, and cite content in real-time)
+# ------------------------------------------------------------------------------
+User-agent: OAI-SearchBot
 User-agent: ChatGPT-User
-User-agent: ClaudeBot
-User-agent: Google-Extended
 User-agent: PerplexityBot
-User-agent: Applebot-Extended
-User-agent: FacebookBot
+User-agent: Claude-Web
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: Applebot
 User-agent: Bingbot
 User-agent: AdIdxBot
+User-agent: DuckAssistBot
+User-agent: YouBot
 User-agent: Yandex
 User-agent: YandexBot
 Allow: /
@@ -15,5 +24,38 @@ Disallow: /api/
 Disallow: /*?*
 Disallow: /cdn-cgi/
 
-# Sitemap
-Sitemap: https://ginkvora.com/sitemap.xml
+# ------------------------------------------------------------------------------
+# 2. AI Model Training & Bulk Dataset Crawlers
+#    (Disallow scrapers that harvest web content specifically for AI model training)
+# ------------------------------------------------------------------------------
+User-agent: GPTBot
+User-agent: Google-Extended
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: Applebot-Extended
+User-agent: Meta-ExternalAgent
+User-agent: FacebookBot
+User-agent: Bytespider
+User-agent: CCBot
+User-agent: cohere-ai
+User-agent: Diffbot
+User-agent: Omgilibot
+User-agent: Omgili
+User-agent: Timpibot
+User-agent: Kangaroo Bot
+User-agent: img2dataset
+Disallow: /
+
+# ------------------------------------------------------------------------------
+# 3. General Search Engines & Default Crawlers
+# ------------------------------------------------------------------------------
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /*?*
+Disallow: /cdn-cgi/
+
+# ------------------------------------------------------------------------------
+# 4. Sitemap Index
+# ------------------------------------------------------------------------------
+Sitemap: https://ginkvora.com/sitemap-index.xml
