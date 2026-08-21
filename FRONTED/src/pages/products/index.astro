@@ -4,6 +4,7 @@ export const prerender = false; // Disable prerendering so SSR handles searchPar
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getProductsPaginated, urlFor } from '../../lib/sanity';
+import { buildListingCanonical } from '../../lib/seo';
 
 const category = Astro.url.searchParams.get('category');
 const mechanism = Astro.url.searchParams.get('mechanism');
@@ -23,6 +24,9 @@ const currentPage = Math.min(requestedPage, totalPages);
 const pageStart = (currentPage - 1) * PRODUCTS_PER_PAGE;
 
 const siteUrl = 'https://ginkvora.com';
+const canonicalUrl = buildListingCanonical({
+  pathname: '/products', category, mechanism, page: currentPage,
+});
 
 const categoriesList = [
   { slug: 'liposomal', name: 'Liposomal', icon: '🧬' },
@@ -129,6 +133,7 @@ const itemListSchema = {
 <BaseLayout
   title={pageTitle}
   description={pageDescription}
+  canonicalUrl={canonicalUrl}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />

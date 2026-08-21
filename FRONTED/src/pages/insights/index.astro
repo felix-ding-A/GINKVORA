@@ -3,6 +3,7 @@
 export const prerender = false; // Disable prerendering so SSR handles searchParams (category, q, page)
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildListingCanonical } from '../../lib/seo';
 import { getPostsPaginated, urlFor } from '../../lib/sanity';
 import { getLocalePath } from '../../i18n/utils';
 
@@ -24,6 +25,9 @@ const { posts: allPosts, total } = await getPostsPaginated({
 
 const totalPages = Math.max(1, Math.ceil(total / pageSize));
 const currentPage = Math.min(requestedPage, totalPages);
+const canonicalUrl = buildListingCanonical({
+  pathname: '/insights', category: selectedCategory, page: currentPage,
+});
 
 // Helper function to build page URLs while preserving category and search query params
 function getPageHref(pageNum: number) {
@@ -77,6 +81,8 @@ const itemListSchema = {
 <BaseLayout
   title={selectedCategory ? `${selectedCategory} Insights & Research | GINKVORA` : "B2B Plant Extract Insights & Scientific Research | GINKVORA"}
   description={selectedCategory ? `Browse our expert research, market trends, and quality reports on ${selectedCategory}.` : "Read GINKVORA Insights for research articles, clinical dosage studies & formulation guides on PDRN, NMN, Glabridin & ECM anti-aging bioactives."}
+  canonicalUrl={canonicalUrl}
+  noindex={Boolean(searchQuery)}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />

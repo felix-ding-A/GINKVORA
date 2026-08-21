@@ -444,7 +444,7 @@ const organizationSchema = {
 
     <!-- Chatwoot Live Chat Widget (Ginkvora Custom — Deferred Loading) -->
     <script is:inline>
-      window.chatwootSettings = {"position":"right","type":"expanded_bubble","launcherTitle":"Chat Live"};
+      window.chatwootSettings = { position: "right", type: "standard" };
       (function () {
         let loaded = false;
         function loadChatwoot() {
@@ -494,67 +494,6 @@ const organizationSchema = {
         } else {
           window.addEventListener('load', scheduleChatwoot, { passive: true });
         }
-      })();
-    </script>
-
-    <!-- Ginkvora widget enhancements: scroll shake + skip welcome + auto intro -->
-    <style is:inline>
-      @keyframes cw-shake {
-        0%, 100% { transform: rotate(0deg) scale(1); }
-        10%, 30%, 50%, 70%, 90% { transform: rotate(-5deg) scale(1.02); }
-        20%, 40%, 60%, 80% { transform: rotate(5deg) scale(1.02); }
-      }
-      .woot-widget-bubble.cw-shake {
-        animation: cw-shake 1.2s ease-in-out infinite !important;
-      }
-    </style>
-    <script is:inline>
-      (function () {
-        var scrolled = false;
-        var launcherBound = false;
-
-        function getLauncher() {
-          return document.querySelector('.woot-widget-bubble');
-        }
-
-        function startShake() {
-          var launcher = getLauncher();
-          if (launcher) {
-            launcher.classList.add('cw-shake');
-          }
-        }
-
-        function stopShake() {
-          var launcher = getLauncher();
-          if (launcher) launcher.classList.remove('cw-shake');
-        }
-
-        // 滚动超过 200px 后 launcher 抖动
-        window.addEventListener('scroll', function () {
-          if (window.scrollY > 200 && !scrolled) {
-            scrolled = true;
-            startShake();
-          }
-        }, { passive: true });
-
-        // widget ready 后绑定交互
-        window.addEventListener('chatwoot:ready', function () {
-          var tryBind = setInterval(function () {
-            var launcher = getLauncher();
-            if (launcher && !launcherBound) {
-              clearInterval(tryBind);
-              launcherBound = true;
-
-              launcher.addEventListener('click', function () {
-                stopShake();
-              });
-
-              if (scrolled) startShake();
-            }
-          }, 500);
-
-          setTimeout(function () { clearInterval(tryBind); }, 5000);
-        });
       })();
     </script>
 
