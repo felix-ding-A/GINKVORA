@@ -19,7 +19,10 @@ export default defineConfig({
     isr: {
       // Detail pages are generated on demand and refreshed through the signed
       // Sanity webhook. Keep listing, utility, and API routes out of ISR.
-      expiration: 60 * 60 * 24 * 7,
+      // Sanity's signed webhook performs the actual refresh. Avoid periodic
+      // full-page rewrites that consume ISR Write Units even when content did
+      // not change.
+      expiration: false,
       bypassToken: process.env.ISR_BYPASS_TOKEN,
       exclude: [
         '/products', '/es/products', '/ru/products', '/ar/products',
