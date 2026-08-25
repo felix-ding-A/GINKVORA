@@ -87,6 +87,14 @@ htmlContent = htmlContent.replace(/<img\s+(?![^>]*\bwidth=)([^>]*)\/?>/gi, (matc
 htmlContent = htmlContent
   .replace(/https:\/\/cdn\.sanity\.io/g, '/media/images')
   .replace(/https:\/\/files\.sanity\.io/g, '/media/files');
+
+// Make external links open in a new tab
+htmlContent = htmlContent.replace(/<a\b([^>]*)>/gi, (match, attributes) => {
+  if (/href=["']http/i.test(attributes) && !/target=/i.test(attributes)) {
+    return `<a target="_blank" rel="noopener noreferrer"${attributes}>`;
+  }
+  return match;
+});
 ---
 
 <div class="portable-text" set:html={htmlContent} />
