@@ -65,6 +65,8 @@
   "redirects": [
     { "source": "/blog/egcg-98-percent-green-tea-extract", "destination": "/insights/green-tea-extract-egcg-98-percent-ingredient", "permanent": true },
     { "source": "/blog/glabridin-complete-guide-benefits-mechanism", "destination": "/insights/glabridin-complete-guide", "permanent": true },
+    { "source": "/insights/egcg-98-percent-green-tea-extract", "destination": "/insights/green-tea-extract-egcg-98-percent-ingredient", "permanent": true },
+    { "source": "/insights/glabridin-complete-guide-benefits-mechanism", "destination": "/insights/glabridin-complete-guide", "permanent": true },
     { "source": "/blog/palmitoyl-tripeptide-38-matrixyl-synthe-6", "destination": "/products/palmitoyl-tripeptide-38", "permanent": true },
     { "source": "/blog/phloretin", "destination": "/products/phloretin", "permanent": true },
     { "source": "/blog/:path*", "destination": "/insights/:path*", "permanent": true },
