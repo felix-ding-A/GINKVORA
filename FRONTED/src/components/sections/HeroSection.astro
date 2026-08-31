@@ -170,11 +170,11 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
 <style>
   .hero {
     position: relative;
-    min-height: 100vh;
+    min-height: clamp(720px, 88svh, 920px);
     display: flex;
     align-items: center;
     overflow: hidden;
-    padding-top: 4.5rem;
+    padding-top: 4rem;
   }
 
   /* ── Background ── */
