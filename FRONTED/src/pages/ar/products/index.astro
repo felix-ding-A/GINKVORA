@@ -135,8 +135,8 @@ const itemListSchema = {
 ---
 
 <BaseLayout lang={lang}
-  title={pageTitle}
-  description={pageDescription}
+  title="محفظة المكونات النشطة حيوياً | GINKVORA"
+  description="استكشف محفظتنا من المكونات النباتية والنشطة حيوياً عالية النقاء لمستحضرات التجميل والمكملات الغذائية وتركيبات التوصيل المتقدمة."
   canonicalUrl={canonicalUrl}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
@@ -152,13 +152,13 @@ const itemListSchema = {
           {mechanism === 'collagen-stimulant' && "شراء محفزات تخليق الكولاجين بالجملة"}
           {mechanism === 'mmp-inhibitor' && "شراء مثبطات MMP بالجملة (درجة تجميلية)"}
           {mechanism === 'anti-glycation' && "شراء المكونات النشطة لمكافحة السكر بالجملة"}
-          {!mechanism && "مكونات مكافحة الشيخوخة التي تستهدف المصفوفة خارج الخلية (ECM): حلول موضعية ومكملات تجميلية"}
+          {!mechanism && "محفظة المكونات النشطة حيوياً"}
         </h1>
-        <p class="banner-desc">
+        <p class="banner-desc fade-in-up delay-2">
           {academicIntro ? (
             <span class="academic-highlight">{academicIntro}</span>
           ) : (
-            "مواد خام ممتازة مختبرة بموجب معايير جودة دستور الأدوية الأمريكي والأوروبي الصارمة لمصنعي المكملات ومستحضرات التجميل والأغذية الوظيفية."
+            "مستخلصات نباتية وببتيدات ومكونات نشطة وظيفية مصممة بدقة لتطبيقات مستحضرات التجميل والمكملات الغذائية."
           )}
         </p>
 

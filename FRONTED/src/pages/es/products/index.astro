@@ -105,8 +105,8 @@ const breadcrumbsSchema = {
 
 <BaseLayout
   lang={lang}
-  title={pageTitle}
-  description={pageDescription}
+  title="Portafolio de Ingredientes Bioactivos | GINKVORA"
+  description="Explore nuestro portafolio de ingredientes botánicos y bioactivos de alta pureza para cosméticos, nutracéuticos y formulaciones de entrega avanzada."
   canonicalUrl={canonicalUrl}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
@@ -121,13 +121,13 @@ const breadcrumbsSchema = {
           {mechanism === 'collagen-stimulant' && "Estimuladores de la síntesis de colágeno al por mayor"}
           {mechanism === 'mmp-inhibitor' && "Inhibidores de MMP al por mayor (Grado cosmético)"}
           {mechanism === 'anti-glycation' && "Ingredientes antiglicación al por mayor"}
-          {!mechanism && "Ingredientes antienvejecimiento dirigidos a la ECM: soluciones para cosmética y nutracéutica"}
+          {!mechanism && "Portafolio de Ingredientes Bioactivos"}
         </h1>
-        <p class="banner-desc">
+        <p class="banner-desc fade-in-up delay-2">
           {academicIntro ? (
             <span class="academic-highlight">{academicIntro}</span>
           ) : (
-            "Materias primas botánicas de alta pureza, probadas bajo estándares de la USP/EP para fabricantes de cosméticos, suplementos y nutrición funcional."
+            "Extractos botánicos, péptidos y activos funcionales elaborados con precisión para aplicaciones cosméticas y nutracéuticas."
           )}
         </p>
 

@@ -28,8 +28,8 @@ interface Props {
 
 const {
   title,
-  description = 'GINKVORA — Premium B2B plant extract supplier. PQQ, NMN, EGCG, Glabridin, Luteolin and specialized high-purity botanical ingredients for nutraceutical, cosmetic and pet health industries.',
-  keywords = 'plant extract supplier, botanical ingredients, PQQ supplier, NMN bulk, EGCG extract, Glabridin, Luteolin, Flavone, nutraceutical ingredients, cosmetic actives, pet supplement ingredients, B2B botanical extracts',
+  description = 'GINKVORA supplies high-purity botanical and bioactive ingredients for cosmetic, nutraceutical and health-product development.',
+  keywords = 'bioactive ingredient supplier, botanical ingredients, peptides, polynucleotides, PQQ supplier, NMN bulk, EGCG extract, Glabridin, Luteolin, Flavone, nutraceutical ingredients, cosmetic actives, B2B bioactive ingredients',
   image,
   lang = 'en',
   dir,
@@ -84,7 +84,7 @@ const organizationSchema = {
   name: 'GINKVORA',
   url: siteUrl,
   logo: `${siteUrl}/images/logo.svg`,
-  description: 'Premium B2B supplier of innovative anti-aging raw materials and high-purity botanical ingredients, specializing in active ingredients powered by Extracellular Matrix (ECM) science. Serving the global cosmetic, nutraceutical, and skin longevity industries with GMP, ISO 9001:2015, Halal, and Kosher certifications.',
+  description: 'GINKVORA supplies botanical extracts, peptides, polynucleotides and functional actives for cosmetic, nutraceutical and health-product development — supported by clear specifications, documentation and dependable B2B supply.',
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'sales',
@@ -353,8 +353,23 @@ const organizationSchema = {
       });
     </script>
 
+    <!-- Cookie Consent Minimized Icon -->
+    <button id="cookie-minimized-icon" class="cookie-minimized hidden" aria-label="Cookie Settings">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/>
+        <path d="M8.5 8.5v.01"/>
+        <path d="M16 15.5v.01"/>
+        <path d="M12 12v.01"/>
+        <path d="M11 17v.01"/>
+        <path d="M7 14v.01"/>
+      </svg>
+    </button>
+
     <!-- Cookie Consent Banner -->
     <div id="cookie-consent-banner" class="cookie-banner hidden" role="dialog" aria-label="Cookie Consent">
+      <button id="cookie-close-btn" class="cookie-close" aria-label="Minimize">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
       <div class="cookie-container">
         <p class="cookie-text">
           {lang === 'ru' ? (
@@ -380,33 +395,68 @@ const organizationSchema = {
         const banner = document.getElementById('cookie-consent-banner');
         const acceptBtn = document.getElementById('cookie-accept-btn');
         const declineBtn = document.getElementById('cookie-decline-btn');
+        const icon = document.getElementById('cookie-minimized-icon');
+        const closeBtn = document.getElementById('cookie-close-btn');
 
-        if (!banner || !acceptBtn || !declineBtn) return;
-
-        if (!consent) {
-          banner.classList.remove('hidden');
-          // Slight delay to allow CSS transitions to trigger
-          setTimeout(() => {
-            banner.classList.add('visible');
-          }, 500);
-        }
-
-        const hideBanner = () => {
-          banner.classList.remove('visible');
-          setTimeout(() => {
-            banner.classList.add('hidden');
-          }, 400);
-        };
+        if (!banner || !acceptBtn || !declineBtn || !icon || !closeBtn) return;
 
         // Clone to clean up potential duplicate event listeners on page re-loads
         const newAcceptBtn = acceptBtn.cloneNode(true);
         const newDeclineBtn = declineBtn.cloneNode(true);
+        const newIcon = icon.cloneNode(true);
+        const newCloseBtn = closeBtn.cloneNode(true);
+        
         acceptBtn.parentNode.replaceChild(newAcceptBtn, acceptBtn);
         declineBtn.parentNode.replaceChild(newDeclineBtn, declineBtn);
+        icon.parentNode.replaceChild(newIcon, icon);
+        closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+
+        const showBanner = () => {
+          newIcon.classList.remove('visible');
+          setTimeout(() => {
+            newIcon.classList.add('hidden');
+            banner.classList.remove('hidden');
+            // Slight delay to allow CSS transitions to trigger
+            setTimeout(() => {
+              banner.classList.add('visible');
+            }, 50);
+          }, 300);
+        };
+
+        const showIcon = () => {
+          banner.classList.remove('visible');
+          setTimeout(() => {
+            banner.classList.add('hidden');
+            newIcon.classList.remove('hidden');
+            setTimeout(() => {
+              newIcon.classList.add('visible');
+            }, 50);
+          }, 400);
+        };
+
+        const hideAll = () => {
+          banner.classList.remove('visible');
+          newIcon.classList.remove('visible');
+          setTimeout(() => {
+            banner.classList.add('hidden');
+            newIcon.classList.add('hidden');
+          }, 400);
+        };
+
+        if (!consent) {
+          // Show icon initially instead of full banner
+          newIcon.classList.remove('hidden');
+          setTimeout(() => {
+            newIcon.classList.add('visible');
+          }, 500);
+        }
+
+        newIcon.addEventListener('click', showBanner);
+        newCloseBtn.addEventListener('click', showIcon);
 
         newAcceptBtn.addEventListener('click', () => {
           localStorage.setItem('cookie-consent', 'accepted');
-          hideBanner();
+          hideAll();
           if (typeof gtag === 'function') {
             gtag('consent', 'update', {
               'ad_storage': 'granted',
@@ -419,7 +469,7 @@ const organizationSchema = {
 
         newDeclineBtn.addEventListener('click', () => {
           localStorage.setItem('cookie-consent', 'declined');
-          hideBanner();
+          hideAll();
           if (typeof gtag === 'function') {
             gtag('consent', 'update', {
               'ad_storage': 'denied',
@@ -514,6 +564,46 @@ const organizationSchema = {
   }
 
   /* ── Cookie Consent Banner ── */
+  .cookie-minimized {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 2147483647;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(14, 18, 14, 0.92);
+    border: 1px solid rgba(212, 166, 84, 0.3);
+    color: #f0c878;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, background 0.2s ease, border-color 0.2s ease;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8) translateY(20px);
+  }
+
+  .cookie-minimized.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1) translateY(0);
+  }
+
+  .cookie-minimized.hidden {
+    display: none;
+  }
+
+  .cookie-minimized:hover {
+    transform: scale(1.08) translateY(0);
+    background: rgba(20, 24, 20, 0.98);
+    border-color: rgba(212, 166, 84, 0.6);
+  }
+
   .cookie-banner {
     position: fixed;
     bottom: 2rem;
@@ -522,7 +612,8 @@ const organizationSchema = {
     width: 90%;
     max-width: 680px;
     z-index: 2147483647; /* Highest layer to ensure consent is never blocked by widgets */
-    padding: 1.25rem 1.5rem;
+    padding: 1.5rem 1.5rem 1.25rem;
+
     border-radius: var(--radius-md, 12px);
     border: 1px solid rgba(212, 166, 84, 0.15);
     background: rgba(14, 18, 14, 0.92);
@@ -542,6 +633,27 @@ const organizationSchema = {
 
   .cookie-banner.hidden {
     display: none;
+  }
+
+  .cookie-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted, #8e8a7e);
+    cursor: pointer;
+    padding: 0.375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+  
+  .cookie-close:hover {
+    color: #f5efe0;
+    background: rgba(255, 255, 255, 0.1);
   }
 
   .cookie-container {
@@ -619,10 +731,14 @@ const organizationSchema = {
   }
 
   @media (max-width: 640px) {
+    .cookie-minimized {
+      bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+      left: 1rem;
+    }
     .cookie-banner {
       bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
       width: calc(100% - 2rem);
-      padding: 1.125rem 1.25rem;
+      padding: 2rem 1.25rem 1.125rem;
     }
     .cookie-container {
       flex-direction: column;

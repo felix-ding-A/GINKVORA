@@ -3,6 +3,8 @@ const lang = 'ar';
 // src/pages/quality.astro — Quality Control & Certification detail page
 export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+const t = useTranslations(lang);
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -19,8 +21,8 @@ const breadcrumbSchema = {
 ---
 
 <BaseLayout lang={lang}
-  title="رقابة الجودة وشهادات GMP | GINKVORA"
-  description="استكشف معايير مراقبة الجودة في GINKVORA: تحليل نقاء HPLC، واختبار USP/EP، وشهادات ISO 9001:2015 وGMP وحلال وكوشر، وشهادات التحليل COA/MSDS المتوافقة مع REACH."
+  title="الجودة وشهادات GMP | GINKVORA"
+  description="معايير الجودة لدى GINKVORA: تحليل النقاء HPLC، اختبارات GC-MS، شهادة ISO 9001 و GMP، والامتثال لـ REACH. تنزيل COAs."
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
   <main class="quality-page bg-noise">
@@ -28,10 +30,10 @@ const breadcrumbSchema = {
     <header class="page-banner" aria-label="ترويسة الصفحة">
       <div class="banner-gradient"></div>
       <div class="container banner-content">
-        <span class="section-label">مكتب الامتثال</span>
-        <h1 class="banner-title">معايير جودة لا تهاون فيها</h1>
-        <p class="banner-desc">
-          نحافظ على الشفافية التحليلية المطلقة. استكشف أدواتنا المخبرية، ومعايير الاختبار، والشهادات العالمية لدينا.
+        <span class="section-label fade-in-up">{t('quality.label')}</span>
+        <h1 class="banner-title fade-in-up delay-1">{t('quality.title')}</h1>
+        <p class="banner-desc fade-in-up delay-2">
+          ضمان نقاء ثابت وتوثيق موثوق وامتثال كامل للمتطلبات لكل دفعة إنتاج.
         </p>
       </div>
     </header>

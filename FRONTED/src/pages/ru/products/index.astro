@@ -105,8 +105,8 @@ const breadcrumbsSchema = {
 
 <BaseLayout
   lang={lang}
-  title={pageTitle}
-  description={pageDescription}
+  title="Портфолио биоактивных ингредиентов | GINKVORA"
+  description="Изучите наше портфолио высокочистых ботанических и биоактивных ингредиентов для косметики, нутрицевтиков и передовых систем доставки."
   canonicalUrl={canonicalUrl}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} slot="head" />
@@ -121,13 +121,13 @@ const breadcrumbsSchema = {
           {mechanism === 'collagen-stimulant' && "Стимуляторы синтеза коллагена оптом"}
           {mechanism === 'mmp-inhibitor' && "Ингибиторы MMP оптом (Косметический класс)"}
           {mechanism === 'anti-glycation' && "Ингредиенты против гликации оптом"}
-          {!mechanism && "ECM-таргетные омолаживающие ингредиенты: решения для косметики и нутрицевтики"}
+          {!mechanism && "Портфолио биоактивных ингредиентов"}
         </h1>
         <p class="banner-desc">
           {academicIntro ? (
             <span class="academic-highlight">{academicIntro}</span>
           ) : (
-            "Высокочистое растительное сырье, протестированное по стандартам USP/EP для производителей косметики, пищевых добавок и функционального питания."
+            "Точно разработанные растительные экстракты, пептиды и функциональные активы для косметического и нутрицевтического применения."
           )}
         </p>
 

@@ -14,8 +14,8 @@ const semiboldFont = readFile(join(fontDirectory, 'dm-sans-normal-600.ttf'));
 
 export const GET: APIRoute = async ({ url }) => {
   const title = url.searchParams.get('title') || 'GINKVORA';
-  const subtitle = url.searchParams.get('subtitle') || 'Pure Nature, Proven Science';
-  const tag = url.searchParams.get('tag') || 'B2B Plant Extracts';
+  const subtitle = url.searchParams.get('subtitle') || 'Botanical & Bioactive Ingredients for Formulators';
+  const tag = url.searchParams.get('tag') || 'B2B Ingredients';
 
   // Truncate long titles
   const displayTitle = title.length > 60 ? title.slice(0, 57) + '…' : title;

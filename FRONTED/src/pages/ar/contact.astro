@@ -3,10 +3,12 @@ const lang = 'ar';
 // src/pages/contact.astro — Premium B2B Inquiry and RFQ page
 export const prerender = true;
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+const t = useTranslations(lang);
 
 // Pre-fill query param support
-const title = "اتصل بـ GINKVORA | توريد المستخلصات النباتية B2B وطلب عرض الأسعار RFQ";
-const description = "اتصل بـ GINKVORA للاستفسارات عن المستخلصات النباتية B2B، وأسعار الجملة، ومواصفات الصيغ المخصصة، وطلب عينات مجانية. دعم سريع لطلب عروض الأسعار RFQ.";
+const title = "اتصل بنا | مورد المكونات النباتية والنشطة حيوياً";
+const description = "اطلب مواصفات المكونات أو الوثائق التنظيمية أو العينات من GINKVORA. فريق التوريد B2B لدينا يرد في غضون 24 ساعة.";
 
 const contactSchema = {
   "@context": "https://schema.org",
@@ -45,7 +47,8 @@ const localBusinessSchema = {
     <header class="page-banner">
       <div class="banner-gradient"></div>
       <div class="container banner-content">
-        <h1 class="banner-title">Contact GINKVORA</h1>
+        <h1 class="banner-title fade-in-up delay-1">{t('contact.title')}</h1>
+        <p class="banner-desc fade-in-up delay-2">{t('contact.subtitle')}</p>
       </div>
     </header>
 

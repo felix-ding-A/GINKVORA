@@ -74,7 +74,7 @@ if (totalPages > 1) {
   });
 }
 
-let pageTitle = "B2B Botanical & Anti-Aging Ingredient Catalog | GINKVORA";
+let pageTitle = "Bioactive Ingredient Solutions Catalog | GINKVORA";
 if (mechanism === 'collagen-stimulant') {
   pageTitle = "Collagen Synthesis Stimulants Wholesale | GINKVORA";
 } else if (mechanism === 'mmp-inhibitor') {
@@ -83,7 +83,7 @@ if (mechanism === 'collagen-stimulant') {
   pageTitle = "Anti-Glycation Active Ingredients Wholesale | GINKVORA";
 }
 
-let pageDescription = "Browse GINKVORA's B2B anti-aging ingredient catalog: PDRN, NMN & Glabridin. Topical & nutricosmetic grades. REACH compliant with free samples.";
+let pageDescription = "Browse GINKVORA's bioactive ingredient solutions for formulators: botanical extracts, peptides, and functional actives for cosmetic and nutraceutical development.";
 if (category === 'pet-longevity') {
   pageDescription = "High-purity botanical raw materials targeting canine and feline cellular senescence. Premium sirtuin activators and mitochondrial protectants for pet longevity.";
 }
@@ -117,7 +117,7 @@ const breadcrumbsSchema = {
 const itemListSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  "name": "GINKVORA Plant Extract Product Catalog",
+  "name": "GINKVORA Bioactive Ingredient Product Catalog",
   "description": pageDescription,
   "url": `${siteUrl}/products`,
   "numberOfItems": totalProducts,
@@ -148,13 +148,13 @@ const itemListSchema = {
           {mechanism === 'collagen-stimulant' && "Collagen Synthesis Stimulants Wholesale"}
           {mechanism === 'mmp-inhibitor' && "MMP Inhibitors Wholesale (Cosmetic Grade)"}
           {mechanism === 'anti-glycation' && "Anti-Glycation Active Ingredients Wholesale"}
-          {!mechanism && "ECM-Targeted Anti-Aging Ingredients: Topical & Nutricosmetic Solutions"}
+          {!mechanism && "Bioactive Ingredient Solutions: Botanical Extracts & Functional Actives"}
         </h1>
         <p class="banner-desc fade-in-up delay-2">
           {academicIntro ? (
             <span class="academic-highlight">{academicIntro}</span>
           ) : (
-            "Premium raw materials tested under strict USP/EP quality standards for supplement, cosmetic, and functional food manufacturers."
+            "High-purity ingredients tested under strict quality standards for supplement, cosmetic, and functional food formulators."
           )}
         </p>
 

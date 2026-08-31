@@ -43,11 +43,11 @@ export const ui = {
     'nav.industry_news':        'Industry News',
 
     // ── Hero ──
-    'hero.badge':          'ECM Science & Nutricosmetic Specialist',
-    'hero.title_1':        'For Formulators Building',
-    'hero.title_2':        'Serious Anti-Aging Lines.',
-    'hero.sub_headline':   'One supplier. Dual-grade actives—cosmetic and food.',
-    'hero.subtitle':       'ECM-targeted ingredients backed by 100% third-party tested COA and full documentation.',
+    'hero.badge':          'B2B Ingredient Supply for Formulators',
+    'hero.title_1':        'Bioactive Ingredients for',
+    'hero.title_2':        'Modern Formulation',
+    'hero.sub_headline':   'Botanical extracts, peptides, polynucleotides and functional actives',
+    'hero.subtitle':       '— backed by clear specifications and documentation.',
     'hero.cta_explore':    'Explore Portfolio',
     'hero.cta_sample':     'Request a Sample',
     'hero.role_title':     'Tell us who you are and we\'ll show you what matters:',
@@ -72,7 +72,7 @@ export const ui = {
 
     // ── Footer ──
     'footer.tagline':         'Pure Nature, Proven Science.',
-    'footer.tagline_sub':     'Premium B2B botanical extract supplier serving global nutraceutical, cosmetic and pet health industries.',
+    'footer.tagline_sub':     'Botanical & bioactive ingredients for formulators and B2B brands worldwide.',
     'footer.col_products':    'Products',
     'footer.col_ingredients': 'Key Ingredients',
     'footer.col_solutions':   'Solutions & Expertise',
@@ -92,8 +92,8 @@ export const ui = {
     'footer.sitemap':         'Sitemap',
 
     // ── Products page ──
-    'products.title':           'B2B Plant Extract Catalogue',
-    'products.subtitle':        'Precision-manufactured botanical ingredients for global nutraceutical, cosmetic, and functional food brands.',
+    'products.title':           'B2B Bioactive & Botanical Ingredients Catalogue',
+    'products.subtitle':        'Precision-manufactured bioactive and botanical ingredients for global nutraceutical, cosmetic, and functional food brands.',
     'products.search':          'Search ingredients...',
     'products.all_categories':  'All Categories',
     'products.no_results':      'No products found matching your criteria.',
@@ -175,7 +175,7 @@ export const ui = {
     'whyus.label':              'Why GINKVORA',
     'whyus.title_1':            'What Every B2B Partner Gets,',
     'whyus.title_2':            'From Day One',
-    'whyus.desc':               'We combine 20+ years of botanical expertise with state-of-the-art extraction technology and rigorous quality systems to deliver ingredients that meet — and exceed — international standards.',
+    'whyus.desc':               'Technical documentation, quality verification and responsive supply support for professional ingredient sourcing.',
     'whyus.cta':                'Learn More About Us',
     'whyus.feat1_title':        'Strict Quality Control',
     'whyus.feat1_desc':         'Every batch undergoes multi-stage testing — HPLC, GC-MS, microbiological screening — with full COA and third-party verification.',
@@ -224,13 +224,13 @@ export const ui = {
     // ── Contact CTA Section ──
     'cta.label':                'Start Today',
     'cta.title_1':              'Ready to Source',
-    'cta.title_2':              'Premium Botanicals?',
+    'cta.title_2':              'Bioactive Ingredients?',
     'cta.desc':                 'Request free samples, get pricing, or discuss custom formulation needs. Our team responds within 24 hours, 7 days a week.',
     'cta.feat1':                'Free samples shipped globally',
     'cta.feat2':                'Response within 24 hours',
     'cta.feat3':                'No minimum order for samples',
     'cta.feat4':                'Full documentation provided',
-    'cta.btn_sample':           'Request a Sample',
+    'cta.btn_sample':           'Request Specifications, Documentation or a Sample',
     'cta.btn_email':            'Email Us',
     'cta.form_title':           'Quick Inquiry',
     'cta.form_sub':             'Tell us what you need — we\'ll get back within 24h.',
@@ -256,13 +256,13 @@ export const ui = {
     'cta.form_privacy_suffix':  '. No spam, ever.',
     'cta.form_sending':         'Sending...',
     'cta.form_error':           'Something went wrong. Please email us directly at inquiry@ginkvora.com',
-    'homepage.divider_text':    'Bridging the gap between raw botanical extraction and clinical-grade formulation success.',
+    'homepage.divider_text':    'From ingredient selection to documentation-ready supply.',
 
     // ── Product Categories Section ──
     'categories.label':         'Product Portfolio',
-    'categories.title_1':       'One Supplier,',
-    'categories.title_2':       'Four Sectors',
-    'categories.desc':          'From nutraceuticals to cosmetics and pet health — comprehensive botanical ingredient solutions under one roof with consistent quality and traceability.',
+    'categories.title_1':       'Ingredient Solutions Across',
+    'categories.title_2':       'Your Product Pipeline',
+    'categories.desc':          'Explore ingredient options for cosmetic, nutraceutical, pet health and advanced delivery applications.',
     'categories.cta':           'View All Products',
     'categories.explore_cta':   'Browse Category',
     'categories.health_title':  'Health Supplement Ingredients',
@@ -284,8 +284,8 @@ export const ui = {
 
     // ── Featured Ingredients Section ──
     'featured.label':           'Featured Ingredients',
-    'featured.title_1':         'High-Purity Botanicals',
-    'featured.title_2':         'You Can Trust',
+    'featured.title_1':         'Selected Bioactive',
+    'featured.title_2':         'Ingredients',
     'featured.desc':            'Every ingredient is rigorously tested and comes with comprehensive analytical documentation — COA, MSDS, and third-party test reports.',
     'featured.cta':             'View All Premium Ingredients',
 
@@ -366,11 +366,11 @@ export const ui = {
     'nav.industry_news':        'Новости отрасли',
 
     // ── Hero ──
-    'hero.badge':          'ECM-наука и нутрикосметика',
-    'hero.title_1':        'Для разработчиков',
-    'hero.title_2':        'антивозрастных линеек.',
-    'hero.sub_headline':   'Один поставщик. Активы двух категорий: косметические и пищевые.',
-    'hero.subtitle':       'ECM-компоненты с независимым анализом COA и полной документацией.',
+    'hero.badge':          'B2B Поставки Ингредиентов для Разработчиков',
+    'hero.title_1':        'Биоактивные ингредиенты для',
+    'hero.title_2':        'Современных рецептур.',
+    'hero.sub_headline':   'Растительные экстракты, пептиды, полинуклеотиды и функциональные активы.',
+    'hero.subtitle':       '— подкрепленные четкими спецификациями и документацией.',
     'hero.cta_explore':    'Обзор портфолио',
     'hero.cta_sample':     'Запросить образец',
     'hero.role_title':     'Расскажите нам, кто вы, и мы покажем то, что важно для вас:',
@@ -395,7 +395,7 @@ export const ui = {
 
     // ── Footer ──
     'footer.tagline':         'Чистая природа, доказанная наука.',
-    'footer.tagline_sub':     'Премиальный B2B поставщик растительных экстрактов для мировых производителей нутрицевтиков, косметики и продукции для здоровья животных.',
+    'footer.tagline_sub':     'Растительные и биоактивные ингредиенты для разработчиков и B2B брендов по всему миру.',
     'footer.col_products':    'Продукты',
     'footer.col_ingredients': 'Ключевые ингредиенты',
     'footer.col_solutions':   'Решения и экспертиза',
@@ -415,7 +415,7 @@ export const ui = {
     'footer.sitemap':         'Карта сайта',
 
     // ── Products page ──
-    'products.title':           'Каталог растительных экстрактов B2B',
+    'products.title':           'Каталог ботанических и биоактивных ингредиентов B2B',
     'products.subtitle':        'Ингредиенты промышленного производства для мировых брендов нутрицевтиков, косметики и функционального питания.',
     'products.search':          'Поиск ингредиентов...',
     'products.all_categories':  'Все категории',
@@ -498,7 +498,7 @@ export const ui = {
     'whyus.label':              'Почему GINKVORA',
     'whyus.title_1':            'Что получает каждый B2B-партнер',
     'whyus.title_2':            'с первого дня',
-    'whyus.desc':               'Мы сочетаем более 20 лет опыта в ботанике с передовыми технологиями экстракции и строгими системами контроля качества, поставляя ингредиенты, соответствующие международным стандартам и превышающие их.',
+    'whyus.desc':               'Техническая документация, проверка качества и оперативная поддержка поставок для профессионального поиска ингредиентов.',
     'whyus.cta':                'Подробнее о компании',
     'whyus.feat1_title':        'Строгий контроль качества',
     'whyus.feat1_desc':         'Каждая партия проходит многоэтапное тестирование — HPLC, GC-MS, микробиологический скрининг — с полным COA и сторонней верификацией.',
@@ -547,13 +547,13 @@ export const ui = {
     // ── Contact CTA Section ──
     'cta.label':                'Начните сегодня',
     'cta.title_1':              'Готовы закупать',
-    'cta.title_2':              'премиальные ботаники?',
+    'cta.title_2':              'биоактивные ингредиенты?',
     'cta.desc':                 'Запросите бесплатные образцы, уточните цены или обсудите потребности в индивидуальной рецептуре. Наша команда отвечает в течение 24 часов, 7 дней в неделю.',
     'cta.feat1':                'Бесплатные образцы с глобальной доставкой',
     'cta.feat2':                'Ответ в течение 24 часов',
     'cta.feat3':                'Нет минимального заказа для образцов',
     'cta.feat4':                'Полный пакет документации',
-    'cta.btn_sample':           'Запросить образец',
+    'cta.btn_sample':           'Запросить спецификации, документацию или образец',
     'cta.btn_email':            'Написать нам',
     'cta.form_title':           'Быстрый запрос',
     'cta.form_sub':             'Опишите потребность — ответим в течение 24 ч.',
@@ -579,13 +579,13 @@ export const ui = {
     'cta.form_privacy_suffix':  '. Без спама.',
     'cta.form_sending':         'Отправка...',
     'cta.form_error':           'Произошла ошибка. Пожалуйста, напишите нам напрямую на inquiry@ginkvora.com',
-    'homepage.divider_text':    'Соединяя чистоту растительных экстрактов и эффективность клинических рецептур.',
+    'homepage.divider_text':    'От выбора ингредиентов до поставки с готовой документацией.',
 
     // ── Product Categories Section ──
     'categories.label':         'Продуктовый портфель',
-    'categories.title_1':       'Один поставщик,',
-    'categories.title_2':       'четыре сектора',
-    'categories.desc':          'От нутрицевтиков до косметики и здоровья животных — комплексные решения ботанических ингредиентов под одной крышей с постоянным качеством и прослеживаемостью.',
+    'categories.title_1':       'Решения ингредиентов для',
+    'categories.title_2':       'Вашей линейки продуктов',
+    'categories.desc':          'Изучите варианты ингредиентов для косметики, нутрицевтиков, здоровья животных и современных систем доставки.',
     'categories.cta':           'Смотреть все продукты',
     'categories.explore_cta':   'Посмотреть категорию',
     'categories.health_title':  'Ингредиенты для БАД',
@@ -607,7 +607,7 @@ export const ui = {
 
     // ── Featured Ingredients Section ──
     'featured.label':           'Ключевые ингредиенты',
-    'featured.title_1':         'Высокочистые ботаники,',
+    'featured.title_1':         'Биоактивные ингредиенты,',
     'featured.title_2':         'которым вы можете доверять',
     'featured.desc':            'Каждый ингредиент проходит строгие испытания и поставляется с полной аналитической документацией — COA, MSDS и отчётами независимых лабораторий.',
     'featured.cta':             'Смотреть все продукты',
@@ -690,11 +690,11 @@ export const ui = {
     'nav.industry_news':        'أخبار الصناعة',
 
     // ── Hero ──
-    'hero.badge':               'أخصائي علوم الـ ECM ومستحضرات التجميل الغذائية',
-    'hero.title_1':             'للمصممين الذين يبنون',
-    'hero.title_2':             'خطوط قوية لمكافحة الشيخوخة.',
-    'hero.sub_headline':        'مورد واحد. مكونات نشطة مزدوجة الدرجة—تجميلية وغذائية.',
-    'hero.subtitle':            'مكونات تستهدف المصفوفة خارج الخلية (ECM) مدعومة بشهادات تحليل (COA) مختبرة بنسبة 100% من جهات خارجية ووثائق كاملة.',
+    'hero.badge':               'توريد المكونات B2B للمصممين',
+    'hero.title_1':             'مكونات نشطة حيوياً لـ',
+    'hero.title_2':             'التركيبات الحديثة.',
+    'hero.sub_headline':        'مستخلصات نباتية، ببتيدات، بولي نيوكليوتيدات ومكونات نشطة وظيفية.',
+    'hero.subtitle':            '— مدعومة بمواصفات ووثائق واضحة.',
     'hero.cta_explore':         'استكشاف المحفظة',
     'hero.cta_sample':          'طلب عينة',
     'hero.role_title':          'أخبرنا من أنت وسنوضح لك ما يهمك:',
@@ -719,7 +719,7 @@ export const ui = {
 
     // ── Footer ──
     'footer.tagline':           'طبيعة نقية، علم موثوق.',
-    'footer.tagline_sub':       'مورد رائد للمستخلصات النباتية الفاخرة لقطاعات المكملات الغذائية ومستحضرات التجميل وصحة الحيوانات الأليفة عالمياً.',
+    'footer.tagline_sub':       'مكونات نباتية ونشطة حيوياً للمصممين والعلامات التجارية B2B حول العالم.',
     'footer.col_products':      'المنتجات',
     'footer.col_ingredients':   'المكونات الرئيسية',
     'footer.col_solutions':     'الحلول والخبرات',
@@ -739,8 +739,8 @@ export const ui = {
     'footer.sitemap':           'خريطة الموقع',
 
     // ── Products page ──
-    'products.title':           'كتالوج المستخلصات النباتية B2B',
-    'products.subtitle':        'مكونات نباتية مصنعة بدقة للعلامات التجارية العالمية للمكملات الغذائية ومستحضرات التجميل والأغذية الوظيفية.',
+    'products.title':           'كتالوج المكونات النباتية والنشطة حيوياً B2B',
+    'products.subtitle':        'مكونات مصنعة بدقة للعلامات التجارية العالمية للمكملات الغذائية ومستحضرات التجميل والأغذية الوظيفية.',
     'products.search':          'البحث عن المكونات...',
     'products.all_categories':  'جميع الفئات',
     'products.no_results':      'لم يتم العثور على منتجات تطابق معاييرك.',
@@ -821,7 +821,7 @@ export const ui = {
     'whyus.label':              'لماذا GINKVORA',
     'whyus.title_1':            'ما يحصل عليه كل شريك B2B،',
     'whyus.title_2':            'منذ اليوم الأول',
-    'whyus.desc':               'نجمع بين أكثر من 20 عاماً من الخبرة النباتية وتكنولوجيا الاستخلاص الحديثة وأنظمة الجودة الصارمة لتقديم مكونات تلبي — وتتجاوز — المعايير الدولية.',
+    'whyus.desc':               'وثائق فنية، والتحقق من الجودة، ودعم إمداد سريع لتوريد المكونات الاحترافي.',
     'whyus.cta':                'تعرف على المزيد عنا',
     'whyus.feat1_title':        'مراقبة جودة صارمة',
     'whyus.feat1_desc':         'تخضع كل دفعة لاختبارات متعددة المراحل — HPLC و GC-MS والفحص الميكروبيولوجي — مع شهادة تحليل (COA) كاملة وتحقق من جهة خارجية.',
@@ -870,13 +870,13 @@ export const ui = {
     // ── Contact CTA Section ──
     'cta.label':                'ابدأ اليوم',
     'cta.title_1':              'جاهز لتوريد',
-    'cta.title_2':              'مكونات نباتية ممتازة؟',
-    'cta.desc':                 'اطلب عينات مجانية، أو احصل على الأسعار، или ناقش احتياجات التركيب المخصصة. يستجيب فريقنا في غضون 24 ساعة، طوال أيام الأسبوع.',
+    'cta.title_2':              'مكونات نشطة حيوياً؟',
+    'cta.desc':                 'اطلب عينات مجانية، أو احصل على الأسعار، أو ناقش احتياجات التركيب المخصصة. يستجيب فريقنا في غضون 24 ساعة، طوال أيام الأسبوع.',
     'cta.feat1':                'شحن عينات مجانية على مستوى العالم',
     'cta.feat2':                'الرد في غضون 24 ساعة',
     'cta.feat3':                'لا يوجد حد أدنى للطلب للعينات',
     'cta.feat4':                'يتم توفير وثائق كاملة',
-    'cta.btn_sample':           'طلب عينة',
+    'cta.btn_sample':           'طلب المواصفات أو الوثائق أو عينة',
     'cta.btn_email':            'راسلنا بالبريد الإلكتروني',
     'cta.form_title':           'استفسار سريع',
     'cta.form_sub':             'أخبرنا بما تحتاجه — وسنرد عليك في غضون 24 ساعة.',
@@ -901,14 +901,14 @@ export const ui = {
     'cta.form_disclaimer_link':  'سياسة الخصوصية',
     'cta.form_privacy_suffix':  '. لا توجد رسائل عشوائية أبداً.',
     'cta.form_sending':         'جاري الإرسال...',
-    'cta.form_error':           'حدث خطأ ما. يرجى مراسلتنا مباشرة на inquiry@ginkvora.com',
-    'homepage.divider_text':    'جسر الفجوة بين استخلاص النباتات الخام والنجاح السريري للتركيبات.',
+    'cta.form_error':           'حدث خطأ ما. يرجى مراسلتنا مباشرة على inquiry@ginkvora.com',
+    'homepage.divider_text':    'من اختيار المكونات إلى التوريد الجاهز بالوثائق.',
 
     // ── Product Categories Section ──
     'categories.label':         'محفظة المنتجات',
-    'categories.title_1':       'مورد واحد،',
-    'categories.title_2':       'أربعة قطاعات',
-    'categories.desc':          'من المكملات الغذائية إلى مستحضرات التجميل وصحة الحيوانات الأليفة — حلول مكونات نباتية شاملة تحت سقف واحد مع جودة متسقة وتتبع كامل للمصادر.',
+    'categories.title_1':       'حلول المكونات عبر',
+    'categories.title_2':       'خط إنتاجك',
+    'categories.desc':          'استكشف خيارات المكونات للتطبيقات التجميلية، والغذائية، وصحة الحيوانات الأليفة، وأنظمة التوصيل المتقدمة.',
     'categories.cta':           'عرض جميع المنتجات',
     'categories.explore_cta':   'تصفح الفئة',
     'categories.health_title':  'مكونات المكملات الصحية',
@@ -930,7 +930,7 @@ export const ui = {
 
     // ── Featured Ingredients Section ──
     'featured.label':           'المكونات المميزة',
-    'featured.title_1':         'مكونات نباتية عالية النقاء',
+    'featured.title_1':         'مكونات نشطة حيوياً',
     'featured.title_2':         'يمكنك الوثوق بها',
     'featured.desc':            'يتم اختبار كل مكون بدقة ويأتي مع وثائق تحليلية شاملة — شهادة التحليل (COA) وورقة بيانات السلامة (MSDS) وتقارير اختبار الطرف الثالث.',
     'featured.cta':             'عرض جميع المكونات الممتازة',
@@ -1012,11 +1012,11 @@ export const ui = {
     'nav.industry_news':        'Noticias del Sector',
 
     // ── Hero ──
-    'hero.badge':               'Especialista en Ciencia de la ECM y Nutricosmética',
-    'hero.title_1':             'Para Formuladores que Crean',
-    'hero.title_2':             'Líneas Serias Anti-Edad.',
-    'hero.sub_headline':        'Un solo proveedor. Activos de doble grado: cosmético y alimentario.',
-    'hero.subtitle':            'Ingredientes dirigidos a la ECM respaldados por COA 100% probados por terceros y documentación completa.',
+    'hero.badge':               'Suministro de Ingredientes B2B para Formuladores',
+    'hero.title_1':             'Ingredientes Bioactivos para',
+    'hero.title_2':             'Formulaciones Modernas.',
+    'hero.sub_headline':        'Extractos botánicos, péptidos, polinucleótidos y activos funcionales.',
+    'hero.subtitle':            '— respaldado por especificaciones y documentación claras.',
     'hero.cta_explore':         'Explorar Catálogo',
     'hero.cta_sample':          'Solicitar Muestra',
     'hero.role_title':          'Díganos quién es y le mostraremos lo que importa:',
@@ -1041,7 +1041,7 @@ export const ui = {
 
     // ── Footer ──
     'footer.tagline':           'Naturaleza Pura, Ciencia Probada.',
-    'footer.tagline_sub':       'Proveedor B2B premium de extractos botánicos que sirve a las industrias globales de nutracéuticos, cosméticos y salud de mascotas.',
+    'footer.tagline_sub':       'Ingredientes botánicos y bioactivos para formuladores y marcas B2B a nivel mundial.',
     'footer.col_products':      'Productos',
     'footer.col_ingredients':   'Ingredientes Clave',
     'footer.col_solutions':     'Soluciones y Experiencia',
@@ -1061,8 +1061,8 @@ export const ui = {
     'footer.sitemap':           'Mapa del Sitio',
 
     // ── Products page ──
-    'products.title':           'Catálogo de Extractos Botánicos B2B',
-    'products.subtitle':        'Ingredientes botánicos fabricados con precisión para marcas globales de nutracéuticos, cosméticos y alimentos funcionales.',
+    'products.title':           'Catálogo de Ingredientes Botánicos y Bioactivos B2B',
+    'products.subtitle':        'Ingredientes botánicos y bioactivos fabricados con precisión para marcas globales de nutracéuticos, cosméticos y alimentos funcionales.',
     'products.search':          'Buscar ingredientes...',
     'products.all_categories':  'Todas las Categorías',
     'products.no_results':      'No se encontraron productos que coincidan con sus criterios.',
@@ -1143,7 +1143,7 @@ export const ui = {
     'whyus.label':              'Por qué GINKVORA',
     'whyus.title_1':            'Lo que cada socio B2B recibe,',
     'whyus.title_2':            'Desde el primer día',
-    'whyus.desc':               'Combinamos más de 20 años de experiencia botánica con tecnología de extracción de vanguardia y rigurosos sistemas de calidad para entregar ingredientes que cumplen y superan los estándares internacionales.',
+    'whyus.desc':               'Documentación técnica, verificación de calidad y soporte de suministro receptivo para el abastecimiento profesional de ingredientes.',
     'whyus.cta':                'Saber más sobre nosotros',
     'whyus.feat1_title':        'Estricto Control de Calidad',
     'whyus.feat1_desc':         'Cada lote se somete a pruebas de múltiples etapas (HPLC, GC-MS, cribado microbiológico) con COA completo y verificación de terceros.',
@@ -1192,13 +1192,13 @@ export const ui = {
     // ── Contact CTA Section ──
     'cta.label':                'Comenzar Hoy',
     'cta.title_1':              '¿Listo para Abastecerse',
-    'cta.title_2':              'de Botánicos Premium?',
+    'cta.title_2':              'de Ingredientes Bioactivos?',
     'cta.desc':                 'Solicite muestras gratuitas, obtenga precios o discuta necesidades de formulación personalizada. Nuestro equipo responde en 24 horas, los 7 días de la semana.',
     'cta.feat1':                'Muestras gratuitas enviadas globalmente',
     'cta.feat2':                'Respuesta en un plazo de 24 horas',
     'cta.feat3':                'Sin pedido mínimo para muestras',
     'cta.feat4':                'Documentación completa proporcionada',
-    'cta.btn_sample':           'Solicitar Muestra',
+    'cta.btn_sample':           'Solicitar especificaciones, documentación o una muestra',
     'cta.btn_email':            'Enviarnos un Correo',
     'cta.form_title':           'Consulta Rápida',
     'cta.form_sub':             'Díganos qué necesita — le responderemos en 24 horas.',
@@ -1224,13 +1224,13 @@ export const ui = {
     'cta.form_privacy_suffix':  '. Sin spam, nunca.',
     'cta.form_sending':         'Enviando...',
     'cta.form_error':           'Algo salió mal. Por favor envíenos un correo directamente a inquiry@ginkvora.com',
-    'homepage.divider_text':    'Cerrando la brecha entre la extracción botánica cruda y el éxito de la formulación de grado clínico.',
+    'homepage.divider_text':    'Desde la selección de ingredientes hasta el suministro con documentación lista.',
 
     // ── Product Categories Section ──
     'categories.label':         'Catálogo de Productos',
-    'categories.title_1':       'Un Solo Proveedor,',
-    'categories.title_2':       'Cuatro Sectores',
-    'categories.desc':          'Desde nutracéuticos hasta cosméticos y salud de mascotas: soluciones integrales de ingredientes botánicos bajo un mismo techo con calidad y trazabilidad constantes.',
+    'categories.title_1':       'Soluciones de Ingredientes en',
+    'categories.title_2':       'Su Línea de Productos',
+    'categories.desc':          'Explore opciones de ingredientes para aplicaciones cosméticas, nutracéuticas, de salud de mascotas y entrega avanzada.',
     'categories.cta':           'Ver Todos los Productos',
     'categories.explore_cta':   'Explorar Categoría',
     'categories.health_title':  'Ingredientes para Suplementos de Salud',
@@ -1252,7 +1252,7 @@ export const ui = {
 
     // ── Featured Ingredients Section ──
     'featured.label':           'Ingredientes Destacados',
-    'featured.title_1':         'Botánicos de Alta Pureza',
+    'featured.title_1':         'Ingredientes Bioactivos',
     'featured.title_2':         'En los que Puede Confiar',
     'featured.desc':            'Cada ingrediente es probado rigurosamente y viene con documentación analítica completa: COA, MSDS e informes de pruebas de terceros.',
     'featured.cta':             'Ver Todos los Ingredientes Premium',

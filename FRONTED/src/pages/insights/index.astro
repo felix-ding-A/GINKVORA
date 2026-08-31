@@ -66,7 +66,7 @@ const itemListSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "GINKVORA Industry Insights",
-  "description": "Scientific research updates, market trends, and regulatory updates on plant active ingredients.",
+  "description": "Scientific research updates, market trends, and regulatory updates on bioactive ingredients.",
   "url": `${siteUrl}/insights`,
   "numberOfItems": allPosts.length,
   "itemListElement": allPosts.map((post, i) => ({
@@ -79,7 +79,7 @@ const itemListSchema = {
 ---
 
 <BaseLayout
-  title={selectedCategory ? `${selectedCategory} Insights & Research | GINKVORA` : "B2B Plant Extract Insights & Scientific Research | GINKVORA"}
+  title={selectedCategory ? `${selectedCategory} Insights & Research | GINKVORA` : "B2B Bioactive Ingredient Insights & Scientific Research | GINKVORA"}
   description={selectedCategory ? `Browse our expert research, market trends, and quality reports on ${selectedCategory}.` : "Read GINKVORA Insights for research articles, clinical dosage studies & formulation guides on PDRN, NMN, Glabridin & ECM anti-aging bioactives."}
   canonicalUrl={canonicalUrl}
   noindex={Boolean(searchQuery)}
@@ -92,7 +92,7 @@ const itemListSchema = {
       <div class="banner-gradient"></div>
       <div class="container banner-content">
         <span class="section-label fade-in-up">Industry Insights</span>
-        <h1 class="banner-title fade-in-up delay-1">ECM-Targeted Anti-Aging Research & Ingredient Insights</h1>
+        <h1 class="banner-title fade-in-up delay-1">Bioactive Ingredient Research & Formulation Insights</h1>
         <p class="banner-desc fade-in-up delay-2">
           In-depth technical spotlights, scientific whitepapers, and regulatory updates for health brand formulary and procurement officers.
         </p>
