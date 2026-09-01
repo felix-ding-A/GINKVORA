@@ -15,7 +15,10 @@ const lp = (path: string) => getLocalePath(lang, path);
 
 const { slug } = Astro.params;
 
-const post = await getPostBySlug(slug);
+const [post, posts] = await Promise.all([
+  getPostBySlug(slug),
+  getAllPosts(10),
+]);
 
 if (!post) {
   const redirect = slug ? await getPostRedirectByPreviousSlug(slug) : null;
@@ -24,8 +27,6 @@ if (!post) {
   }
   return Astro.rewrite('/404');
 }
-
-const posts = await getAllPosts(10);
 
 // Filter related posts sharing tags with current post, or fallback to latest posts
 const relatedPosts = posts
