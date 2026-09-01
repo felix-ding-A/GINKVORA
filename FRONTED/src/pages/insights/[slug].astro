@@ -1183,7 +1183,7 @@ const breadcrumbSchema = {
         } else if (pathname.startsWith('/ar')) {
           redirectUrl = '/ar/thank-you';
         }
-        window.location.href = redirectUrl;
+        (window as any).gkvTrackLeadAndRedirect(redirectUrl, 'article_sidebar_inquiry');
       } else {
         throw new Error('Failed');
       }

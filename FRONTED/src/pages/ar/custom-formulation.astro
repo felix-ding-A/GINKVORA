@@ -1160,7 +1160,7 @@ const pageSchema = {
             form.reset();
             if (successMsg) successMsg.style.display = 'block';
             if (submitBtn) submitBtn.innerHTML = 'تم الإرسال ✓';
-            window.location.href = '/ar/thank-you';
+            (window as any).gkvTrackLeadAndRedirect('/ar/thank-you', 'custom_formulation');
           } else {
             alert('فشل إرسال طلب صياغة التركيبة. يرجى التحقق من التفاصيل أو مراسلتنا عبر البريد الإلكتروني مباشرة.');
             if (submitBtn) {

@@ -1150,7 +1150,7 @@ const pageSchema = {
             form.reset();
             if (successMsg) successMsg.style.display = 'block';
             if (submitBtn) submitBtn.innerHTML = 'Отправлено ✓';
-            window.location.href = '/ru/thank-you';
+            (window as any).gkvTrackLeadAndRedirect('/ru/thank-you', 'custom_formulation');
           } else {
             alert('Не удалось отправить запрос. Пожалуйста, проверьте данные или напишите нам на электронную почту inquiry@ginkvora.com.');
             if (submitBtn) {

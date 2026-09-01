@@ -353,6 +353,28 @@ const organizationSchema = {
       });
     </script>
 
+    <!-- Lead tracking: emitted only after a form API request succeeds, never on a thank-you page view. -->
+    <script is:inline>
+      (function () {
+        (window as any).gkvTrackLeadAndRedirect = function (redirectUrl: string, formType: string) {
+          const leadId = crypto.randomUUID ? crypto.randomUUID() : `gkv_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: 'gkv_generate_lead',
+            lead_id: leadId,
+            form_type: formType,
+            page_location: window.location.href,
+            page_path: window.location.pathname,
+          });
+
+          // Give GTM a short interval to dispatch its beacon before navigation.
+          window.setTimeout(function () {
+            window.location.assign(redirectUrl);
+          }, 300);
+        };
+      })();
+    </script>
+
     <!-- Cookie Consent Minimized Icon -->
     <button id="cookie-minimized-icon" class="cookie-minimized hidden" aria-label="Cookie Settings">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

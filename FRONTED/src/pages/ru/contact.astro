@@ -159,7 +159,7 @@ const localBusinessSchema = {
       if (res.ok) {
         if (success) success.style.display = 'block';
         form.reset();
-        window.location.href = '/ru/thank-you';
+        (window as any).gkvTrackLeadAndRedirect('/ru/thank-you', 'contact');
       } else {
         if (error) error.style.display = 'block';
       }

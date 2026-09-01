@@ -458,7 +458,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
         if (formState) formState.style.display = 'none';
         if (successState) successState.style.display = 'block';
         const currentLang = window.location.pathname.startsWith('/ru') ? 'ru' : 'en';
-        window.location.href = currentLang === 'ru' ? '/ru/thank-you' : '/thank-you';
+        (window as any).gkvTrackLeadAndRedirect(currentLang === 'ru' ? '/ru/thank-you' : '/thank-you', 'cta_inquiry');
       } else {
         throw new Error('Failed');
       }

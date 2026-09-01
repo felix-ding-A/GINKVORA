@@ -1150,7 +1150,7 @@ const pageSchema = {
             form.reset();
             if (successMsg) successMsg.style.display = 'block';
             if (submitBtn) submitBtn.innerHTML = 'Enviado ✓';
-            window.location.href = '/es/thank-you';
+            (window as any).gkvTrackLeadAndRedirect('/es/thank-you', 'custom_formulation');
           } else {
             alert('No se pudo enviar la solicitud. Por favor, verifique los datos o escríbanos directamente a inquiry@ginkvora.com.');
             if (submitBtn) {

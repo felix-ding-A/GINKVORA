@@ -1179,7 +1179,7 @@ const faqSchema = displayFaqItems && displayFaqItems.length > 0 ? {
         } else if (pathname.startsWith('/ar')) {
           redirectUrl = '/ar/thank-you';
         }
-        window.location.href = redirectUrl;
+        (window as any).gkvTrackLeadAndRedirect(redirectUrl, 'article_sidebar_inquiry');
       } else {
         throw new Error('Failed');
       }

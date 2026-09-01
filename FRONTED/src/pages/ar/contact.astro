@@ -432,7 +432,7 @@ const localBusinessSchema = {
               form.reset();
               if (successMsg) successMsg.style.display = 'block';
               if (submitBtn) submitBtn.textContent = 'تم الإرسال ✓';
-              window.location.href = '/ar/thank-you';
+              (window as any).gkvTrackLeadAndRedirect('/ar/thank-you', 'contact');
             } else {
               const errData = await res.json();
               alert(errData.error || 'فشل إرسال النموذج. يرجى التحقق من التفاصيل أو مراسلتنا عبر البريد الإلكتروني مباشرة.');
