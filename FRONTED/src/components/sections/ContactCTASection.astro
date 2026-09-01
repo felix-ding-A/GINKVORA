@@ -65,7 +65,7 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
             <h3 class="quick-form-title">{t('cta.form_title')}</h3>
             <p class="quick-form-sub">{t('cta.form_sub')}</p>
 
-            <form class="quick-form" id="quick-inquiry-form" novalidate>
+            <form class="quick-form" id="quick-inquiry-form" data-thank-you={lp('/thank-you')} novalidate>
               <input type="text" name="b_website" class="honeypot-field" autocomplete="off" tabindex="-1" placeholder="Leave this field empty" />
               <div class="form-field">
                 <label for="qi-name" class="form-label">{t('cta.form_name')}</label>
@@ -436,8 +436,11 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
       return;
     }
 
+    const defaultBtnText = submitBtn.getAttribute('data-default') || 'Send Inquiry';
+    const sendingBtnText = submitBtn.getAttribute('data-sending') || 'Sending...';
+
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
+    submitBtn.textContent = sendingBtnText;
 
     const formData = new FormData(form);
     if (formData.get('b_website')) {
@@ -445,6 +448,9 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
       return;
     }
     const data = Object.fromEntries(formData.entries());
+
+    let resOk = false;
+    let errorMessage = '';
 
     try {
       const res = await fetch('/api/contact', {
@@ -454,18 +460,40 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
       });
 
       if (res.ok) {
-        form.reset();
-        if (formState) formState.style.display = 'none';
-        if (successState) successState.style.display = 'block';
-        const currentLang = window.location.pathname.startsWith('/ru') ? 'ru' : 'en';
-        (window as any).gkvTrackLeadAndRedirect(currentLang === 'ru' ? '/ru/thank-you' : '/thank-you', 'cta_inquiry');
+        resOk = true;
       } else {
-        throw new Error('Failed');
+        const errData = await res.json().catch(() => ({}));
+        errorMessage = errData.error || 'Failed to submit form.';
       }
-    } catch {
+    } catch (err: any) {
+      errorMessage = err?.message || 'Network error. Please check your connection and try again.';
+    }
+
+    if (resOk) {
+      form.reset();
+      if (formState) formState.style.display = 'none';
+      if (successState) successState.style.display = 'block';
+
+      const thankYouUrl = form.getAttribute('data-thank-you') || (
+        window.location.pathname.startsWith('/ru') ? '/ru/thank-you' :
+        window.location.pathname.startsWith('/es') ? '/es/thank-you' :
+        window.location.pathname.startsWith('/ar') ? '/ar/thank-you' :
+        '/thank-you'
+      );
+
+      if (typeof (window as any).gkvTrackLeadAndRedirect === 'function') {
+        try {
+          (window as any).gkvTrackLeadAndRedirect(thankYouUrl, 'cta_inquiry');
+        } catch {
+          window.location.assign(thankYouUrl);
+        }
+      } else {
+        window.location.assign(thankYouUrl);
+      }
+    } else {
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Send Inquiry';
-      alert('Something went wrong. Please email us directly at inquiry@ginkvora.com');
+      submitBtn.textContent = defaultBtnText;
+      alert(errorMessage || 'Something went wrong. Please email us directly at inquiry@ginkvora.com');
     }
   });
 </script>

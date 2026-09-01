@@ -1154,7 +1154,7 @@ const faqSchema = displayFaqItems && displayFaqItems.length > 0 ? {
 
     const initialHtml = sbSubmitBtn.innerHTML;
     sbSubmitBtn.disabled = true;
-    sbSubmitBtn.textContent = 'Sending...';
+    sbSubmitBtn.textContent = 'جاري الإرسال...';
 
     const formData = new FormData(sbForm);
     if (formData.get('b_website')) {
@@ -1176,17 +1176,27 @@ const faqSchema = displayFaqItems && displayFaqItems.length > 0 ? {
         let redirectUrl = '/thank-you';
         if (pathname.startsWith('/ru')) {
           redirectUrl = '/ru/thank-you';
+        } else if (pathname.startsWith('/es')) {
+          redirectUrl = '/es/thank-you';
         } else if (pathname.startsWith('/ar')) {
           redirectUrl = '/ar/thank-you';
         }
-        (window as any).gkvTrackLeadAndRedirect(redirectUrl, 'article_sidebar_inquiry');
+        if (typeof (window as any).gkvTrackLeadAndRedirect === 'function') {
+          try {
+            (window as any).gkvTrackLeadAndRedirect(redirectUrl, 'article_sidebar_inquiry');
+          } catch {
+            window.location.assign(redirectUrl);
+          }
+        } else {
+          window.location.assign(redirectUrl);
+        }
       } else {
         throw new Error('Failed');
       }
     } catch {
       sbSubmitBtn.disabled = false;
       sbSubmitBtn.innerHTML = initialHtml;
-      alert('Something went wrong. Please email us directly at inquiry@ginkvora.com');
+      alert('حدث خطأ ما. يرجى مراسلتنا مباشرة عبر البريد الإلكتروني inquiry@ginkvora.com');
     }
   });
 </script>

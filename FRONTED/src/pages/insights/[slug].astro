@@ -1132,6 +1132,201 @@ const breadcrumbSchema = {
   shareCopy?.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(pageUrl);
+  }
+
+  .cta-content p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .post-cta .btn {
+    flex-shrink: 0;
+  }
+
+  /* ── Related Product Callout ── */
+  .related-product-callout {
+    margin-top: 4rem;
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(212, 166, 84, 0.15) !important;
+    background: rgba(212, 166, 84, 0.02);
+  }
+  
+  .related-product-header {
+    margin-bottom: 1rem;
+  }
+  
+  .related-product-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  
+  @media (max-width: 640px) {
+    .related-product-body {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+  }
+  
+  .related-product-info {
+    flex: 1;
+  }
+  
+  .related-product-name {
+    font-size: 1.5rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .purity-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--color-primary-light);
+    border: 1px solid rgba(212, 166, 84, 0.3);
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .related-product-desc {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+  
+  /* ── FAQs ── */
+  .article-faqs {
+    margin-top: 4rem;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  }
+</style>
+
+<script>
+  // ── Dynamic Table of Contents Generator ──
+  document.addEventListener('DOMContentLoaded', () => {
+    const headings = document.querySelectorAll('.article-body h2, .article-body h3');
+    const tocContainer = document.getElementById('dynamic-toc');
+    const tocWidget = document.querySelector('.widget-toc') as HTMLElement;
+
+    if (!tocContainer || headings.length === 0) {
+      if (tocWidget) tocWidget.style.display = 'none';
+      return;
+    }
+
+    const ul = document.createElement('ul');
+    ul.className = 'toc-list';
+
+    headings.forEach((heading, index) => {
+      // Ensure heading has an ID
+      if (!heading.id) {
+        // Create slug from text
+        const text = heading.textContent || '';
+        heading.id = text
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/\s+/g, '-') || `section-${index}`;
+      }
+
+      const li = document.createElement('li');
+      li.className = `toc-item toc-item--${heading.tagName.toLowerCase()}`;
+      
+      const a = document.createElement('a');
+      a.href = `#${heading.id}`;
+      a.textContent = heading.textContent;
+      a.className = 'toc-link';
+
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+
+    tocContainer.appendChild(ul);
+
+    // Robust Map-based Scrollspy behavior
+    const visibleHeadings = new Map();
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          visibleHeadings.set(entry.target, entry.target.id);
+        } else {
+          visibleHeadings.delete(entry.target);
+        }
+      });
+
+      let activeId = '';
+      if (visibleHeadings.size > 0) {
+        const sorted = Array.from(visibleHeadings.keys()).sort((a, b) => {
+          return a.getBoundingClientRect().top - b.getBoundingClientRect().top;
+        });
+        activeId = sorted[0].id;
+      } else if (window.scrollY < 200) {
+        const firstLink = document.querySelector('.toc-link');
+        if (firstLink) {
+          const href = firstLink.getAttribute('href');
+          if (href) activeId = href.substring(1);
+        }
+      }
+
+      if (activeId) {
+        document.querySelectorAll('.toc-link').forEach(link => {
+          if (link.getAttribute('href') === `#${activeId}`) {
+            link.classList.add('toc-link--active');
+          } else {
+            link.classList.remove('toc-link--active');
+          }
+        });
+      }
+    }, {
+      root: null,
+      rootMargin: '-80px 0px -50% 0px',
+      threshold: 0
+    });
+
+    headings.forEach(heading => observer.observe(heading));
+  });
+
+  // ── Social Sharing Handlers ──
+  const shareFacebook = document.getElementById('share-facebook');
+  const shareLinkedin = document.getElementById('share-linkedin');
+  const shareTwitter = document.getElementById('share-twitter');
+  const shareCopy = document.getElementById('share-copy');
+  const shareEmail = document.getElementById('share-email');
+
+  const pageUrl = window.location.href;
+  const pageTitle = document.title;
+
+  shareFacebook?.addEventListener('click', () => {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`, '_blank', 'width=600,height=600');
+  });
+
+  shareLinkedin?.addEventListener('click', () => {
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`, '_blank', 'width=600,height=600');
+  });
+
+  shareTwitter?.addEventListener('click', () => {
+    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(pageTitle)}`, '_blank', 'width=600,height=400');
+  });
+
+  shareEmail?.addEventListener('click', () => {
+    window.location.href = `mailto:?subject=${encodeURIComponent(pageTitle)}&body=${encodeURIComponent(pageUrl)}`;
+  });
+
+  shareCopy?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(pageUrl);
       const tooltip = document.getElementById('share-copy-tooltip');
       if (tooltip) {
         tooltip.classList.add('share-tooltip--visible');
@@ -1180,10 +1375,20 @@ const breadcrumbSchema = {
         let redirectUrl = '/thank-you';
         if (pathname.startsWith('/ru')) {
           redirectUrl = '/ru/thank-you';
+        } else if (pathname.startsWith('/es')) {
+          redirectUrl = '/es/thank-you';
         } else if (pathname.startsWith('/ar')) {
           redirectUrl = '/ar/thank-you';
         }
-        (window as any).gkvTrackLeadAndRedirect(redirectUrl, 'article_sidebar_inquiry');
+        if (typeof (window as any).gkvTrackLeadAndRedirect === 'function') {
+          try {
+            (window as any).gkvTrackLeadAndRedirect(redirectUrl, 'article_sidebar_inquiry');
+          } catch {
+            window.location.assign(redirectUrl);
+          }
+        } else {
+          window.location.assign(redirectUrl);
+        }
       } else {
         throw new Error('Failed');
       }

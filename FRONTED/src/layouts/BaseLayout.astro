@@ -356,8 +356,8 @@ const organizationSchema = {
     <!-- Lead tracking: emitted only after a form API request succeeds, never on a thank-you page view. -->
     <script is:inline>
       (function () {
-        (window as any).gkvTrackLeadAndRedirect = function (redirectUrl: string, formType: string) {
-          const leadId = crypto.randomUUID ? crypto.randomUUID() : `gkv_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        window.gkvTrackLeadAndRedirect = function (redirectUrl, formType) {
+          var leadId = (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : ('gkv_' + Date.now() + '_' + Math.random().toString(36).slice(2));
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({
             event: 'gkv_generate_lead',
