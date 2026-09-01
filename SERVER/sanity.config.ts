@@ -91,7 +91,11 @@ export default defineConfig({
               ),
             S.listItem()
               .title('📨 Leads')
-              .child(S.documentTypeList('lead').title('Leads')),
+              .child(
+                S.documentTypeList('lead')
+                  .title('Leads')
+                  .defaultOrdering([{ field: 'submittedAt', direction: 'desc' }])
+              ),
             S.divider(),
             S.listItem()
               .title('⚙️ Site Settings')

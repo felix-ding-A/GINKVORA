@@ -192,7 +192,23 @@ export const POST: APIRoute = async ({ request }) => {
       ? application.join(', ') 
       : 'None specified';
 
-    await persistLead({ submissionId, formType: 'coa', name, email, phone, company, sourcePage: referer, productName, role, demand, application: Array.isArray(application) ? application : [], coaUrl });
+    await persistLead({
+      submissionId,
+      formType: 'coa',
+      name,
+      email,
+      phone,
+      company,
+      sourcePage: referer,
+      sourceCountry: country,
+      sourceRegion: region,
+      sourceCity: city,
+      productName,
+      role,
+      demand,
+      application: Array.isArray(application) ? application : [],
+      coaUrl,
+    });
 
     // --- Send notification to GINKVORA team ---
     const teamEmailPromise = resend.emails.send({
@@ -348,7 +364,7 @@ export const POST: APIRoute = async ({ request }) => {
     const deliveryTask = Promise.allSettled([teamEmailPromise, autoReplyPromise]).then(async ([teamEmailResult, autoReplyResult]) => {
       if (teamEmailResult.status === 'rejected') {
         console.error(`[Lead] Team notification failed for ${submissionId}:`, teamEmailResult.reason);
-        await updateLeadDelivery(submissionId, { status: 'email_failed', teamEmailStatus: 'failed' }).catch(console.error);
+        await updateLeadDelivery(submissionId, { teamEmailStatus: 'failed' }).catch(console.error);
       } else {
         await updateLeadDelivery(submissionId, { teamEmailStatus: 'sent' }).catch(console.error);
       }

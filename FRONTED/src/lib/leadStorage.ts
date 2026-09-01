@@ -8,6 +8,9 @@ export type LeadRecord = {
   phone: string;
   company?: string;
   sourcePage?: string;
+  sourceCountry?: string;
+  sourceRegion?: string;
+  sourceCity?: string;
   interest?: string;
   message?: string;
   industry?: string;
