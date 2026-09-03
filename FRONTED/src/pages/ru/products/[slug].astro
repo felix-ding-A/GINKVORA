@@ -285,6 +285,15 @@ const breadcrumbSchema = {
 
           <p class="product-short-desc">{localShortDesc}</p>
 
+          <div class="product-primary-action">
+            <a href="#inquiry-form-section" class="btn btn--gold btn--lg">
+              {t('product.cta_rfq')}
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <section class="product-support-band" aria-label="Информация о продукте">
           <!-- Application Grade Tabs -->
           {product.applicationDisplay && (
             <div class="grade-tabs-block">
@@ -314,9 +323,6 @@ const breadcrumbSchema = {
 
           <!-- CTAs -->
           <div class="action-buttons">
-            <a href="#inquiry-form-section" class="btn btn--gold btn--lg">
-              {t('product.cta_rfq')}
-            </a>
             {product.coaFile?.asset?.url && (
               <a 
                 href={product.coaFile.asset.url} 
@@ -378,7 +384,6 @@ const breadcrumbSchema = {
             </div>
           </div>
         </section>
-      </div>
 
       <!-- Detail specifications tabs -->
       <section class="description-section" aria-label="Подробные характеристики">
@@ -1061,6 +1066,14 @@ const breadcrumbSchema = {
   @keyframes fill {
     100% { box-shadow: inset 0px 0px 0px 30px rgba(124, 184, 122, 0.05); }
   }
+  /* Product-page balance: supporting commercial information follows the hero grid. */
+  .product-primary-action { margin-top: 0.25rem; }
+  .product-primary-action .btn { min-width: min(100%, 17.5rem); justify-content: center; }
+  .product-support-band { margin-top: 2rem; padding: 1.25rem 1.5rem; display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(10rem, 0.7fr) minmax(12rem, 0.9fr) minmax(10rem, 0.75fr); gap: 1.25rem; align-items: center; border: 1px solid rgba(212, 166, 84, 0.16); border-radius: var(--radius-lg); background: rgba(255, 255, 255, 0.025); }
+  .product-support-band .grade-tabs-block, .product-support-band .action-buttons, .product-support-band .certifications-badges { margin: 0; padding-right: 1.25rem; border-right: 1px solid rgba(255, 255, 255, 0.08); }
+  .product-support-band .product-share-bar { margin: 0; padding: 0; border-top: 0; flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  @media (max-width: 1200px) { .product-support-band { grid-template-columns: repeat(2, minmax(0, 1fr)); } .product-support-band .grade-tabs-block { grid-column: 1 / -1; } .product-support-band .certifications-badges { border-right: 0; } }
+  @media (max-width: 640px) { .product-support-band { grid-template-columns: 1fr; padding: 1rem; gap: 1rem; } .product-support-band .grade-tabs-block, .product-support-band .action-buttons, .product-support-band .certifications-badges { padding-right: 0; padding-bottom: 1rem; border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); } }
 </style>
 
 <script>
