@@ -391,12 +391,19 @@ const itemListSchema = {
   }
 
   .banner-title {
-    font-size: clamp(2rem, 3.8vw, 3.1rem);
+    font-size: clamp(1.75rem, 2vw, 2.25rem);
     font-weight: 700;
     line-height: 1.15;
     margin-top: 0.5rem;
     color: var(--color-text);
-    max-width: 960px;
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 1280px) {
+    .banner-title {
+      white-space: normal;
+    }
   }
 
   .banner-desc {
