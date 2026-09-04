@@ -128,6 +128,7 @@ const itemListSchema = {
 
     <div class="container">
       {allPosts.length > 0 ? (
+        <Fragment>
         <div class="posts-grid" id="insights-grid" data-current-page={currentPage}>
           {allPosts.map((post: any) => {
             const localTitle   = (getLocalizedField(post, 'title', lang)   ?? post.title)   as string;
@@ -231,6 +232,7 @@ const itemListSchema = {
             )}
           </nav>
         )}
+        </Fragment>
       ) : (
         <div class="no-posts-container glass">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">

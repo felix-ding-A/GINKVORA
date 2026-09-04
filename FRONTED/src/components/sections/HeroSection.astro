@@ -177,6 +177,12 @@ const lp = (path: string) => getLocalePath(lang as Lang, path);
     padding-top: 4.5rem;
   }
 
+  @media (min-width: 1025px) {
+    .hero {
+      min-height: clamp(600px, 66vh, 720px);
+    }
+  }
+
   /* ── Background ── */
   .hero-bg {
     position: absolute;

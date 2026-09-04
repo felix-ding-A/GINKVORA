@@ -173,6 +173,7 @@ const itemListSchema = {
     <!-- Blog Grid -->
     <div class="container insights-container">
       {allPosts.length > 0 ? (
+        <Fragment>
         <section class="insights-grid" id="insights-grid" data-current-page={currentPage} aria-label="قائمة مقالات المدونة">
           {allPosts.map((post) => {
             const localTitle = getLocalizedField(post, 'title', lang) ?? post.title;
@@ -295,6 +296,7 @@ const itemListSchema = {
             )}
           </nav>
         )}
+        </Fragment>
       ) : (
         <div class="no-posts glass">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
