@@ -640,6 +640,36 @@ export const POST_FIELDS = `
   readTime
 `;
 
+const POST_DETAIL_FIELDS = `
+  ${POST_FIELDS},
+  body,
+  body_ru,
+  body_ar,
+  body_es,
+  meta_title,
+  meta_title_ru,
+  meta_title_ar,
+  meta_title_es,
+  meta_description,
+  meta_description_ru,
+  meta_description_ar,
+  meta_description_es,
+  faqItems,
+  faqItems_ru,
+  faqItems_ar,
+  faqItems_es,
+  relatedProduct->{
+    name,
+    "slug": slug.current,
+    shortDescription,
+    shortDescription_ru,
+    shortDescription_ar,
+    shortDescription_es,
+    purity,
+    heroImage
+  }
+`;
+
 export async function getAllPosts(limit = 10) {
   try {
     const data = await cachedFetch(`
@@ -746,33 +776,7 @@ export async function getPostBySlug(slug: string) {
     // prevents deleted posts and newly assigned slugs from staying stale.
     const data = await freshFetch(
       `*[_type == "post" && !(_id in path("drafts.**")) && slug.current == $slug][0] {
-        ${POST_FIELDS},
-        body,
-        body_ru,
-        body_ar,
-        body_es,
-        meta_title,
-        meta_title_ru,
-        meta_title_ar,
-        meta_title_es,
-        meta_description,
-        meta_description_ru,
-        meta_description_ar,
-        meta_description_es,
-        faqItems,
-        faqItems_ru,
-        faqItems_ar,
-        faqItems_es,
-        relatedProduct->{
-          name,
-          "slug": slug.current,
-          shortDescription,
-          shortDescription_ru,
-          shortDescription_ar,
-          shortDescription_es,
-          purity,
-          heroImage
-        }
+        ${POST_DETAIL_FIELDS}
       }`,
       { slug }
     );
@@ -780,6 +784,63 @@ export async function getPostBySlug(slug: string) {
     return canUseMockFallback ? MOCK_POSTS.find(p => p.slug === slug) || null : null;
   } catch (err) {
     return mockOrThrow(() => MOCK_POSTS.find(p => p.slug === slug) || null, `Unable to load post ${slug}.`, err);
+  }
+}
+
+/**
+ * Fetch everything an article detail route needs in one Sanity request.
+ * Invalid slugs deliberately receive no latest-post payload, so crawler probes
+ * do not pay for unrelated content before the route returns its 404.
+ */
+export async function getPostRouteData(slug: string, limit = 10) {
+  const boundedLimit = Math.max(1, Math.min(limit, 20));
+
+  try {
+    const data = await freshFetch(`{
+      "post": *[
+        _type == "post" &&
+        !(_id in path("drafts.**")) &&
+        slug.current == $slug
+      ][0] {
+        ${POST_DETAIL_FIELDS}
+      },
+      "redirect": *[
+        _type == "post" &&
+        !(_id in path("drafts.**")) &&
+        $slug in coalesce(previousSlugs, [])
+      ][0] {
+        "slug": slug.current
+      },
+      "posts": select(
+        count(*[
+          _type == "post" &&
+          !(_id in path("drafts.**")) &&
+          slug.current == $slug
+        ]) > 0 => *[
+          _type == "post" &&
+          !(_id in path("drafts.**"))
+        ] | order(publishedAt desc) [0...${boundedLimit}] {
+          ${POST_FIELDS}
+        },
+        []
+      )
+    }`, { slug });
+
+    return {
+      post: data?.post ?? null,
+      redirect: data?.redirect ?? null,
+      posts: Array.isArray(data?.posts) ? data.posts : [],
+    };
+  } catch (err) {
+    return mockOrThrow(
+      () => ({
+        post: MOCK_POSTS.find(post => post.slug === slug) || null,
+        redirect: null,
+        posts: MOCK_POSTS.slice(0, boundedLimit),
+      }),
+      `Unable to load post route data for ${slug}.`,
+      err,
+    );
   }
 }
 

@@ -2,7 +2,7 @@
 // src/pages/es/insights/[slug].astro — Spanish blog post detail page (ISR / Edge SSR)
 export const prerender = false;
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getAllPosts, getPostBySlug, getPostRedirectByPreviousSlug, urlFor, getLocalizedField } from '../../../lib/sanity';
+import { getPostRouteData, urlFor, getLocalizedField } from '../../../lib/sanity';
 import PortableText from '../../../components/PortableText.astro';
 import { useTranslations, getLocalePath } from '../../../i18n/utils';
 import FAQAccordion from '../../../components/FAQAccordion.astro';
@@ -15,13 +15,9 @@ const lp = (path: string) => getLocalePath(lang, path);
 
 const { slug } = Astro.params;
 
-const [post, posts] = await Promise.all([
-  getPostBySlug(slug),
-  getAllPosts(10),
-]);
+const { post, posts, redirect } = await getPostRouteData(slug);
 
 if (!post) {
-  const redirect = slug ? await getPostRedirectByPreviousSlug(slug) : null;
   if (redirect?.slug && redirect.slug !== slug) {
     return Astro.redirect(`/es/insights/${redirect.slug}`, 308);
   }

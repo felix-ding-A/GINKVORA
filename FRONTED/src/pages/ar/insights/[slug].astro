@@ -3,7 +3,7 @@ const lang = 'ar';
 // src/pages/ar/insights/[slug].astro — Detailed Arabic Blog Post View (ISR / Edge SSR)
 export const prerender = false;
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getAllPosts, getPostBySlug, getPostRedirectByPreviousSlug, urlFor, getLocalizedField } from '../../../lib/sanity';
+import { getPostRouteData, urlFor, getLocalizedField } from '../../../lib/sanity';
 import PortableText from '../../../components/PortableText.astro';
 import { useTranslations, getLocalePath } from '../../../i18n/utils';
 import type { Lang } from '../../../i18n/utils';
@@ -13,13 +13,9 @@ import TagBadge from '../../../components/TagBadge.astro';
 
 const { slug } = Astro.params;
 
-const [post, posts] = await Promise.all([
-  getPostBySlug(slug),
-  getAllPosts(10),
-]);
+const { post, posts, redirect } = await getPostRouteData(slug);
 
 if (!post) {
-  const redirect = slug ? await getPostRedirectByPreviousSlug(slug) : null;
   if (redirect?.slug && redirect.slug !== slug) {
     return Astro.redirect(`/ar/insights/${redirect.slug}`, 308);
   }

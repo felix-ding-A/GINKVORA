@@ -27,7 +27,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
     const isPersonalizedPage = /^(?:\/(?:ar|es|ru))?\/(?:contact|thank-you)$/.test(url.pathname);
     const isDetailPage = /^(?:\/(?:ar|es|ru))?\/(?:products|insights)\/[^/]+$/.test(url.pathname);
 
-    if (isPersonalizedPage) {
+    // Do not persist unknown dynamic slugs in the ISR/CDN cache. They are
+    // commonly crawler probes and would otherwise consume an ISR write per URL.
+    if (response.status >= 400) {
+      response.headers.set('Cache-Control', 'no-store');
+    } else if (isPersonalizedPage) {
       response.headers.set('Cache-Control', 'private, no-store');
     } else if (isDetailPage) {
       // Detail content is cached by the Astro/Vercel ISR layer. Its 7-day
