@@ -226,12 +226,22 @@ const breadcrumbSchema = {
         <section class="gallery-section" aria-label="Imágenes del producto">
           <div class="main-image-box glass">
             <picture style="display: contents;">
-              <source srcset={urlFor(product.heroImage).width(1200).format('webp').url()} type="image/webp" />
+              <source
+                srcset={`
+                  ${urlFor(product.heroImage).width(600).format('webp').url()} 600w,
+                  ${urlFor(product.heroImage).width(900).format('webp').url()} 900w,
+                  ${urlFor(product.heroImage).width(1200).format('webp').url()} 1200w
+                `}
+                sizes="(max-width: 600px) 100vw, (max-width: 900px) 90vw, (max-width: 1200px) 48vw, 600px"
+                type="image/webp"
+              />
               <img
                 src={urlFor(product.heroImage).width(1200).url()}
                 alt={localName}
                 id="main-product-image"
                 class="main-image"
+                width="600"
+                height="450"
                 fetchpriority="high"
                 loading="eager"
               />

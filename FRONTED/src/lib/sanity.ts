@@ -640,6 +640,39 @@ export const POST_FIELDS = `
   readTime
 `;
 
+// Detail pages only render a small card for related content. Keep these
+// projections deliberately narrow so ISR regeneration does not transfer the
+// full product/post document (including all long-form fields) for six cards.
+const RELATED_PRODUCT_CARD_FIELDS = `
+  _id,
+  name,
+  name_ru,
+  name_ar,
+  name_es,
+  "slug": slug.current,
+  shortDescription,
+  shortDescription_ru,
+  shortDescription_ar,
+  shortDescription_es,
+  purity,
+  heroImage
+`;
+
+const RELATED_POST_CARD_FIELDS = `
+  _id,
+  title,
+  title_ru,
+  title_ar,
+  title_es,
+  "slug": slug.current,
+  excerpt,
+  excerpt_ru,
+  excerpt_ar,
+  excerpt_es,
+  coverImage,
+  publishedAt
+`;
+
 export async function getAllPosts(limit = 10) {
   try {
     const data = await cachedFetch(`
@@ -763,6 +796,22 @@ export async function getPostBySlug(slug: string) {
         faqItems_ru,
         faqItems_ar,
         faqItems_es,
+        "relatedPosts": *[
+          _type == "post" &&
+          !(_id in path("drafts.**")) &&
+          _id != ^._id &&
+          count(^.tags) > 0 &&
+          count(tags[@ in ^.tags]) > 0
+        ] | order(publishedAt desc)[0...3] {
+          ${RELATED_POST_CARD_FIELDS}
+        },
+        "recentPosts": *[
+          _type == "post" &&
+          !(_id in path("drafts.**")) &&
+          _id != ^._id
+        ] | order(publishedAt desc)[0...3] {
+          ${RELATED_POST_CARD_FIELDS}
+        },
         relatedProduct->{
           name,
           "slug": slug.current,
@@ -1029,7 +1078,7 @@ export async function getRelatedProductsForProduct(productId: string, categorySl
       ($cslug != "" && ($cslug == category->slug.current || $cslug in category[]->slug.current || $cslug in mainCategories))
       || ($cref != "" && ($cref == category._ref || $cref in category[]._ref))
     )][0...3] {
-      ${PRODUCT_FIELDS}
+      ${RELATED_PRODUCT_CARD_FIELDS}
     }`;
     const data = await cachedFetch(query, { productId: productId || '', cslug, cref });
     if (data && data.length > 0) return data;
@@ -1055,7 +1104,7 @@ export async function getRelatedPostsForProduct(productId: string, categorySlug?
       ) asc,
       publishedAt desc
     )[0...3] {
-      ${POST_FIELDS}
+      ${RELATED_POST_CARD_FIELDS}
     }`;
     const posts = await cachedFetch(query, { productId: productId || '', cslug, cref });
 

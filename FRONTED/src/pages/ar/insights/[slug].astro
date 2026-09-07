@@ -3,7 +3,7 @@ const lang = 'ar';
 // src/pages/ar/insights/[slug].astro — Detailed Arabic Blog Post View (ISR / Edge SSR)
 export const prerender = false;
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getAllPosts, getPostBySlug, getPostRedirectByPreviousSlug, urlFor, getLocalizedField } from '../../../lib/sanity';
+import { getPostBySlug, getPostRedirectByPreviousSlug, urlFor, getLocalizedField } from '../../../lib/sanity';
 import PortableText from '../../../components/PortableText.astro';
 import { useTranslations, getLocalePath } from '../../../i18n/utils';
 import type { Lang } from '../../../i18n/utils';
@@ -13,10 +13,7 @@ import TagBadge from '../../../components/TagBadge.astro';
 
 const { slug } = Astro.params;
 
-const [post, posts] = await Promise.all([
-  getPostBySlug(slug),
-  getAllPosts(10),
-]);
+const post = await getPostBySlug(slug);
 
 if (!post) {
   const redirect = slug ? await getPostRedirectByPreviousSlug(slug) : null;
@@ -26,18 +23,10 @@ if (!post) {
   return Astro.rewrite('/404');
 }
 
-// Filter related posts sharing tags with current post, or fallback to latest posts
-const relatedPosts = posts
-  .filter((p: any) => p && p.slug !== slug)
-  .filter((p: any) => {
-    if (!post || !post.tags || !p.tags) return false;
-    return post.tags.some((tag: string) => p.tags.includes(tag));
-  })
-  .slice(0, 3);
-
+const relatedPosts = post.relatedPosts || [];
 const finalRelatedPosts = relatedPosts.length >= 2
   ? relatedPosts
-  : posts.filter((p: any) => p && p.slug !== slug).slice(0, 3);
+  : (post.recentPosts || []);
 const localTitle         = getLocalizedField(post, 'title', lang) ?? post.title;
 const localExcerpt       = getLocalizedField(post, 'excerpt', lang) ?? post.excerpt;
 const localBody          = getLocalizedField(post, 'body', lang) ?? post.body;
