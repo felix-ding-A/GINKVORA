@@ -246,7 +246,7 @@ const faqSchema = {
                   ${urlFor(product.heroImage).width(900).format('webp').url()} 900w,
                   ${urlFor(product.heroImage).width(1200).format('webp').url()} 1200w
                 `} 
-                sizes="(max-width: 600px) 100vw, (max-width: 900px) 90vw, 1200px"
+                sizes="(max-width: 600px) 100vw, (max-width: 900px) 90vw, (max-width: 1200px) 48vw, 600px"
                 type="image/webp" 
               />
               <img
@@ -797,9 +797,9 @@ const faqSchema = {
   }
 
   .product-title {
-    font-size: clamp(2.25rem, 4vw, 3rem);
+    font-size: clamp(1.85rem, 3.2vw, 2.5rem);
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1.2;
   }
 
   .product-botanical {
