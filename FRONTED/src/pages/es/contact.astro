@@ -75,7 +75,15 @@ const localBusinessSchema = {
               <span class="info-val">Más de 50 países en todo el mundo</span>
             </div>
           </div>
+          <div class="info-item">
+            <span class="info-icon">☎</span>
+            <div>
+              <span class="info-label">Teléfono / WhatsApp directo</span>
+              <a href="https://wa.me/8613201818603" target="_blank" rel="noopener noreferrer" class="info-val">+86 132 0181 8603</a>
+            </div>
+          </div>
         </div>
+        <div class="policy-summary"><h3>Políticas de suministro B2B</h3><p><strong>Muestras:</strong> se ofrecen muestras estándar de 10–50 g a fabricantes cualificados; se aplican gastos de envío.</p><p><strong>Documentación:</strong> cada lote se acompaña de COA y la documentación disponible se confirma antes de la cotización.</p></div>
       </div>
       <div class="contact-form-wrap glass">
         <h2>Formulario de Consulta</h2>
@@ -92,6 +100,22 @@ const localBusinessSchema = {
           <div class="form-group">
             <label for="phone">Teléfono / WhatsApp *</label>
             <input type="tel" id="phone" name="phone" required placeholder="+34 600 123 456" />
+          </div>
+          <div class="form-group">
+            <label for="website">Sitio web de la empresa</label>
+            <input type="url" id="website" name="website" placeholder="https://suempresa.com" />
+          </div>
+          <div class="form-group">
+            <label for="industry">Sector *</label>
+            <select id="industry" name="industry" required><option value="">Seleccione una opción</option><option>Cosmética</option><option>Suplementos / nutracéuticos</option><option>Alimentos y bebidas</option><option>Fabricación OEM/ODM</option><option>Investigación y desarrollo</option><option>Otro</option></select>
+          </div>
+          <div class="form-group">
+            <label for="productSelect">Producto o ingrediente de interés</label>
+            <input type="text" id="productSelect" name="productSelect" placeholder="Ej.: PDRN, Glabridin, NMN" />
+          </div>
+          <div class="form-group">
+            <label for="quantity">Cantidad estimada</label>
+            <input type="text" id="quantity" name="quantity" placeholder="Ej.: 10 kg, 100 kg o muestra" />
           </div>
           <div class="form-group">
             <label for="message">{t('contact.form_message')}</label>
@@ -127,8 +151,9 @@ const localBusinessSchema = {
   .contact-form { display: flex; flex-direction: column; gap: 1.25rem; }
   .form-group { display: flex; flex-direction: column; gap: 0.375rem; }
   .form-group label { font-size: 0.875rem; font-weight: 500; color: var(--color-text-muted); }
-  .form-group input, .form-group textarea { padding: 0.75rem 1rem; background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text); font-size: 0.9375rem; transition: border-color var(--transition-fast); font-family: inherit; resize: vertical; }
-  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--color-primary); }
+  .form-group input, .form-group select, .form-group textarea { padding: 0.75rem 1rem; background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: var(--radius-md); color: var(--color-text); font-size: 0.9375rem; transition: border-color var(--transition-fast); font-family: inherit; resize: vertical; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--color-primary); }
+  .policy-summary { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); color: var(--color-text-secondary); font-size: 0.875rem; line-height: 1.65; }.policy-summary h3 { color: var(--color-primary-light); font-size: 1rem; margin-bottom: 0.75rem; }.policy-summary p + p { margin-top: 0.65rem; }
   .form-success { padding: 1rem; background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); border-radius: var(--radius-md); color: #34d399; text-align: center; font-size: 0.9375rem; }
   .form-error { padding: 1rem; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: var(--radius-md); color: #ef4444; text-align: center; font-size: 0.9375rem; }
 </style>
