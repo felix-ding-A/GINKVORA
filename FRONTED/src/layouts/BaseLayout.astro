@@ -67,6 +67,30 @@ const isTrackingOrSearch = Boolean(
 );
 const shouldNoindex = noindex || isTrackingOrSearch;
 
+const cookieCopyByLocale = {
+  en: {
+    message: 'We use cookies to improve your browsing experience, analyze site traffic, and deliver technical support. By clicking "Accept All", you agree to our use of cookies.',
+    privacyHref: '/privacy', privacyLabel: 'Privacy Policy', essential: 'Essential only', accept: 'Accept All',
+    manage: 'Manage preferences', analytics: 'Analytics cookies', analyticsHelp: 'Help us understand how the site is used.', save: 'Save preferences',
+  },
+  es: {
+    message: 'Usamos cookies para mejorar tu experiencia de navegación, analizar el tráfico del sitio y ofrecer soporte técnico. Al hacer clic en «Aceptar todo», aceptas nuestro uso de cookies.',
+    privacyHref: '/es/privacy', privacyLabel: 'Política de privacidad', essential: 'Solo esenciales', accept: 'Aceptar todo',
+    manage: 'Gestionar preferencias', analytics: 'Cookies analíticas', analyticsHelp: 'Nos ayudan a comprender cómo se utiliza el sitio.', save: 'Guardar preferencias',
+  },
+  ru: {
+    message: 'Мы используем файлы cookie для улучшения работы сайта, анализа трафика и предоставления поддержки. Нажимая «Принять все», вы соглашаетесь с использованием файлов cookie.',
+    privacyHref: '/ru/privacy', privacyLabel: 'Подробнее', essential: 'Только необходимые', accept: 'Принять все',
+    manage: 'Настроить предпочтения', analytics: 'Аналитические cookie', analyticsHelp: 'Помогают нам понимать, как используется сайт.', save: 'Сохранить выбор',
+  },
+  ar: {
+    message: 'نستخدم ملفات تعريف الارتباط لتحسين تجربة التصفح وتحليل حركة الزيارات وتقديم الدعم الفني. بالنقر على «قبول الكل»، فإنك توافق على استخدامنا لملفات تعريف الارتباط.',
+    privacyHref: '/ar/privacy', privacyLabel: 'سياسة الخصوصية', essential: 'الضرورية فقط', accept: 'قبول الكل',
+    manage: 'إدارة التفضيلات', analytics: 'ملفات تعريف الارتباط للتحليلات', analyticsHelp: 'تساعدنا على فهم كيفية استخدام الموقع.', save: 'حفظ التفضيلات',
+  },
+} as const;
+const cookieCopy = cookieCopyByLocale[lang as keyof typeof cookieCopyByLocale] ?? cookieCopyByLocale.en;
+
 
 // Use dynamic OG image generator if no explicit image is provided
 const ogImageParams = new URLSearchParams({
@@ -394,18 +418,29 @@ const organizationSchema = {
       </button>
       <div class="cookie-container">
         <p class="cookie-text">
-          {lang === 'ru' ? (
-            <>Мы используем файлы cookie для улучшения работы сайта, анализа трафика и предоставления поддержки. Нажимая «Принять все», вы соглашаетесь с использованием файлов cookie. <a href="/ru/privacy" class="cookie-link">Подробнее</a></>
-          ) : (
-            <>We use cookies to improve your browsing experience, analyze site traffic, and deliver technical support. By clicking "Accept All", you agree to our use of cookies. <a href="/privacy" class="cookie-link">Privacy Policy</a></>
-          )}
+          {cookieCopy.message} <a href={cookieCopy.privacyHref} class="cookie-link">{cookieCopy.privacyLabel}</a>
         </p>
         <div class="cookie-actions">
           <button id="cookie-decline-btn" class="cookie-btn cookie-btn--text">
-            {lang === 'ru' ? 'Отклонить' : 'Decline'}
+            {cookieCopy.essential}
           </button>
           <button id="cookie-accept-btn" class="cookie-btn cookie-btn--gold">
-            {lang === 'ru' ? 'Принять все' : 'Accept All'}
+            {cookieCopy.accept}
+          </button>
+        </div>
+        <button id="cookie-preferences-btn" class="cookie-preferences-toggle" type="button" aria-expanded="false" aria-controls="cookie-preferences">
+          {cookieCopy.manage}
+        </button>
+        <div id="cookie-preferences" class="cookie-preferences hidden">
+          <label class="cookie-preference-option">
+            <input id="cookie-analytics-toggle" type="checkbox" />
+            <span>
+              <strong>{cookieCopy.analytics}</strong>
+              <small>{cookieCopy.analyticsHelp}</small>
+            </span>
+          </label>
+          <button id="cookie-save-preferences-btn" class="cookie-btn cookie-btn--outline" type="button">
+            {cookieCopy.save}
           </button>
         </div>
       </div>
@@ -419,19 +454,29 @@ const organizationSchema = {
         const declineBtn = document.getElementById('cookie-decline-btn');
         const icon = document.getElementById('cookie-minimized-icon');
         const closeBtn = document.getElementById('cookie-close-btn');
+        const preferencesBtn = document.getElementById('cookie-preferences-btn');
+        const preferences = document.getElementById('cookie-preferences');
+        const analyticsToggle = document.getElementById('cookie-analytics-toggle');
+        const savePreferencesBtn = document.getElementById('cookie-save-preferences-btn');
 
-        if (!banner || !acceptBtn || !declineBtn || !icon || !closeBtn) return;
+        if (!banner || !acceptBtn || !declineBtn || !icon || !closeBtn || !preferencesBtn || !preferences || !analyticsToggle || !savePreferencesBtn) return;
 
         // Clone to clean up potential duplicate event listeners on page re-loads
         const newAcceptBtn = acceptBtn.cloneNode(true);
         const newDeclineBtn = declineBtn.cloneNode(true);
         const newIcon = icon.cloneNode(true);
         const newCloseBtn = closeBtn.cloneNode(true);
+        const newPreferencesBtn = preferencesBtn.cloneNode(true);
+        const newAnalyticsToggle = analyticsToggle.cloneNode(true);
+        const newSavePreferencesBtn = savePreferencesBtn.cloneNode(true);
         
         acceptBtn.parentNode.replaceChild(newAcceptBtn, acceptBtn);
         declineBtn.parentNode.replaceChild(newDeclineBtn, declineBtn);
         icon.parentNode.replaceChild(newIcon, icon);
         closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+        preferencesBtn.parentNode.replaceChild(newPreferencesBtn, preferencesBtn);
+        analyticsToggle.parentNode.replaceChild(newAnalyticsToggle, analyticsToggle);
+        savePreferencesBtn.parentNode.replaceChild(newSavePreferencesBtn, savePreferencesBtn);
 
         const showBanner = () => {
           newIcon.classList.remove('visible');
@@ -441,6 +486,8 @@ const organizationSchema = {
             // Slight delay to allow CSS transitions to trigger
             setTimeout(() => {
               banner.classList.add('visible');
+              newPreferencesBtn.setAttribute('aria-expanded', 'false');
+              preferences.classList.add('hidden');
             }, 50);
           }, 300);
         };
@@ -456,51 +503,48 @@ const organizationSchema = {
           }, 400);
         };
 
-        const hideAll = () => {
-          banner.classList.remove('visible');
-          newIcon.classList.remove('visible');
-          setTimeout(() => {
-            banner.classList.add('hidden');
-            newIcon.classList.add('hidden');
-          }, 400);
+        const setConsent = (analyticsEnabled) => {
+          localStorage.setItem('cookie-consent', analyticsEnabled ? 'accepted' : 'declined');
+          showIcon();
+          if (typeof gtag === 'function') {
+            gtag('consent', 'update', {
+              'ad_storage': analyticsEnabled ? 'granted' : 'denied',
+              'ad_user_data': analyticsEnabled ? 'granted' : 'denied',
+              'ad_personalization': analyticsEnabled ? 'granted' : 'denied',
+              'analytics_storage': analyticsEnabled ? 'granted' : 'denied'
+            });
+          }
         };
 
         if (!consent) {
-          // Show icon initially instead of full banner
-          newIcon.classList.remove('hidden');
+          // First visit needs an explicit, easy-to-find choice.
           setTimeout(() => {
-            newIcon.classList.add('visible');
-          }, 500);
+            showBanner();
+          }, 350);
+        } else {
+          newIcon.classList.remove('hidden');
+          setTimeout(() => newIcon.classList.add('visible'), 350);
         }
 
         newIcon.addEventListener('click', showBanner);
         newCloseBtn.addEventListener('click', showIcon);
 
         newAcceptBtn.addEventListener('click', () => {
-          localStorage.setItem('cookie-consent', 'accepted');
-          hideAll();
-          if (typeof gtag === 'function') {
-            gtag('consent', 'update', {
-              'ad_storage': 'granted',
-              'ad_user_data': 'granted',
-              'ad_personalization': 'granted',
-              'analytics_storage': 'granted'
-            });
-          }
+          setConsent(true);
         });
 
         newDeclineBtn.addEventListener('click', () => {
-          localStorage.setItem('cookie-consent', 'declined');
-          hideAll();
-          if (typeof gtag === 'function') {
-            gtag('consent', 'update', {
-              'ad_storage': 'denied',
-              'ad_user_data': 'denied',
-              'ad_personalization': 'denied',
-              'analytics_storage': 'denied'
-            });
-          }
+          setConsent(false);
         });
+
+        newPreferencesBtn.addEventListener('click', () => {
+          const isOpen = !preferences.classList.contains('hidden');
+          preferences.classList.toggle('hidden', isOpen);
+          newPreferencesBtn.setAttribute('aria-expanded', String(!isOpen));
+          newAnalyticsToggle.checked = localStorage.getItem('cookie-consent') === 'accepted';
+        });
+
+        newSavePreferencesBtn.addEventListener('click', () => setConsent(newAnalyticsToggle.checked));
       }
 
       // Initial load
@@ -628,13 +672,12 @@ const organizationSchema = {
 
   .cookie-banner {
     position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    width: 90%;
-    max-width: 680px;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    transform: translateY(100px);
+    width: min(380px, calc(100vw - 3rem));
     z-index: 2147483647; /* Highest layer to ensure consent is never blocked by widgets */
-    padding: 1.5rem 1.5rem 1.25rem;
+    padding: 1.375rem 1.375rem 1.25rem;
 
     border-radius: var(--radius-md, 12px);
     border: 1px solid rgba(212, 166, 84, 0.15);
@@ -648,7 +691,7 @@ const organizationSchema = {
   }
 
   .cookie-banner.visible {
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
   }
@@ -679,10 +722,8 @@ const organizationSchema = {
   }
 
   .cookie-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
+    display: grid;
+    gap: 1rem;
   }
 
   .cookie-text {
@@ -704,10 +745,9 @@ const organizationSchema = {
   }
 
   .cookie-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-shrink: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.625rem;
   }
 
   .cookie-btn {
@@ -734,12 +774,79 @@ const organizationSchema = {
   }
 
   .cookie-btn--text {
-    background: transparent;
-    color: var(--color-text-muted, #8e8a7e);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #e8e3d7;
   }
 
   .cookie-btn--text:hover {
-    color: #f5efe0;
+    color: #fff;
+    border-color: rgba(240, 200, 120, 0.55);
+  }
+
+  .cookie-preferences-toggle {
+    appearance: none;
+    width: fit-content;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #f0c878;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.8125rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .cookie-preferences {
+    display: grid;
+    gap: 0.875rem;
+    padding-top: 0.25rem;
+  }
+
+  .cookie-preferences.hidden {
+    display: none;
+  }
+
+  .cookie-preference-option {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.625rem;
+    color: var(--color-text-secondary, #d2cbbd);
+    cursor: pointer;
+  }
+
+  .cookie-preference-option input {
+    width: 1rem;
+    height: 1rem;
+    margin: 0.125rem 0 0;
+    accent-color: #d4a654;
+  }
+
+  .cookie-preference-option strong,
+  .cookie-preference-option small {
+    display: block;
+  }
+
+  .cookie-preference-option strong {
+    font-size: 0.8125rem;
+  }
+
+  .cookie-preference-option small {
+    margin-top: 0.2rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--color-text-muted, #aaa396);
+  }
+
+  .cookie-btn--outline {
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(240, 200, 120, 0.55);
+    color: #f0c878;
   }
 
   /* Hide Chatwoot launcher while cookie consent banner is actively displayed to prevent overlap */
@@ -759,8 +866,10 @@ const organizationSchema = {
     }
     .cookie-banner {
       bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+      left: 1rem;
       width: calc(100% - 2rem);
-      padding: 2rem 1.25rem 1.125rem;
+      max-width: 420px;
+      padding: 1.75rem 1.125rem 1.125rem;
     }
     .cookie-container {
       flex-direction: column;
@@ -768,8 +877,6 @@ const organizationSchema = {
       gap: 1rem;
     }
     .cookie-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
       width: 100%;
       gap: 0.75rem;
     }
