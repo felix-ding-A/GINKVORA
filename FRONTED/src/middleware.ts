@@ -25,15 +25,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (isGet && isHtml) {
     const isPersonalizedPage = /^(?:\/(?:ar|es|ru))?\/(?:contact|thank-you)$/.test(url.pathname);
-    const isDetailPage = /^(?:\/(?:ar|es|ru))?\/(?:products|insights)\/[^/]+$/.test(url.pathname);
 
     if (isPersonalizedPage) {
       response.headers.set('Cache-Control', 'private, no-store');
-    } else if (isDetailPage) {
-      // Detail content is cached by the Astro/Vercel ISR layer. Its 7-day
-      // ceiling lives in astro.config.mjs and Sanity refreshes it on demand.
-      // Keep browsers from retaining HTML after a CMS publish/slug change.
-      response.headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
     } else {
       response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=900, stale-while-revalidate=86400');
     }
