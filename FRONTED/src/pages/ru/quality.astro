@@ -26,63 +26,59 @@ const breadcrumbSchema = {
         <p class="banner-desc fade-in-up delay-2">Обеспечение стабильной чистоты, надёжной документации и полного соответствия требованиям — для каждой партии.</p>
       </div>
     </header>
-    <div class="container quality-layout">
-      <section class="certs-section">
-        <h2 class="section-title">Наши сертификаты</h2>
-        <div class="certs-grid">
-          {[
-            { name: 'ISO 9001:2015', desc: 'Международный стандарт системы менеджмента качества' },
-            { name: 'GMP',           desc: 'Надлежащая производственная практика — обязательный стандарт качества' },
-            { name: 'FSSC 22000',    desc: 'Глобальный стандарт безопасности пищевой продукции' },
-            { name: 'Kosher',        desc: 'Сертификация кошерности для ингредиентов' },
-            { name: 'Halal',         desc: 'Сертификация халяль для ингредиентов' },
-            { name: 'Non-GMO',       desc: 'Проверено — без использования ГМО' },
-          ].map(cert => (
-            <div class="cert-card glass reveal">
-              <div class="cert-badge-large">{cert.name}</div>
-              <p class="cert-desc">{cert.desc}</p>
-            </div>
-          ))}
+    <section class="container section lab-section" aria-label="Аналитические приборы">
+      <div class="intro-grid">
+        <div class="intro-left reveal">
+          <h2>Передовые лабораторные анализы и испытания</h2>
+          <p>В GINKVORA мы считаем химическое тестирование основой доверия. Наш партнёрский центр исследований и разработок в Сиане оснащён высокопроизводительными аналитическими приборами для анализа чистоты активных компонентов и выявления примесей.</p>
+          <div class="instrument-list">
+            <div class="instrument-item"><span class="inst-icon">⚗️</span><div><strong>ВЭЖХ (высокоэффективная жидкостная хроматография)</strong><p>Обеспечивает точное количественное определение активных компонентов, например подтверждает содержание глабридина ≥40,0 % или лютеолина ≥98,0 %.</p></div></div>
+            <div class="instrument-item"><span class="inst-icon">🧬</span><div><strong>ICP-MS (масс-спектрометрия с индуктивно связанной плазмой)</strong><p>Подтверждает соответствие строгим международным ограничениям по тяжёлым металлам: свинцу, мышьяку, кадмию и ртути.</p></div></div>
+            <div class="instrument-item"><span class="inst-icon">🧪</span><div><strong>GC-MS (газовая хроматография-масс-спектрометрия)</strong><p>Оценивает летучие соединения и остатки пестицидов для соответствия строгим сельскохозяйственным ограничениям.</p></div></div>
+          </div>
         </div>
-      </section>
-      <section class="qc-section reveal">
-        <h2 class="section-title">Контроль качества</h2>
-        <div class="qc-steps">
-          {[
-            { step: '01', title: 'Входной контроль сырья', desc: 'Каждое поступающее сырьё проходит идентификацию и тестирование чистоты перед запуском производства.' },
-            { step: '02', title: 'Производственный мониторинг', desc: 'Непрерывный мониторинг параметров процесса — температуры, давления и времени выдержки экстракции.' },
-            { step: '03', title: 'Анализ готовой продукции', desc: 'HPLC/GC анализ, микробиологическое тестирование и испытания тяжёлых металлов для каждой партии.' },
-            { step: '04', title: 'Документация и прослеживаемость', desc: 'Полный пакет документов COA, MSDS и отчётов о тестировании для каждой поставки.' },
-          ].map(item => (
-            <div class="qc-step glass">
-              <span class="step-num">{item.step}</span>
-              <div>
-                <h3>{item.title}</h3>
-                <p>{item.desc}</p>
-              </div>
-            </div>
-          ))}
+        <div class="intro-right reveal reveal-delay-2"><div class="image-showcase glass"><img src="/images/ginkvora QC Laboratory.webp" alt="Лаборатория контроля качества GINKVORA" class="showcase-img" /></div></div>
+      </div>
+    </section>
+
+    <section class="section certs-grid-section bg-deep" aria-label="Каталог сертификатов">
+      <div class="container">
+        <div class="section-header"><span class="section-label">Нормативное соответствие</span><h2 class="section-title">Международные сертификаты</h2><p class="section-desc">Производственные площадки партнёров GINKVORA соответствуют глобальным требованиям к пищевым и косметическим ингредиентам.</p></div>
+        <div class="grid-4">
+          <div class="cert-box glass reveal"><div class="cert-badge-icon">🛡️</div><h3>Соответствие GMP</h3><p>Наши ингредиенты производятся на площадках, соответствующих требованиям GMP, что обеспечивает контроль перекрёстного загрязнения.</p></div>
+          <div class="cert-box glass reveal reveal-delay-1"><div class="cert-badge-icon">📜</div><h3>ISO 9001:2015</h3><p>Сертифицированные системы менеджмента качества охватывают все этапы — от приёмки сырья до упаковки и отгрузки.</p></div>
+          <div class="cert-box glass reveal reveal-delay-2"><div class="cert-badge-icon">🕌</div><h3>Сертификация Halal</h3><p>Сертифицировано признанными исламскими советами и соответствует религиозным диетическим требованиям мировых рынков.</p></div>
+          <div class="cert-box glass reveal reveal-delay-3"><div class="cert-badge-icon">✡️</div><h3>Сертификация Kosher</h3><p>Производится под надзором Kosher, подтверждая гигиену производства и соблюдение традиционных диетических норм.</p></div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
+
+    <section class="container section specs-limits-section" aria-label="Стандартизированные пределы">
+      <div class="section-header"><span class="section-label">Стандарты верификации</span><h2>Стандартизированные параметры испытаний</h2><p class="section-desc">Если не указано иное, каждая партия проверяется по следующим нормативам.</p></div>
+      <div class="specs-limit-box glass reveal"><table class="limits-table"><thead><tr><th>Категория испытаний</th><th>Стандартный параметр</th><th>Целевой предел спецификации</th><th>Ссылка на метод</th></tr></thead><tbody>
+        <tr><td><strong>Тяжёлые металлы</strong></td><td>Свинец (Pb)</td><td>≤ 0,5 ppm</td><td>USP &lt;233&gt; ICP-MS</td></tr>
+        <tr><td><strong>Тяжёлые металлы</strong></td><td>Мышьяк (As)</td><td>≤ 1,0 ppm</td><td>USP &lt;233&gt; ICP-MS</td></tr>
+        <tr><td><strong>Тяжёлые металлы</strong></td><td>Ртуть (Hg)</td><td>≤ 0,1 ppm</td><td>USP &lt;233&gt; ICP-MS</td></tr>
+        <tr><td><strong>Микробиология</strong></td><td>Общее количество микроорганизмов</td><td>≤ 1 000 КОЕ/г</td><td>USP &lt;2021&gt;</td></tr>
+        <tr><td><strong>Микробиология</strong></td><td>Дрожжи и плесень</td><td>≤ 100 КОЕ/г</td><td>USP &lt;2021&gt;</td></tr>
+        <tr><td><strong>Микробиология</strong></td><td>E. coli / Salmonella</td><td>Отрицательно</td><td>USP &lt;2022&gt;</td></tr>
+        <tr><td><strong>Химические показатели</strong></td><td>Остатки пестицидов</td><td>Соответствует пределам EP/USP</td><td>GC-MS / LC-MS</td></tr>
+        <tr><td><strong>Химические показатели</strong></td><td>Остатки растворителей</td><td>≤ 500 ppm (этанол)</td><td>GC-Headspace</td></tr>
+      </tbody></table></div>
+    </section>
   </main>
 </BaseLayout>
 <style>
-  .quality-page { padding-block: 0 var(--space-4xl); }
-  .page-banner { position: relative; padding-block: 8rem 5rem; background: linear-gradient(135deg, #030201 0%, #0e1007 60%, #0a0703 100%); overflow: hidden; margin-bottom: var(--space-2xl); }
-  .banner-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,166,84,0.07) 0%, transparent 70%); }
-  .banner-content { position: relative; z-index: 1; text-align: center; max-width: 700px; margin-inline: auto; }
-  .banner-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
-  .banner-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.75; }
-  .quality-layout { display: flex; flex-direction: column; gap: var(--space-2xl); }
-  .section-title { font-size: clamp(1.75rem, 3vw, 2.5rem); font-family: var(--font-display); font-weight: 600; margin-bottom: var(--space-xl); }
-  .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
-  .cert-card { padding: 2rem; border-radius: var(--radius-lg); text-align: center; display: flex; flex-direction: column; gap: 0.75rem; border: 1px solid rgba(212,166,84,0.15) !important; }
-  .cert-badge-large { font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; color: var(--color-primary-light); }
-  .cert-desc { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.6; }
-  .qc-steps { display: flex; flex-direction: column; gap: 1.25rem; }
-  .qc-step { display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.75rem; border-radius: var(--radius-lg); border: 1px solid var(--color-border) !important; }
-  .step-num { font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--color-primary); opacity: 0.6; flex-shrink: 0; line-height: 1; }
-  .qc-step h3 { font-size: 1.125rem; font-weight: 600; color: var(--color-text); margin-bottom: 0.375rem; }
-  .qc-step p { font-size: 0.9375rem; color: var(--color-text-secondary); line-height: 1.65; }
+  .quality-page { padding-bottom: var(--space-4xl); }
+  .page-banner { position: relative; padding-block: 7rem 3.5rem; overflow: hidden; background: linear-gradient(135deg, #030201 0%, #0c0804 50%, #060503 100%); border-bottom: 1px solid var(--color-border); }
+  .banner-gradient { position: absolute; inset: 0; background: radial-gradient(circle 35% 50% at 75% 20%, rgba(212, 166, 84, 0.08) 0%, transparent 100%); }
+  .banner-title { font-size: clamp(2rem, 3.8vw, 3.1rem); font-weight: 700; line-height: 1.15; margin-top: 0.5rem; color: var(--color-text); }
+  .banner-desc { max-width: 600px; margin-top: 1rem; color: var(--color-text-secondary); font-size: 1.0625rem; }
+  .intro-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 4rem; align-items: center; }
+  .intro-left h2 { font-size: 2.25rem; margin-bottom: 1.25rem; }.intro-left p { color: var(--color-text-secondary); margin-bottom: 2rem; }
+  .instrument-list { display: flex; flex-direction: column; gap: 1.5rem; }.instrument-item { display: flex; gap: 1.25rem; align-items: flex-start; }.inst-icon { font-size: 1.75rem; line-height: 1; background: rgba(212,166,84,0.1); padding: 0.5rem; border-radius: var(--radius-sm); color: var(--color-primary); }.instrument-item strong { color: var(--color-primary-light); font-size: 1rem; display: block; margin-bottom: 0.15rem; }.instrument-item p { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.5; }
+  .image-showcase { position: relative; aspect-ratio: 4/3; overflow: hidden; border-color: rgba(212,166,84,0.18) !important; }.showcase-img { width: 100%; height: 100%; object-fit: cover; }
+  .bg-deep { background-color: var(--color-bg-deep); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }.cert-box { padding: 2rem 1.5rem; border-radius: var(--radius-lg); border-color: rgba(212,166,84,0.1) !important; text-align: center; }.cert-box:hover { border-color: var(--color-border-strong) !important; box-shadow: var(--shadow-glow-gold); }.cert-badge-icon { font-size: 2.25rem; margin-bottom: 0.875rem; }.cert-box h3 { font-size: 1.25rem; color: var(--color-primary-light); margin-bottom: 0.5rem; }.cert-box p { font-size: 0.8125rem; line-height: 1.6; }
+  .specs-limit-box { padding: 1.5rem; overflow-x: auto; border-radius: var(--radius-lg); border-color: rgba(212,166,84,0.15) !important; }.limits-table { width: 100%; border-collapse: collapse; min-width: 600px; }.limits-table th, .limits-table td { padding: 0.875rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }.limits-table th { background: var(--color-surface); color: var(--color-primary-light); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }.limits-table td { font-size: 0.875rem; color: var(--color-text-secondary); }.limits-table tbody tr:hover td { color: var(--color-text); }
+  @media (max-width: 900px) { .intro-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
 </style>

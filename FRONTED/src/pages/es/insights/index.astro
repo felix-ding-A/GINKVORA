@@ -9,6 +9,16 @@ import { useTranslations } from '../../../i18n/utils';
 
 const lang = 'es';
 const t = useTranslations(lang);
+const categoryLabels: Record<string, string> = {
+  'Ingredient Spotlight': 'Ingredientes destacados',
+  'Formulation Tips': 'Consejos de formulación',
+  'Research': 'Investigación',
+  'Quality & Testing': 'Calidad y pruebas',
+  'Regulatory': 'Normativa',
+  'Market Trends': 'Tendencias de mercado',
+  'Industry News': 'Noticias del sector',
+};
+const insightCategories = Object.keys(categoryLabels);
 
 const pageParam = Astro.url.searchParams.get('page');
 const category = Astro.url.searchParams.get('category') || null;
@@ -125,6 +135,18 @@ const itemListSchema = {
         </form>
       </div>
     </header>
+
+    <div class="container filter-container">
+      <nav class="category-tabs" aria-label="Filtrar por categoría">
+        <a href={searchQuery ? `/es/insights?q=${encodeURIComponent(searchQuery)}` : '/es/insights'} class:list={['category-tab', { 'category-tab--active': !category }]}>Todas</a>
+        {insightCategories.map((item) => {
+          const href = searchQuery
+            ? `/es/insights?category=${encodeURIComponent(item)}&q=${encodeURIComponent(searchQuery)}`
+            : `/es/insights?category=${encodeURIComponent(item)}`;
+          return <a href={href} class:list={['category-tab', { 'category-tab--active': category === item }]}>{categoryLabels[item]}</a>;
+        })}
+      </nav>
+    </div>
 
     <div class="container">
       {allPosts.length > 0 ? (
@@ -368,6 +390,44 @@ const itemListSchema = {
     margin-bottom: 2rem;
     line-height: 1.6;
   }
+
+  /* ── Filter Tabs ── */
+  .filter-container {
+    margin-top: -1.75rem;
+    position: relative;
+    z-index: var(--z-float);
+    display: flex;
+    justify-content: center;
+  }
+
+  .category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    background: var(--color-surface-glass);
+    border: 1px solid var(--color-border);
+    padding: 0.375rem;
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    max-width: 90%;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .category-tab {
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .category-tab:hover { color: var(--color-text); background: var(--color-surface); }
+  .category-tab--active { background: var(--color-primary) !important; color: var(--color-surface-bg) !important; }
 
   /* ── Search Bar ── */
   .search-form {
