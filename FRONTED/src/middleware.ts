@@ -25,10 +25,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (isGet && isHtml) {
     const isPersonalizedPage = /^(?:\/(?:ar|es|ru))?\/(?:contact|thank-you)$/.test(url.pathname);
+    const isDetailPage = /^(?:\/(?:ar|es|ru))?\/(?:products|insights)\/[^/]+$/.test(url.pathname);
 
     if (isPersonalizedPage) {
       response.headers.set('Cache-Control', 'private, no-store');
-    } else {
+    } else if (!isDetailPage) {
       response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=900, stale-while-revalidate=86400');
     }
 
